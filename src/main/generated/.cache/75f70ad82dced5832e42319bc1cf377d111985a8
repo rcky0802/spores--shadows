@@ -1,0 +1,5 @@
+// 1.21.1	2026-07-31T12:52:36.5790632	Spores & Shadows/Block Loot Tables
+4b4a0bc058442a6ab56f8e631f467c6c3e118aba data\spores--shadows\loot_table\blocks\placed_oak_log.json
+d79d0ac05e614e69bbd0a7596252e560030248bf data\spores--shadows\loot_table\blocks\moldy_oak_log_stage_2.json
+9fe29ed61f7e2e51d8fa6b01cd50568bff49709c data\spores--shadows\loot_table\blocks\moldy_oak_log_stage_3.json
+83f622288f1ceddadced25013535daad9483fbda data\spores--shadows\loot_table\blocks\moldy_oak_log_stage_1.json

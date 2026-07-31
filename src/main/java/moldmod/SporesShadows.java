@@ -22,6 +22,7 @@ public class SporesShadows implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+		moldmod.block.ModBlocks.registerModBlocks();
 	}
 
 	public static Identifier id(String path) {
