@@ -16,10 +16,23 @@ public class ExampleMixin {
     @Inject(method = "getPlacementState", at = @At("RETURN"), cancellable = true)
     private void modifyOakLogPlacement(ItemPlacementContext context, CallbackInfoReturnable<BlockState> cir) {
         BlockState original = cir.getReturnValue();
-        // Se il giocatore sta piazzando un blocco di quercia vanilla, lo sostituiamo col nostro custom che ammuffisce
-        if (original != null && original.isOf(Blocks.OAK_LOG)) {
-            BlockState newState = ModBlocks.PLACED_OAK_LOG.getDefaultState().with(PillarBlock.AXIS, original.get(PillarBlock.AXIS));
-            cir.setReturnValue(newState);
+        if (original != null) {
+            if (original.isOf(Blocks.OAK_LOG)) {
+                BlockState newState = ModBlocks.MOLDY_OAK_LOG.getDefaultState().with(PillarBlock.AXIS, original.get(PillarBlock.AXIS));
+                cir.setReturnValue(newState);
+            } else if (original.isOf(Blocks.STRIPPED_OAK_LOG)) {
+                BlockState newState = ModBlocks.MOLDY_STRIPPED_OAK_LOG.getDefaultState().with(PillarBlock.AXIS, original.get(PillarBlock.AXIS));
+                cir.setReturnValue(newState);
+            } else if (original.isOf(Blocks.OAK_WOOD)) {
+                BlockState newState = ModBlocks.MOLDY_OAK_WOOD.getDefaultState().with(PillarBlock.AXIS, original.get(PillarBlock.AXIS));
+                cir.setReturnValue(newState);
+            } else if (original.isOf(Blocks.STRIPPED_OAK_WOOD)) {
+                BlockState newState = ModBlocks.MOLDY_STRIPPED_OAK_WOOD.getDefaultState().with(PillarBlock.AXIS, original.get(PillarBlock.AXIS));
+                cir.setReturnValue(newState);
+            } else if (original.isOf(Blocks.OAK_PLANKS)) {
+                BlockState newState = ModBlocks.MOLDY_OAK_PLANKS.getDefaultState();
+                cir.setReturnValue(newState);
+            }
         }
     }
 }

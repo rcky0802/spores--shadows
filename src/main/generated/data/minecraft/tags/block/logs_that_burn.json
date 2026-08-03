@@ -1,8 +1,5 @@
 {
   "values": [
-    "spores--shadows:moldy_oak_log_stage_1",
-    "spores--shadows:moldy_oak_log_stage_2",
-    "spores--shadows:moldy_oak_log_stage_3",
-    "spores--shadows:placed_oak_log"
+    "spores--shadows:moldy_oak_log"
   ]
 }

@@ -1,98 +1,69 @@
+import zipfile
 import os
-import random
-import re
-from PIL import Image, ImageDraw
+from PIL import Image, ImageEnhance
 
-def rgb_to_hex(r, g, b, a=255):
-    return f"#{r:02x}{g:02x}{b:02x}"
+jar_path = r"C:\Users\r.pirosu\.gradle\caches\fabric-loom\1.21.1\minecraft-client.jar"
+out_dir = r"C:\Users\r.pirosu\Downloads\spores--shadows-template-1.21.1\src\main\resources\assets\spores--shadows\textures\block"
 
-def rot_color(r, g, b):
-    # Crea un effetto "legno marcio" desaturando (verso il grigio) e scurendo il colore originale
-    gray = int(0.3 * r + 0.59 * g + 0.11 * b)
-    nr = int((r * 0.4 + gray * 0.6) * 0.65)
-    ng = int((g * 0.4 + gray * 0.6) * 0.65)
-    nb = int((b * 0.4 + gray * 0.6) * 0.65)
-    return rgb_to_hex(nr, ng, nb)
+textures_to_extract = {
+    "assets/minecraft/textures/block/oak_planks.png": "oak_planks.png",
+    "assets/minecraft/textures/block/stripped_oak_log.png": "stripped_oak_log.png",
+    "assets/minecraft/textures/block/stripped_oak_log_top.png": "stripped_oak_log_top.png"
+}
 
-def create_svg(stage, base_pixels, is_top):
-    # Nuova palette: Muffa bianca/grigia come richiesto
-    mold_colors = ["#E8E8E8", "#C7C7C7", "#A6A6A6", "#858585"]
+# Extract vanilla textures
+with zipfile.ZipFile(jar_path, 'r') as jar:
+    for zip_path, local_name in textures_to_extract.items():
+        with jar.open(zip_path) as f:
+            img = Image.open(f).convert("RGBA")
+            img.save(local_name)
+
+# Define stages
+def apply_mold(img_path, output_name, stage):
+    img = Image.open(img_path).convert("RGBA")
     
-    random.seed(42 + stage * 10 + (1 if is_top else 0))
+    # Create overlay color
+    overlay = Image.new("RGBA", img.size, (255, 255, 255, 0))
+    if stage == 1:
+        color = (111, 139, 111, 255) # Light green
+        alpha = 0.3
+        sat = 0.9
+        bright = 0.95
+    elif stage == 2:
+        color = (90, 115, 77, 255) # Med green
+        alpha = 0.6
+        sat = 0.7
+        bright = 0.85
+    elif stage == 3:
+        color = (62, 77, 62, 255) # Dark rot
+        alpha = 0.8
+        sat = 0.5
+        bright = 0.6
+        
+    solid = Image.new("RGBA", img.size, color)
+    blended = Image.blend(img, solid, alpha)
     
-    # Impostiamo le probabilità di muffa e marciume molto più basse
-    if stage == 1: 
-        mold_chance = 0.03
-        rot_chance = 0.05
-    elif stage == 2: 
-        mold_chance = 0.12
-        rot_chance = 0.25
-    elif stage == 3: 
-        mold_chance = 0.25
-        rot_chance = 0.50
-    else: 
-        mold_chance = 0
-        rot_chance = 0
+    # Restore original alpha channel to avoid making transparent parts colored
+    r, g, b, a = blended.split()
+    orig_a = img.split()[3]
+    blended = Image.merge("RGBA", (r, g, b, orig_a))
     
-    svg = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">']
+    # Adjust saturation
+    enhancer = ImageEnhance.Color(blended)
+    blended = enhancer.enhance(sat)
     
-    for y in range(16):
-        for x in range(16):
-            br, bg, bb, ba = base_pixels[x, y]
-            color = rgb_to_hex(br, bg, bb)
-            
-            if ba > 0:
-                # Applica l'effetto marciume al legno
-                if random.random() < rot_chance:
-                    color = rot_color(br, bg, bb)
-                    
-                # Applica la muffa (che copre il legno, sano o marcio che sia)
-                if random.random() < mold_chance:
-                    color = random.choice(mold_colors)
-                    
-            svg.append(f'  <rect x="{x}" y="{y}" width="1" height="1" fill="{color}"/>')
-            
-    svg.append('</svg>')
-    return "\n".join(svg)
+    # Adjust brightness
+    enhancer_b = ImageEnhance.Brightness(blended)
+    blended = enhancer_b.enhance(bright)
+    
+    blended.save(os.path.join(out_dir, output_name))
 
-def convert_svg_to_png(svg_path, png_path):
-    with open(svg_path, 'r') as f:
-        svg_data = f.read()
-    img = Image.new("RGBA", (16, 16), (0,0,0,0))
-    draw = ImageDraw.Draw(img)
-    pattern = re.compile(r'<rect x="(\d+)" y="(\d+)".*?fill="([^"]+)".*?/>')
-    for match in pattern.finditer(svg_data):
-        x, y, color = match.groups()
-        draw.point((int(x), int(y)), fill=color)
-    img.save(png_path)
+# Process
+for base in ["oak_planks", "stripped_oak_log", "stripped_oak_log_top"]:
+    for stage in [1, 2, 3]:
+        out_name = f"moldy_{base}_stage_{stage}.png"
+        if base == "stripped_oak_log_top":
+            out_name = f"moldy_stripped_oak_log_stage_{stage}_top.png"
+        apply_mold(f"{base}.png", out_name, stage)
 
-output_dir = r"C:\Users\r.pirosu\Downloads\spores--shadows-template-1.21.1\src\main\resources\assets\spores--shadows\textures\block"
-
-base_img = Image.open(os.path.join(output_dir, "yeeeeeeees.png")).convert("RGBA")
-
-# SCAMBIO CORRETTO: A quanto pare la prima metà (sinistra) era il Top, e la seconda (destra) era il Lato!
-base_top = base_img.crop((0, 0, 16, 16)).load()
-base_side = base_img.crop((16, 0, 32, 16)).load()
-
-svg_files = []
-for stage in [1, 2, 3]:
-    for is_top in [False, True]:
-        suffix = "_top" if is_top else ""
-        filename = f"moldy_oak_log_stage_{stage}{suffix}"
-        
-        base_px = base_top if is_top else base_side
-        
-        svg_content = create_svg(stage, base_px, is_top)
-        
-        svg_path = os.path.join(output_dir, f"{filename}.svg")
-        with open(svg_path, "w") as f:
-            f.write(svg_content)
-        svg_files.append(svg_path)
-        
-        png_path = os.path.join(output_dir, f"{filename}.png")
-        convert_svg_to_png(svg_path, png_path)
-
-for f in svg_files:
-    os.remove(f)
-
-print("Texture ricolorate (bianco/grigio e legno marcio) e invertite generate con successo!")
+print("Textures generated successfully!")

@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 
 import moldmod.client.datagen.ModBlockTagProvider;
 import moldmod.client.datagen.ModEnglishLanguageProvider;
+import moldmod.client.datagen.ModItalianLanguageProvider;
 import moldmod.client.datagen.ModLootTableProvider;
 import moldmod.client.datagen.ModModelProvider;
 
@@ -17,5 +18,6 @@ public class SporesShadowsDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ModLootTableProvider::new);
         pack.addProvider(ModModelProvider::new);
         pack.addProvider(ModEnglishLanguageProvider::new);
+        pack.addProvider(ModItalianLanguageProvider::new);
 	}
 }

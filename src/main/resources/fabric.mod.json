@@ -23,6 +23,12 @@
 		],
 		"fabric-datagen": [
 			"moldmod.client.SporesShadowsDataGenerator"
+		],
+		"fabric-gametest": [
+			"moldmod.test.MoldyOakLogTest"
+		],
+		"modmenu": [
+			"moldmod.client.config.ModMenuIntegration"
 		]
 	},
 	"mixins": [

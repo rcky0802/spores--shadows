@@ -1,5 +1,6 @@
-// 1.21.1	2026-07-31T12:52:36.5790632	Spores & Shadows/Block Loot Tables
-4b4a0bc058442a6ab56f8e631f467c6c3e118aba data\spores--shadows\loot_table\blocks\placed_oak_log.json
-d79d0ac05e614e69bbd0a7596252e560030248bf data\spores--shadows\loot_table\blocks\moldy_oak_log_stage_2.json
-9fe29ed61f7e2e51d8fa6b01cd50568bff49709c data\spores--shadows\loot_table\blocks\moldy_oak_log_stage_3.json
-83f622288f1ceddadced25013535daad9483fbda data\spores--shadows\loot_table\blocks\moldy_oak_log_stage_1.json
+// 1.21.1	2026-08-03T13:00:25.8500091	Spores & Shadows/Block Loot Tables
+6bf21a3030cdfc9d4e104c16bbeeed0c2c57c1f9 data\spores--shadows\loot_table\blocks\moldy_oak_wood.json
+0f4f796c4ad4a7f12fbafb3310186fd10fcd16a7 data\spores--shadows\loot_table\blocks\moldy_oak_planks.json
+a3e66ed39181d01db1d636ca75874469e36a06f5 data\spores--shadows\loot_table\blocks\moldy_stripped_oak_log.json
+fc2690ad067505085f2aed044d862a7bdf21f4e9 data\spores--shadows\loot_table\blocks\moldy_stripped_oak_wood.json
+d55e93db6325f021cd318498298c8eb8516efc0d data\spores--shadows\loot_table\blocks\moldy_oak_log.json

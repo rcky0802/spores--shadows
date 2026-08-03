@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "stage=0": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=1": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=2": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=3": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    }
+  }
+}

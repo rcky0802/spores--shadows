@@ -15,15 +15,9 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
         getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN)
-                .add(ModBlocks.MOLDY_OAK_LOG_STAGE_1)
-                .add(ModBlocks.MOLDY_OAK_LOG_STAGE_2)
-                .add(ModBlocks.MOLDY_OAK_LOG_STAGE_3)
-                .add(ModBlocks.PLACED_OAK_LOG);
+                .add(ModBlocks.MOLDY_OAK_LOG);
 
         getOrCreateTagBuilder(BlockTags.AXE_MINEABLE)
-                .add(ModBlocks.MOLDY_OAK_LOG_STAGE_1)
-                .add(ModBlocks.MOLDY_OAK_LOG_STAGE_2)
-                .add(ModBlocks.MOLDY_OAK_LOG_STAGE_3)
-                .add(ModBlocks.PLACED_OAK_LOG);
+                .add(ModBlocks.MOLDY_OAK_LOG);
     }
 }

@@ -22,7 +22,9 @@ public class SporesShadows implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+		me.shedaniel.autoconfig.AutoConfig.register(moldmod.config.ModConfig.class, me.shedaniel.autoconfig.serializer.JanksonConfigSerializer::new);
 		moldmod.block.ModBlocks.registerModBlocks();
+		moldmod.command.ModCommands.registerCommands();
 	}
 
 	public static Identifier id(String path) {
