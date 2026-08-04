@@ -25,8 +25,9 @@
 			"moldmod.client.SporesShadowsDataGenerator"
 		],
 		"fabric-gametest": [
-			"moldmod.test.MoldyOakLogTest"
+			"moldmod.test.SporesShadowsTests"
 		],
+
 		"modmenu": [
 			"moldmod.client.config.ModMenuIntegration"
 		]

@@ -1,22 +1,22 @@
 {
   "variants": {
     "axis=x,stage=0": {
-      "model": "minecraft:block/oak_log_horizontal",
+      "model": "minecraft:block/oak_log",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=1": {
-      "model": "spores--shadows:block/moldy_oak_log_stage_1_horizontal",
+      "model": "spores--shadows:block/moldy_oak_log_stage_1",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=2": {
-      "model": "spores--shadows:block/moldy_oak_log_stage_2_horizontal",
+      "model": "spores--shadows:block/moldy_oak_log_stage_2",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=3": {
-      "model": "spores--shadows:block/moldy_oak_log_stage_3_horizontal",
+      "model": "spores--shadows:block/moldy_oak_log_stage_3",
       "x": 90,
       "y": 90
     },
@@ -33,19 +33,19 @@
       "model": "spores--shadows:block/moldy_oak_log_stage_3"
     },
     "axis=z,stage=0": {
-      "model": "minecraft:block/oak_log_horizontal",
+      "model": "minecraft:block/oak_log",
       "x": 90
     },
     "axis=z,stage=1": {
-      "model": "spores--shadows:block/moldy_oak_log_stage_1_horizontal",
+      "model": "spores--shadows:block/moldy_oak_log_stage_1",
       "x": 90
     },
     "axis=z,stage=2": {
-      "model": "spores--shadows:block/moldy_oak_log_stage_2_horizontal",
+      "model": "spores--shadows:block/moldy_oak_log_stage_2",
       "x": 90
     },
     "axis=z,stage=3": {
-      "model": "spores--shadows:block/moldy_oak_log_stage_3_horizontal",
+      "model": "spores--shadows:block/moldy_oak_log_stage_3",
       "x": 90
     }
   }

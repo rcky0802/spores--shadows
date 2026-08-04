@@ -8,10 +8,8 @@ import net.minecraft.client.render.RenderLayer;
 public class SporesShadowsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MOLDY_OAK_LOG, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MOLDY_STRIPPED_OAK_LOG, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MOLDY_OAK_WOOD, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MOLDY_STRIPPED_OAK_WOOD, RenderLayer.getCutout());
-		BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.MOLDY_OAK_PLANKS, RenderLayer.getCutout());
+		for (net.minecraft.block.Block block : moldmod.block.ModBlocks.VANILLA_TO_MOLDY.values()) {
+			BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutout());
+		}
 	}
 }

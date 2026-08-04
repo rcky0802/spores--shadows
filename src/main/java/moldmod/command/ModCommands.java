@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyOakLogBlock;
+
 import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.block.BlockState;
@@ -40,7 +40,7 @@ public class ModCommands {
             BlockPos pos = ((BlockHitResult) hit).getBlockPos();
             BlockState state = player.getServerWorld().getBlockState(pos);
             
-            boolean isWaxed = state.isOf(ModBlocks.MOLDY_OAK_LOG) && state.get(MoldyOakLogBlock.WAXED);
+            boolean isWaxed = moldmod.block.ModBlocks.VANILLA_TO_MOLDY.containsValue(state.getBlock()) && state.get(moldmod.block.MoldyLogBlock.WAXED);
             
             // Replicate the math here purely for the debug display to the player
             float temp = player.getServerWorld().getBiome(pos).value().getTemperature();

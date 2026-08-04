@@ -5,67 +5,99 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.BlockStateComponent;
+import net.minecraft.util.Identifier;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ModBlocks {
 
-    public static final Block MOLDY_STRIPPED_OAK_LOG = Registry.register(
-            Registries.BLOCK, SporesShadows.id("moldy_stripped_oak_log"),
-            new MoldyOakLogBlock(AbstractBlock.Settings.copy(Blocks.STRIPPED_OAK_LOG).ticksRandomly(), null)
-    );
-    public static final Block MOLDY_OAK_LOG = Registry.register(
-            Registries.BLOCK, SporesShadows.id("moldy_oak_log"),
-            new MoldyOakLogBlock(AbstractBlock.Settings.copy(Blocks.OAK_LOG).ticksRandomly(), MOLDY_STRIPPED_OAK_LOG)
-    );
-    public static final Block MOLDY_OAK_PLANKS = Registry.register(
-            Registries.BLOCK, SporesShadows.id("moldy_oak_planks"),
-            new MoldyOakPlanksBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS).ticksRandomly())
-    );
-    public static final Block MOLDY_STRIPPED_OAK_WOOD = Registry.register(
-            Registries.BLOCK, SporesShadows.id("moldy_stripped_oak_wood"),
-            new MoldyOakLogBlock(AbstractBlock.Settings.copy(Blocks.STRIPPED_OAK_WOOD).ticksRandomly(), null)
-    );
-    public static final Block MOLDY_OAK_WOOD = Registry.register(
-            Registries.BLOCK, SporesShadows.id("moldy_oak_wood"),
-            new MoldyOakLogBlock(AbstractBlock.Settings.copy(Blocks.OAK_WOOD).ticksRandomly(), MOLDY_STRIPPED_OAK_WOOD)
-    );
+    public static final Map<Block, Block> VANILLA_TO_MOLDY = new HashMap<>();
+    private static final Map<String, Item> ALL_MOLDY_ITEMS = new HashMap<>();
 
-    // Oak Log Items
-    public static final Item TAINTED_OAK_LOG = registerStageItem("tainted_oak_log", MOLDY_OAK_LOG, 1);
-    public static final Item MOLDY_OAK_LOG_ITEM = registerStageItem("moldy_oak_log", MOLDY_OAK_LOG, 2);
-    public static final Item ROTTEN_OAK_LOG = registerStageItem("rotten_oak_log", MOLDY_OAK_LOG, 3);
+    public static void registerModBlocks() {
+        SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 
-    // Stripped Oak Log Items
-    public static final Item TAINTED_STRIPPED_OAK_LOG = registerStageItem("tainted_stripped_oak_log", MOLDY_STRIPPED_OAK_LOG, 1);
-    public static final Item MOLDY_STRIPPED_OAK_LOG_ITEM = registerStageItem("moldy_stripped_oak_log", MOLDY_STRIPPED_OAK_LOG, 2);
-    public static final Item ROTTEN_STRIPPED_OAK_LOG = registerStageItem("rotten_stripped_oak_log", MOLDY_STRIPPED_OAK_LOG, 3);
+        String[] woods = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry"};
 
-    // Oak Planks Items
-    public static final Item TAINTED_OAK_PLANKS = registerStageItem("tainted_oak_planks", MOLDY_OAK_PLANKS, 1);
-    public static final Item MOLDY_OAK_PLANKS_ITEM = registerStageItem("moldy_oak_planks", MOLDY_OAK_PLANKS, 2);
-    public static final Item ROTTEN_OAK_PLANKS = registerStageItem("rotten_oak_planks", MOLDY_OAK_PLANKS, 3);
+        for (String wood : woods) {
+            registerWoodSet(wood, wood + "_log", wood + "_wood");
+        }
+        
+        // Bamboo uses block instead of log/wood
+        registerWoodSet("bamboo", "bamboo_block", null);
 
-    // Oak Wood Items
-    public static final Item TAINTED_OAK_WOOD = registerStageItem("tainted_oak_wood", MOLDY_OAK_WOOD, 1);
-    public static final Item MOLDY_OAK_WOOD_ITEM = registerStageItem("moldy_oak_wood", MOLDY_OAK_WOOD, 2);
-    public static final Item ROTTEN_OAK_WOOD = registerStageItem("rotten_oak_wood", MOLDY_OAK_WOOD, 3);
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> {
+            for (Item item : ALL_MOLDY_ITEMS.values()) {
+                // Unwaxed
+                entries.add(new ItemStack(item));
+                
+                // Waxed
+                ItemStack waxedStack = new ItemStack(item);
+                BlockStateComponent defaultComponent = waxedStack.getOrDefault(DataComponentTypes.BLOCK_STATE, BlockStateComponent.DEFAULT);
+                waxedStack.set(DataComponentTypes.BLOCK_STATE, defaultComponent.with(MoldyLogBlock.WAXED, true));
+                entries.add(waxedStack);
+            }
+        });
+    }
 
-    // Stripped Oak Wood Items
-    public static final Item TAINTED_STRIPPED_OAK_WOOD = registerStageItem("tainted_stripped_oak_wood", MOLDY_STRIPPED_OAK_WOOD, 1);
-    public static final Item MOLDY_STRIPPED_OAK_WOOD_ITEM = registerStageItem("moldy_stripped_oak_wood", MOLDY_STRIPPED_OAK_WOOD, 2);
-    public static final Item ROTTEN_STRIPPED_OAK_WOOD = registerStageItem("rotten_stripped_oak_wood", MOLDY_STRIPPED_OAK_WOOD, 3);
+    private static void registerWoodSet(String prefix, String logName, String woodName) {
+        // Vanilla Blocks
+        Block vanillaLog = Registries.BLOCK.get(Identifier.of("minecraft", logName));
+        Block vanillaStrippedLog = Registries.BLOCK.get(Identifier.of("minecraft", "stripped_" + logName));
+        Block vanillaPlanks = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_planks"));
+
+        // Mod Blocks
+        Block strippedLog = registerBlock("moldy_stripped_" + logName, new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaStrippedLog).ticksRandomly(), null));
+        Block log = registerBlock("moldy_" + logName, new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaLog).ticksRandomly(), strippedLog));
+        Block planks = registerBlock("moldy_" + prefix + "_planks", new MoldyPlanksBlock(AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
+
+        // Map them
+        VANILLA_TO_MOLDY.put(vanillaLog, log);
+        VANILLA_TO_MOLDY.put(vanillaStrippedLog, strippedLog);
+        VANILLA_TO_MOLDY.put(vanillaPlanks, planks);
+
+        // Register Items
+        registerStageItems(logName, log);
+        registerStageItems("stripped_" + logName, strippedLog);
+        registerStageItems(prefix + "_planks", planks);
+        
+        if (woodName != null) {
+            Block vanillaWood = Registries.BLOCK.get(Identifier.of("minecraft", woodName));
+            Block vanillaStrippedWood = Registries.BLOCK.get(Identifier.of("minecraft", "stripped_" + woodName));
+            Block strippedWood = registerBlock("moldy_stripped_" + woodName, new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaStrippedWood).ticksRandomly(), null));
+            Block wood = registerBlock("moldy_" + woodName, new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaWood).ticksRandomly(), strippedWood));
+            
+            VANILLA_TO_MOLDY.put(vanillaWood, wood);
+            VANILLA_TO_MOLDY.put(vanillaStrippedWood, strippedWood);
+            
+            registerStageItems(woodName, wood);
+            registerStageItems("stripped_" + woodName, strippedWood);
+        }
+    }
+
+    private static Block registerBlock(String name, Block block) {
+        return Registry.register(Registries.BLOCK, SporesShadows.id(name), block);
+    }
+
+    private static void registerStageItems(String baseName, Block baseBlock) {
+        ALL_MOLDY_ITEMS.put("tainted_" + baseName, registerStageItem("tainted_" + baseName, baseBlock, 1));
+        ALL_MOLDY_ITEMS.put("moldy_" + baseName, registerStageItem("moldy_" + baseName, baseBlock, 2));
+        ALL_MOLDY_ITEMS.put("rotten_" + baseName, registerStageItem("rotten_" + baseName, baseBlock, 3));
+    }
 
     private static Item registerStageItem(String name, Block baseBlock, int stage) {
         Item.Settings settings = new Item.Settings().component(
                 DataComponentTypes.BLOCK_STATE,
-                BlockStateComponent.DEFAULT.with(MoldyOakLogBlock.STAGE, stage)
+                BlockStateComponent.DEFAULT.with(MoldyLogBlock.STAGE, stage)
         );
         return Registry.register(Registries.ITEM, SporesShadows.id(name), new BlockItem(baseBlock, settings) {
             @Override
@@ -76,35 +108,10 @@ public class ModBlocks {
             @Override
             public void appendTooltip(ItemStack stack, Item.TooltipContext context, java.util.List<net.minecraft.text.Text> tooltip, net.minecraft.item.tooltip.TooltipType type) {
                 super.appendTooltip(stack, context, tooltip, type);
-                net.minecraft.component.type.BlockStateComponent comp = stack.get(DataComponentTypes.BLOCK_STATE);
-                if (comp != null && comp.getValue(MoldyOakLogBlock.WAXED) == Boolean.TRUE) {
+                BlockStateComponent comp = stack.get(DataComponentTypes.BLOCK_STATE);
+                if (comp != null && comp.getValue(MoldyLogBlock.WAXED) == Boolean.TRUE) {
                     tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.waxed").formatted(net.minecraft.util.Formatting.GOLD));
                 }
-            }
-        });
-    }
-
-    public static void registerModBlocks() {
-        SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
-
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> {
-            Item[] items = {
-                TAINTED_OAK_LOG, MOLDY_OAK_LOG_ITEM, ROTTEN_OAK_LOG,
-                TAINTED_OAK_WOOD, MOLDY_OAK_WOOD_ITEM, ROTTEN_OAK_WOOD,
-                TAINTED_STRIPPED_OAK_LOG, MOLDY_STRIPPED_OAK_LOG_ITEM, ROTTEN_STRIPPED_OAK_LOG,
-                TAINTED_STRIPPED_OAK_WOOD, MOLDY_STRIPPED_OAK_WOOD_ITEM, ROTTEN_STRIPPED_OAK_WOOD,
-                TAINTED_OAK_PLANKS, MOLDY_OAK_PLANKS_ITEM, ROTTEN_OAK_PLANKS
-            };
-            
-            for (Item item : items) {
-                // Unwaxed
-                entries.add(new ItemStack(item));
-                
-                // Waxed
-                ItemStack waxedStack = new ItemStack(item);
-                net.minecraft.component.type.BlockStateComponent defaultComponent = waxedStack.getOrDefault(DataComponentTypes.BLOCK_STATE, net.minecraft.component.type.BlockStateComponent.DEFAULT);
-                waxedStack.set(DataComponentTypes.BLOCK_STATE, defaultComponent.with(MoldyOakLogBlock.WAXED, true));
-                entries.add(waxedStack);
             }
         });
     }

@@ -3,7 +3,9 @@
 	"package": "moldmod.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"ExampleMixin",
+		"StructureStartMixin",
+		"ChunkRegionMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

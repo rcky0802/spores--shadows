@@ -8,6 +8,7 @@ import moldmod.client.datagen.ModEnglishLanguageProvider;
 import moldmod.client.datagen.ModItalianLanguageProvider;
 import moldmod.client.datagen.ModLootTableProvider;
 import moldmod.client.datagen.ModModelProvider;
+import moldmod.client.datagen.ModRecipeProvider;
 
 public class SporesShadowsDataGenerator implements DataGeneratorEntrypoint {
 	@Override
@@ -19,5 +20,6 @@ public class SporesShadowsDataGenerator implements DataGeneratorEntrypoint {
         pack.addProvider(ModModelProvider::new);
         pack.addProvider(ModEnglishLanguageProvider::new);
         pack.addProvider(ModItalianLanguageProvider::new);
+        pack.addProvider(ModRecipeProvider::new);
 	}
 }
