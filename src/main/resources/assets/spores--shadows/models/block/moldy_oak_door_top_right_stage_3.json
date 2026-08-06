@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_top_right",
+  "textures": {
+    "bottom": "spores--shadows:block/moldy_oak_door_bottom_stage_3",
+    "top": "spores--shadows:block/moldy_oak_door_top_stage_3"
+  }
+}

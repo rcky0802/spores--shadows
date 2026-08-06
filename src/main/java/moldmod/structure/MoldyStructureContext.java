@@ -1,6 +1,4 @@
 package moldmod.structure;
-
-import moldmod.block.ModBlocks;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.PillarBlock;
@@ -33,27 +31,31 @@ public class MoldyStructureContext {
         int tainted = 0;
         int rotten = 0;
         
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+        
         // Category 1: Degrado Critico
         if (structureId.contains("shipwreck") || structureId.contains("swamp_hut")) {
-            rotten = 60;
-            tainted = 30;
-            moldy = 10;
+            rotten = config.structures.cat1_critical.rotten_chance;
+            tainted = config.structures.cat1_critical.tainted_chance;
+            moldy = config.structures.cat1_critical.moldy_chance;
         }
         // Category 2: Degrado Alto
         else if (structureId.contains("mineshaft") || structureId.contains("village") && structureId.contains("zombie") || structureId.contains("trail_ruins")) {
-            moldy = 35;
-            tainted = 35;
-            rotten = 20;
+            rotten = config.structures.cat2_high.rotten_chance;
+            tainted = config.structures.cat2_high.tainted_chance;
+            moldy = config.structures.cat2_high.moldy_chance;
         }
         // Category 3: Degrado Moderato
         else if (structureId.contains("pillager_outpost") || structureId.contains("ruined_portal")) {
-            moldy = 35;
-            tainted = 15;
-            rotten = 0;
+            rotten = config.structures.cat3_moderate.rotten_chance;
+            tainted = config.structures.cat3_moderate.tainted_chance;
+            moldy = config.structures.cat3_moderate.moldy_chance;
         }
         // Category 4: Degrado Minimo
         else if (structureId.contains("village") || structureId.contains("mansion")) {
-            moldy = 5; // Base probability very low
+            rotten = config.structures.cat4_low.rotten_chance;
+            tainted = config.structures.cat4_low.tainted_chance;
+            moldy = config.structures.cat4_low.moldy_chance;
         }
 
         // Apply dynamic modifiers based on environment

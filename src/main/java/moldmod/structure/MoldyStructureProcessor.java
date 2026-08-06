@@ -1,21 +1,13 @@
 package moldmod.structure;
-
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import moldmod.SporesShadows;
-import moldmod.block.ModBlocks;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PillarBlock;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Registries;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.structure.processor.StructureProcessor;
 import net.minecraft.structure.processor.StructureProcessorType;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldView;
 import org.jetbrains.annotations.Nullable;
 

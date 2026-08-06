@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "spores--shadows:item/moldy_oak_door_stage_2"
+  }
+}

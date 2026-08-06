@@ -14,25 +14,24 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry", "bamboo"};
+        String[] woods = {"oak"};
 
         for (String wood : woods) {
-            boolean isBamboo = wood.equals("bamboo");
-            String logName = isBamboo ? "bamboo_block" : wood + "_log";
-            String woodName = isBamboo ? null : wood + "_wood";
-            String prefix = isBamboo ? "bamboo" : wood;
+            String logName = wood + "_log";
+            String woodName = wood + "_wood";
+            String prefix = wood;
             
             String capitalizedWood = capitalize(wood.replace("_", " "));
 
-            translationBuilder.add("block.spores--shadows.moldy_" + logName, "Moldy " + capitalizedWood + (isBamboo ? " Block" : " Log"));
-            translationBuilder.add("item.spores--shadows.tainted_" + logName, "Tainted " + capitalizedWood + (isBamboo ? " Block" : " Log"));
-            translationBuilder.add("item.spores--shadows.moldy_" + logName, "Moldy " + capitalizedWood + (isBamboo ? " Block" : " Log"));
-            translationBuilder.add("item.spores--shadows.rotten_" + logName, "Rotten " + capitalizedWood + (isBamboo ? " Block" : " Log"));
+            translationBuilder.add("block.spores--shadows.moldy_" + logName, "Moldy " + capitalizedWood + " Log");
+            translationBuilder.add("item.spores--shadows.tainted_" + logName, "Tainted " + capitalizedWood + " Log");
+            translationBuilder.add("item.spores--shadows.moldy_" + logName, "Moldy " + capitalizedWood + " Log");
+            translationBuilder.add("item.spores--shadows.rotten_" + logName, "Rotten " + capitalizedWood + " Log");
 
-            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, "Moldy Stripped " + capitalizedWood + (isBamboo ? " Block" : " Log"));
-            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, "Tainted Stripped " + capitalizedWood + (isBamboo ? " Block" : " Log"));
-            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, "Moldy Stripped " + capitalizedWood + (isBamboo ? " Block" : " Log"));
-            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, "Rotten Stripped " + capitalizedWood + (isBamboo ? " Block" : " Log"));
+            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, "Moldy Stripped " + capitalizedWood + " Log");
+            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, "Tainted Stripped " + capitalizedWood + " Log");
+            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, "Moldy Stripped " + capitalizedWood + " Log");
+            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, "Rotten Stripped " + capitalizedWood + " Log");
 
             if (woodName != null) {
                 translationBuilder.add("block.spores--shadows.moldy_" + woodName, "Moldy " + capitalizedWood + " Wood");
@@ -50,9 +49,27 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
             translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_planks", "Tainted " + capitalizedWood + " Planks");
             translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_planks", "Moldy " + capitalizedWood + " Planks");
             translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_planks", "Rotten " + capitalizedWood + " Planks");
+            
+            String[] blocks = {"slab", "stairs", "fence", "fence_gate", "door", "trapdoor"};
+            String[] blockNames = {"Slab", "Stairs", "Fence", "Fence Gate", "Door", "Trapdoor"};
+            
+            for (int i = 0; i < blocks.length; i++) {
+                String blockKey = blocks[i];
+                String blockDisplayName = blockNames[i];
+                translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_" + blockKey, "Moldy " + capitalizedWood + " " + blockDisplayName);
+                translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_" + blockKey, "Tainted " + capitalizedWood + " " + blockDisplayName);
+                translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_" + blockKey, "Moldy " + capitalizedWood + " " + blockDisplayName);
+                translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_" + blockKey, "Rotten " + capitalizedWood + " " + blockDisplayName);
+            }
         }
 
         translationBuilder.add("tooltip.spores--shadows.waxed", "Waxed");
+        translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_1", "Can be broken down into clean planks with material loss,");
+        translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_2", "but cannot be used for normal vanilla recipes.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_1", "Only useful for simple crafting (sticks, fences, etc).");
+        translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_2", "Cannot be used in complex recipes at full efficiency.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_1", "Degraded wood component.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_2", "Structurally weakened by mold.");
     }
     
     private String capitalize(String str) {

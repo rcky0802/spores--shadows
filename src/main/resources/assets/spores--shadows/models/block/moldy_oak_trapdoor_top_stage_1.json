@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_orientable_trapdoor_top",
+  "textures": {
+    "texture": "spores--shadows:block/moldy_oak_trapdoor_stage_1"
+  }
+}

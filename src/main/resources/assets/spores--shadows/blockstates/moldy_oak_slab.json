@@ -1,0 +1,292 @@
+{
+  "variants": {
+    "stage=0,structural=false,waxed=false,type=bottom,waterlogged=false": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=false,waxed=false,type=top,waterlogged=false": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=false,waxed=false,type=double,waterlogged=false": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=0,structural=true,waxed=false,type=bottom,waterlogged=false": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=true,waxed=false,type=top,waterlogged=false": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=true,waxed=false,type=double,waterlogged=false": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=0,structural=false,waxed=true,type=bottom,waterlogged=false": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=false,waxed=true,type=top,waterlogged=false": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=false,waxed=true,type=double,waterlogged=false": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=0,structural=true,waxed=true,type=bottom,waterlogged=false": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=true,waxed=true,type=top,waterlogged=false": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=true,waxed=true,type=double,waterlogged=false": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=0,structural=false,waxed=false,type=bottom,waterlogged=true": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=false,waxed=false,type=top,waterlogged=true": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=false,waxed=false,type=double,waterlogged=true": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=0,structural=true,waxed=false,type=bottom,waterlogged=true": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=true,waxed=false,type=top,waterlogged=true": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=true,waxed=false,type=double,waterlogged=true": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=0,structural=false,waxed=true,type=bottom,waterlogged=true": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=false,waxed=true,type=top,waterlogged=true": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=false,waxed=true,type=double,waterlogged=true": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=0,structural=true,waxed=true,type=bottom,waterlogged=true": {
+      "model": "minecraft:block/oak_slab"
+    },
+    "stage=0,structural=true,waxed=true,type=top,waterlogged=true": {
+      "model": "minecraft:block/oak_slab_top"
+    },
+    "stage=0,structural=true,waxed=true,type=double,waterlogged=true": {
+      "model": "minecraft:block/oak_planks"
+    },
+    "stage=1,structural=false,waxed=false,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=false,waxed=false,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=false,waxed=false,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=1,structural=true,waxed=false,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=true,waxed=false,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=true,waxed=false,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=1,structural=false,waxed=true,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=false,waxed=true,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=false,waxed=true,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=1,structural=true,waxed=true,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=true,waxed=true,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=true,waxed=true,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=1,structural=false,waxed=false,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=false,waxed=false,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=false,waxed=false,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=1,structural=true,waxed=false,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=true,waxed=false,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=true,waxed=false,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=1,structural=false,waxed=true,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=false,waxed=true,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=false,waxed=true,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=1,structural=true,waxed=true,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1"
+    },
+    "stage=1,structural=true,waxed=true,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_1_top"
+    },
+    "stage=1,structural=true,waxed=true,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_1"
+    },
+    "stage=2,structural=false,waxed=false,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=false,waxed=false,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=false,waxed=false,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=2,structural=true,waxed=false,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=true,waxed=false,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=true,waxed=false,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=2,structural=false,waxed=true,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=false,waxed=true,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=false,waxed=true,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=2,structural=true,waxed=true,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=true,waxed=true,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=true,waxed=true,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=2,structural=false,waxed=false,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=false,waxed=false,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=false,waxed=false,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=2,structural=true,waxed=false,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=true,waxed=false,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=true,waxed=false,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=2,structural=false,waxed=true,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=false,waxed=true,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=false,waxed=true,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=2,structural=true,waxed=true,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2"
+    },
+    "stage=2,structural=true,waxed=true,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_2_top"
+    },
+    "stage=2,structural=true,waxed=true,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_2"
+    },
+    "stage=3,structural=false,waxed=false,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=false,waxed=false,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=false,waxed=false,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    },
+    "stage=3,structural=true,waxed=false,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=true,waxed=false,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=true,waxed=false,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    },
+    "stage=3,structural=false,waxed=true,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=false,waxed=true,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=false,waxed=true,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    },
+    "stage=3,structural=true,waxed=true,type=bottom,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=true,waxed=true,type=top,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=true,waxed=true,type=double,waterlogged=false": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    },
+    "stage=3,structural=false,waxed=false,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=false,waxed=false,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=false,waxed=false,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    },
+    "stage=3,structural=true,waxed=false,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=true,waxed=false,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=true,waxed=false,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    },
+    "stage=3,structural=false,waxed=true,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=false,waxed=true,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=false,waxed=true,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    },
+    "stage=3,structural=true,waxed=true,type=bottom,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3"
+    },
+    "stage=3,structural=true,waxed=true,type=top,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_slab_stage_3_top"
+    },
+    "stage=3,structural=true,waxed=true,type=double,waterlogged=true": {
+      "model": "spores--shadows:block/moldy_oak_planks_stage_3"
+    }
+  }
+}

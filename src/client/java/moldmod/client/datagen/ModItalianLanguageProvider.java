@@ -16,28 +16,19 @@ public class ModItalianLanguageProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry", "bamboo"};
+        String[] woods = {"oak"};
 
         Map<String, String> names = new HashMap<>();
         names.put("oak", "di Quercia");
-        names.put("spruce", "di Abete");
-        names.put("birch", "di Betulla");
-        names.put("jungle", "della Giungla");
-        names.put("acacia", "di Acacia");
-        names.put("dark_oak", "di Rovere Scuro");
-        names.put("mangrove", "di Mangrovia");
-        names.put("cherry", "di Ciliegio");
-        names.put("bamboo", "di Bambù");
 
         for (String wood : woods) {
-            boolean isBamboo = wood.equals("bamboo");
-            String logName = isBamboo ? "bamboo_block" : wood + "_log";
-            String woodName = isBamboo ? null : wood + "_wood";
-            String prefix = isBamboo ? "bamboo" : wood;
+            String logName = wood + "_log";
+            String woodName = wood + "_wood";
+            String prefix = wood;
             
             String wName = names.get(wood);
 
-            String logType = isBamboo ? "Blocco" : "Tronco";
+            String logType = "Tronco";
             
             translationBuilder.add("block.spores--shadows.moldy_" + logName, logType + " " + wName + " Ammuffito");
             translationBuilder.add("item.spores--shadows.tainted_" + logName, logType + " " + wName + " Intaccato");
@@ -65,8 +56,30 @@ public class ModItalianLanguageProvider extends FabricLanguageProvider {
             translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_planks", "Assi " + wName + " Intaccate");
             translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_planks", "Assi " + wName + " Ammuffite");
             translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_planks", "Assi " + wName + " Marce");
+            
+            String[] blocks = {"slab", "stairs", "fence", "fence_gate", "door", "trapdoor"};
+            String[] blockNames = {"Lastra", "Scale", "Staccionata", "Cancelletto", "Porta", "Botola"};
+            String[] fem = {"Ammuffita", "Ammuffite", "Ammuffita", "Ammuffito", "Ammuffita", "Ammuffita"};
+            String[] femT = {"Intaccata", "Intaccate", "Intaccata", "Intaccato", "Intaccata", "Intaccata"};
+            String[] femR = {"Marcia", "Marce", "Marcia", "Marcio", "Marcia", "Marcia"};
+            
+            for (int i = 0; i < blocks.length; i++) {
+                String blockKey = blocks[i];
+                String bName = blockNames[i];
+                
+                translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_" + blockKey, bName + " " + wName + " " + fem[i]);
+                translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_" + blockKey, bName + " " + wName + " " + femT[i]);
+                translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_" + blockKey, bName + " " + wName + " " + fem[i]);
+                translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_" + blockKey, bName + " " + wName + " " + femR[i]);
+            }
         }
 
         translationBuilder.add("tooltip.spores--shadows.waxed", "Cerato");
+        translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_1", "Può essere trasformato in assi pulite perdendo materiale,");
+        translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_2", "ma non è utilizzabile per le ricette vanilla normali.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_1", "Utile solo per crafting semplici (bastoni, staccionate, ecc).");
+        translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_2", "Non può essere usato in ricette complesse a piena efficienza.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_1", "Componente di legno degradato.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_2", "Strutturalmente indebolito dalla muffa.");
     }
 }

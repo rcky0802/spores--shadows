@@ -2,144 +2,162 @@ package moldmod.block;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Hand;
-import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class MoldyBlockHelper {
 
-    public static boolean hasRandomTicks(BlockState state) {
-        if (state.contains(MoldyLogBlock.STRUCTURAL) && state.get(MoldyLogBlock.STRUCTURAL)) {
-            return false; // Structural blocks do not tick
+    public static boolean canBeInfected(BlockState state) {
+        // Return false if WAXED == true
+        if (state.contains(MoldyLogBlock.WAXED) && state.get(MoldyLogBlock.WAXED)) {
+            return false;
         }
-        return !state.get(MoldyLogBlock.WAXED);
+        
+        // Return false if STRUCTURAL == true. ALL generated structures (villages, shipwrecks, trees) 
+        // behave like waxed blocks: they cannot be infected by neighbors.
+        if (state.contains(MoldyLogBlock.STRUCTURAL) && state.get(MoldyLogBlock.STRUCTURAL)) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    public static boolean hasRandomTicks(BlockState state) {
+        return canBeInfected(state);
     }
 
     public static double calculateR(net.minecraft.world.WorldAccess world, BlockPos pos, boolean isWaxed, BlockState stateToCheck) {
         if (isWaxed) return 0.0;
         
-        float temp = world.getBiome(pos).value().getTemperature();
-        boolean hasPrecipitation = world.getBiome(pos).value().hasPrecipitation();
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
         
-        double baseHum = hasPrecipitation ? 0.8 : (temp > 1.5 ? 0.0 : 0.2);
+        float temp = world.getBiome(pos).value().getTemperature();
+        
+        // Early Exit: If temperature is frozen or desert, return 0.0 immediately
+        double Tmult = (temp > config.environment.min_temperature_survival && temp < config.environment.max_temperature_survival) ? 1.0 : 0.0;
+        if (Tmult == 0.0) return 0.0;
+
+        boolean isRainingAt = false;
+        if (world instanceof net.minecraft.world.World realWorld) {
+            isRainingAt = realWorld.isRaining() && realWorld.isSkyVisible(pos.up());
+        } else {
+            isRainingAt = world.getBiome(pos).value().hasPrecipitation();
+        }
+        
+        double baseHum = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
         
         double depthModifier = 0.0;
         if (pos.getY() < 64) {
-            depthModifier = (64.0 - pos.getY()) / 100.0;
+            // Cap depth modifier
+            depthModifier = Math.min(config.environment.max_depth_modifier, (64.0 - pos.getY()) * config.environment.depth_modifier_per_level);
         }
 
         double localHumidityBonus = 0.0;
         double catalystBonus = 0.0;
 
-        for (BlockPos iterPos : BlockPos.iterate(pos.add(-2, -2, -2), pos.add(2, 2, 2))) {
+        int r = config.general.scan_radius;
+        for (BlockPos iterPos : BlockPos.iterate(pos.add(-r, -r, -r), pos.add(r, r, r))) {
             BlockState nearbyState = world.getBlockState(iterPos);
             
             // Check for water/fluids
             if (!nearbyState.getFluidState().isEmpty()) {
                 if (nearbyState.getFluidState().isOf(net.minecraft.fluid.Fluids.WATER) || nearbyState.getFluidState().isOf(net.minecraft.fluid.Fluids.FLOWING_WATER)) {
-                    localHumidityBonus += 0.15;
+                    localHumidityBonus += config.environment.water_adjacent_bonus;
                 }
             } else if (nearbyState.isOf(Blocks.MUD) || nearbyState.isOf(Blocks.WATER_CAULDRON)) {
-                localHumidityBonus += 0.1;
-                if (nearbyState.isOf(Blocks.MUD)) catalystBonus += 0.05;
+                localHumidityBonus += config.environment.cauldron_adjacent_bonus;
+                if (nearbyState.isOf(Blocks.MUD)) catalystBonus += config.catalysts.mud_bonus;
             } else if (nearbyState.isOf(Blocks.MYCELIUM) || nearbyState.isOf(Blocks.PODZOL)) {
-                catalystBonus += 0.15;
+                catalystBonus += config.catalysts.podzol_mycelium_bonus;
             } else if (nearbyState.isOf(Blocks.BROWN_MUSHROOM) || nearbyState.isOf(Blocks.RED_MUSHROOM) || 
                        nearbyState.isOf(Blocks.BROWN_MUSHROOM_BLOCK) || nearbyState.isOf(Blocks.RED_MUSHROOM_BLOCK) || 
                        nearbyState.isOf(Blocks.MUSHROOM_STEM)) {
-                catalystBonus += 0.25;
+                catalystBonus += config.catalysts.fungi_bonus;
             } else if (nearbyState.isOf(Blocks.SPORE_BLOSSOM)) {
-                catalystBonus += 0.8;
+                catalystBonus += config.catalysts.spore_blossom_bonus;
             }
         }
         
         // Cap local humidity bonus so a pool of water doesn't guarantee 100% moisture but helps significantly
-        localHumidityBonus = Math.min(0.6, localHumidityBonus);
+        localHumidityBonus = Math.min(config.environment.max_local_humidity_bonus, localHumidityBonus);
         
+        // Cap Effective Humidity at 1.0 (100%)
         double Heff = Math.min(1.0, baseHum + depthModifier + localHumidityBonus);
-        double Tmult = (temp > 0.15 && temp < 1.5) ? 1.0 : 0.0;
         
         int light = world.getLightLevel(net.minecraft.world.LightType.BLOCK, pos);
         double Luv = Math.max(0.0, 1.0 - (light / 15.0));
         
-        double Smat = 1.0;
+        double Smat = config.susceptibility.default_multiplier;
         if (stateToCheck != null) {
             String name = net.minecraft.registry.Registries.BLOCK.getId(stateToCheck.getBlock()).getPath();
-            if (name.contains("stripped")) Smat = 1.4;
-            else if (name.contains("planks")) Smat = 0.8;
-            else Smat = 1.0;
+            if (name.contains("stripped")) Smat = config.susceptibility.stripped_wood_multiplier;
+            else if (name.contains("planks")) Smat = config.susceptibility.planks_multiplier;
         }
         
-        return (Heff * Tmult * Luv) * Smat + catalystBonus;
+        // Make Temperature a global multiplier gate
+        return ((Heff * Luv * Smat) + catalystBonus) * Tmult;
+    }
+
+    public static void setStage(World world, BlockPos pos, BlockState state, int newStage) {
+        world.setBlockState(pos, state.with(MoldyLogBlock.STAGE, newStage));
+        syncDoorHalf(world, pos, state, MoldyLogBlock.STAGE, newStage);
+    }
+    
+    public static void setWaxed(World world, BlockPos pos, BlockState state, boolean isWaxed) {
+        world.setBlockState(pos, state.with(MoldyLogBlock.WAXED, isWaxed));
+        syncDoorHalf(world, pos, state, MoldyLogBlock.WAXED, isWaxed);
+    }
+    
+    private static <T extends Comparable<T>> void syncDoorHalf(World world, BlockPos pos, BlockState state, net.minecraft.state.property.Property<T> property, T value) {
+        if (state.getBlock() instanceof net.minecraft.block.DoorBlock) {
+            net.minecraft.block.enums.DoubleBlockHalf half = state.get(net.minecraft.block.DoorBlock.HALF);
+            BlockPos otherPos = half == net.minecraft.block.enums.DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+            BlockState otherState = world.getBlockState(otherPos);
+            if (otherState.isOf(state.getBlock()) && otherState.get(net.minecraft.block.DoorBlock.HALF) != half) {
+                world.setBlockState(otherPos, otherState.with(property, value));
+            }
+        }
     }
 
     public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random, net.minecraft.block.Block block) {
         moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
-        if (!config.enableMoldSpread) return;
+        if (!config.general.enable_mold_growth) return;
         
         if (state.get(MoldyLogBlock.WAXED)) return;
-
-        double R = calculateR(world, pos, state.get(MoldyLogBlock.WAXED), state) * config.globalMoldRiskMultiplier;
         
-        if (config.showDebugInChat) {
+        // Structural blocks (generated by world) do not progress their own stage and never spread.
+        if (state.contains(MoldyLogBlock.STRUCTURAL) && state.get(MoldyLogBlock.STRUCTURAL)) return;
+
+        double R = calculateR(world, pos, state.get(MoldyLogBlock.WAXED), state);
+        
+        if (config.general.show_debug_in_chat) {
             System.out.println("Mold tick at " + pos + ", R = " + R);
         }
         
-        if (R > 0.65) {
+        if (R > config.general.infection_threshold) {
             int currentStage = state.get(MoldyLogBlock.STAGE);
             if (currentStage < 3) {
-                world.setBlockState(pos, state.with(MoldyLogBlock.STAGE, currentStage + 1));
+                setStage(world, pos, state, currentStage + 1);
             }
-        }
-        
-        // Try to infect neighbors
-        BlockPos neighborPos = pos.add(random.nextInt(3) - 1, random.nextInt(3) - 1, random.nextInt(3) - 1);
-        BlockState neighborState = world.getBlockState(neighborPos);
-        
-        // We only infect if it's the SAME type of block (Log infects Log, Planks infect Planks)
-        if (neighborState.isOf(block) && !neighborState.get(MoldyLogBlock.WAXED) && neighborState.get(MoldyLogBlock.STAGE) < 3) {
-            if (calculateR(world, neighborPos, false, neighborState) * config.globalMoldRiskMultiplier > 0.65) {
-                world.setBlockState(neighborPos, neighborState.with(MoldyLogBlock.STAGE, neighborState.get(MoldyLogBlock.STAGE) + 1));
-            }
-        }
-    }
-
-    public static ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, net.minecraft.block.Block strippedStateBlock) {
-        if (stack.getItem() instanceof net.minecraft.item.AxeItem) {
-            if (state.get(MoldyLogBlock.WAXED)) {
-                world.setBlockState(pos, state.with(MoldyLogBlock.WAXED, false));
-                world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_WAX_OFF, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
-                stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
-                return ItemActionResult.SUCCESS;
-            } else if (state.get(MoldyLogBlock.STAGE) == 1) {
-                world.setBlockState(pos, state.with(MoldyLogBlock.STAGE, 0));
-                world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_SCRAPE, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
-                stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
-                return ItemActionResult.SUCCESS;
-            } else if (state.get(MoldyLogBlock.STAGE) == 0 && strippedStateBlock != null) {
-                BlockState stripped = strippedStateBlock.getDefaultState();
-                if (state.contains(net.minecraft.state.property.Properties.AXIS)) {
-                    stripped = stripped.with(net.minecraft.state.property.Properties.AXIS, state.get(net.minecraft.state.property.Properties.AXIS));
+            
+            // Separation of Spread: use spread chance from config
+            if (random.nextFloat() < config.general.spread_chance) {
+                int r = config.general.scan_radius;
+                BlockPos neighborPos = pos.add(random.nextInt(r*2 + 1) - r, random.nextInt(r*2 + 1) - r, random.nextInt(r*2 + 1) - r);
+                BlockState neighborState = world.getBlockState(neighborPos);
+                
+                // Allow spreading to ANY valid moldable block
+                if (neighborState.contains(MoldyLogBlock.STAGE) && neighborState.get(MoldyLogBlock.STAGE) < 3) {
+                    // canBeInfected already checks for WAXED and STRUCTURAL (which are immune to infection)
+                    if (canBeInfected(neighborState)) {
+                        if (calculateR(world, neighborPos, false, neighborState) > config.general.infection_threshold) {
+                            setStage(world, neighborPos, neighborState, neighborState.get(MoldyLogBlock.STAGE) + 1);
+                        }
+                    }
                 }
-                world.setBlockState(pos, stripped);
-                world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_STRIP, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
-                stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
-                return ItemActionResult.SUCCESS;
-            }
-        } else if (stack.isOf(Items.HONEYCOMB)) {
-            if (!state.get(MoldyLogBlock.WAXED)) {
-                world.setBlockState(pos, state.with(MoldyLogBlock.WAXED, true));
-                world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_HONEYCOMB_WAX_ON, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
-                stack.decrement(1);
-                return ItemActionResult.SUCCESS;
             }
         }
-        return ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 }

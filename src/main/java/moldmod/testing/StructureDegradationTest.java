@@ -22,7 +22,6 @@ public class StructureDegradationTest {
             int moldy = 0;
             int tainted = 0;
             int rotten = 0;
-            int healthy = 0;
 
             for (int x = 0; x < 10; x++) {
                 for (int z = 0; z < 10; z++) {
@@ -34,8 +33,7 @@ public class StructureDegradationTest {
                             (StructureWorldAccess) context.getWorld()
                     );
                     
-                    if (result.isOf(Blocks.OAK_LOG)) healthy++;
-                    else if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG))) {
+                    if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG))) {
                         int stage = result.get(MoldyLogBlock.STAGE);
                         if (stage == 0) moldy++;
                         else if (stage == 1) tainted++;

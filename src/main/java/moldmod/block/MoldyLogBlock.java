@@ -65,10 +65,20 @@ public class MoldyLogBlock extends PillarBlock {
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        ItemActionResult result = MoldyBlockHelper.onUseWithItem(stack, state, world, pos, player, hand, strippedBlock);
-        if (result != ItemActionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION) {
-            return result;
+        if (stack.getItem() instanceof net.minecraft.item.AxeItem && state.get(STAGE) == 0 && strippedBlock != null) {
+            BlockState stripped = strippedBlock.getDefaultState();
+            if (state.contains(AXIS)) {
+                stripped = stripped.with(AXIS, state.get(AXIS));
+            }
+            if (state.contains(STRUCTURAL)) {
+                stripped = stripped.with(STRUCTURAL, state.get(STRUCTURAL));
+            }
+            world.setBlockState(pos, stripped);
+            world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_STRIP, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+            stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
+            return ItemActionResult.SUCCESS;
         }
         return super.onUseWithItem(stack, state, world, pos, player, hand, hit);
     }
 }
+

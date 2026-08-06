@@ -17,13 +17,12 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        String[] woods = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry", "bamboo"};
+        String[] woods = {"oak"};
 
         for (String wood : woods) {
-            boolean isBamboo = wood.equals("bamboo");
-            String logName = isBamboo ? "bamboo_block" : wood + "_log";
-            String woodName = isBamboo ? null : wood + "_wood";
-            String prefix = isBamboo ? "bamboo" : wood;
+            String logName = wood + "_log";
+            String woodName = wood + "_wood";
+            String prefix = wood;
 
             Block vanillaLog = Registries.BLOCK.get(net.minecraft.util.Identifier.of("minecraft", logName));
             Block vanillaStrippedLog = Registries.BLOCK.get(net.minecraft.util.Identifier.of("minecraft", "stripped_" + logName));
@@ -69,22 +68,44 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
                 Registries.ITEM.get(SporesShadows.id("moldy_" + prefix + "_planks")), 
                 Registries.ITEM.get(SporesShadows.id("rotten_" + prefix + "_planks")), 
                 vanillaPlanks);
+
+            String[] suffixes = {"_stairs", "_slab", "_fence", "_fence_gate", "_door", "_trapdoor"};
+            for (String suffix : suffixes) {
+                Block vanillaPart = Registries.BLOCK.get(net.minecraft.util.Identifier.of("minecraft", prefix + suffix));
+                Block partBlock = Registries.BLOCK.get(SporesShadows.id("moldy_" + prefix + suffix));
+                if (partBlock != net.minecraft.block.Blocks.AIR) {
+                    generateMoldyLoot(partBlock, 
+                        Registries.ITEM.get(SporesShadows.id("tainted_" + prefix + suffix)), 
+                        Registries.ITEM.get(SporesShadows.id("moldy_" + prefix + suffix)), 
+                        Registries.ITEM.get(SporesShadows.id("rotten_" + prefix + suffix)), 
+                        vanillaPart);
+                }
+            }
         }
     }
     
     private void generateMoldyLoot(Block baseBlock, net.minecraft.item.Item stage1, net.minecraft.item.Item stage2, net.minecraft.item.Item stage3, Block vanillaBlock) {
+        net.minecraft.loot.condition.LootCondition.Builder isWaxed = net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock)
+            .properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.WAXED, true));
+            
         addDrop(baseBlock, (block) -> net.minecraft.loot.LootTable.builder()
             .pool(net.minecraft.loot.LootPool.builder()
                 .rolls(net.minecraft.loot.provider.number.ConstantLootNumberProvider.create(1.0F))
                 .with(net.minecraft.loot.entry.AlternativeEntry.builder(
                     net.minecraft.loot.entry.ItemEntry.builder(stage3)
                         .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 3)))
-                        .conditionally(this.createSilkTouchCondition()),
+                        .conditionally(
+                            net.minecraft.loot.condition.AnyOfLootCondition.builder(
+                                this.createSilkTouchCondition(),
+                                isWaxed
+                            )
+                        ),
                     net.minecraft.loot.entry.ItemEntry.builder(stage2)
                         .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 2)))
                         .conditionally(
                             net.minecraft.loot.condition.AnyOfLootCondition.builder(
                                 this.createSilkTouchCondition(),
+                                isWaxed,
                                 net.minecraft.loot.condition.RandomChanceLootCondition.builder(0.5F)
                             )
                         ),

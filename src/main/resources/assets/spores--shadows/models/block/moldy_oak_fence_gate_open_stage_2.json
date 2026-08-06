@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fence_gate_open",
+  "textures": {
+    "texture": "spores--shadows:block/moldy_oak_planks_stage_2"
+  }
+}

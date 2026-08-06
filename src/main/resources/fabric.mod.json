@@ -25,7 +25,10 @@
 			"moldmod.client.SporesShadowsDataGenerator"
 		],
 		"fabric-gametest": [
-			"moldmod.test.SporesShadowsTests"
+			"moldmod.test.SporesShadowsTests",
+			"moldmod.test.MoldyInfectionRuleTests",
+			"moldmod.test.MoldyMiningAndLootTests",
+			"moldmod.test.MoldyCraftingAndFuelTests"
 		],
 
 		"modmenu": [
@@ -43,6 +46,6 @@
 		"fabricloader": ">=0.19.3",
 		"minecraft": "~1.21.1",
 		"java": ">=21",
-		"fabric-api": "*"
+		"fabric": "*"
 	}
 }
