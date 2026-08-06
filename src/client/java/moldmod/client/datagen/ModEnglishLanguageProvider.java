@@ -14,7 +14,7 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = {"oak"};
+        String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
             String logName = wood + "_log";

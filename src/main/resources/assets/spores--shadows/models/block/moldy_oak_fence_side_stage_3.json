@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/fence_side",
   "textures": {
-    "texture": "spores--shadows:block/moldy_oak_planks_stage_3"
+    "texture": "minecraft:block/oak_planks"
   }
 }

@@ -1,7 +1,8 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "spores--shadows:block/moldy_cube_column",
   "textures": {
-    "end": "spores--shadows:block/moldy_oak_log_stage_1",
-    "side": "spores--shadows:block/moldy_oak_log_stage_1"
+    "end": "minecraft:block/oak_log",
+    "overlay": "spores--shadows:block/mold_stage_1",
+    "side": "minecraft:block/oak_log"
   }
 }

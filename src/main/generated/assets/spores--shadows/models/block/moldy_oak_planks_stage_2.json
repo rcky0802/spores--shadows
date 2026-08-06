@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "spores--shadows:block/moldy_cube_all",
   "textures": {
-    "all": "spores--shadows:block/moldy_oak_planks_stage_2"
+    "all": "minecraft:block/oak_planks",
+    "overlay": "spores--shadows:block/mold_stage_2"
   }
 }

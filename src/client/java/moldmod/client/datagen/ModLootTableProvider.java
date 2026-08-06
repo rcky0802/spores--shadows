@@ -17,7 +17,7 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        String[] woods = {"oak"};
+        String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
             String logName = wood + "_log";

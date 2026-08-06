@@ -1,8 +1,8 @@
 {
   "parent": "minecraft:block/slab_top",
   "textures": {
-    "bottom": "spores--shadows:block/moldy_oak_planks_stage_2",
-    "top": "spores--shadows:block/moldy_oak_planks_stage_2",
-    "side": "spores--shadows:block/moldy_oak_planks_stage_2"
+    "bottom": "minecraft:block/oak_planks",
+    "top": "minecraft:block/oak_planks",
+    "side": "minecraft:block/oak_planks"
   }
 }

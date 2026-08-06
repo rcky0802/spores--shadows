@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/door_bottom_left",
   "textures": {
-    "bottom": "spores--shadows:block/moldy_oak_door_bottom_stage_2",
-    "top": "spores--shadows:block/moldy_oak_door_top_stage_2"
+    "bottom": "minecraft:block/oak_door_bottom",
+    "top": "minecraft:block/oak_door_top"
   }
 }

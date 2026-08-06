@@ -16,7 +16,11 @@ public class ModFuelRegistry {
         // Door = 200
         // Trapdoor = 300
 
-        registerForSet("oak", "oak_log", "oak_wood");
+        for (String wood : moldmod.SporesShadows.WOODS) {
+            String logName = wood + "_log";
+            String woodName = wood + "_wood";
+            registerForSet(wood, logName, woodName);
+        }
     }
 
     private static void registerForSet(String prefix, String logName, String woodName) {

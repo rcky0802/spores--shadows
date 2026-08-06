@@ -1,0 +1,16 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "spores--shadows:block/mold_stage_1"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:block/mold_stage_2"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:block/mold_stage_3"
+    }
+  ]
+}

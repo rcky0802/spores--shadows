@@ -8,7 +8,7 @@ import net.minecraft.registry.Registries;
 public class ModComposterRegistry {
 
     public static void register() {
-        String[] woods = {"oak"};
+        String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
             String logName = wood + "_log";
@@ -38,13 +38,13 @@ public class ModComposterRegistry {
         Item rotten = Registries.ITEM.get(SporesShadows.id("rotten_" + baseName));
 
         if (tainted != net.minecraft.item.Items.AIR) {
-            ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.put(tainted, 0.50f);
+            net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(tainted, 0.50f);
         }
         if (moldy != net.minecraft.item.Items.AIR) {
-            ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.put(moldy, 0.65f);
+            net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(moldy, 0.65f);
         }
         if (rotten != net.minecraft.item.Items.AIR) {
-            ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.put(rotten, 0.85f);
+            net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(rotten, 0.85f);
         }
     }
 }

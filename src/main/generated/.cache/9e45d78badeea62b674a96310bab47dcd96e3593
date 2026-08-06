@@ -1,15 +1,15 @@
-// 1.21.1	2026-08-06T13:05:36.8911362	Spores & Shadows/Tags for minecraft:block
-92e33cb5ce59619e54460f00ba5c469dbc3a9128 data\minecraft\tags\block\wooden_trapdoors.json
+// 1.21.1	2026-08-06T20:11:18.5867584	Spores & Shadows/Tags for minecraft:block
 4fb90f709b5d716ea66b7d3d1f258410083ee095 data\minecraft\tags\block\doors.json
 fa91625dd0946087c5f0f2a99e245e98fe79e8f2 data\minecraft\tags\block\slabs.json
+c35fbd64a88004913b088e8d3597788da336e263 data\minecraft\tags\block\mineable\axe.json
+4fb90f709b5d716ea66b7d3d1f258410083ee095 data\minecraft\tags\block\wooden_doors.json
+fa91625dd0946087c5f0f2a99e245e98fe79e8f2 data\minecraft\tags\block\wooden_slabs.json
+92e33cb5ce59619e54460f00ba5c469dbc3a9128 data\minecraft\tags\block\wooden_trapdoors.json
 3f14ea5cc31f43d018dc534447a13a5ee8244e71 data\minecraft\tags\block\logs_that_burn.json
 5cc7747ad29e2c0fa2ee97188219ccc0a7407f7b data\minecraft\tags\block\fence_gates.json
-3f14ea5cc31f43d018dc534447a13a5ee8244e71 data\minecraft\tags\block\logs.json
-92e33cb5ce59619e54460f00ba5c469dbc3a9128 data\minecraft\tags\block\trapdoors.json
-12a5050cd3b627d620d61c245026dd1447110ac5 data\minecraft\tags\block\fences.json
 a1c8f5a488bce4f840d514097fa160928343e17f data\minecraft\tags\block\stairs.json
+92e33cb5ce59619e54460f00ba5c469dbc3a9128 data\minecraft\tags\block\trapdoors.json
+3f14ea5cc31f43d018dc534447a13a5ee8244e71 data\minecraft\tags\block\logs.json
 a1c8f5a488bce4f840d514097fa160928343e17f data\minecraft\tags\block\wooden_stairs.json
+12a5050cd3b627d620d61c245026dd1447110ac5 data\minecraft\tags\block\fences.json
 12a5050cd3b627d620d61c245026dd1447110ac5 data\minecraft\tags\block\wooden_fences.json
-fa91625dd0946087c5f0f2a99e245e98fe79e8f2 data\minecraft\tags\block\wooden_slabs.json
-4fb90f709b5d716ea66b7d3d1f258410083ee095 data\minecraft\tags\block\wooden_doors.json
-c35fbd64a88004913b088e8d3597788da336e263 data\minecraft\tags\block\mineable\axe.json

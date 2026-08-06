@@ -28,7 +28,7 @@ public class ModBlocks {
     public static void registerModBlocks() {
         SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 
-        String[] woods = {"oak"};
+        String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
             registerWoodSet(wood, wood + "_log", wood + "_wood");

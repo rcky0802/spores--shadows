@@ -30,7 +30,7 @@ public class ModModelProvider extends FabricModelProvider {
 
 
 
-        String[] woods = {"oak"};
+        String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
             String logName = wood + "_log";
@@ -76,14 +76,14 @@ public class ModModelProvider extends FabricModelProvider {
             }
 
             // Planks
-            TextureMap map1 = new TextureMap().put(TextureKey.ALL, SporesShadows.id("block/moldy_" + prefix + "_planks_stage_1"));
-            Identifier planks1 = net.minecraft.data.client.Models.CUBE_ALL.upload(planks, "_stage_1", map1, generator.modelCollector);
+            TextureMap map1 = new TextureMap().put(TextureKey.ALL, Identifier.of("minecraft", "block/" + prefix + "_planks")).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_1"));
+            Identifier planks1 = new net.minecraft.data.client.Model(java.util.Optional.of(Identifier.of("spores--shadows", "block/moldy_cube_all")), java.util.Optional.empty(), TextureKey.ALL, OVERLAY_KEY).upload(planks, "_stage_1", map1, generator.modelCollector);
 
-            TextureMap map2 = new TextureMap().put(TextureKey.ALL, SporesShadows.id("block/moldy_" + prefix + "_planks_stage_2"));
-            Identifier planks2 = net.minecraft.data.client.Models.CUBE_ALL.upload(planks, "_stage_2", map2, generator.modelCollector);
+            TextureMap map2 = new TextureMap().put(TextureKey.ALL, Identifier.of("minecraft", "block/" + prefix + "_planks")).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_2"));
+            Identifier planks2 = new net.minecraft.data.client.Model(java.util.Optional.of(Identifier.of("spores--shadows", "block/moldy_cube_all")), java.util.Optional.empty(), TextureKey.ALL, OVERLAY_KEY).upload(planks, "_stage_2", map2, generator.modelCollector);
 
-            TextureMap map3 = new TextureMap().put(TextureKey.ALL, SporesShadows.id("block/moldy_" + prefix + "_planks_stage_3"));
-            Identifier planks3 = net.minecraft.data.client.Models.CUBE_ALL.upload(planks, "_stage_3", map3, generator.modelCollector);
+            TextureMap map3 = new TextureMap().put(TextureKey.ALL, Identifier.of("minecraft", "block/" + prefix + "_planks")).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_3"));
+            Identifier planks3 = new net.minecraft.data.client.Model(java.util.Optional.of(Identifier.of("spores--shadows", "block/moldy_cube_all")), java.util.Optional.empty(), TextureKey.ALL, OVERLAY_KEY).upload(planks, "_stage_3", map3, generator.modelCollector);
 
             generator.blockStateCollector.accept(
                 VariantsBlockStateSupplier.create(planks)
@@ -109,23 +109,28 @@ public class ModModelProvider extends FabricModelProvider {
         }
     }
 
+    private static final TextureKey OVERLAY_KEY = TextureKey.of("overlay");
+
     private void generatePillarModels(BlockStateModelGenerator generator, net.minecraft.block.Block block, net.minecraft.item.Item t1, net.minecraft.item.Item t2, net.minecraft.item.Item t3, String vanillaSide, String vanillaTop, String textureBaseName, boolean hasUniqueTop) {
         String topSuffix = hasUniqueTop ? "_top" : "";
 
-        TextureMap map1 = new TextureMap().put(TextureKey.SIDE, SporesShadows.id("block/moldy_" + textureBaseName + "_stage_1")).put(TextureKey.END, SporesShadows.id("block/moldy_" + textureBaseName + topSuffix + "_stage_1"));
-        Identifier m1 = net.minecraft.data.client.Models.CUBE_COLUMN.upload(block, "_stage_1", map1, generator.modelCollector);
-        TextureMap map1h = new TextureMap().put(TextureKey.SIDE, SporesShadows.id("block/moldy_" + textureBaseName + "_stage_1")).put(TextureKey.END, SporesShadows.id("block/moldy_" + textureBaseName + topSuffix + "_stage_1"));
-        Identifier m1h = net.minecraft.data.client.Models.CUBE_COLUMN_HORIZONTAL.upload(block, "_stage_1", map1h, generator.modelCollector);
+        net.minecraft.data.client.Model colModel = new net.minecraft.data.client.Model(java.util.Optional.of(Identifier.of("spores--shadows", "block/moldy_cube_column")), java.util.Optional.empty(), TextureKey.SIDE, TextureKey.END, OVERLAY_KEY);
+        net.minecraft.data.client.Model colModelH = new net.minecraft.data.client.Model(java.util.Optional.of(Identifier.of("spores--shadows", "block/moldy_cube_column_horizontal")), java.util.Optional.empty(), TextureKey.SIDE, TextureKey.END, OVERLAY_KEY);
 
-        TextureMap map2 = new TextureMap().put(TextureKey.SIDE, SporesShadows.id("block/moldy_" + textureBaseName + "_stage_2")).put(TextureKey.END, SporesShadows.id("block/moldy_" + textureBaseName + topSuffix + "_stage_2"));
-        Identifier m2 = net.minecraft.data.client.Models.CUBE_COLUMN.upload(block, "_stage_2", map2, generator.modelCollector);
-        TextureMap map2h = new TextureMap().put(TextureKey.SIDE, SporesShadows.id("block/moldy_" + textureBaseName + "_stage_2")).put(TextureKey.END, SporesShadows.id("block/moldy_" + textureBaseName + topSuffix + "_stage_2"));
-        Identifier m2h = net.minecraft.data.client.Models.CUBE_COLUMN_HORIZONTAL.upload(block, "_stage_2", map2h, generator.modelCollector);
+        TextureMap map1 = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_1"));
+        Identifier m1 = colModel.upload(block, "_stage_1", map1, generator.modelCollector);
+        TextureMap map1h = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_1"));
+        Identifier m1h = colModelH.upload(block, "_horizontal_stage_1", map1h, generator.modelCollector);
 
-        TextureMap map3 = new TextureMap().put(TextureKey.SIDE, SporesShadows.id("block/moldy_" + textureBaseName + "_stage_3")).put(TextureKey.END, SporesShadows.id("block/moldy_" + textureBaseName + topSuffix + "_stage_3"));
-        Identifier m3 = net.minecraft.data.client.Models.CUBE_COLUMN.upload(block, "_stage_3", map3, generator.modelCollector);
-        TextureMap map3h = new TextureMap().put(TextureKey.SIDE, SporesShadows.id("block/moldy_" + textureBaseName + "_stage_3")).put(TextureKey.END, SporesShadows.id("block/moldy_" + textureBaseName + topSuffix + "_stage_3"));
-        Identifier m3h = net.minecraft.data.client.Models.CUBE_COLUMN_HORIZONTAL.upload(block, "_stage_3", map3h, generator.modelCollector);
+        TextureMap map2 = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_2"));
+        Identifier m2 = colModel.upload(block, "_stage_2", map2, generator.modelCollector);
+        TextureMap map2h = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_2"));
+        Identifier m2h = colModelH.upload(block, "_horizontal_stage_2", map2h, generator.modelCollector);
+
+        TextureMap map3 = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_3"));
+        Identifier m3 = colModel.upload(block, "_stage_3", map3, generator.modelCollector);
+        TextureMap map3h = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_3"));
+        Identifier m3h = colModelH.upload(block, "_horizontal_stage_3", map3h, generator.modelCollector);
 
         Identifier vanillaModel = Identifier.of("minecraft", "block/" + vanillaSide);
         Identifier vanillaModelH = Identifier.of("minecraft", "block/" + vanillaSide);

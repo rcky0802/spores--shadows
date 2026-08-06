@@ -16,10 +16,11 @@ public class ModItalianLanguageProvider extends FabricLanguageProvider {
 
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = {"oak"};
+        String[] woods = moldmod.SporesShadows.WOODS;
 
         Map<String, String> names = new HashMap<>();
         names.put("oak", "di Quercia");
+        names.put("spruce", "di Abete");
 
         for (String wood : woods) {
             String logName = wood + "_log";
