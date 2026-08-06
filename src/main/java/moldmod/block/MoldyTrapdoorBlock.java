@@ -1,6 +1,6 @@
 package moldmod.block;
 
-import net.minecraft.block.DoorBlock;
+import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.block.BlockSetType;
 
-public class MoldyTrapdoorBlock extends DoorBlock {
+public class MoldyTrapdoorBlock extends TrapdoorBlock {
 
     @SuppressWarnings("this-escape")
     public MoldyTrapdoorBlock(BlockSetType type, Settings settings) {

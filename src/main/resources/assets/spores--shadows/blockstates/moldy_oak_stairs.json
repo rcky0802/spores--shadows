@@ -49,193 +49,193 @@
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
@@ -289,193 +289,193 @@
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=north,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
@@ -529,193 +529,193 @@
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
@@ -769,193 +769,193 @@
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
     },
     "facing=east,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 0,
       "uvlock": true
@@ -1009,193 +1009,193 @@
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
@@ -1249,193 +1249,193 @@
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
     },
     "facing=south,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 90,
       "uvlock": true
@@ -1489,193 +1489,193 @@
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=bottom,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 0,
       "y": 270,
       "uvlock": true
@@ -1729,193 +1729,193 @@
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=inner_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_inner_stairs",
+      "model": "minecraft:block/oak_stairs_inner",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_left,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 270,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=false": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=false,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=true,waxed=false,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=false,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
     },
     "facing=west,half=top,shape=outer_right,stage=0,structural=true,waxed=true,waterlogged=true": {
-      "model": "minecraft:block/oak_outer_stairs",
+      "model": "minecraft:block/oak_stairs_outer",
       "x": 180,
       "y": 180,
       "uvlock": true
