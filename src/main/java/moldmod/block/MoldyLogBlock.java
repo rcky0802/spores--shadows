@@ -65,16 +65,26 @@ public class MoldyLogBlock extends PillarBlock {
 
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (stack.getItem() instanceof net.minecraft.item.AxeItem && state.get(STAGE) == 0 && strippedBlock != null) {
+        // If the player right-clicks with an Axe (without sneaking, since sneaking is caught by UseBlockCallback),
+        // we strip the log. We preserve the STAGE and WAXED, but set STRUCTURAL to false!
+        if (stack.getItem() instanceof net.minecraft.item.AxeItem && strippedBlock != null) {
             BlockState stripped = strippedBlock.getDefaultState();
             if (state.contains(AXIS)) {
                 stripped = stripped.with(AXIS, state.get(AXIS));
             }
-            if (state.contains(STRUCTURAL)) {
-                stripped = stripped.with(STRUCTURAL, state.get(STRUCTURAL));
+            if (state.contains(STAGE)) {
+                stripped = stripped.with(STAGE, state.get(STAGE));
             }
+            if (state.contains(WAXED)) {
+                stripped = stripped.with(WAXED, state.get(WAXED));
+            }
+            // Ensure structural is always false after player interaction
+            if (state.contains(STRUCTURAL)) {
+                stripped = stripped.with(STRUCTURAL, false);
+            }
+            
             world.setBlockState(pos, stripped);
-            world.playSound(null, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_STRIP, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+            world.playSound(player, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_STRIP, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
             stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
             return ItemActionResult.SUCCESS;
         }

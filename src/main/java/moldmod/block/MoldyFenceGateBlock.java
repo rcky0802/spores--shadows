@@ -47,5 +47,19 @@ public class MoldyFenceGateBlock extends FenceGateBlock {
         }
         return super.calcBlockBreakingDelta(state, player, world, pos);
     }
-}
 
+    @Override
+    protected net.minecraft.util.ActionResult onUse(BlockState state, net.minecraft.world.World world, BlockPos pos, PlayerEntity player, net.minecraft.util.hit.BlockHitResult hit) {
+        if (!world.isClient) {
+            int stage = state.get(MoldyLogBlock.STAGE);
+            if (stage == 3) {
+                if (world.random.nextFloat() < 0.10f) {
+                    world.breakBlock(pos, false);
+                    world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_WOOD_BREAK, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 0.8f);
+                    return net.minecraft.util.ActionResult.SUCCESS;
+                }
+            }
+        }
+        return super.onUse(state, world, pos, player, hit);
+    }
+}

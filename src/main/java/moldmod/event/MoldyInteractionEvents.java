@@ -79,7 +79,11 @@ public class MoldyInteractionEvents {
                         }
                         return ActionResult.SUCCESS;
                     }
-                    // If stage == 3, the axe has no effect. Let it pass to default behavior.
+                    // If stage == 3, the axe has no effect (incurable). 
+                    // We return SUCCESS to consume the interaction without stripping or damaging the axe!
+                    if (stage == 3) {
+                        return ActionResult.SUCCESS;
+                    }
                 }
             }
 

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "spores--shadows:moldy_oak_log",
+    "spores--shadows:moldy_stripped_oak_log",
+    "spores--shadows:moldy_oak_wood",
+    "spores--shadows:moldy_stripped_oak_wood"
+  ]
+}

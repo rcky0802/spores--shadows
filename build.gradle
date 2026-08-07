@@ -9,6 +9,7 @@ group = project.maven_group
 repositories {
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/" } // For ModMenu if needed
+	maven { url "https://maven.nucleoid.xyz/" } // For Polymer
 }
 
 loom {
@@ -55,6 +56,14 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:11.0.1") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+
+	// Polymer for Virtual Resource Packs
+	modImplementation "eu.pb4:polymer-core:0.9.19+1.21.1"
+	modImplementation "eu.pb4:polymer-resource-pack:0.9.19+1.21.1"
+}
+
+tasks.withType(AbstractCopyTask).configureEach {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 processResources {

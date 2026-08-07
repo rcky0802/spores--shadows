@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "spores--shadows:waxed_oak_log",
+    "spores--shadows:waxed_stripped_oak_log",
+    "spores--shadows:waxed_oak_wood",
+    "spores--shadows:waxed_stripped_oak_wood"
+  ]
+}

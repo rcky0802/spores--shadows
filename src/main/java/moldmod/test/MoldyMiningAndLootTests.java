@@ -90,7 +90,7 @@ public class MoldyMiningAndLootTests {
 
         if (!drops.get(0).getComponents().contains(net.minecraft.component.DataComponentTypes.BLOCK_STATE) || 
             !drops.get(0).getComponents().get(net.minecraft.component.DataComponentTypes.BLOCK_STATE).properties().containsKey("waxed")) {
-            // It might drop the item, but we must ensure WAXED property is carried over (Datagen handles this)
+            context.throwPositionedException("The dropped item did NOT preserve the WAXED property!", pos);
         }
         
         context.complete();

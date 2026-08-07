@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "spores--shadows:moldy_oak_log",
+    "spores--shadows:moldy_stripped_oak_log",
+    "spores--shadows:moldy_oak_wood",
+    "spores--shadows:moldy_stripped_oak_wood",
+    "spores--shadows:moldy_oak_planks",
+    "spores--shadows:moldy_oak_stairs",
+    "spores--shadows:moldy_oak_slab",
+    "spores--shadows:moldy_oak_fence",
+    "spores--shadows:moldy_oak_fence_gate",
+    "spores--shadows:moldy_oak_door",
+    "spores--shadows:moldy_oak_trapdoor"
+  ]
+}

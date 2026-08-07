@@ -8,50 +8,49 @@ import net.minecraft.registry.Registries;
 public class ModFuelRegistry {
 
     public static void register() {
-        // Ticks base values: 
-        // Log, Wood, Stripped variants = 300
-        // Planks, Stairs = 300
-        // Slabs = 150
-        // Fence, Gate = 300
-        // Door = 200
-        // Trapdoor = 300
+        String[] woods = moldmod.SporesShadows.WOODS;
 
-        for (String wood : moldmod.SporesShadows.WOODS) {
+        for (String wood : woods) {
             String logName = wood + "_log";
             String woodName = wood + "_wood";
-            registerForSet(wood, logName, woodName);
+            String prefix = wood;
+
+            // Logs/Wood base fuel is 300
+            registerForSet(logName, 300);
+            registerForSet("stripped_" + logName, 300);
+            registerForSet(prefix + "_planks", 300);
+            registerForSet(prefix + "_stairs", 300);
+            registerForSet(prefix + "_slab", 150);
+            registerForSet(prefix + "_fence", 300);
+            registerForSet(prefix + "_fence_gate", 300);
+            registerForSet(prefix + "_door", 200);
+            registerForSet(prefix + "_trapdoor", 300);
+
+            if (woodName != null) {
+                registerForSet(woodName, 300);
+                registerForSet("stripped_" + woodName, 300);
+            }
         }
     }
 
-    private static void registerForSet(String prefix, String logName, String woodName) {
-        registerFuelStage(logName, 300);
-        registerFuelStage("stripped_" + logName, 300);
-        registerFuelStage(prefix + "_planks", 300);
-        registerFuelStage(prefix + "_stairs", 300);
-        registerFuelStage(prefix + "_slab", 150);
-        registerFuelStage(prefix + "_fence", 300);
-        registerFuelStage(prefix + "_fence_gate", 300);
-        registerFuelStage(prefix + "_door", 200);
-        registerFuelStage(prefix + "_trapdoor", 300);
-
-        if (woodName != null) {
-            registerFuelStage(woodName, 300);
-            registerFuelStage("stripped_" + woodName, 300);
-        }
-    }
-
-    private static void registerFuelStage(String baseName, int baseTicks) {
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
-        int stage1Ticks = Math.max(1, (int)(baseTicks * config.furnaceMultipliers.stage_1));
-        int stage2Ticks = Math.max(1, (int)(baseTicks * config.furnaceMultipliers.stage_2));
-        int stage3Ticks = Math.max(37, (int)(baseTicks * config.furnaceMultipliers.stage_3)); // Minimum 37 ticks to avoid redstone glitches
-
+    private static void registerForSet(String baseName, int baseFuel) {
+        Item waxed = Registries.ITEM.get(SporesShadows.id("waxed_" + baseName));
         Item tainted = Registries.ITEM.get(SporesShadows.id("tainted_" + baseName));
         Item moldy = Registries.ITEM.get(SporesShadows.id("moldy_" + baseName));
         Item rotten = Registries.ITEM.get(SporesShadows.id("rotten_" + baseName));
 
-        if (tainted != net.minecraft.item.Items.AIR) FuelRegistry.INSTANCE.add(tainted, stage1Ticks);
-        if (moldy != net.minecraft.item.Items.AIR) FuelRegistry.INSTANCE.add(moldy, stage2Ticks);
-        if (rotten != net.minecraft.item.Items.AIR) FuelRegistry.INSTANCE.add(rotten, stage3Ticks);
+        // Stage 0 = 100%, Stage 1 = 50%, Stage 2 = 25%, Stage 3 = 12.5% (min 37 ticks)
+        if (waxed != net.minecraft.item.Items.AIR) {
+            FuelRegistry.INSTANCE.add(waxed, baseFuel);
+        }
+        if (tainted != net.minecraft.item.Items.AIR) {
+            FuelRegistry.INSTANCE.add(tainted, Math.max(37, (int)(baseFuel * 0.5f)));
+        }
+        if (moldy != net.minecraft.item.Items.AIR) {
+            FuelRegistry.INSTANCE.add(moldy, Math.max(37, (int)(baseFuel * 0.25f)));
+        }
+        if (rotten != net.minecraft.item.Items.AIR) {
+            FuelRegistry.INSTANCE.add(rotten, Math.max(37, (int)(baseFuel * 0.125f)));
+        }
     }
 }

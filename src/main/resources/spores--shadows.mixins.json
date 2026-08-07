@@ -3,9 +3,12 @@
 	"package": "moldmod.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin",
+		"BlockItemMixin",
 		"StructureStartMixin",
-		"ChunkRegionMixin"
+		"ChunkRegionMixin",
+		"AbstractBlockStateMixin",
+		"ExplosionBehaviorMixin",
+		"FireBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
