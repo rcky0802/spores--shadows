@@ -33,6 +33,12 @@
     "spores--shadows:rotten_oak_door",
     "spores--shadows:tainted_oak_trapdoor",
     "spores--shadows:moldy_oak_trapdoor",
-    "spores--shadows:rotten_oak_trapdoor"
+    "spores--shadows:rotten_oak_trapdoor",
+    "spores--shadows:tainted_oak_button",
+    "spores--shadows:moldy_oak_button",
+    "spores--shadows:rotten_oak_button",
+    "spores--shadows:tainted_oak_pressure_plate",
+    "spores--shadows:moldy_oak_pressure_plate",
+    "spores--shadows:rotten_oak_pressure_plate"
   ]
 }

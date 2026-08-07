@@ -28,6 +28,8 @@ def main():
     fence_gates = []
     doors = []
     trapdoors = []
+    buttons = []
+    pressure_plates = []
 
     for w in WOODS:
         for prefix in [w]:
@@ -37,7 +39,8 @@ def main():
                 f"moldy_{prefix}_planks", f"moldy_{prefix}_stairs",
                 f"moldy_{prefix}_slab", f"moldy_{prefix}_fence",
                 f"moldy_{prefix}_fence_gate", f"moldy_{prefix}_door",
-                f"moldy_{prefix}_trapdoor"
+                f"moldy_{prefix}_trapdoor", f"moldy_{prefix}_button",
+                f"moldy_{prefix}_pressure_plate"
             ]
             
             for b in blocks:
@@ -52,6 +55,8 @@ def main():
                 if "gate" in b: fence_gates.append(id)
                 if "door" in b and "trap" not in b: doors.append(id)
                 if "trapdoor" in b: trapdoors.append(id)
+                if "button" in b: buttons.append(id)
+                if "pressure_plate" in b: pressure_plates.append(id)
 
     # Minecraft Block Tags
     write_tag(os.path.join(mc_tags_dir, 'mineable', 'axe.json'), axe_blocks)
@@ -63,9 +68,11 @@ def main():
     write_tag(os.path.join(mc_tags_dir, 'fence_gates.json'), fence_gates)
     write_tag(os.path.join(mc_tags_dir, 'wooden_doors.json'), doors)
     write_tag(os.path.join(mc_tags_dir, 'wooden_trapdoors.json'), trapdoors)
+    write_tag(os.path.join(mc_tags_dir, 'wooden_buttons.json'), buttons)
+    write_tag(os.path.join(mc_tags_dir, 'wooden_pressure_plates.json'), pressure_plates)
 
     # Item Tags (ONLY WAXED)
-    item_tags_dir = os.path.join(project_root, 'src', 'main', 'resources', 'data', 'minecraft', 'tags', 'items')
+    item_base_dir = "src/main/resources/data/minecraft/tags/items"
     waxed_logs = [f"spores--shadows:waxed_{w}_log" for w in WOODS] + [f"spores--shadows:waxed_stripped_{w}_log" for w in WOODS] + [f"spores--shadows:waxed_{w}_wood" for w in WOODS] + [f"spores--shadows:waxed_stripped_{w}_wood" for w in WOODS]
     waxed_planks = [f"spores--shadows:waxed_{w}_planks" for w in WOODS]
     waxed_stairs = [f"spores--shadows:waxed_{w}_stairs" for w in WOODS]
@@ -74,6 +81,8 @@ def main():
     waxed_fence_gates = [f"spores--shadows:waxed_{w}_fence_gate" for w in WOODS]
     waxed_doors = [f"spores--shadows:waxed_{w}_door" for w in WOODS]
     waxed_trapdoors = [f"spores--shadows:waxed_{w}_trapdoor" for w in WOODS]
+    waxed_buttons = [f"spores--shadows:waxed_{w}_button" for w in WOODS]
+    waxed_pressure_plates = [f"spores--shadows:waxed_{w}_pressure_plate" for w in WOODS]
 
     write_tag(os.path.join(item_tags_dir, 'logs.json'), waxed_logs)
     write_tag(os.path.join(item_tags_dir, 'planks.json'), waxed_planks)
@@ -83,6 +92,8 @@ def main():
     write_tag(os.path.join(item_tags_dir, 'fence_gates.json'), waxed_fence_gates)
     write_tag(os.path.join(item_tags_dir, 'wooden_doors.json'), waxed_doors)
     write_tag(os.path.join(item_tags_dir, 'wooden_trapdoors.json'), waxed_trapdoors)
+    write_tag(os.path.join(item_tags_dir, 'wooden_buttons.json'), waxed_buttons)
+    write_tag(os.path.join(item_tags_dir, 'wooden_pressure_plates.json'), waxed_pressure_plates)
 
     # Custom Mod Tags
     moldy_blocks = []
@@ -95,7 +106,8 @@ def main():
             f"{w}_planks", f"{w}_stairs",
             f"{w}_slab", f"{w}_fence",
             f"{w}_fence_gate", f"{w}_door",
-            f"{w}_trapdoor"
+            f"{w}_trapdoor", f"{w}_button",
+            f"{w}_pressure_plate"
         ]
         
         for base in bases:

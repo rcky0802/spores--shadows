@@ -7,12 +7,14 @@ import java.io.PrintWriter;
 public class TestReflection {
     public static void run() {
         try (PrintWriter out = new PrintWriter(new FileWriter("reflection_output2.txt"))) {
-            out.println("AbstractPressurePlateBlock methods:");
-            for (Method m : AbstractPressurePlateBlock.class.getDeclaredMethods()) {
-                out.println(m.getName());
+            for (Method m : net.minecraft.world.WorldAccess.class.getDeclaredMethods()) {
+                if (m.getName().contains("schedule")) out.println("WorldAccess." + m.getName() + " " + m.getParameterCount());
             }
-            for (Field f : AbstractPressurePlateBlock.class.getDeclaredFields()) {
-                out.println(f.getName() + " type " + f.getType().getName());
+            for (Method m : net.minecraft.world.World.class.getDeclaredMethods()) {
+                if (m.getName().contains("schedule")) out.println("World." + m.getName() + " " + m.getParameterCount());
+            }
+            for (Method m : net.minecraft.block.ButtonBlock.class.getDeclaredMethods()) {
+                out.println("ButtonBlock." + m.getName() + " " + m.getParameterCount());
             }
         } catch (Exception e) {}
     }

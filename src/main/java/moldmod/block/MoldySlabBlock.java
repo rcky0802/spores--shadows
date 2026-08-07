@@ -37,28 +37,43 @@ public class MoldySlabBlock extends SlabBlock {
         net.minecraft.item.ItemStack itemStack = context.getStack();
         net.minecraft.block.enums.SlabType slabType = state.get(TYPE);
         
-        if (slabType != net.minecraft.block.enums.SlabType.DOUBLE && itemStack.getItem() instanceof net.minecraft.item.BlockItem blockItem && blockItem.getBlock() == this) {
-            
-            net.minecraft.component.type.BlockStateComponent comp = itemStack.getOrDefault(net.minecraft.component.DataComponentTypes.BLOCK_STATE, net.minecraft.component.type.BlockStateComponent.DEFAULT);
-            Integer compStage = comp.getValue(MoldyLogBlock.STAGE);
-            int itemStage = compStage != null ? compStage : 0;
-            Boolean compWaxed = comp.getValue(MoldyLogBlock.WAXED);
-            boolean itemWaxed = compWaxed != null ? compWaxed : false;
-            
-            if (state.get(MoldyLogBlock.STAGE) != itemStage || state.get(MoldyLogBlock.WAXED) != itemWaxed) {
-                return false;
-            }
+        if (slabType != net.minecraft.block.enums.SlabType.DOUBLE) {
+            boolean isMatch = false;
+            int itemStage = 0;
+            boolean itemWaxed = false;
 
-            if (context.canReplaceExisting()) {
-                boolean bl = context.getHitPos().y - (double)context.getBlockPos().getY() > 0.5;
-                net.minecraft.util.math.Direction direction = context.getSide();
-                if (slabType == net.minecraft.block.enums.SlabType.BOTTOM) {
-                    return direction == net.minecraft.util.math.Direction.UP || bl && direction.getAxis().isHorizontal();
-                } else {
-                    return direction == net.minecraft.util.math.Direction.DOWN || !bl && direction.getAxis().isHorizontal();
+            if (itemStack.getItem() instanceof net.minecraft.item.BlockItem blockItem) {
+                net.minecraft.block.Block itemBlock = blockItem.getBlock();
+                if (itemBlock == this) {
+                    isMatch = true;
+                    net.minecraft.component.type.BlockStateComponent comp = itemStack.getOrDefault(net.minecraft.component.DataComponentTypes.BLOCK_STATE, net.minecraft.component.type.BlockStateComponent.DEFAULT);
+                    Integer compStage = comp.getValue(MoldyLogBlock.STAGE);
+                    itemStage = compStage != null ? compStage : 0;
+                    Boolean compWaxed = comp.getValue(MoldyLogBlock.WAXED);
+                    itemWaxed = compWaxed != null ? compWaxed : false;
+                } else if (moldmod.block.ModBlocks.VANILLA_TO_MOLDY.get(itemBlock) == this) {
+                    isMatch = true;
+                    itemStage = 0;
+                    itemWaxed = false;
                 }
-            } else {
-                return true;
+            }
+            
+            if (isMatch) {
+                if (state.get(MoldyLogBlock.STAGE) != itemStage || state.get(MoldyLogBlock.WAXED) != itemWaxed) {
+                    return false;
+                }
+                
+                if (context.canReplaceExisting()) {
+                    boolean bl = context.getHitPos().y - (double)context.getBlockPos().getY() > 0.5D;
+                    net.minecraft.util.math.Direction direction = context.getSide();
+                    if (slabType == net.minecraft.block.enums.SlabType.BOTTOM) {
+                        return direction == net.minecraft.util.math.Direction.UP || bl && direction.getAxis().isHorizontal();
+                    } else {
+                        return direction == net.minecraft.util.math.Direction.DOWN || !bl && direction.getAxis().isHorizontal();
+                    }
+                } else {
+                    return true;
+                }
             }
         }
         return false;

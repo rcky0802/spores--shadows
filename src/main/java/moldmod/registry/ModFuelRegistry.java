@@ -25,6 +25,8 @@ public class ModFuelRegistry {
             registerForSet(prefix + "_fence_gate", 300);
             registerForSet(prefix + "_door", 200);
             registerForSet(prefix + "_trapdoor", 300);
+            registerForSet(prefix + "_button", 100);
+            registerForSet(prefix + "_pressure_plate", 300);
 
             if (woodName != null) {
                 registerForSet(woodName, 300);

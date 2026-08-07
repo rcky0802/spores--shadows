@@ -74,17 +74,16 @@ public class ModBlocks {
         Block gate = registerBlock("moldy_" + prefix + "_fence_gate", new MoldyFenceGateBlock(woodType, AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
         Block door = registerBlock("moldy_" + prefix + "_door", new MoldyDoorBlock(setType, AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly().nonOpaque()));
         Block trapdoor = registerBlock("moldy_" + prefix + "_trapdoor", new MoldyTrapdoorBlock(setType, AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly().nonOpaque()));
-        Block button = registerBlock("moldy_" + prefix + "_button", new MoldyButtonBlock(setType, 30, AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly().noCollision()));
         Block pressurePlate = registerBlock("moldy_" + prefix + "_pressure_plate", new MoldyPressurePlateBlock(setType, AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly().noCollision()));
-
+        Block button = registerBlock("moldy_" + prefix + "_button", new MoldyButtonBlock(setType, 30, AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly().noCollision()));
         Block vanillaStairs = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_stairs"));
         Block vanillaSlab = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_slab"));
         Block vanillaFence = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_fence"));
         Block vanillaGate = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_fence_gate"));
         Block vanillaDoor = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_door"));
         Block vanillaTrapdoor = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_trapdoor"));
-        Block vanillaButton = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_button"));
         Block vanillaPressurePlate = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_pressure_plate"));
+        Block vanillaButton = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_button"));
 
         // Map them
         VANILLA_TO_MOLDY.put(vanillaLog, log);
@@ -96,8 +95,8 @@ public class ModBlocks {
         VANILLA_TO_MOLDY.put(vanillaGate, gate);
         VANILLA_TO_MOLDY.put(vanillaDoor, door);
         VANILLA_TO_MOLDY.put(vanillaTrapdoor, trapdoor);
-        VANILLA_TO_MOLDY.put(vanillaButton, button);
         VANILLA_TO_MOLDY.put(vanillaPressurePlate, pressurePlate);
+        VANILLA_TO_MOLDY.put(vanillaButton, button);
 
         // Register Items
         registerStageItems(vanillaLog, logName, log);
@@ -109,8 +108,8 @@ public class ModBlocks {
         registerStageItems(vanillaGate, prefix + "_fence_gate", gate);
         registerStageItems(vanillaDoor, prefix + "_door", door);
         registerStageItems(vanillaTrapdoor, prefix + "_trapdoor", trapdoor);
-        registerStageItems(vanillaButton, prefix + "_button", button);
         registerStageItems(vanillaPressurePlate, prefix + "_pressure_plate", pressurePlate);
+        registerStageItems(vanillaButton, prefix + "_button", button);
         
         if (woodName != null) {
             Block vanillaWood = Registries.BLOCK.get(Identifier.of("minecraft", woodName));

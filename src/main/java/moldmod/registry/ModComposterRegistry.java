@@ -24,6 +24,8 @@ public class ModComposterRegistry {
             registerForSet(prefix + "_fence_gate");
             registerForSet(prefix + "_door");
             registerForSet(prefix + "_trapdoor");
+            registerForSet(prefix + "_button");
+            registerForSet(prefix + "_pressure_plate");
 
             if (woodName != null) {
                 registerForSet(woodName);

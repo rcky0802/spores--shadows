@@ -8,7 +8,9 @@
 		"ChunkRegionMixin",
 		"AbstractBlockStateMixin",
 		"ExplosionBehaviorMixin",
-		"FireBlockMixin"
+		"FireBlockMixin",
+		"PressurePlateMixin",
+		"ButtonMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

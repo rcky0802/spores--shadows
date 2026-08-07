@@ -24,8 +24,8 @@ public class MoldyJsonGenerator {
             genTrapdoor(builder, wood, p);
             genFence(builder, wood, p);
             genGate(builder, wood, p);
-            genButton(builder, wood, p);
             genPressurePlate(builder, wood, p);
+            genButton(builder, wood, p);
         }
     }
 
@@ -184,7 +184,7 @@ public class MoldyJsonGenerator {
     private static void genStairs(ResourcePackBuilder builder, String wood, String prefix) {
         String blockId = "moldy_" + prefix + "_stairs";
         JsonObject variants = new JsonObject();
-        String[] facings = {"north", "east", "south", "west"};
+        String[] facings = {"east", "south", "west", "north"};
         int[] yRots = {0, 90, 180, 270};
         String[] shapes = {"straight", "inner_left", "inner_right", "outer_left", "outer_right"};
         String[] halfs = {"bottom", "top"};
@@ -213,13 +213,15 @@ public class MoldyJsonGenerator {
                     for (String shape : shapes) {
                         int x = half.equals("top") ? 180 : 0;
                         int yRot = yBase;
-                        if (shape.equals("inner_left")) yRot = (yBase + 270) % 360;
-                        if (shape.equals("outer_left")) yRot = (yBase + 270) % 360;
-                        if (half.equals("top")) {
-                            if (shape.equals("inner_left")) yRot = (yRot + 90) % 360;
-                            if (shape.equals("inner_right")) yRot = (yRot + 270) % 360;
-                            if (shape.equals("outer_left")) yRot = (yRot + 90) % 360;
-                            if (shape.equals("outer_right")) yRot = (yRot + 270) % 360;
+                        
+                        if (half.equals("bottom")) {
+                            if (shape.equals("outer_left") || shape.equals("inner_left")) {
+                                yRot = (yBase + 270) % 360;
+                            }
+                        } else {
+                            if (shape.equals("outer_right") || shape.equals("inner_right")) {
+                                yRot = (yBase + 90) % 360;
+                            }
                         }
 
                         String mName = shape.equals("straight") ? "stairs" : (shape.contains("inner") ? "stairs_inner" : "stairs_outer");
@@ -443,58 +445,6 @@ public class MoldyJsonGenerator {
         JsonObject bs = new JsonObject(); bs.add("variants", variants); write(builder, "blockstates/" + blockId, bs);
     }
 
-    private static void genButton(ResourcePackBuilder builder, String wood, String prefix) {
-        String blockId = "moldy_" + prefix + "_button";
-        JsonObject variants = new JsonObject();
-        String[] facings = {"north", "east", "south", "west", "up", "down"};
-        String[] faceStates = {"wall", "wall", "wall", "wall", "floor", "ceiling"};
-        int[] yRots = {0, 90, 180, 270, 0, 0};
-        
-        for (int stage : STAGES) {
-            String tex = "minecraft:block/" + prefix + "_planks";
-            if (stage > 0) {
-                // Normal
-                JsonObject mDef = new JsonObject(); mDef.addProperty("parent", "spores--shadows:block/moldy_button");
-                JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", "spores--shadows:block/mold_stage_" + stage);
-                mDef.add("textures", tDef);
-                write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
-                // Pressed
-                JsonObject mPressed = new JsonObject(); mPressed.addProperty("parent", "spores--shadows:block/moldy_button_pressed");
-                mPressed.add("textures", tDef);
-                write(builder, "models/block/" + blockId + "_pressed_stage_" + stage, mPressed);
-                // Inventory
-                JsonObject mInv = new JsonObject(); mInv.addProperty("parent", "spores--shadows:block/moldy_button_inventory");
-                mInv.add("textures", tDef);
-                write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mInv);
-            }
-            
-            String itemParent = stage == 0 ? "minecraft:item/" + prefix + "_button" : blockId + "_inventory_stage_" + stage;
-            genItemModel(builder, wood, prefix + "_button", itemParent, stage, false);
-            
-            for (String powered : new String[]{"false", "true"}) {
-                String m = stage == 0 ? "minecraft:block/" + prefix + "_button" + (powered.equals("true") ? "_pressed" : "") : "spores--shadows:block/" + blockId + (powered.equals("true") ? "_pressed" : "") + "_stage_" + stage;
-                
-                for (int f = 0; f < facings.length; f++) {
-                    String facing = facings[f];
-                    String faceState = faceStates[f];
-                    int yRot = yRots[f];
-                    int xRot = faceState.equals("ceiling") ? 180 : (faceState.equals("floor") ? 0 : 90);
-                    
-                    for (String common : getCommonProps()) {
-                        JsonObject v = new JsonObject();
-                        v.addProperty("model", m);
-                        if (xRot != 0) v.addProperty("x", xRot);
-                        if (yRot != 0) v.addProperty("y", yRot);
-                        if (xRot != 0 || yRot != 0) v.addProperty("uvlock", true);
-                        
-                        variants.add("face=" + faceState + ",facing=" + facing + ",powered=" + powered + ",stage=" + stage + "," + common, v);
-                    }
-                }
-            }
-        }
-        JsonObject bs = new JsonObject(); bs.add("variants", variants); write(builder, "blockstates/" + blockId, bs);
-    }
-
     private static void genPressurePlate(ResourcePackBuilder builder, String wood, String prefix) {
         String blockId = "moldy_" + prefix + "_pressure_plate";
         JsonObject variants = new JsonObject();
@@ -523,6 +473,77 @@ public class MoldyJsonGenerator {
                     JsonObject v = new JsonObject();
                     v.addProperty("model", m);
                     variants.add("powered=" + powered + ",stage=" + stage + "," + common, v);
+                }
+            }
+        }
+        JsonObject bs = new JsonObject(); bs.add("variants", variants); write(builder, "blockstates/" + blockId, bs);
+    }
+
+    private static void genButton(ResourcePackBuilder builder, String wood, String prefix) {
+        String blockId = "moldy_" + prefix + "_button";
+        JsonObject variants = new JsonObject();
+        String[] facings = {"north", "east", "south", "west"};
+
+        for (int stage : STAGES) {
+            String tex = "minecraft:block/" + prefix + "_planks";
+            if (stage > 0) {
+                // Normal
+                JsonObject mDef = new JsonObject(); mDef.addProperty("parent", "spores--shadows:block/moldy_button");
+                JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", "spores--shadows:block/mold_stage_" + stage);
+                mDef.add("textures", tDef);
+                write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
+                
+                // Pressed
+                JsonObject mPressed = new JsonObject(); mPressed.addProperty("parent", "spores--shadows:block/moldy_button_pressed");
+                mPressed.add("textures", tDef);
+                write(builder, "models/block/" + blockId + "_pressed_stage_" + stage, mPressed);
+                
+                // Inventory
+                JsonObject mInv = new JsonObject(); mInv.addProperty("parent", "spores--shadows:block/moldy_button_inventory");
+                mInv.add("textures", tDef);
+                write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mInv);
+            }
+            
+            String itemParent = stage == 0 ? "minecraft:item/" + prefix + "_button" : blockId + "_inventory_stage_" + stage;
+            genItemModel(builder, wood, prefix + "_button", itemParent, stage, false);
+            
+            for (String face : new String[]{"floor", "wall", "ceiling"}) {
+                for (String facing : facings) {
+                    for (String powered : new String[]{"false", "true"}) {
+                        String m = stage == 0 ? "minecraft:block/" + prefix + "_button" + (powered.equals("true") ? "_pressed" : "") : "spores--shadows:block/" + blockId + (powered.equals("true") ? "_pressed_" : "_") + "stage_" + stage;
+                        
+                        int x = 0;
+                        int y = 0;
+                        if (face.equals("ceiling")) {
+                            x = 180;
+                            if (facing.equals("east")) y = 270;
+                            else if (facing.equals("north")) y = 180;
+                            else if (facing.equals("south")) y = 0;
+                            else if (facing.equals("west")) y = 90;
+                        } else if (face.equals("floor")) {
+                            if (facing.equals("east")) y = 90;
+                            else if (facing.equals("north")) y = 0;
+                            else if (facing.equals("south")) y = 180;
+                            else if (facing.equals("west")) y = 270;
+                        } else if (face.equals("wall")) {
+                            x = 90;
+                            if (facing.equals("east")) y = 90;
+                            else if (facing.equals("north")) y = 0;
+                            else if (facing.equals("south")) y = 180;
+                            else if (facing.equals("west")) y = 270;
+                        }
+                        
+                        boolean uvlock = face.equals("wall");
+                        
+                        for (String common : getCommonProps()) {
+                            JsonObject v = new JsonObject();
+                            v.addProperty("model", m);
+                            if (x != 0) v.addProperty("x", x);
+                            if (y != 0) v.addProperty("y", y);
+                            if (uvlock) v.addProperty("uvlock", true);
+                            variants.add("face=" + face + ",facing=" + facing + ",powered=" + powered + ",stage=" + stage + "," + common, v);
+                        }
+                    }
                 }
             }
         }

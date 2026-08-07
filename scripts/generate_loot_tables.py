@@ -1,14 +1,13 @@
 import os
 import json
 
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-loot_dir = os.path.join(project_root, 'src', 'main', 'resources', 'data', 'spores--shadows', 'loot_table', 'block')
-os.makedirs(loot_dir, exist_ok=True)
+out_dir = "src/main/resources/data/spores--shadows/loot_tables/blocks"
+os.makedirs(out_dir, exist_ok=True)
 
 WOODS = ["oak"]
 
 def write_loot_table(block_name):
-    path = os.path.join(loot_dir, f"{block_name}.json")
+    path = os.path.join(out_dir, f"{block_name}.json")
     
     # We drop the block itself for stages 0 (if somehow silk touched), 1, 2, 3.
     # Actually, a block with STAGE property will just drop the item variant that corresponds to its stage!

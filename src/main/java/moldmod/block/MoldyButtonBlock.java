@@ -4,20 +4,23 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ButtonBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.World;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 
 public class MoldyButtonBlock extends ButtonBlock {
 
-    @SuppressWarnings("this-escape")
-    public MoldyButtonBlock(BlockSetType blockSetType, int pressTicks, Settings settings) {
-        super(blockSetType, pressTicks, settings);
+    public MoldyButtonBlock(BlockSetType type, int pressTicks, Settings settings) {
+        super(type, pressTicks, settings);
         this.setDefaultState(this.getDefaultState()
-            .with(MoldyLogBlock.STAGE, 0)
-            .with(MoldyLogBlock.WAXED, false)
-            .with(MoldyLogBlock.STRUCTURAL, false));
+                .with(MoldyLogBlock.STAGE, 0)
+                .with(MoldyLogBlock.WAXED, false)
+                .with(MoldyLogBlock.STRUCTURAL, false));
     }
 
     @Override
@@ -37,13 +40,30 @@ public class MoldyButtonBlock extends ButtonBlock {
         MoldyBlockHelper.randomTick(state, world, pos, random, this);
     }
 
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (!world.isClient && state.get(POWERED) == false) {
+            int stage = state.get(MoldyLogBlock.STAGE);
+            if (stage == 3) {
+                // 10% chance to break when pressed!
+                if (world.random.nextFloat() < 0.10f) {
+                    world.breakBlock(pos, false);
+                    world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_WOOD_BREAK,
+                            net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 0.8f);
+                    return ActionResult.SUCCESS;
+                }
+            }
+        }
+        return super.onUse(state, world, pos, player, hit);
+    }
+
     public int getMoldyPressTicks(BlockState state) {
         int stage = state.get(MoldyLogBlock.STAGE);
         return switch (stage) {
             case 0 -> 30;
             case 1 -> 60;
-            case 2 -> 120;
-            case 3 -> 300;
+            case 2 -> 150;
+            case 3 -> 450;
             default -> 30;
         };
     }

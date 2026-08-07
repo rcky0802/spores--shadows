@@ -16,12 +16,18 @@ public class BlockItemMixin {
         BlockState original = cir.getReturnValue();
         if (original != null && moldmod.block.ModBlocks.VANILLA_TO_MOLDY.containsKey(original.getBlock())) {
             net.minecraft.block.Block moldyBlock = moldmod.block.ModBlocks.VANILLA_TO_MOLDY.get(original.getBlock());
-            BlockState newState = moldyBlock.getDefaultState();
+            BlockState newState = moldyBlock.getPlacementState(context);
+            if (newState == null) newState = moldyBlock.getDefaultState();
             
-            if (original.contains(PillarBlock.AXIS) && newState.contains(PillarBlock.AXIS)) {
-                newState = newState.with(PillarBlock.AXIS, original.get(PillarBlock.AXIS));
+            if (newState.contains(moldmod.block.MoldyLogBlock.STAGE)) {
+                newState = newState.with(moldmod.block.MoldyLogBlock.STAGE, 0);
             }
-            // By default placed by player means STAGE=0, WAXED=false, STRUCTURAL=false
+            if (newState.contains(moldmod.block.MoldyLogBlock.WAXED)) {
+                newState = newState.with(moldmod.block.MoldyLogBlock.WAXED, false);
+            }
+            if (newState.contains(moldmod.block.MoldyLogBlock.STRUCTURAL)) {
+                newState = newState.with(moldmod.block.MoldyLogBlock.STRUCTURAL, false);
+            }
             cir.setReturnValue(newState);
         }
     }

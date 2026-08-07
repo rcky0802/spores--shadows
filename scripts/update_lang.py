@@ -1,10 +1,8 @@
 import json
 import os
 
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-lang_dir = os.path.join(project_root, 'src', 'main', 'resources', 'assets', 'spores--shadows', 'lang')
-en_path = os.path.join(lang_dir, 'en_us.json')
-it_path = os.path.join(lang_dir, 'it_it.json')
+en_us_path = "src/main/resources/assets/spores--shadows/lang/en_us.json"
+it_it_path = "src/main/resources/assets/spores--shadows/lang/it_it.json"
 
 WOODS = ["oak"]
 blocks_en = [
