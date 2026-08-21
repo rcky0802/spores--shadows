@@ -1,5 +1,6 @@
 {
   "tooltip.spores--shadows.waxed": "Sealed with wax: Immune to mold",
+  "item.spores--shadows.waxed_format": "Waxed %s",
   "item.spores--shadows.tainted_oak_log": "Tainted Oak Log",
   "item.spores--shadows.moldy_oak_log": "Moldy Oak Log",
   "item.spores--shadows.rotten_oak_log": "Rotten Oak Log",
