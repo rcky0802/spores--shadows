@@ -15,11 +15,14 @@ public class MoldyBlockHelper {
             return false;
         }
 
-        // Return false if STRUCTURAL == true.
-        // ALL generated structures (villages, shipwrecks, trees) are passive until
-        // interacted with.
+        // Return false if STRUCTURAL == true AND structures are immune.
+        // ALL generated structures (villages, shipwrecks) are passive until interacted with (unless disabled in config).
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
+                .getConfigHolder(moldmod.config.ModConfig.class).getConfig();
         if (state.contains(MoldyLogBlock.STRUCTURAL) && state.get(MoldyLogBlock.STRUCTURAL)) {
-            return false;
+            if (config.general.structures_immune) {
+                return false;
+            }
         }
 
         return true;
@@ -220,7 +223,9 @@ public class MoldyBlockHelper {
             return;
 
         if (state.contains(MoldyLogBlock.STRUCTURAL) && state.get(MoldyLogBlock.STRUCTURAL)) {
-            return;
+            if (config.general.structures_immune) {
+                return;
+            }
         }
 
         int currentStage = state.get(MoldyLogBlock.STAGE);

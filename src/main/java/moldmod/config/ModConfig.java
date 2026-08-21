@@ -5,7 +5,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import net.minecraft.util.math.MathHelper;
 
-@Config(name = "spores_shadows")
+@Config(name = "spores--shadows")
 public class ModConfig implements ConfigData {
 
     @ConfigEntry.Category("general")
@@ -41,6 +41,8 @@ public class ModConfig implements ConfigData {
         public float infection_threshold = 0.40f;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int scan_radius = 1; // 1 = 3x3x3, 2 = 5x5x5
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public boolean structures_immune = true;
         public boolean show_debug_in_chat = false;
     }
 
@@ -90,9 +92,13 @@ public class ModConfig implements ConfigData {
     }
 
     public static class Structures {
+        @ConfigEntry.Gui.CollapsibleObject
         public Category cat1_critical = new Category(10, 30, 60);
+        @ConfigEntry.Gui.CollapsibleObject
         public Category cat2_high = new Category(35, 35, 20);
+        @ConfigEntry.Gui.CollapsibleObject
         public Category cat3_moderate = new Category(35, 15, 0);
+        @ConfigEntry.Gui.CollapsibleObject
         public Category cat4_low = new Category(5, 0, 0);
         
         public static class Category {

@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-21T09:27:28.2340024	Spores & Shadows/Model Definitions
+// 1.21.1	2026-08-21T12:47:51.5877545	Spores & Shadows/Model Definitions
 d6c37e92350dde5f76ad1f1636f2c8ee9b9f7374 assets\spores--shadows\models\block\moldy_stripped_oak_log_horizontal_stage_2.json
 181519c1fcfe508765922b772c9989da5cd1df25 assets\spores--shadows\models\block\moldy_birch_log_horizontal_stage_1.json
 c6a9d0d083cda148754a0d052f7a3f50765b49e2 assets\spores--shadows\models\item\moldy_stripped_birch_log.json
@@ -110,8 +110,8 @@ c59bb6646de2e417c7ccd5d9a870286585b87fd0 assets\spores--shadows\models\block\mol
 5676fd76e5ab7c9953ed0a1d43a04e60c7bf7e4d assets\spores--shadows\models\item\moldy_dark_oak_wood.json
 e58f039596ac7a468a208dab8f65578bae017b50 assets\spores--shadows\models\block\moldy_jungle_wood_horizontal_stage_2.json
 0ef40745e8c2d2c7399bd064c29b59a062fea6f5 assets\spores--shadows\models\item\moldy_spruce_planks.json
-415069650328254330061221c160f8557018a698 assets\spores--shadows\models\block\moldy_stripped_spruce_wood_stage_1.json
 75c8d679497f7e8a5d3da34300098484dd3f91a9 assets\spores--shadows\models\block\moldy_stripped_birch_log_horizontal_stage_3.json
+415069650328254330061221c160f8557018a698 assets\spores--shadows\models\block\moldy_stripped_spruce_wood_stage_1.json
 d2e71e980b24f3275e8ac9213f82fa1704bb7102 assets\spores--shadows\models\block\moldy_oak_planks_stage_3.json
 5a2586931bef566193119ea402ba44b5f8e2758d assets\spores--shadows\blockstates\moldy_cherry_wood.json
 e491fbfe0ace1be8116c29b8281cea4ce344d110 assets\spores--shadows\blockstates\moldy_stripped_cherry_wood.json
@@ -138,8 +138,8 @@ d228eaadcb89327ccca6dc79fb7094718d29ed60 assets\spores--shadows\models\item\mold
 026a4986c70f76da15365dec19c13e0781a8101f assets\spores--shadows\models\block\moldy_dark_oak_wood_stage_2.json
 dafb8c2a32d40711517f1fa8eaef7cd7d665bd52 assets\spores--shadows\models\item\rotten_mangrove_log.json
 3eabc51822caded1636283dea7f8a6fce58f58d7 assets\spores--shadows\models\block\moldy_stripped_mangrove_wood_horizontal_stage_3.json
-88182801a7a17f6492ac302f1d7aef6b81b27d61 assets\spores--shadows\models\block\moldy_oak_log_stage_1.json
 1f17042668c6d3a334d4326acf123c0bb94b1929 assets\spores--shadows\models\item\rotten_acacia_planks.json
+88182801a7a17f6492ac302f1d7aef6b81b27d61 assets\spores--shadows\models\block\moldy_oak_log_stage_1.json
 b9a11bc71f8567c9a01aec64f25dab8a0522ea41 assets\spores--shadows\blockstates\moldy_stripped_birch_wood.json
 f757ec38f2a3f932040be77888e857da0c1bb7bc assets\spores--shadows\models\item\moldy_mangrove_planks.json
 9d27630d004ba638c877f305b3dd14888490fe9f assets\spores--shadows\models\block\moldy_dark_oak_wood_stage_1.json

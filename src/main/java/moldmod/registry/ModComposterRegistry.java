@@ -35,14 +35,10 @@ public class ModComposterRegistry {
     }
 
     private static void registerForSet(String baseName) {
-        Item waxed = Registries.ITEM.get(SporesShadows.id("waxed_" + baseName));
         Item tainted = Registries.ITEM.get(SporesShadows.id("tainted_" + baseName));
         Item moldy = Registries.ITEM.get(SporesShadows.id("moldy_" + baseName));
         Item rotten = Registries.ITEM.get(SporesShadows.id("rotten_" + baseName));
 
-        if (waxed != net.minecraft.item.Items.AIR) {
-            net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(waxed, 0.30f);
-        }
         if (tainted != net.minecraft.item.Items.AIR) {
             net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(tainted, 0.50f);
         }
