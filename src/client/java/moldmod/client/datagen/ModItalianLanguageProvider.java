@@ -43,11 +43,11 @@ public class ModItalianLanguageProvider extends FabricLanguageProvider {
             translationBuilder.add("item.spores--shadows.moldy_" + logName, logType + " " + wName + " ammuffito");
             translationBuilder.add("item.spores--shadows.rotten_" + logName, logType + " " + wName + " marcio");
 
-            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, logType + " " + wName + " Scortecciato ammuffito");
-            translationBuilder.add("item.spores--shadows.waxed_stripped_" + logName, logType + " " + wName + " Scortecciato cerato");
-            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, logType + " " + wName + " Scortecciato intaccato");
-            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, logType + " " + wName + " Scortecciato ammuffito");
-            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, logType + " " + wName + " Scortecciato marcio");
+            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, logType + " Scortecciato " + wName + " ammuffito");
+            translationBuilder.add("item.spores--shadows.waxed_stripped_" + logName, logType + " Scortecciato " + wName + " cerato");
+            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, logType + " Scortecciato " + wName + " intaccato");
+            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, logType + " Scortecciato " + wName + " ammuffito");
+            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, logType + " Scortecciato " + wName + " marcio");
 
             if (woodName != null) {
                 translationBuilder.add("block.spores--shadows.moldy_" + woodName, "Legno " + wName + " ammuffito");
@@ -56,11 +56,11 @@ public class ModItalianLanguageProvider extends FabricLanguageProvider {
                 translationBuilder.add("item.spores--shadows.moldy_" + woodName, "Legno " + wName + " ammuffito");
                 translationBuilder.add("item.spores--shadows.rotten_" + woodName, "Legno " + wName + " marcio");
 
-                translationBuilder.add("block.spores--shadows.moldy_stripped_" + woodName, "Legno " + wName + " Scortecciato ammuffito");
-                translationBuilder.add("item.spores--shadows.waxed_stripped_" + woodName, "Legno " + wName + " Scortecciato cerato");
-                translationBuilder.add("item.spores--shadows.tainted_stripped_" + woodName, "Legno " + wName + " Scortecciato intaccato");
-                translationBuilder.add("item.spores--shadows.moldy_stripped_" + woodName, "Legno " + wName + " Scortecciato ammuffito");
-                translationBuilder.add("item.spores--shadows.rotten_stripped_" + woodName, "Legno " + wName + " Scortecciato marcio");
+                translationBuilder.add("block.spores--shadows.moldy_stripped_" + woodName, "Legno Scortecciato " + wName + " ammuffito");
+                translationBuilder.add("item.spores--shadows.waxed_stripped_" + woodName, "Legno Scortecciato " + wName + " cerato");
+                translationBuilder.add("item.spores--shadows.tainted_stripped_" + woodName, "Legno Scortecciato " + wName + " intaccato");
+                translationBuilder.add("item.spores--shadows.moldy_stripped_" + woodName, "Legno Scortecciato " + wName + " ammuffito");
+                translationBuilder.add("item.spores--shadows.rotten_stripped_" + woodName, "Legno Scortecciato " + wName + " marcio");
             }
 
             translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_planks", "Assi " + wName + " ammuffite");

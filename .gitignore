@@ -38,3 +38,17 @@ hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
+
+# minecraft / fabric runtime
+
+.cache/
+.fabric/
+logs/
+crash-reports/
+mods/
+*.jar
+*.class
+usercache.json
+usernamecache.json
+banned-ips.json
+banned-players.json
