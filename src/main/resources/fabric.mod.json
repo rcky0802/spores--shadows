@@ -3,13 +3,11 @@
 	"id": "spores--shadows",
 	"version": "${version}",
 	"name": "Spores & Shadows",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "A dynamic, realistic, and unforgiving environmental decay ecosystem for wood.",
 	"authors": [
-		"Me!"
+		"Pyros"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/spores--shadows/icon.png",
