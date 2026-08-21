@@ -3,7 +3,6 @@ package moldmod.mixin;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.block.PillarBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,8 +16,9 @@ public class BlockItemMixin {
         if (original != null && moldmod.block.ModBlocks.VANILLA_TO_MOLDY.containsKey(original.getBlock())) {
             net.minecraft.block.Block moldyBlock = moldmod.block.ModBlocks.VANILLA_TO_MOLDY.get(original.getBlock());
             BlockState newState = moldyBlock.getPlacementState(context);
-            if (newState == null) newState = moldyBlock.getDefaultState();
-            
+            if (newState == null)
+                newState = moldyBlock.getDefaultState();
+
             if (newState.contains(moldmod.block.MoldyLogBlock.STAGE)) {
                 newState = newState.with(moldmod.block.MoldyLogBlock.STAGE, 0);
             }

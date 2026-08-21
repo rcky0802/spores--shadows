@@ -38,8 +38,7 @@ public class ModConfig implements ConfigData {
 
     public static class General {
         public boolean enable_mold_growth = true;
-        public float infection_threshold = 0.65f;
-        public float spread_chance = 0.25f;
+        public float infection_threshold = 0.40f;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int scan_radius = 1; // 1 = 3x3x3, 2 = 5x5x5
         public boolean show_debug_in_chat = false;
@@ -56,11 +55,14 @@ public class ModConfig implements ConfigData {
         public float podzol_mycelium_bonus = 0.15f;
         public float fungi_bonus = 0.25f;
         public float spore_blossom_bonus = 0.80f;
+        public float tainted_block_bonus = 0.05f;
+        public float moldy_block_bonus = 0.10f;
+        public float rotten_block_bonus = 0.20f;
     }
 
     public static class Environment {
         public double rain_humidity_base = 0.8;
-        public double dry_humidity_base = 0.2;
+        public double dry_humidity_base = 0.3;
         public double max_depth_modifier = 1.28;
         public double depth_modifier_per_level = 0.01;
         public double max_local_humidity_bonus = 0.60;
@@ -68,6 +70,16 @@ public class ModConfig implements ConfigData {
         public double cauldron_adjacent_bonus = 0.1;
         public float min_temperature_survival = 0.15f;
         public float max_temperature_survival = 1.5f;
+        
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float cave_temperature = 0.5f;
+        public int cave_start_y = 64;
+        public int cave_full_y = 48;
+        
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float high_altitude_freezing_temperature = -0.5f;
+        public int high_altitude_start_y = 128;
+        public int high_altitude_full_y = 256;
     }
 
     public static class Drops {
@@ -107,7 +119,6 @@ public class ModConfig implements ConfigData {
     @Override
     public void validatePostLoad() throws ValidationException {
         general.infection_threshold = MathHelper.clamp(general.infection_threshold, 0.0f, 2.0f);
-        general.spread_chance = MathHelper.clamp(general.spread_chance, 0.0f, 1.0f);
         general.scan_radius = MathHelper.clamp(general.scan_radius, 1, 5);
         
         drops.stage_2_drop_chance = MathHelper.clamp(drops.stage_2_drop_chance, 0.0f, 1.0f);

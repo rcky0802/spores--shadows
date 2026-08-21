@@ -1,5 +1,12 @@
 {
   "values": [
-    "spores--shadows:moldy_oak_fence"
+    "spores--shadows:moldy_oak_fence",
+    "spores--shadows:moldy_spruce_fence",
+    "spores--shadows:moldy_birch_fence",
+    "spores--shadows:moldy_jungle_fence",
+    "spores--shadows:moldy_acacia_fence",
+    "spores--shadows:moldy_dark_oak_fence",
+    "spores--shadows:moldy_mangrove_fence",
+    "spores--shadows:moldy_cherry_fence"
   ]
 }

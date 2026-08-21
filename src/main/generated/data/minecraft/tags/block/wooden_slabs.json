@@ -1,5 +1,12 @@
 {
   "values": [
-    "spores--shadows:moldy_oak_slab"
+    "spores--shadows:moldy_oak_slab",
+    "spores--shadows:moldy_spruce_slab",
+    "spores--shadows:moldy_birch_slab",
+    "spores--shadows:moldy_jungle_slab",
+    "spores--shadows:moldy_acacia_slab",
+    "spores--shadows:moldy_dark_oak_slab",
+    "spores--shadows:moldy_mangrove_slab",
+    "spores--shadows:moldy_cherry_slab"
   ]
 }

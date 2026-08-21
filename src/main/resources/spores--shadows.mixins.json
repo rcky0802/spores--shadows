@@ -10,7 +10,8 @@
 		"ExplosionBehaviorMixin",
 		"FireBlockMixin",
 		"PressurePlateMixin",
-		"ButtonMixin"
+		"ButtonMixin",
+		"BlockPickMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

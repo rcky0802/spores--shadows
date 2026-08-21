@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_tainted_birch_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:tainted_birch_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "spores--shadows:birch_fence_from_tainted"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tainted_birch_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "spores--shadows:birch_fence_from_tainted"
+    ]
+  }
+}

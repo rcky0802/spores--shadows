@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "stage=0,structural=false,waxed=false": {
+      "model": "minecraft:block/jungle_planks"
+    },
+    "stage=0,structural=false,waxed=true": {
+      "model": "minecraft:block/jungle_planks"
+    },
+    "stage=0,structural=true,waxed=false": {
+      "model": "minecraft:block/jungle_planks"
+    },
+    "stage=0,structural=true,waxed=true": {
+      "model": "minecraft:block/jungle_planks"
+    },
+    "stage=1,structural=false,waxed=false": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_1"
+    },
+    "stage=1,structural=false,waxed=true": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_1"
+    },
+    "stage=1,structural=true,waxed=false": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_1"
+    },
+    "stage=1,structural=true,waxed=true": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_1"
+    },
+    "stage=2,structural=false,waxed=false": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_2"
+    },
+    "stage=2,structural=false,waxed=true": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_2"
+    },
+    "stage=2,structural=true,waxed=false": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_2"
+    },
+    "stage=2,structural=true,waxed=true": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_2"
+    },
+    "stage=3,structural=false,waxed=false": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_3"
+    },
+    "stage=3,structural=false,waxed=true": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_3"
+    },
+    "stage=3,structural=true,waxed=false": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_3"
+    },
+    "stage=3,structural=true,waxed=true": {
+      "model": "spores--shadows:block/moldy_jungle_planks_stage_3"
+    }
+  }
+}
