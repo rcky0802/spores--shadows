@@ -230,8 +230,8 @@ public class MoldyBlockHelper {
 
         int currentStage = state.get(MoldyLogBlock.STAGE);
 
-        // OTTIMIZZAZIONE CRITICA: Se il blocco è già al massimo stadio (3),
-        // non ha senso calcolare R.
+        // CRITICAL OPTIMIZATION: If the block is already at max stage (3),
+        // it makes no sense to calculate R.
         if (currentStage == 3)
             return;
 

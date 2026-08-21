@@ -11,16 +11,16 @@ import java.io.InputStream;
 public class MoldyResourceGenerator {
 
     public static void initialize() {
-        // Indica a Polymer di includere le risorse base della nostra mod nel pacchetto virtuale
+        // Tells Polymer to include our mod's base resources in the virtual pack
         PolymerResourcePackUtils.addModAssets("spores--shadows");
 
-        // Registriamo una sorgente di asset virtuale
+        // Register a virtual asset source
         PolymerResourcePackUtils.RESOURCE_PACK_CREATION_EVENT.register(builder -> {
             
             String[] woods = moldmod.SporesShadows.WOODS;
             String[] stages = {"waxed", "tainted", "moldy", "rotten"};
             
-            // Genera TUTTI i JSON dei blocchi (modelli, blockstates) in RAM!
+            // Generate ALL block JSONs (models, blockstates) in RAM!
             MoldyJsonGenerator.generateAll(builder, woods);
             
             for (String wood : woods) {
@@ -29,7 +29,7 @@ public class MoldyResourceGenerator {
                     String itemName = stageName + "_" + wood + "_door";
                     
                     String layer0 = i == 0 ? "minecraft:item/" + wood + "_door" : "spores--shadows:item/" + itemName;
-                    // 1. GENERAZIONE DEL MODELLO JSON (In Memoria)
+                    // 1. JSON MODEL GENERATION (In Memory)
                     String modelJson = """
                         {
                           "parent": "minecraft:item/generated",
@@ -41,10 +41,10 @@ public class MoldyResourceGenerator {
                     
                     builder.addData("assets/spores--shadows/models/item/" + itemName + ".json", modelJson.getBytes());
 
-                    // Se è waxed (stage 0), non serve generare la texture mascherata, usa quella vanilla!
+                    // If it is waxed (stage 0), there's no need to generate a masked texture, use the vanilla one!
                     if (i == 0) continue;
 
-                    // 2. GENERAZIONE DELLA TEXTURE (In Memoria con Alpha Masking)
+                    // 2. TEXTURE GENERATION (In Memory with Alpha Masking)
                     try {
                         InputStream doorIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/minecraft/textures/item/" + wood + "_door.png");
                         InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/spores--shadows/textures/block/mold_stage_" + i + ".png");
@@ -60,13 +60,13 @@ public class MoldyResourceGenerator {
                                     int doorPixel = doorImage.getRGB(x, y);
                                     int doorAlpha = (doorPixel >> 24) & 0xff;
                                     
-                                    if (doorAlpha > 0) { // Se il pixel della porta NON è completamente trasparente
+                                    if (doorAlpha > 0) { // If the door pixel is NOT completely transparent
                                         int moldPixel = moldImage.getRGB(x % moldImage.getWidth(), y % moldImage.getHeight());
                                         int moldAlpha = (moldPixel >> 24) & 0xff;
                                         
                                         // ALPHA MASKING
-                                        if (moldAlpha > 20) { // Se c'è della muffa visibile
-                                            // Semplice sovrascrittura (o potremmo fare vero alpha blending)
+                                        if (moldAlpha > 20) { // If there is visible mold
+                                            // Simple overwrite (or we could do true alpha blending)
                                             resultImage.setRGB(x, y, moldPixel);
                                         } else {
                                             resultImage.setRGB(x, y, doorPixel);
@@ -81,11 +81,11 @@ public class MoldyResourceGenerator {
                             ImageIO.write(resultImage, "png", baos);
                             byte[] imageBytes = baos.toByteArray();
                             
-                            // Iniettiamo la texture virtuale!
+                            // Inject the virtual texture!
                             builder.addData("assets/spores--shadows/textures/item/" + itemName + ".png", imageBytes);
                         }
                     } catch (Exception e) {
-                        System.err.println("Errore durante la generazione dinamica della porta: " + itemName);
+                        System.err.println("Error during dynamic generation of the door: " + itemName);
                         e.printStackTrace();
                     }
                 }
