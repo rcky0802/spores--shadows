@@ -111,8 +111,13 @@ Utiliser du bois pourri pour l'artisanat n'est pas sage. La structure interne du
   - Bois Touché : **50%**
   - Bois Moisi : **65%**
   - Bois Pourri : **85%** (Excellent fertilisant !)
+* 🔴 **Composants en Redstone (Boutons et Plaques de Pression)** :
+  La moisissure compromet les mécanismes internes des composants en redstone, les bloquant et les maintenant actifs beaucoup plus longtemps. Par exemple, un bouton en bois sain normal reste actif pendant 1,5 seconde (30 ticks), mais à mesure qu'il pourrit :
+  - Touché : **3 secondes** (60 ticks).
+  - Moisi : **7,5 secondes** (150 ticks).
+  - Pourri : **22,5 secondes** (450 ticks).
 
-*(💡 **Note sur les Blocs Cirés** : La cire est un scellant environnemental, mais ne bloque pas l'utilisation de l'objet ! Vous pouvez utiliser les blocs cirés dans l'établi, les brûler dans le four ou les jeter dans le composteur : ils se comporteront exactement comme leur homologue non ciré, conservant les mêmes malus ou bonus liés uniquement à leur niveau interne de pourriture).*
+*(💡 **Note sur les Blocs Cirés** : La cera est un scellant environnemental, mais ne bloque pas l'utilisation de l'objet ! Vous pouvez utiliser les blocs cirés dans l'établi, les brûler dans le four ou les jeter dans le composteur : ils se comporteront exactement comme leur homologue non ciré, conservant les mêmes malus ou bonus liés uniquement à leur niveau interne de pourriture).*
 
 ---
 

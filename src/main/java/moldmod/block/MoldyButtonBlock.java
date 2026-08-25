@@ -44,7 +44,8 @@ public class MoldyButtonBlock extends ButtonBlock {
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient && state.get(POWERED) == false) {
             int stage = state.get(MoldyLogBlock.STAGE);
-            if (stage == 3) {
+            boolean waxed = state.get(MoldyLogBlock.WAXED);
+            if (stage == 3 && !waxed) {
                 // 10% chance to break when pressed!
                 if (world.random.nextFloat() < 0.10f) {
                     world.breakBlock(pos, false);

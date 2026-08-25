@@ -65,6 +65,8 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_2", "Ne peut pas être utilisé efficacement dans des recettes complexes.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_1", "Composant en bois dégradé.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_2", "Structurellement affaibli par la moisissure.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_1", "La moisissure a compromis le mécanisme.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_2", "La durée d'activation est considérablement plus longue.");
 
         translationBuilder.add("text.autoconfig.spores--shadows.title", "Configuration Spores & Shadows");
         translationBuilder.add("text.autoconfig.spores--shadows.category.general", "Général");

@@ -65,6 +65,8 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_2", "Non può essere usato efficacemente in ricette complesse.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_1", "Componente di legno degradato.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_2", "Strutturalmente indebolito dalla muffa.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_1", "La muffa ha compromesso il meccanismo.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_2", "Il tempo di attivazione è notevolmente aumentato.");
 
         translationBuilder.add("text.autoconfig.spores--shadows.title", "Configurazione Spores & Shadows");
         translationBuilder.add("text.autoconfig.spores--shadows.category.general", "Generale");

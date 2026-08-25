@@ -610,5 +610,7 @@
   "tooltip.spores--shadows.moldy_log_desc_2": "ma non può essere usato per normali ricette vanilla.",
   "tooltip.spores--shadows.moldy_planks_desc_1": "Utile solo per crafting semplici (bastoni, staccionate).",
   "tooltip.spores--shadows.moldy_planks_desc_2": "Non può essere usato efficacemente in ricette complesse.",
+  "tooltip.spores--shadows.moldy_redstone_desc_1": "La muffa ha compromesso il meccanismo.",
+  "tooltip.spores--shadows.moldy_redstone_desc_2": "Il tempo di attivazione è notevolmente aumentato.",
   "tooltip.spores--shadows.waxed": "Cerato"
 }

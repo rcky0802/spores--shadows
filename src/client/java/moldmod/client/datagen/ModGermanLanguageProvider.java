@@ -78,6 +78,8 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_2", "Nicht effektiv in komplexen Rezepten einsetzbar.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_1", "Degradiertes Holzbauteil.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_2", "Strukturell durch Schimmel geschwächt.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_1", "Schimmel hat den Mechanismus beeinträchtigt.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_2", "Die Aktivierungsdauer ist deutlich länger.");
 
         translationBuilder.add("text.autoconfig.spores--shadows.title", "Spores & Shadows Konfiguration");
         translationBuilder.add("text.autoconfig.spores--shadows.category.general", "Allgemein");

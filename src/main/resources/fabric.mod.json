@@ -26,16 +26,16 @@
 		]
 	},
 	"mixins": [
-		"spores--shadows.mixins.json",
-		{
-			"config": "spores--shadows.client.mixins.json",
-			"environment": "client"
-		}
+		"spores--shadows.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.3",
 		"minecraft": "~1.21.1",
 		"java": ">=21",
-		"fabric": "*"
+		"fabric": "*",
+		"cloth-config": ">=15.0.0"
+	},
+	"suggests": {
+		"modmenu": "*"
 	}
 }

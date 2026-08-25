@@ -65,6 +65,8 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_2", "No se puede usar en recetas complejas a máxima eficiencia.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_1", "Componente de madera degradado.");
         translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_2", "Estructuralmente debilitado por el moho.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_1", "El moho ha comprometido el mecanismo.");
+        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_2", "El tiempo de activación es significativamente mayor.");
 
         translationBuilder.add("text.autoconfig.spores--shadows.title", "Configuración de Spores & Shadows");
         translationBuilder.add("text.autoconfig.spores--shadows.category.general", "General");

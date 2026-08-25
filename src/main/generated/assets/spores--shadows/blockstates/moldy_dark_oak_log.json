@@ -21,62 +21,62 @@
       "y": 90
     },
     "axis=x,stage=1,structural=false,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=1,structural=false,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=1,structural=true,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=1,structural=true,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=2,structural=false,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=2,structural=false,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=2,structural=true,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=2,structural=true,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=3,structural=false,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=3,structural=false,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=3,structural=true,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90,
       "y": 90
     },
     "axis=x,stage=3,structural=true,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90,
       "y": 90
     },
@@ -145,51 +145,51 @@
       "x": 90
     },
     "axis=z,stage=1,structural=false,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90
     },
     "axis=z,stage=1,structural=false,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90
     },
     "axis=z,stage=1,structural=true,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90
     },
     "axis=z,stage=1,structural=true,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_1",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_1",
       "x": 90
     },
     "axis=z,stage=2,structural=false,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90
     },
     "axis=z,stage=2,structural=false,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90
     },
     "axis=z,stage=2,structural=true,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90
     },
     "axis=z,stage=2,structural=true,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_2",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_2",
       "x": 90
     },
     "axis=z,stage=3,structural=false,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90
     },
     "axis=z,stage=3,structural=false,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90
     },
     "axis=z,stage=3,structural=true,waxed=false": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90
     },
     "axis=z,stage=3,structural=true,waxed=true": {
-      "model": "spores--shadows:block/moldy_dark_oak_log_horizontal_stage_3",
+      "model": "spores--shadows:block/moldy_dark_oak_log_stage_3",
       "x": 90
     }
   }

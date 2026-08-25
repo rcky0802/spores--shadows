@@ -110,6 +110,11 @@ Die Verwendung von verrottetem Holz zum Crafting ist unklug. Die innere Struktur
   - Befallenes Holz: **50%**
   - Schimmeliges Holz: **65%**
   - Verrottetes Holz: **85%** (Hervorragender Dünger!)
+* 🔴 **Redstone-Komponenten (Knöpfe und Druckplatten)**:
+  Schimmel beeinträchtigt die inneren Mechanismen der Redstone-Komponenten, sodass diese klemmen und viel länger aktiv bleiben. Ein normaler, gesunder Holzknopf bleibt beispielsweise 1,5 Sekunden (30 Ticks) aktiv, aber je mehr er verrottet:
+  - Befallen: **3 Sekunden** (60 Ticks).
+  - Schimmelig: **7,5 Sekunden** (150 Ticks).
+  - Verrottet: **22,5 Sekunden** (450 Ticks).
 
 *(💡 **Hinweis zu gewachsten Blöcken**: Wachs ist ein umweltbedingtes Dichtmittel, verhindert aber nicht die Nutzung des Gegenstands! Du kannst gewachste Blöcke in der Werkbank verwenden, im Ofen verbrennen oder in den Komposter werfen: Sie verhalten sich genau wie ihr unbewachstes Gegenstück und behalten die exakt gleichen Mali oder Boni bei, die ausschließlich an ihren inneren Fäulnisgrad gebunden sind).*
 

@@ -610,5 +610,7 @@
   "tooltip.spores--shadows.moldy_log_desc_2": "but cannot be used for normal vanilla recipes.",
   "tooltip.spores--shadows.moldy_planks_desc_1": "Only useful for simple crafting (sticks, fences, etc).",
   "tooltip.spores--shadows.moldy_planks_desc_2": "Cannot be used in complex recipes at full efficiency.",
+  "tooltip.spores--shadows.moldy_redstone_desc_1": "Mold has compromised the mechanism.",
+  "tooltip.spores--shadows.moldy_redstone_desc_2": "Activation duration is significantly longer.",
   "tooltip.spores--shadows.waxed": "Waxed"
 }

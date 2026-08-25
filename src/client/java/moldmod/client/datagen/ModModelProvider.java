@@ -115,47 +115,36 @@ public class ModModelProvider extends FabricModelProvider {
         String topSuffix = hasUniqueTop ? "_top" : "";
 
         net.minecraft.data.client.Model colModel = new net.minecraft.data.client.Model(java.util.Optional.of(Identifier.of("spores--shadows", "block/moldy_cube_column")), java.util.Optional.empty(), TextureKey.SIDE, TextureKey.END, OVERLAY_KEY);
-        net.minecraft.data.client.Model colModelH = new net.minecraft.data.client.Model(java.util.Optional.of(Identifier.of("spores--shadows", "block/moldy_cube_column_horizontal")), java.util.Optional.empty(), TextureKey.SIDE, TextureKey.END, OVERLAY_KEY);
 
         TextureMap map1 = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_1"));
         Identifier m1 = colModel.upload(block, "_stage_1", map1, generator.modelCollector);
-        TextureMap map1h = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_1"));
-        Identifier m1h = colModelH.upload(block, "_horizontal_stage_1", map1h, generator.modelCollector);
 
         TextureMap map2 = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_2"));
         Identifier m2 = colModel.upload(block, "_stage_2", map2, generator.modelCollector);
-        TextureMap map2h = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_2"));
-        Identifier m2h = colModelH.upload(block, "_horizontal_stage_2", map2h, generator.modelCollector);
 
         TextureMap map3 = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_3"));
         Identifier m3 = colModel.upload(block, "_stage_3", map3, generator.modelCollector);
-        TextureMap map3h = new TextureMap().put(TextureKey.SIDE, Identifier.of("minecraft", "block/" + textureBaseName)).put(TextureKey.END, Identifier.of("minecraft", "block/" + textureBaseName + topSuffix)).put(OVERLAY_KEY, Identifier.of("spores--shadows", "block/mold_stage_3"));
-        Identifier m3h = colModelH.upload(block, "_horizontal_stage_3", map3h, generator.modelCollector);
 
         Identifier vanillaModel = Identifier.of("minecraft", "block/" + vanillaSide);
-        Identifier vanillaModelH = Identifier.of("minecraft", "block/" + vanillaSide);
-        if (!hasUniqueTop) {
-            // If it's wood, horizontal model is the same as vertical
-        }
 
         generator.blockStateCollector.accept(
             VariantsBlockStateSupplier.create(block)
                 .coordinate(BlockStateVariantMap.create(Properties.AXIS, MoldyLogBlock.STAGE)
                     .register(Direction.Axis.Y, 0, BlockStateVariant.create().put(VariantSettings.MODEL, vanillaModel))
-                    .register(Direction.Axis.Z, 0, BlockStateVariant.create().put(VariantSettings.MODEL, vanillaModelH).put(VariantSettings.X, VariantSettings.Rotation.R90))
-                    .register(Direction.Axis.X, 0, BlockStateVariant.create().put(VariantSettings.MODEL, vanillaModelH).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.Z, 0, BlockStateVariant.create().put(VariantSettings.MODEL, vanillaModel).put(VariantSettings.X, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.X, 0, BlockStateVariant.create().put(VariantSettings.MODEL, vanillaModel).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
                     
                     .register(Direction.Axis.Y, 1, BlockStateVariant.create().put(VariantSettings.MODEL, m1))
-                    .register(Direction.Axis.Z, 1, BlockStateVariant.create().put(VariantSettings.MODEL, m1h).put(VariantSettings.X, VariantSettings.Rotation.R90))
-                    .register(Direction.Axis.X, 1, BlockStateVariant.create().put(VariantSettings.MODEL, m1h).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.Z, 1, BlockStateVariant.create().put(VariantSettings.MODEL, m1).put(VariantSettings.X, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.X, 1, BlockStateVariant.create().put(VariantSettings.MODEL, m1).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
                     
                     .register(Direction.Axis.Y, 2, BlockStateVariant.create().put(VariantSettings.MODEL, m2))
-                    .register(Direction.Axis.Z, 2, BlockStateVariant.create().put(VariantSettings.MODEL, m2h).put(VariantSettings.X, VariantSettings.Rotation.R90))
-                    .register(Direction.Axis.X, 2, BlockStateVariant.create().put(VariantSettings.MODEL, m2h).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.Z, 2, BlockStateVariant.create().put(VariantSettings.MODEL, m2).put(VariantSettings.X, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.X, 2, BlockStateVariant.create().put(VariantSettings.MODEL, m2).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
                     
                     .register(Direction.Axis.Y, 3, BlockStateVariant.create().put(VariantSettings.MODEL, m3))
-                    .register(Direction.Axis.Z, 3, BlockStateVariant.create().put(VariantSettings.MODEL, m3h).put(VariantSettings.X, VariantSettings.Rotation.R90))
-                    .register(Direction.Axis.X, 3, BlockStateVariant.create().put(VariantSettings.MODEL, m3h).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.Z, 3, BlockStateVariant.create().put(VariantSettings.MODEL, m3).put(VariantSettings.X, VariantSettings.Rotation.R90))
+                    .register(Direction.Axis.X, 3, BlockStateVariant.create().put(VariantSettings.MODEL, m3).put(VariantSettings.X, VariantSettings.Rotation.R90).put(VariantSettings.Y, VariantSettings.Rotation.R90))
                 )
                 .coordinate(BlockStateVariantMap.create(MoldyLogBlock.WAXED)
                     .register(true, BlockStateVariant.create())

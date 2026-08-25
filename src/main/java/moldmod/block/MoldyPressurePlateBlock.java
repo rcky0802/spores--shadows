@@ -42,7 +42,8 @@ public class MoldyPressurePlateBlock extends PressurePlateBlock {
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
         if (!world.isClient && state.get(POWERED) == false) {
             int stage = state.get(MoldyLogBlock.STAGE);
-            if (stage == 3) {
+            boolean waxed = state.get(MoldyLogBlock.WAXED);
+            if (stage == 3 && !waxed) {
                 // 10% chance to break when stepped on!
                 if (world.random.nextFloat() < 0.10f) {
                     world.breakBlock(pos, false);

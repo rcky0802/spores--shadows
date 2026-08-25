@@ -110,6 +110,11 @@ Using rotten wood for crafting is unwise. The internal structure of the material
   - Tainted Wood: **50%**
   - Moldy Wood: **65%**
   - Rotten Wood: **85%** (Excellent fertilizer!)
+* 🔴 **Redstone Components (Buttons & Pressure Plates)**:
+  Mold compromises the internal mechanisms of redstone components, causing them to get stuck and stay active for much longer. For example, a healthy wooden button stays active for 1.5 seconds (30 ticks), but as rot progresses:
+  - Tainted: **3 seconds** (60 ticks).
+  - Moldy: **7.5 seconds** (150 ticks).
+  - Rotten: **22.5 seconds** (450 ticks).
 
 *(💡 **Note on Waxed Blocks**: Wax is an environmental sealant, but it does not block the use of the item! You can use waxed blocks in the crafting table, burn them in the furnace, or toss them in the composter: they will behave exactly like their unwaxed counterpart, maintaining the exact same penalties or bonuses tied solely to their internal rot level).*
 

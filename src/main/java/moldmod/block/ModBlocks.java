@@ -223,6 +223,9 @@ public class ModBlocks {
             } else if (name.contains("planks")) {
                 tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_planks_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
                 tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_planks_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
+            } else if (name.contains("button") || name.contains("pressure_plate")) {
+                tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_redstone_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
+                tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_redstone_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
             } else {
                 tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_general_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
                 tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_general_desc_2").formatted(net.minecraft.util.Formatting.GRAY));

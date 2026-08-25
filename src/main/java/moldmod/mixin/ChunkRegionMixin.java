@@ -11,7 +11,7 @@ import moldmod.structure.MoldyStructureContext;
 @Mixin(ChunkRegion.class)
 public abstract class ChunkRegionMixin {
 
-    @ModifyVariable(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;I)Z", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    @ModifyVariable(method = "setBlockState(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;II)Z", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private BlockState modifyStructureBlock(BlockState state, BlockPos pos) {
         return MoldyStructureContext.processBlock(state, pos, (ChunkRegion)(Object)this);
     }

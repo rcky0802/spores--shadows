@@ -112,6 +112,11 @@ Usar madera podrida para la fabricación no es sabio. La estructura interna del 
   - Madera Deteriorada: **50%**
   - Madera Enmohecida: **65%**
   - Madera Podrida: **85%** (¡Excelente fertilizante!)
+* 🔴 **Componentes de Redstone (Botones y Placas de Presión)**:
+  El moho compromete los mecanismos internos de los componentes de redstone, haciendo que se atasquen y permanezcan activos por mucho más tiempo. Por ejemplo, un botón de madera sano normal permanece activo durante 1,5 segundos (30 ticks), pero a medida que se pudre:
+  - Deteriorado: **3 segundos** (60 ticks).
+  - Enmohecido: **7,5 segundos** (150 ticks).
+  - Podrido: **22,5 segundos** (450 ticks).
 
 *(💡 **Nota sobre los Bloques Encerados**: ¡La cera es un sellador ambiental, pero no bloquea el uso del objeto! Puedes usar los bloques encerados en la mesa de trabajo, quemarlos en el horno o tirarlos al compostador: se comportarán exactamente como su contraparte no encerada, manteniendo las mismas penalizaciones o bonificaciones vinculadas únicamente a su nivel interno de podredumbre).*
 

@@ -66,8 +66,8 @@ dependencies {
     }
 
 	// Polymer for Virtual Resource Packs
-	modImplementation "eu.pb4:polymer-core:0.9.19+1.21.1"
-	modImplementation "eu.pb4:polymer-resource-pack:0.9.19+1.21.1"
+	include modImplementation("eu.pb4:polymer-core:0.9.19+1.21.1")
+	include modImplementation("eu.pb4:polymer-resource-pack:0.9.19+1.21.1")
 }
 
 tasks.withType(AbstractCopyTask).configureEach {
@@ -124,3 +124,7 @@ publishing {
 	}
 }
 tasks.withType(JavaCompile) { options.compilerArgs << '-Xlint:all' << '-Xlint:-processing' }
+
+test {
+	failOnNoDiscoveredTests = false
+}

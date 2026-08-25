@@ -98,7 +98,7 @@ Usare legno marcio per l'artigianato non è saggio. La struttura interna del mat
 
   | Qualità del Materiale | 🌳 Es: Tronco ➔ Assi | 🦯 Es: Assi ➔ Bastoni |
   | :--- | :---: | :---: |
-  | 🌲 **Sano (Vanilla)** | 1 Tronco ➔ **4** Assi | 2 Assi ➔ **4** Bastoni |
+  | 🌲 **Sano (Vanilla)**5 | 1 Tronco ➔ **4** Assi | 2 Assi ➔ **4** Bastoni |
   | 🟢 **Intaccato** | 1 Tronco ➔ **2** Assi | 2 Assi ➔ **2** Bastoni |
   | 🦠 **Ammuffito** | 1 Tronco ➔ **1** Asse | 2 Assi ➔ **1** Bastone |
   | ☠️ **Marcio** | *Ricetta Invalida* ❌ | *Ricetta Invalida* ❌ |
@@ -112,6 +112,11 @@ Usare legno marcio per l'artigianato non è saggio. La struttura interna del mat
   - Legno Intaccato: **50%**
   - Legno Ammuffito: **65%**
   - Legno Marcio: **85%** (Eccellente fertilizzante!)
+* 🔴 **Componenti in Pietrarossa (Pulsanti e Pedane a Pressione)**:
+  La muffa compromette i meccanismi interni dei componenti in pietrarossa, facendoli incastrare e rimanere attivi molto più a lungo. Ad esempio, un normale pulsante di legno sano rimane attivo per 1,5 secondi (30 tick), ma man mano che marcisce:
+  - Intaccato: **3 secondi** (60 tick).
+  - Ammuffito: **7,5 secondi** (150 tick).
+  - Marcio: **22,5 secondi** (450 tick).
 
 *(💡 **Nota sui Blocchi Cerati**: La cera è un sigillante ambientale, ma non blocca l'utilizzo dell'oggetto! Puoi usare i blocchi cerati nel banco da lavoro, bruciarli nella fornace o gettarli nella compostiera: si comporteranno esattamente come la loro controparte non cerata, mantenendo gli stessi identici malus o bonus legati unicamente al loro livello interno di marciume).*
 

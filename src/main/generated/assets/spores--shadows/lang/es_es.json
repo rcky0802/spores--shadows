@@ -610,5 +610,7 @@
   "tooltip.spores--shadows.moldy_log_desc_2": "pero no se puede usar para recetas vanilla normales.",
   "tooltip.spores--shadows.moldy_planks_desc_1": "Solo útil para crafteos simples (palos, vallas, etc).",
   "tooltip.spores--shadows.moldy_planks_desc_2": "No se puede usar en recetas complejas a máxima eficiencia.",
+  "tooltip.spores--shadows.moldy_redstone_desc_1": "El moho ha comprometido el mecanismo.",
+  "tooltip.spores--shadows.moldy_redstone_desc_2": "El tiempo de activación es significativamente mayor.",
   "tooltip.spores--shadows.waxed": "Encerado"
 }

@@ -1,8 +1,0 @@
-{
-  "parent": "spores--shadows:block/moldy_cube_column_horizontal",
-  "textures": {
-    "end": "minecraft:block/cherry_log_top",
-    "overlay": "spores--shadows:block/mold_stage_2",
-    "side": "minecraft:block/cherry_log"
-  }
-}
