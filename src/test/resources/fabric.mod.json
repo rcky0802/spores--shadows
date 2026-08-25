@@ -1,0 +1,21 @@
+{
+	"schemaVersion": 1,
+	"id": "spores--shadows-test",
+	"name": "Spores & Shadows Tests",
+	"version": "1.0.0",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": [
+			"moldmod.test.SporesShadowsTests",
+			"moldmod.test.MoldyInfectionRuleTests",
+			"moldmod.test.MoldyMiningAndLootTests",
+			"moldmod.test.MoldyCraftingAndFuelTests",
+			"moldmod.test.MoldyVariantsCountTest",
+			"moldmod.test.MoldyMathTests",
+			"moldmod.test.StructureDegradationTest"
+		]
+	},
+    "depends": {
+        "spores--shadows": "*"
+    }
+}

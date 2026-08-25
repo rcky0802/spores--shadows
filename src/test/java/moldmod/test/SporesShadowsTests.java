@@ -29,11 +29,12 @@ public class SporesShadowsTests {
 
         net.minecraft.entity.player.PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
         player.setSneaking(true);
+        player.setPose(net.minecraft.entity.EntityPose.CROUCHING);
         
         ItemStack honeycomb = new ItemStack(Items.HONEYCOMB, 5);
         player.setStackInHand(Hand.MAIN_HAND, honeycomb);
         
-        context.useBlock(pos, player);
+        simulatePlayerUse(context, pos, player);
 
         context.expectBlockProperty(pos, MoldyLogBlock.WAXED, true);
         
@@ -57,7 +58,7 @@ public class SporesShadowsTests {
         ItemStack honeycomb = new ItemStack(Items.HONEYCOMB, 5);
         player.setStackInHand(Hand.MAIN_HAND, honeycomb);
         
-        context.useBlock(pos, player);
+        simulatePlayerUse(context, pos, player);
 
         context.expectBlockProperty(pos, MoldyLogBlock.WAXED, false);
         
@@ -78,11 +79,12 @@ public class SporesShadowsTests {
 
         net.minecraft.entity.player.PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
         player.setSneaking(true);
+        player.setPose(net.minecraft.entity.EntityPose.CROUCHING);
         
         ItemStack axe = new ItemStack(Items.IRON_AXE);
         player.setStackInHand(Hand.MAIN_HAND, axe);
         
-        context.useBlock(pos, player);
+        simulatePlayerUse(context, pos, player);
 
         context.expectBlockProperty(pos, MoldyLogBlock.WAXED, false);
         context.expectBlockProperty(pos, MoldyLogBlock.STAGE, 1); // Stage MUST NOT change
@@ -103,11 +105,12 @@ public class SporesShadowsTests {
 
         net.minecraft.entity.player.PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
         player.setSneaking(true);
+        player.setPose(net.minecraft.entity.EntityPose.CROUCHING);
         
         ItemStack axe = new ItemStack(Items.IRON_AXE);
         player.setStackInHand(Hand.MAIN_HAND, axe);
         
-        context.useBlock(pos, player);
+        simulatePlayerUse(context, pos, player);
 
         context.expectBlockProperty(pos, MoldyLogBlock.STAGE, 1);
         
@@ -127,11 +130,12 @@ public class SporesShadowsTests {
 
         net.minecraft.entity.player.PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
         player.setSneaking(true);
+        player.setPose(net.minecraft.entity.EntityPose.CROUCHING);
         
         ItemStack axe = new ItemStack(Items.IRON_AXE);
         player.setStackInHand(Hand.MAIN_HAND, axe);
         
-        context.useBlock(pos, player);
+        simulatePlayerUse(context, pos, player);
 
         context.expectBlockProperty(pos, MoldyLogBlock.STAGE, 0);
         
@@ -151,11 +155,12 @@ public class SporesShadowsTests {
 
         net.minecraft.entity.player.PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
         player.setSneaking(true);
+        player.setPose(net.minecraft.entity.EntityPose.CROUCHING);
         
         ItemStack axe = new ItemStack(Items.IRON_AXE);
         player.setStackInHand(Hand.MAIN_HAND, axe);
         
-        context.useBlock(pos, player);
+        simulatePlayerUse(context, pos, player);
 
         // State should still be 3
         context.expectBlockProperty(pos, MoldyLogBlock.STAGE, 3);
@@ -163,6 +168,78 @@ public class SporesShadowsTests {
         if (axe.getDamage() != 0) {
             context.throwPositionedException("Axe durability should NOT be consumed on Level 3!", pos);
         }
+        
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testWaxingDoorBottomHalfSyncsTopHalf(TestContext context) {
+        BlockPos bottomPos = new BlockPos(0, 2, 0);
+        BlockPos topPos = new BlockPos(0, 3, 0);
+        
+        net.minecraft.block.Block doorBlock = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_DOOR);
+        
+        BlockState bottomState = doorBlock.getDefaultState()
+                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
+                .with(MoldyLogBlock.STAGE, 1).with(MoldyLogBlock.WAXED, false);
+                
+        BlockState topState = doorBlock.getDefaultState()
+                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.UPPER)
+                .with(MoldyLogBlock.STAGE, 1).with(MoldyLogBlock.WAXED, false);
+                
+        context.setBlockState(bottomPos, bottomState);
+        context.setBlockState(topPos, topState);
+
+        net.minecraft.entity.player.PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
+        player.setSneaking(true);
+        player.setPose(net.minecraft.entity.EntityPose.CROUCHING);
+        
+        ItemStack honeycomb = new ItemStack(Items.HONEYCOMB, 5);
+        player.setStackInHand(Hand.MAIN_HAND, honeycomb);
+        
+        simulatePlayerUse(context, bottomPos, player);
+
+        // Bottom should be waxed
+        context.expectBlockProperty(bottomPos, MoldyLogBlock.WAXED, true);
+        // Top should be auto-synced to waxed
+        context.expectBlockProperty(topPos, MoldyLogBlock.WAXED, true);
+        
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testScrapingDoorTopHalfSyncsBottomHalf(TestContext context) {
+        BlockPos bottomPos = new BlockPos(0, 2, 0);
+        BlockPos topPos = new BlockPos(0, 3, 0);
+        
+        net.minecraft.block.Block doorBlock = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_DOOR);
+        
+        // Stage 1, Waxed
+        BlockState bottomState = doorBlock.getDefaultState()
+                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
+                .with(MoldyLogBlock.STAGE, 1).with(MoldyLogBlock.WAXED, true);
+                
+        BlockState topState = doorBlock.getDefaultState()
+                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.UPPER)
+                .with(MoldyLogBlock.STAGE, 1).with(MoldyLogBlock.WAXED, true);
+                
+        context.setBlockState(bottomPos, bottomState);
+        context.setBlockState(topPos, topState);
+
+        net.minecraft.entity.player.PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
+        player.setSneaking(true);
+        player.setPose(net.minecraft.entity.EntityPose.CROUCHING);
+        
+        ItemStack axe = new ItemStack(Items.IRON_AXE);
+        player.setStackInHand(Hand.MAIN_HAND, axe);
+        
+        // Use axe on TOP half
+        simulatePlayerUse(context, topPos, player);
+
+        // Top should have wax removed
+        context.expectBlockProperty(topPos, MoldyLogBlock.WAXED, false);
+        // Bottom should auto-sync and have wax removed
+        context.expectBlockProperty(bottomPos, MoldyLogBlock.WAXED, false);
         
         context.complete();
     }
@@ -182,7 +259,7 @@ public class SporesShadowsTests {
         ItemStack axe = new ItemStack(Items.IRON_AXE);
         player.setStackInHand(Hand.MAIN_HAND, axe);
         
-        context.useBlock(pos, player); // Without sneaking, it just strips it
+        simulatePlayerUse(context, pos, player); // Without sneaking, it just strips it
 
         context.expectBlock(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.STRIPPED_OAK_LOG), pos);
         context.complete();
@@ -197,11 +274,11 @@ public class SporesShadowsTests {
         // Put water nearby
         context.setBlockState(center.add(1, 0, 0), Blocks.WATER.getDefaultState());
 
-        double r = MoldyBlockHelper.calculateR(context.getWorld(), context.getAbsolutePos(center), false, cleanLog);
+        double localBonus = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, cleanLog).localHumidityBonus();
         
-        // R should be > 0.0 because of the water nearby
-        if (r <= 0.0) {
-            context.throwPositionedException("R value was not increased by water!", center);
+        // localBonus should be > 0.0 because of the water nearby
+        if (localBonus <= 0.0) {
+            context.throwPositionedException("Humidity bonus was not increased by water!", center);
         }
         
         context.complete();
@@ -282,6 +359,14 @@ public class SporesShadowsTests {
         }
         
         context.complete();
+    }
+
+    private void simulatePlayerUse(TestContext context, BlockPos pos, net.minecraft.entity.player.PlayerEntity player) {
+        net.minecraft.util.hit.BlockHitResult hit = new net.minecraft.util.hit.BlockHitResult(context.getAbsolutePos(pos).toCenterPos(), Direction.UP, context.getAbsolutePos(pos), false);
+        net.minecraft.util.ActionResult result = net.fabricmc.fabric.api.event.player.UseBlockCallback.EVENT.invoker().interact(player, context.getWorld(), Hand.MAIN_HAND, hit);
+        if (result == net.minecraft.util.ActionResult.PASS) {
+            context.useBlock(pos, player);
+        }
     }
 
     // Old tests moved to MoldyCraftingAndFuelTests.java

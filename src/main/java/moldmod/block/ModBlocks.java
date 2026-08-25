@@ -23,7 +23,7 @@ import java.util.Map;
 public class ModBlocks {
 
     public static final Map<Block, Block> VANILLA_TO_MOLDY = new HashMap<>();
-    private static final Map<Item, java.util.List<Item>> MOLDY_ITEMS_BY_VANILLA = new java.util.LinkedHashMap<>();
+    public static final Map<Item, java.util.List<Item>> MOLDY_ITEMS_BY_VANILLA = new java.util.LinkedHashMap<>();
     public static final Map<Block, java.util.List<Item>> MOLDY_ITEMS_BY_BLOCK = new HashMap<>();
 
     public static void registerModBlocks() {

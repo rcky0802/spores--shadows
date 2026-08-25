@@ -33,6 +33,7 @@ loom {
 		gametest {
 			server()
 			name "GameTest"
+			source sourceSets.test
 			vmArg "-Dfabric-api.gametest"
 			vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
 			runDir "build/gametest"

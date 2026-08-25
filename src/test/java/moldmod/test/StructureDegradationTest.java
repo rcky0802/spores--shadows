@@ -12,7 +12,7 @@ import net.minecraft.world.StructureWorldAccess;
 
 public class StructureDegradationTest {
 
-    @GameTest(templateName = "fabric-api-base:empty")
+    @GameTest(templateName = "fabric-gametest-api-v1:empty")
     public void testMineshaftDegradation(TestContext context) {
         // Mock a mineshaft generation
         MoldyStructureContext.setStructure("mineshaft");
@@ -50,38 +50,44 @@ public class StructureDegradationTest {
         }
     }
 
-    @GameTest(templateName = "fabric-api-base:empty")
-    public void testVillageCategory4(TestContext context) {
-        MoldyStructureContext.setStructure("village_plains");
-
+    @GameTest(templateName = "fabric-gametest-api-v1:empty")
+    public void testShipwreckCategory1(TestContext context) {
+        MoldyStructureContext.setStructure("shipwreck");
         try {
-            // Place an oak log high in the sky (simulating roof)
-            BlockPos roofPos = new BlockPos(1, 10, 1);
-            BlockState roofResult = MoldyStructureContext.processBlock(
-                    Blocks.OAK_LOG.getDefaultState(),
-                    context.getAbsolutePos(roofPos),
-                    (StructureWorldAccess) context.getWorld()
-            );
-            context.assertTrue(roofResult.isOf(Blocks.OAK_LOG), "Roof block should not degrade in Village!");
-
-            // Place an oak log near grass (simulating foundation)
-            BlockPos grassPos = new BlockPos(2, 2, 2);
-            context.setBlockState(new BlockPos(2, 1, 2), Blocks.GRASS_BLOCK); // foundation
-            
-            // Loop a few times to beat randomness
-            boolean degraded = false;
-            for (int i = 0; i < 50; i++) {
+            int rotten = 0;
+            for (int x = 0; x < 20; x++) {
                 BlockState result = MoldyStructureContext.processBlock(
                         Blocks.OAK_LOG.getDefaultState(),
-                        context.getAbsolutePos(grassPos),
+                        context.getAbsolutePos(new BlockPos(x, 2, 0)),
                         (StructureWorldAccess) context.getWorld()
                 );
-                if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG))) {
-                    degraded = true;
-                    break;
+                if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)) && result.get(MoldyLogBlock.STAGE) == 2) {
+                    rotten++;
                 }
             }
-            context.assertTrue(degraded, "Foundation block should eventually degrade in Village!");
+            context.assertTrue(rotten > 0, "Shipwreck should produce rotten blocks (Category 1)!");
+            context.complete();
+        } finally {
+            MoldyStructureContext.clear();
+        }
+    }
+
+    @GameTest(templateName = "fabric-gametest-api-v1:empty")
+    public void testPillagerOutpostCategory3(TestContext context) {
+        MoldyStructureContext.setStructure("pillager_outpost");
+        try {
+            int tainted = 0;
+            for (int x = 0; x < 20; x++) {
+                BlockState result = MoldyStructureContext.processBlock(
+                        Blocks.OAK_LOG.getDefaultState(),
+                        context.getAbsolutePos(new BlockPos(x, 2, 0)),
+                        (StructureWorldAccess) context.getWorld()
+                );
+                if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)) && result.get(MoldyLogBlock.STAGE) == 1) {
+                    tainted++;
+                }
+            }
+            context.assertTrue(tainted > 0, "Pillager Outpost should produce tainted blocks (Category 3)!");
             context.complete();
         } finally {
             MoldyStructureContext.clear();

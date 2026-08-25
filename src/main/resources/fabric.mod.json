@@ -21,12 +21,6 @@
 		"fabric-datagen": [
 			"moldmod.client.SporesShadowsDataGenerator"
 		],
-		"fabric-gametest": [
-			"moldmod.test.SporesShadowsTests",
-			"moldmod.test.MoldyInfectionRuleTests",
-			"moldmod.test.MoldyMiningAndLootTests",
-			"moldmod.test.MoldyCraftingAndFuelTests"
-		],
 		"modmenu": [
 			"moldmod.client.config.ModMenuIntegration"
 		]
