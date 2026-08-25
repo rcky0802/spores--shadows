@@ -2,6 +2,14 @@
 
 All notable changes to **Spores & Shadows** will be documented in this file.
 
+## [1.0.1] - Hotfix
+**Fixed:**
+- Fixed a critical startup crash present in the initial release.
+- Fully rotten interactive blocks (buttons, pressure plates, doors, trapdoors, fence gates) now break upon use and vanish without dropping items.
+- Waxed interactive blocks are immune to random breaking.
+
+---
+
 ## [1.0.0] - Initial Release
 **Added:**
 - Complete wood decay ecosystem in 4 stages: Healthy, Tainted, Moldy, Rotten.
