@@ -5,11 +5,10 @@
 	"name": "Spores & Shadows",
 	"description": "A dynamic, realistic, and unforgiving environmental decay ecosystem for wood.",
 	"authors": [
-		"Pyros"
+		"rcky0802"
 	],
-	"contact": {
-	},
-	"license": "CC0-1.0",
+	"contact": {},
+	"license": "MIT",
 	"icon": "assets/spores--shadows/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -28,7 +27,6 @@
 			"moldmod.test.MoldyMiningAndLootTests",
 			"moldmod.test.MoldyCraftingAndFuelTests"
 		],
-
 		"modmenu": [
 			"moldmod.client.config.ModMenuIntegration"
 		]
