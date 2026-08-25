@@ -1,23 +1,20 @@
 package moldmod.client.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
-public class ModSpanishLanguageProvider extends FabricLanguageProvider {
+public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
 
     public ModSpanishLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "es_es", registryLookup);
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = moldmod.SporesShadows.WOODS;
-
+    protected String getTranslation(String wood, String blockType, String state) {
         Map<String, String> names = new HashMap<>();
         names.put("oak", "de Roble");
         names.put("spruce", "de Abeto");
@@ -28,67 +25,38 @@ public class ModSpanishLanguageProvider extends FabricLanguageProvider {
         names.put("mangrove", "de Manglar");
         names.put("cherry", "de Cerezo");
 
-        for (String wood : woods) {
-            String logName = wood + "_log";
-            String woodName = wood + "_wood";
-            String prefix = wood;
-            
-            String wName = names.get(wood);
+        String wName = names.get(wood);
+        String blockName = "";
+        boolean isFeminine = false;
+        boolean isPlural = false;
 
-            String logType = "Tronco";
-            
-            translationBuilder.add("block.spores--shadows.moldy_" + logName, logType + " " + wName + " mohoso");
-            translationBuilder.add("item.spores--shadows.waxed_" + logName, logType + " " + wName + " encerado");
-            translationBuilder.add("item.spores--shadows.tainted_" + logName, logType + " " + wName + " manchado");
-            translationBuilder.add("item.spores--shadows.moldy_" + logName, logType + " " + wName + " mohoso");
-            translationBuilder.add("item.spores--shadows.rotten_" + logName, logType + " " + wName + " podrido");
-
-            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, logType + " sin corteza " + wName + " mohoso");
-            translationBuilder.add("item.spores--shadows.waxed_stripped_" + logName, logType + " sin corteza " + wName + " encerado");
-            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, logType + " sin corteza " + wName + " manchado");
-            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, logType + " sin corteza " + wName + " mohoso");
-            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, logType + " sin corteza " + wName + " podrido");
-
-            if (woodName != null) {
-                translationBuilder.add("block.spores--shadows.moldy_" + woodName, "Madera " + wName + " mohosa");
-                translationBuilder.add("item.spores--shadows.waxed_" + woodName, "Madera " + wName + " encerada");
-                translationBuilder.add("item.spores--shadows.tainted_" + woodName, "Madera " + wName + " manchada");
-                translationBuilder.add("item.spores--shadows.moldy_" + woodName, "Madera " + wName + " mohosa");
-                translationBuilder.add("item.spores--shadows.rotten_" + woodName, "Madera " + wName + " podrida");
-
-                translationBuilder.add("block.spores--shadows.moldy_stripped_" + woodName, "Madera sin corteza " + wName + " mohosa");
-                translationBuilder.add("item.spores--shadows.waxed_stripped_" + woodName, "Madera sin corteza " + wName + " encerada");
-                translationBuilder.add("item.spores--shadows.tainted_stripped_" + woodName, "Madera sin corteza " + wName + " manchada");
-                translationBuilder.add("item.spores--shadows.moldy_stripped_" + woodName, "Madera sin corteza " + wName + " mohosa");
-                translationBuilder.add("item.spores--shadows.rotten_stripped_" + woodName, "Madera sin corteza " + wName + " podrida");
-            }
-
-            translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_planks", "Tablones " + wName + " mohosos");
-            translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_planks", "Tablones " + wName + " encerados");
-            translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_planks", "Tablones " + wName + " manchados");
-            translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_planks", "Tablones " + wName + " mohosos");
-            translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_planks", "Tablones " + wName + " podridos");
-            
-            String[] blocks = {"slab", "stairs", "fence", "fence_gate", "door", "trapdoor", "pressure_plate", "button"};
-            String[] blockNames = {"Losa", "Escaleras", "Valla", "Puerta de valla", "Puerta", "Trampilla", "Placa de presión", "Botón"};
-            
-            String[] femC = {"encerada", "enceradas", "encerada", "encerada", "encerada", "encerada", "encerada", "encerado"};
-            String[] fem = {"mohosa", "mohosas", "mohosa", "mohosa", "mohosa", "mohosa", "mohosa", "mohoso"};
-            String[] femT = {"manchada", "manchadas", "manchada", "manchada", "manchada", "manchada", "manchada", "manchado"};
-            String[] femR = {"podrida", "podridas", "podrida", "podrida", "podrida", "podrida", "podrida", "podrido"};
-            
-            for (int i = 0; i < blocks.length; i++) {
-                String blockKey = blocks[i];
-                String bName = blockNames[i];
-                
-                translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_" + blockKey, bName + " " + wName + " " + fem[i]);
-                translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_" + blockKey, bName + " " + wName + " " + femC[i]);
-                translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_" + blockKey, bName + " " + wName + " " + femT[i]);
-                translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_" + blockKey, bName + " " + wName + " " + fem[i]);
-                translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_" + blockKey, bName + " " + wName + " " + femR[i]);
-            }
+        switch (blockType) {
+            case "log": blockName = "Tronco"; break;
+            case "stripped_log": blockName = "Tronco sin corteza"; break;
+            case "wood": blockName = "Madera"; isFeminine = true; break;
+            case "stripped_wood": blockName = "Madera sin corteza"; isFeminine = true; break;
+            case "planks": blockName = "Tablones"; isPlural = true; break;
+            case "slab": blockName = "Losa"; isFeminine = true; break;
+            case "stairs": blockName = "Escaleras"; isFeminine = true; isPlural = true; break;
+            case "fence": blockName = "Valla"; isFeminine = true; break;
+            case "fence_gate": blockName = "Puerta de valla"; isFeminine = true; break;
+            case "door": blockName = "Puerta"; isFeminine = true; break;
+            case "trapdoor": blockName = "Trampilla"; isFeminine = true; break;
+            case "pressure_plate": blockName = "Placa de presión"; isFeminine = true; break;
+            case "button": blockName = "Botón"; break;
         }
 
+        String stateStr = "";
+        if (state.equals("moldy")) stateStr = isFeminine ? (isPlural ? "mohosas" : "mohosa") : (isPlural ? "mohosos" : "mohoso");
+        else if (state.equals("waxed")) stateStr = isFeminine ? (isPlural ? "enceradas" : "encerada") : (isPlural ? "encerados" : "encerado");
+        else if (state.equals("tainted")) stateStr = isFeminine ? (isPlural ? "manchadas" : "manchada") : (isPlural ? "manchados" : "manchado");
+        else if (state.equals("rotten")) stateStr = isFeminine ? (isPlural ? "podridas" : "podrida") : (isPlural ? "podridos" : "podrido");
+
+        return blockName + " " + wName + " " + stateStr;
+    }
+
+    @Override
+    protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
         translationBuilder.add("tooltip.spores--shadows.waxed", "Encerado");
         translationBuilder.add("item.spores--shadows.waxed_format", "%s encerado");
         translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_1", "Se puede transformar en tablones limpios perdiendo material,");
@@ -179,9 +147,19 @@ public class ModSpanishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.structures.cat3_moderate.rotten_chance", "% Podrido");
         translationBuilder.add("text.autoconfig.spores--shadows.option.structures.cat4_low.rotten_chance", "% Podrido");
 
-        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_0", "Multiplicador Horno Vanilla (Sano)");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_1", "Multiplicador Horno Manchado");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_2", "Multiplicador Horno Mohoso");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_3", "Multiplicador Horno Podrido");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_0", "Eficiencia de Horno (Sano)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_1", "Eficiencia de Horno (Manchado)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_2", "Eficiencia de Horno (Mohoso)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_3", "Eficiencia de Horno (Podrido)");
+        
+        translationBuilder.add("text.autoconfig.spores--shadows.category.toxicity", "Toxicidad");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity", "Toxicidad");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.check_interval_ticks", "Intervalo de Control (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.scan_radius", "Radio de Nube Tóxica");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_nausea", "Umbral de Náuseas");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Umbral de Veneno");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Duración Náuseas (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Duración Veneno (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Radio de Escaneo de Agua");
     }
 }

@@ -30,6 +30,7 @@ public class SporesShadows implements ModInitializer {
 		
 		moldmod.block.ModBlocks.registerModBlocks();
 		moldmod.event.MoldyInteractionEvents.register();
+		moldmod.event.ToxicAirEvent.register();
 		moldmod.block.TestReflection4.run();
 		moldmod.command.ModCommands.registerCommands();
 		moldmod.registry.ModFuelRegistry.register();

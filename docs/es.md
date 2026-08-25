@@ -52,6 +52,21 @@ El avance ocurre solo si el "Riesgo de Infección" (`R`), recalculado constantem
 
 ---
 
+## ☠️ Peligros Ambientales (Miasma)
+
+- ✨ **Partículas de Esporas**: Los bloques en la etapa **Enmohecido** o **Podrido** emiten esporas desde las caras expuestas (desactivado bajo el agua).
+- 🤢 **Miasma Tóxico**: El mod escanea un radio de 4 bloques alrededor del jugador. Cada bloque añade su etapa de decadencia a la puntuación total de toxicidad:
+  - **Deteriorado**: +1
+  - **Enmohecido**: +2
+  - **Podrido**: +3
+  - *(Los bloques encerados son seguros y aportan 0).*
+  
+  **Efectos**:
+  - Puntuación > **15**: **Náusea**
+  - Puntuación > **35**: **Náusea + Veneno**
+
+---
+
 ## 🛠️ Interacciones y Prevención
 
 El jugador no está indefenso frente a la naturaleza. Equipando la herramienta adecuada y actuando en **modo sigilo (Sneaking / Shift)**, puedes interactuar directamente con el estado vital de la madera. 
@@ -123,12 +138,13 @@ Para no arruinar la experiencia de juego (evitando que los jugadores encuentren 
 
 ## ⚙️ Configuración del Mod
 El mod incluye un menú de configuración accesible directamente desde el juego (requiere **Cloth Config** y **ModMenu**) que te garantiza un control absoluto sobre cada mecánica individual. 
-Las opciones se dividen en 7 categorías principales:
+Las opciones se dividen en 8 categorías principales:
 
 * 🛠️ **General**: ¡Desactiva el crecimiento del moho globalmente, cambia el umbral de infección, expande el radio de escaneo o **desactiva la inmunidad de las estructuras** para que las aldeas se pudran espontáneamente!
 * 🌡️ **Entorno (Environment)**: Modifica los valores base para lluvia/seco, las bonificaciones para el agua, o personaliza a qué altitudes y temperaturas el moho debe congelarse o proliferar.
 * 🪓 **Susceptibilidad (Susceptibility)**: Ajusta qué tan rápido se pudren los bloques procesados (tablones) en comparación con los crudos o sin corteza.
 * ☣️ **Catalizadores (Catalysts)**: Equilibra la agresividad de los hongos, el barro, la *flor de esporas* (spore blossom) y los propios bloques de madera infectada.
 * 🗺️ **Estructuras (Structures)**: Personaliza en detalle (porcentaje a porcentaje) cómo se generan los naufragios, las aldeas y las minas.
+* ☠️ **Toxicidad (Toxicity)**: Permite ajustar los umbrales de Miasma, la duración de los efectos, el radio de la nube tóxica y el radio de escaneo de agua.
 * 🔥 **Horno (Furnace Multipliers)**: Modifica la eficiencia de cocción de la madera para las diversas etapas de decadencia.
 * 💥 **Obtención (Drop)**: Sube o baja la tasa de obtención (drop rate) de la madera frágil, si consideras que el mod es demasiado punitivo.

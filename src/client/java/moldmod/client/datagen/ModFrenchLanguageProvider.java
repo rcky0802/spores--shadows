@@ -1,23 +1,20 @@
 package moldmod.client.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
-public class ModFrenchLanguageProvider extends FabricLanguageProvider {
+public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
 
     public ModFrenchLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "fr_fr", registryLookup);
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = moldmod.SporesShadows.WOODS;
-
+    protected String getTranslation(String wood, String blockType, String state) {
         Map<String, String> names = new HashMap<>();
         names.put("oak", "de Chêne");
         names.put("spruce", "de Sapin");
@@ -28,65 +25,38 @@ public class ModFrenchLanguageProvider extends FabricLanguageProvider {
         names.put("mangrove", "de Palétuvier");
         names.put("cherry", "de Cerisier");
 
-        for (String wood : woods) {
-            String logName = wood + "_log";
-            String woodName = wood + "_wood";
-            String prefix = wood;
-            
-            String wName = names.get(wood);
-            
-            translationBuilder.add("block.spores--shadows.moldy_" + logName, "Bûche " + wName + " moisie");
-            translationBuilder.add("item.spores--shadows.waxed_" + logName, "Bûche " + wName + " cirée");
-            translationBuilder.add("item.spores--shadows.tainted_" + logName, "Bûche " + wName + " entachée");
-            translationBuilder.add("item.spores--shadows.moldy_" + logName, "Bûche " + wName + " moisie");
-            translationBuilder.add("item.spores--shadows.rotten_" + logName, "Bûche " + wName + " pourrie");
+        String wName = names.get(wood);
+        String blockName = "";
+        boolean isFeminine = false;
+        boolean isPlural = false;
 
-            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, "Bûche écorcée " + wName + " moisie");
-            translationBuilder.add("item.spores--shadows.waxed_stripped_" + logName, "Bûche écorcée " + wName + " cirée");
-            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, "Bûche écorcée " + wName + " entachée");
-            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, "Bûche écorcée " + wName + " moisie");
-            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, "Bûche écorcée " + wName + " pourrie");
-
-            if (woodName != null) {
-                translationBuilder.add("block.spores--shadows.moldy_" + woodName, "Bois " + wName + " moisi");
-                translationBuilder.add("item.spores--shadows.waxed_" + woodName, "Bois " + wName + " ciré");
-                translationBuilder.add("item.spores--shadows.tainted_" + woodName, "Bois " + wName + " entaché");
-                translationBuilder.add("item.spores--shadows.moldy_" + woodName, "Bois " + wName + " moisi");
-                translationBuilder.add("item.spores--shadows.rotten_" + woodName, "Bois " + wName + " pourri");
-
-                translationBuilder.add("block.spores--shadows.moldy_stripped_" + woodName, "Bois écorcé " + wName + " moisi");
-                translationBuilder.add("item.spores--shadows.waxed_stripped_" + woodName, "Bois écorcé " + wName + " ciré");
-                translationBuilder.add("item.spores--shadows.tainted_stripped_" + woodName, "Bois écorcé " + wName + " entaché");
-                translationBuilder.add("item.spores--shadows.moldy_stripped_" + woodName, "Bois écorcé " + wName + " moisi");
-                translationBuilder.add("item.spores--shadows.rotten_stripped_" + woodName, "Bois écorcé " + wName + " pourri");
-            }
-
-            translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_planks", "Planches " + wName + " moisies");
-            translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_planks", "Planches " + wName + " cirées");
-            translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_planks", "Planches " + wName + " entachées");
-            translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_planks", "Planches " + wName + " moisies");
-            translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_planks", "Planches " + wName + " pourries");
-            
-            String[] blocks = {"slab", "stairs", "fence", "fence_gate", "door", "trapdoor", "pressure_plate", "button"};
-            String[] blockNames = {"Dalle", "Escaliers", "Barrière", "Portillon", "Porte", "Trappe", "Plaque de pression", "Bouton"};
-            
-            String[] femC = {"cirée", "cirés", "cirée", "ciré", "cirée", "cirée", "cirée", "ciré"};
-            String[] fem = {"moisie", "moisis", "moisie", "moisi", "moisie", "moisie", "moisie", "moisi"};
-            String[] femT = {"entachée", "entachés", "entachée", "entaché", "entachée", "entachée", "entachée", "entaché"};
-            String[] femR = {"pourrie", "pourris", "pourrie", "pourri", "pourrie", "pourrie", "pourrie", "pourri"};
-            
-            for (int i = 0; i < blocks.length; i++) {
-                String blockKey = blocks[i];
-                String bName = blockNames[i];
-                
-                translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_" + blockKey, bName + " " + wName + " " + fem[i]);
-                translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_" + blockKey, bName + " " + wName + " " + femC[i]);
-                translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_" + blockKey, bName + " " + wName + " " + femT[i]);
-                translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_" + blockKey, bName + " " + wName + " " + fem[i]);
-                translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_" + blockKey, bName + " " + wName + " " + femR[i]);
-            }
+        switch (blockType) {
+            case "log": blockName = "Bûche"; isFeminine = true; break;
+            case "stripped_log": blockName = "Bûche écorcée"; isFeminine = true; break;
+            case "wood": blockName = "Bois"; break;
+            case "stripped_wood": blockName = "Bois écorcé"; break;
+            case "planks": blockName = "Planches"; isFeminine = true; isPlural = true; break;
+            case "slab": blockName = "Dalle"; isFeminine = true; break;
+            case "stairs": blockName = "Escaliers"; isPlural = true; break;
+            case "fence": blockName = "Barrière"; isFeminine = true; break;
+            case "fence_gate": blockName = "Portillon"; break;
+            case "door": blockName = "Porte"; isFeminine = true; break;
+            case "trapdoor": blockName = "Trappe"; isFeminine = true; break;
+            case "pressure_plate": blockName = "Plaque de pression"; isFeminine = true; break;
+            case "button": blockName = "Bouton"; break;
         }
 
+        String stateStr = "";
+        if (state.equals("moldy")) stateStr = isFeminine ? (isPlural ? "moisies" : "moisie") : (isPlural ? "moisis" : "moisi");
+        else if (state.equals("waxed")) stateStr = isFeminine ? (isPlural ? "cirées" : "cirée") : (isPlural ? "cirés" : "ciré");
+        else if (state.equals("tainted")) stateStr = isFeminine ? (isPlural ? "entachées" : "entachée") : (isPlural ? "entachés" : "entaché");
+        else if (state.equals("rotten")) stateStr = isFeminine ? (isPlural ? "pourries" : "pourrie") : (isPlural ? "pourris" : "pourri");
+
+        return blockName + " " + wName + " " + stateStr;
+    }
+
+    @Override
+    protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
         translationBuilder.add("tooltip.spores--shadows.waxed", "Ciré");
         translationBuilder.add("item.spores--shadows.waxed_format", "%s ciré");
         translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_1", "Peut être transformé en planches propres avec perte de matériau,");
@@ -181,5 +151,15 @@ public class ModFrenchLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_1", "Efficacité du Four (Entaché)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_2", "Efficacité du Four (Moisi)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_3", "Efficacité du Four (Pourri)");
+        
+        translationBuilder.add("text.autoconfig.spores--shadows.category.toxicity", "Toxicité");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity", "Toxicité");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.check_interval_ticks", "Intervalle de contrôle (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.scan_radius", "Rayon du nuage toxique");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_nausea", "Seuil de Nausée");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Seuil de Poison");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Durée Nausée (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Durée Poison (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Rayon de recherche d'eau");
     }
 }

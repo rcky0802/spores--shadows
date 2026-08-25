@@ -67,6 +67,20 @@ Le joueur n'est pas sans défense face à la nature. En vous équipant du bon ou
 
 ---
 
+## ☠️ Dangers Environnementaux (Miasme)
+- ✨ **Particules de Spores** : Les blocs au stade **Moisi** ou **Pourri** émettent des spores depuis leurs faces exposées (désactivé sous l'eau).
+- 🤢 **Miasme Toxique** : Le mod scanne un rayon de 4 blocs autour du joueur. Chaque bloc ajoute son stade de décomposition au score total de toxicité :
+  - **Touché** : +1
+  - **Moisi** : +2
+  - **Pourri** : +3
+  - *(Les blocs cirés sont inoffensifs et comptent pour 0).*
+  
+  **Effets** :
+  - Score > **15** : **Nausée**
+  - Score > **35** : **Nausée + Poison**
+
+---
+
 ## ⚖️ Pénalités et Artisanat
 
 Utiliser du bois pourri pour l'artisanat n'est pas sage. La structure interne du matériau est irrémédiablement compromise, introduisant de sévères malus qui punissent la paresse :
@@ -123,7 +137,7 @@ Pour ne pas ruiner l'expérience de jeu (en évitant que les joueurs trouvent le
 
 ## ⚙️ Configuration du Mod
 Le mod inclut un menu de configuration accessible directement depuis le jeu (nécessite **Cloth Config** et **ModMenu**) qui vous garantit un contrôle absolu sur chaque mécanique individuelle. 
-Les options sont divisées en 7 catégories principales :
+Les options sont divisées en 8 catégories principales :
 
 * 🛠️ **Général** : Désactivez la croissance de la moisissure globalement, changez le seuil d'infection, élargissez le rayon de balayage ou **désactivez l'immunité des structures** pour faire pourrir spontanément les villages !
 * 🌡️ **Environnement (Environment)** : Modifiez les valeurs de base pour la pluie/sécheresse, les bonus pour l'eau, ou personnalisez à quelles altitudes et températures la moisissure doit geler ou proliférer.
@@ -132,3 +146,4 @@ Les options sont divisées en 7 catégories principales :
 * 🗺️ **Structures (Structures)** : Personnalisez en détail (pourcentage par pourcentage) la façon dont les épaves, les villages et les mines sont générés.
 * 🔥 **Four (Furnace Multipliers)** : Modifiez l'efficacité de cuisson du bois pour les différents stades de pourriture.
 * 💥 **Loot** : Augmentez ou diminuez le taux de butin du bois fragile, si vous trouvez le mod trop punitif.
+* ☠️ **Toxicité (Toxicity)** : Modifiez les seuils, la durée et le rayon du nuage toxique, ainsi que le rayon de détection de l'eau.

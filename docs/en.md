@@ -50,6 +50,19 @@ Progression only occurs if the "Infection Risk" (`R`), which is constantly recal
   - Infected wood: Tainted (`+0.05`), Moldy (`+0.10`), Rotten (`+0.20`).
   - Environment: Mud (`+0.05`), Podzol/Mycelium (`+0.15`), Mushrooms (`+0.25`), Spore Blossom (`+0.80`).
 
+## ☠️ Environmental Hazards (Miasma)
+
+- ✨ **Spore Particles**: Blocks in the **Moldy** or **Rotten** stage emit spores from exposed faces (disabled underwater).
+- 🤢 **Toxic Miasma**: The mod scans a 4-block radius around the player. Each block adds its decay stage to the total toxicity score:
+  - **Tainted**: +1
+  - **Moldy**: +2
+  - **Rotten**: +3
+  - *(Waxed blocks are safe and contribute 0).*
+  
+  **Effects**:
+  - Score > **15**: **Nausea**
+  - Score > **35**: **Nausea + Poison**
+
 ---
 
 ## 🛠️ Interactions and Prevention
@@ -61,7 +74,7 @@ The player is not defenseless against nature. By equipping the right tool and ac
   - If the block is **Waxed**, the axe will remove the wax layer, restoring the normal life cycle.
   - If the block is **Tainted or Moldy**, the axe will scrape off the superficial layer of fungus, reducing the decay by 1 stage. A Stage 1 block will revert to being perfectly clean (Stage 0 Vanilla).
   *(Every scrape normally consumes durability).*
-* 🐝 **Using Honeycomb (Waxing)**: By doing *Shift + Right Click* with a honeycomb on a block at *any* stage, it will become **Waxed**. Waxed wood is sealed: it becomes immune to environmental damage, freezes its decay forever, and loses the ability to infect nearby blocks. 
+* 🐝 **Using Honeycomb (Waxing)**: By doing *Shift + Right Click* with a honeycomb on a block at *any* stage, it will become **Waxed**. Waxed wood is sealed: it becomes immune to environmental damage, freezes its decay forever, and loses the ability to infect nearby blocks or contribute to the Toxic Miasma. 
 
 *Smart Feature: If you perform these actions on a multi-part block (like the upper or lower half of a Door), the update will be applied instantly and in total sync to the entire structure!*
 
@@ -123,12 +136,13 @@ To avoid ruining the gameplay experience (preventing players from finding the en
 
 ## ⚙️ Mod Configuration
 The mod includes a configuration menu accessible directly in-game (requires **Cloth Config** and **ModMenu**) that grants you absolute control over every single mechanic. 
-Options are divided into 7 main categories:
+Options are divided into 8 main categories:
 
-* 🛠️ **General**: Disable mold growth globally, change the infection threshold, expand the scanning radius, or **disable structure immunity** to let villages spontaneously rot!
-* 🌡️ **Environment**: Modify the base values for rain/dryness, bonuses for water, or customize at what altitudes and temperatures mold should freeze or thrive.
+* 🛠️ **General**: Disable mold growth globally, change the infection threshold, expand the environment scanning radius, or **disable structure immunity** to let villages spontaneously rot!
+* 🌡️ **Environment**: Modify the base values for rain/dryness, bonuses for water adjacency, or customize at what altitudes and temperatures mold should freeze or thrive.
 * 🪓 **Susceptibility**: Adjust how fast processed blocks (planks) rot compared to raw or stripped ones.
 * ☣️ **Catalysts**: Balance the aggressiveness of mushrooms, mud, *spore blossoms*, and infected wood blocks themselves.
+* ☠️ **Toxicity**: Customize the Toxic Miasma thresholds for Nausea and Poison, alter the scan radius, and change how long the status effects last.
 * 🗺️ **Structures**: Customize in detail (percentage by percentage) how shipwrecks, villages, and mineshafts generate.
 * 🔥 **Furnace Multipliers**: Modify the smelting efficiency of wood for the various stages of decay.
 * 💥 **Drops**: Raise or lower the drop rate of fragile wood, if you find the mod too punishing.

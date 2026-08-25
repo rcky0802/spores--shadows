@@ -50,6 +50,19 @@ Der Fortschritt findet nur statt, wenn das "Infektionsrisiko" (`R`), das ständi
   - Infiziertes Holz: Befallen (`+0.05`), Schimmelig (`+0.10`), Verrottet (`+0.20`).
   - Umgebung: Schlamm (`+0.05`), Podsol/Myzel (`+0.15`), Pilze (`+0.25`), Sporenblüte (`+0.80`).
 
+## ☠️ Umweltgefahren (Miasma)
+
+- ✨ **Sporenpartikel**: Blöcke im Stadium **Schimmelig** oder **Verrottet** geben Sporen an exponierten Flächen ab (unter Wasser deaktiviert).
+- 🤢 **Toxisches Miasma**: Die Mod scannt einen Radius von 4 Blöcken um den Spieler. Jeder Block addiert seine Zerfallsstufe zum gesamten Toxizitätswert:
+  - **Befallen**: +1
+  - **Schimmelig**: +2
+  - **Verrottet**: +3
+  - *(Gewachste Blöcke sind sicher und tragen 0 bei).*
+  
+  **Effekte**:
+  - Wert > **15**: **Übelkeit**
+  - Wert > **35**: **Übelkeit + Vergiftung**
+
 ---
 
 ## 🛠️ Interaktionen und Vorbeugung
@@ -123,7 +136,7 @@ Um das Spielerlebnis nicht zu ruinieren (und zu vermeiden, dass Spieler die ganz
 
 ## ⚙️ Mod-Konfiguration
 Die Mod enthält ein direkt aus dem Spiel zugängliches Konfigurationsmenü (erfordert **Cloth Config** und **ModMenu**), das dir die absolute Kontrolle über jede einzelne Mechanik garantiert. 
-Die Optionen sind in 7 Hauptkategorien unterteilt:
+Die Optionen sind in 8 Hauptkategorien unterteilt:
 
 * 🛠️ **Allgemein (General)**: Deaktiviere das Schimmelwachstum global, ändere den Infektionsschwellenwert, erweitere den Scanradius oder **deaktiviere die Immunität von Strukturen**, um Dörfer spontan verrotten zu lassen!
 * 🌡️ **Umgebung (Environment)**: Ändere die Basiswerte für Regen/Trockenheit, die Boni für Wasser oder passe an, in welchen Höhen und bei welchen Temperaturen der Schimmel einfrieren oder sich vermehren soll.
@@ -132,3 +145,4 @@ Die Optionen sind in 7 Hauptkategorien unterteilt:
 * 🗺️ **Strukturen (Structures)**: Passe detailliert (Prozentsatz für Prozentsatz) an, wie Schiffswracks, Dörfer und Minen generiert werden.
 * 🔥 **Ofen (Furnace Multipliers)**: Ändere die Brenneffizienz von Holz für die verschiedenen Zerfallsstadien.
 * 💥 **Drops**: Erhöhe oder senke die Drop-Rate von zerbrechlichem Holz, wenn du die Mod als zu bestrafend empfindest.
+* 🤢 **Toxizität (Toxicity)**: Ermöglicht die Änderung von Schwellenwerten, Dauer und Radius der Giftwolke sowie des Wasser-Scan-Radius.

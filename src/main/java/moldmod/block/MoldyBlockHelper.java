@@ -98,42 +98,74 @@ public class MoldyBlockHelper {
         double localHumidityBonus = 0.0;
         double catalystBonus = 0.0;
 
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        int cx = pos.getX();
+        int cy = pos.getY();
+        int cz = pos.getZ();
+
+        // 1. Scansione standard (Raggio piccolo) per catalizzatori e muffa adiacente
         int r = config.general.scan_radius;
-        for (BlockPos iterPos : BlockPos.iterate(pos.add(-r, -r, -r), pos.add(r, r, r))) {
-            if (iterPos.equals(pos)) continue; // Skip the block itself
+        for (int x = -r; x <= r; x++) {
+            for (int y = -r; y <= r; y++) {
+                for (int z = -r; z <= r; z++) {
+                    if (x == 0 && y == 0 && z == 0) continue;
 
-            BlockState nearbyState = world.getBlockState(iterPos);
+                    mutable.set(cx + x, cy + y, cz + z);
+                    BlockState nearbyState = world.getBlockState(mutable);
 
-            // Check for water/fluids
-            if (!nearbyState.getFluidState().isEmpty()) {
-                if (nearbyState.getFluidState().isOf(net.minecraft.fluid.Fluids.WATER)
-                        || nearbyState.getFluidState().isOf(net.minecraft.fluid.Fluids.FLOWING_WATER)) {
-                    localHumidityBonus += config.environment.water_adjacent_bonus;
+                    if (nearbyState.isOf(Blocks.MUD) || nearbyState.isOf(Blocks.WATER_CAULDRON)) {
+                        localHumidityBonus += config.environment.cauldron_adjacent_bonus;
+                        if (nearbyState.isOf(Blocks.MUD))
+                            catalystBonus += config.catalysts.mud_bonus;
+                    } else if (nearbyState.isOf(Blocks.MYCELIUM) || nearbyState.isOf(Blocks.PODZOL)) {
+                        catalystBonus += config.catalysts.podzol_mycelium_bonus;
+                    } else if (nearbyState.isOf(Blocks.BROWN_MUSHROOM) || nearbyState.isOf(Blocks.RED_MUSHROOM) ||
+                            nearbyState.isOf(Blocks.BROWN_MUSHROOM_BLOCK) || nearbyState.isOf(Blocks.RED_MUSHROOM_BLOCK) ||
+                            nearbyState.isOf(Blocks.MUSHROOM_STEM)) {
+                        catalystBonus += config.catalysts.fungi_bonus;
+                    } else if (nearbyState.isOf(Blocks.SPORE_BLOSSOM)) {
+                        catalystBonus += config.catalysts.spore_blossom_bonus;
+                    }
+
+                    // Blocco muffito agisce da catalizzatore
+                    if (nearbyState.contains(MoldyLogBlock.STAGE) && nearbyState.get(MoldyLogBlock.STAGE) > 0) {
+                        if (nearbyState.contains(MoldyLogBlock.WAXED) && !nearbyState.get(MoldyLogBlock.WAXED)) {
+                            int stage = nearbyState.get(MoldyLogBlock.STAGE);
+                            if (stage == 1) {
+                                catalystBonus += config.catalysts.tainted_block_bonus;
+                            } else if (stage == 2) {
+                                catalystBonus += config.catalysts.moldy_block_bonus;
+                            } else if (stage == 3) {
+                                catalystBonus += config.catalysts.rotten_block_bonus;
+                            }
+                        }
+                    }
                 }
-            } else if (nearbyState.isOf(Blocks.MUD) || nearbyState.isOf(Blocks.WATER_CAULDRON)) {
-                localHumidityBonus += config.environment.cauldron_adjacent_bonus;
-                if (nearbyState.isOf(Blocks.MUD))
-                    catalystBonus += config.catalysts.mud_bonus;
-            } else if (nearbyState.isOf(Blocks.MYCELIUM) || nearbyState.isOf(Blocks.PODZOL)) {
-                catalystBonus += config.catalysts.podzol_mycelium_bonus;
-            } else if (nearbyState.isOf(Blocks.BROWN_MUSHROOM) || nearbyState.isOf(Blocks.RED_MUSHROOM) ||
-                    nearbyState.isOf(Blocks.BROWN_MUSHROOM_BLOCK) || nearbyState.isOf(Blocks.RED_MUSHROOM_BLOCK) ||
-                    nearbyState.isOf(Blocks.MUSHROOM_STEM)) {
-                catalystBonus += config.catalysts.fungi_bonus;
-            } else if (nearbyState.isOf(Blocks.SPORE_BLOSSOM)) {
-                catalystBonus += config.catalysts.spore_blossom_bonus;
             }
+        }
 
-            // Unwaxed moldy blocks act as catalysts themselves
-            if (nearbyState.contains(MoldyLogBlock.STAGE) && nearbyState.get(MoldyLogBlock.STAGE) > 0) {
-                if (nearbyState.contains(MoldyLogBlock.WAXED) && !nearbyState.get(MoldyLogBlock.WAXED)) {
-                    int stage = nearbyState.get(MoldyLogBlock.STAGE);
-                    if (stage == 1) {
-                        catalystBonus += config.catalysts.tainted_block_bonus;
-                    } else if (stage == 2) {
-                        catalystBonus += config.catalysts.moldy_block_bonus;
-                    } else if (stage == 3) {
-                        catalystBonus += config.catalysts.rotten_block_bonus;
+        // 2. Scansione Estesa per Acqua
+        // Per ottimizzare ulteriormente, ci fermiamo appena troviamo abbastanza acqua per il bonus massimo
+        int waterBlocksFound = 0;
+        int maxWaterBlocksNeeded = (int) Math.ceil(config.environment.max_local_humidity_bonus / config.environment.water_adjacent_bonus);
+        int wr = config.environment.water_scan_radius;
+        
+        waterSearch:
+        for (int x = -wr; x <= wr; x++) {
+            for (int y = -wr; y <= wr; y++) {
+                for (int z = -wr; z <= wr; z++) {
+                    mutable.set(cx + x, cy + y, cz + z);
+                    BlockState nearbyState = world.getBlockState(mutable);
+                    
+                    if (!nearbyState.getFluidState().isEmpty()) {
+                        if (nearbyState.getFluidState().isOf(net.minecraft.fluid.Fluids.WATER)
+                                || nearbyState.getFluidState().isOf(net.minecraft.fluid.Fluids.FLOWING_WATER)) {
+                            localHumidityBonus += config.environment.water_adjacent_bonus;
+                            waterBlocksFound++;
+                            if (waterBlocksFound >= maxWaterBlocksNeeded) {
+                                break waterSearch; // Ottimizzazione estrema: esce dal loop se ha raggiunto il cap di umidità
+                            }
+                        }
                     }
                 }
             }

@@ -1,74 +1,32 @@
 package moldmod.client.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class ModEnglishLanguageProvider extends FabricLanguageProvider {
+public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
 
     public ModEnglishLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "en_us", registryLookup);
     }
 
     @Override
-    public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = moldmod.SporesShadows.WOODS;
+    protected String getTranslation(String wood, String blockType, String state) {
+        String capitalizedWood = capitalize(wood.replace("_", " "));
+        String stateStr = capitalize(state);
+        
+        String typeStr = capitalize(blockType.replace("_", " "));
+        if (blockType.equals("pressure_plate")) typeStr = "Pressure Plate";
+        else if (blockType.equals("fence_gate")) typeStr = "Fence Gate";
+        else if (blockType.equals("stripped_log")) typeStr = "Stripped Log";
+        else if (blockType.equals("stripped_wood")) typeStr = "Stripped Wood";
+        
+        return stateStr + " " + capitalizedWood + " " + typeStr;
+    }
 
-        for (String wood : woods) {
-            String logName = wood + "_log";
-            String woodName = wood + "_wood";
-            String prefix = wood;
-            
-            String capitalizedWood = capitalize(wood.replace("_", " "));
-
-            translationBuilder.add("block.spores--shadows.moldy_" + logName, "Moldy " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.waxed_" + logName, "Waxed " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.tainted_" + logName, "Tainted " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.moldy_" + logName, "Moldy " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.rotten_" + logName, "Rotten " + capitalizedWood + " Log");
-
-            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, "Moldy Stripped " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.waxed_stripped_" + logName, "Waxed Stripped " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, "Tainted Stripped " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, "Moldy Stripped " + capitalizedWood + " Log");
-            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, "Rotten Stripped " + capitalizedWood + " Log");
-
-            if (woodName != null) {
-                translationBuilder.add("block.spores--shadows.moldy_" + woodName, "Moldy " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.waxed_" + woodName, "Waxed " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.tainted_" + woodName, "Tainted " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.moldy_" + woodName, "Moldy " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.rotten_" + woodName, "Rotten " + capitalizedWood + " Wood");
-
-                translationBuilder.add("block.spores--shadows.moldy_stripped_" + woodName, "Moldy Stripped " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.waxed_stripped_" + woodName, "Waxed Stripped " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.tainted_stripped_" + woodName, "Tainted Stripped " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.moldy_stripped_" + woodName, "Moldy Stripped " + capitalizedWood + " Wood");
-                translationBuilder.add("item.spores--shadows.rotten_stripped_" + woodName, "Rotten Stripped " + capitalizedWood + " Wood");
-            }
-
-            translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_planks", "Moldy " + capitalizedWood + " Planks");
-            translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_planks", "Waxed " + capitalizedWood + " Planks");
-            translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_planks", "Tainted " + capitalizedWood + " Planks");
-            translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_planks", "Moldy " + capitalizedWood + " Planks");
-            translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_planks", "Rotten " + capitalizedWood + " Planks");
-            
-            String[] blocks = {"slab", "stairs", "fence", "fence_gate", "door", "trapdoor", "pressure_plate", "button"};
-            String[] blockNames = {"Slab", "Stairs", "Fence", "Fence Gate", "Door", "Trapdoor", "Pressure Plate", "Button"};
-            
-            for (int i = 0; i < blocks.length; i++) {
-                String blockKey = blocks[i];
-                String blockDisplayName = blockNames[i];
-                translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_" + blockKey, "Moldy " + capitalizedWood + " " + blockDisplayName);
-                translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_" + blockKey, "Waxed " + capitalizedWood + " " + blockDisplayName);
-                translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_" + blockKey, "Tainted " + capitalizedWood + " " + blockDisplayName);
-                translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_" + blockKey, "Moldy " + capitalizedWood + " " + blockDisplayName);
-                translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_" + blockKey, "Rotten " + capitalizedWood + " " + blockDisplayName);
-            }
-        }
-
+    @Override
+    protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
         translationBuilder.add("tooltip.spores--shadows.waxed", "Waxed");
         translationBuilder.add("item.spores--shadows.waxed_format", "Waxed %s");
         translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_1", "Can be broken down into clean planks with material loss,");
@@ -163,6 +121,16 @@ public class ModEnglishLanguageProvider extends FabricLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_1", "Tainted Stage Fuel Multiplier");
         translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_2", "Moldy Stage Fuel Multiplier");
         translationBuilder.add("text.autoconfig.spores--shadows.option.furnaceMultipliers.stage_3", "Rotten Stage Fuel Multiplier");
+
+        translationBuilder.add("text.autoconfig.spores--shadows.category.toxicity", "Toxicity");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity", "Toxicity");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.check_interval_ticks", "Check Interval (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.scan_radius", "Scan Radius");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_nausea", "Nausea Threshold");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Poison Threshold");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Nausea Duration (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Poison Duration (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Water Scan Radius");
     }
     
     private String capitalize(String str) {

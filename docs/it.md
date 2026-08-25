@@ -52,6 +52,21 @@ L'avanzamento avviene solo se il "Rischio di Infezione" (`R`), ricalcolato costa
 
 ---
 
+## ☠️ Pericoli Ambientali (Miasma)
+
+- ✨ **Particelle di Spore**: I blocchi negli stadi **Ammuffito** e **Marcio** emettono spore dalle facce esposte (disabilitato sott'acqua).
+- 🤢 **Miasma Tossico**: La mod scansiona un raggio di 4 blocchi attorno al giocatore. Ogni blocco aggiunge il suo livello di decadimento al punteggio totale di tossicità:
+  - **Contagiato**: +1
+  - **Ammuffito**: +2
+  - **Marcio**: +3
+  - *(I blocchi cerati sono sicuri e valgono 0).*
+  
+  **Effetti**:
+  - Punteggio > **15**: **Nausea**
+  - Punteggio > **35**: **Nausea + Veleno**
+
+---
+
 ## 🛠️ Interazioni e Prevenzione
 
 Il giocatore non è indifeso contro la natura. Equipaggiando lo strumento giusto e agendo in **modalità furtiva (Sneaking / Shift)**, puoi interagire direttamente con lo stato vitale del legno. 
@@ -130,5 +145,6 @@ Le opzioni sono divise in 7 categorie principali:
 * 🪓 **Suscettibilità (Susceptibility)**: Regola quanto velocemente marciscono i blocchi lavorati (assi) rispetto a quelli grezzi o scortecciati.
 * ☣️ **Catalizzatori (Catalysts)**: Bilancia l'aggressività di funghi, fango, *spore blossom* e dei blocchi di legno infetti stessi.
 * 🗺️ **Strutture (Structures)**: Personalizza nel dettaglio (percentuale per percentuale) come si generano i relitti, i villaggi e le miniere.
+* ☠️ **Tossicità (Toxicity)**: Permette di modificare le soglie, la durata degli effetti, il raggio della nuvola tossica e il raggio di scansione dell'acqua.
 * 🔥 **Fornace (Furnace Multipliers)**: Modifica l'efficienza di cottura del legno per i vari stadi di decadimento.
 * 💥 **Drop**: Alza o abbassa il drop rate del legno fragile, se ritieni la mod troppo punitiva.

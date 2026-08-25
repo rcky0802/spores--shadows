@@ -11,3 +11,8 @@ Please select your preferred language to read the full documentation and mechani
 * 🇫🇷 [Français (FR)](docs/fr.md)
 * 🇩🇪 [Deutsch (DE)](docs/de.md)
 * 🇪🇸 [Español (ES)](docs/es.md)
+
+### 📝 Changelog
+
+* 📜 [View Changelog](Changelog.md)
+

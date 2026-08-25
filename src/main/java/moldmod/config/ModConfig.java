@@ -36,6 +36,10 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public FurnaceMultipliers furnaceMultipliers = new FurnaceMultipliers();
 
+    @ConfigEntry.Category("toxicity")
+    @ConfigEntry.Gui.CollapsibleObject
+    public Toxicity toxicity = new Toxicity();
+
     public static class General {
         public boolean enable_mold_growth = true;
         public float infection_threshold = 0.40f;
@@ -70,6 +74,8 @@ public class ModConfig implements ConfigData {
         public double max_local_humidity_bonus = 0.60;
         public double water_adjacent_bonus = 0.15;
         public double cauldron_adjacent_bonus = 0.1;
+        public int water_scan_radius = 3;
+        
         public float min_temperature_survival = 0.15f;
         public float max_temperature_survival = 1.5f;
         
@@ -122,10 +128,20 @@ public class ModConfig implements ConfigData {
         public float stage_3 = 0.125f;
     }
 
+    public static class Toxicity {
+        public int check_interval_ticks = 40;
+        public int scan_radius = 4;
+        public int threshold_nausea = 15;
+        public int threshold_poison = 35;
+        public int duration_nausea_ticks = 140;
+        public int duration_poison_ticks = 80;
+    }
+
     @Override
     public void validatePostLoad() throws ValidationException {
         general.infection_threshold = MathHelper.clamp(general.infection_threshold, 0.0f, 2.0f);
         general.scan_radius = MathHelper.clamp(general.scan_radius, 1, 5);
+        environment.water_scan_radius = MathHelper.clamp(environment.water_scan_radius, 1, 10);
         
         drops.stage_2_drop_chance = MathHelper.clamp(drops.stage_2_drop_chance, 0.0f, 1.0f);
         drops.stage_3_drop_chance = MathHelper.clamp(drops.stage_3_drop_chance, 0.0f, 1.0f);
@@ -134,5 +150,8 @@ public class ModConfig implements ConfigData {
         furnaceMultipliers.stage_1 = MathHelper.clamp(furnaceMultipliers.stage_1, 0.0f, 5.0f);
         furnaceMultipliers.stage_2 = MathHelper.clamp(furnaceMultipliers.stage_2, 0.0f, 5.0f);
         furnaceMultipliers.stage_3 = MathHelper.clamp(furnaceMultipliers.stage_3, 0.0f, 5.0f);
+        
+        toxicity.check_interval_ticks = MathHelper.clamp(toxicity.check_interval_ticks, 10, 200);
+        toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 10);
     }
 }

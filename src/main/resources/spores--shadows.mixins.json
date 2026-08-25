@@ -11,7 +11,8 @@
 		"FireBlockMixin",
 		"PressurePlateMixin",
 		"ButtonMixin",
-		"BlockPickMixin"
+		"BlockPickMixin",
+		"BlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
