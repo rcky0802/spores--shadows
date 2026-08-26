@@ -33,8 +33,7 @@ public class ModModelProvider extends FabricModelProvider {
         String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
-            String logName = wood + "_log";
-            String woodName = wood + "_wood";
+            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : (wood.equals("bamboo") ? wood + "_block" : wood + "_log"); String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : (wood.equals("bamboo") ? null : wood + "_wood");
             String prefix = wood;
 
             Block log = Registries.BLOCK.get(SporesShadows.id("moldy_" + logName));
@@ -164,3 +163,4 @@ public class ModModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {}
 }
+

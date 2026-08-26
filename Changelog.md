@@ -6,10 +6,12 @@ All notable changes to **Spores & Shadows** will be documented in this file.
 **Added:**
 - Jade / WTHIT Integration: The HUD now shows the exact decay stage, infection risk (%), and waxed status of any looked-at wood block.
 - 5 new Advancements to guide players through the mod's mechanics: *Spores & Shadows*, *Natural Prevention*, *Elbow Grease*, *Short Breath*, *Dust to Dust*.
+- Added full decay support for Bamboo, Crimson (Cremisi), and Warped (Distorto) wood types, including all their block variants (planks, stairs, doors, etc).
 - Advancements and Jade tooltips are fully localized in English, Italian, Spanish, German, and French via DataGen.
 - Stage 3 (Rotten) blocks emit slime sounds when walked on or broken.
 
-**Changed:**
+**Changed/Fixed:**
+- Fixed a bug where Stage 3 (Rotten) blocks still received a breaking speed bonus from axes (due to the #minecraft:logs tag). They now strictly ignore tool efficiency, taking the same time to break with an axe as with a bare hand.
 - Modified block generation and breaking mechanics for consistency.
 
 ---

@@ -32,7 +32,13 @@ public class ModBlocks {
         String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
-            registerWoodSet(wood, wood + "_log", wood + "_wood");
+            if (wood.equals("crimson") || wood.equals("warped")) {
+                registerWoodSet(wood, wood + "_stem", wood + "_hyphae");
+            } else if (wood.equals("bamboo")) {
+                registerWoodSet(wood, wood + "_block", null);
+            } else {
+                registerWoodSet(wood, wood + "_log", wood + "_wood");
+            }
         }
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
@@ -74,6 +80,9 @@ public class ModBlocks {
             case "dark_oak" -> BlockSetType.DARK_OAK;
             case "mangrove" -> BlockSetType.MANGROVE;
             case "cherry" -> BlockSetType.CHERRY;
+            case "crimson" -> BlockSetType.CRIMSON;
+            case "warped" -> BlockSetType.WARPED;
+            case "bamboo" -> BlockSetType.BAMBOO;
             default -> BlockSetType.OAK;
         };
         WoodType woodType = switch (prefix) {
@@ -84,6 +93,9 @@ public class ModBlocks {
             case "dark_oak" -> WoodType.DARK_OAK;
             case "mangrove" -> WoodType.MANGROVE;
             case "cherry" -> WoodType.CHERRY;
+            case "crimson" -> WoodType.CRIMSON;
+            case "warped" -> WoodType.WARPED;
+            case "bamboo" -> WoodType.BAMBOO;
             default -> WoodType.OAK;
         };
         

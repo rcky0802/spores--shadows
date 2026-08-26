@@ -12,16 +12,16 @@ The mod seamlessly and silently replaces every piece of wood placed by the playe
 
 ### 🔢 Technical Details and Added Blocks
 
-On a technical level, the mod injects a complete ecosystem for every single wood variant.
+On a technical level, the mod injects a complete ecosystem for every single wood variant (including Bamboo, Crimson, and Warped woods).
 
 * **🧱 13 Architectural Formats**: *Logs*, *Stripped Logs*, *Wood*, *Stripped Wood*, *Planks*, *Stairs*, *Slabs*, *Fences*, *Fence Gates*, *Doors*, *Trapdoors*, *Pressure Plates*, *Buttons*.
 
-For each of the 104 base wood formats, the mod adds **3 moldy variants** (Tainted, Moldy, Rotten). Furthermore, for each of these blocks — including the original Vanilla block — their respective **waxed variant** is created.
+For each of the 141 base wood formats, the mod adds **3 moldy variants** (Tainted, Moldy, Rotten). Furthermore, for each of these blocks — including the original Vanilla block — their respective **waxed variant** is created.
 
-This way, the game provides a whopping **728 unique variants obtainable in Survival**:
-1. The **104 Waxed Vanilla Variants**: The protected and waxed copy of the base Vanilla block.
-2. The **312 Moldy Variants**: The three natural stages of decay.
-3. The **312 Waxed Moldy Variants**: The decayed blocks frozen in time by wax.
+This way, the game provides a whopping **987 unique variants obtainable in Survival**:
+1. The **141 Waxed Vanilla Variants**: The protected and waxed copy of the base Vanilla block.
+2. The **423 Moldy Variants**: The three natural stages of decay.
+3. The **423 Waxed Moldy Variants**: The decayed blocks frozen in time by wax.
 
 This system allows you to obtain partially moldy blocks in survival and then "seal" them with honeycomb, letting you safely use them for decorative purposes without the risk of infecting nearby structures.
 

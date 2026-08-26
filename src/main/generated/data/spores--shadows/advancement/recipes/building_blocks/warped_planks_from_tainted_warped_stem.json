@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_tainted_warped_stem": {
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:tainted_warped_stem"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "spores--shadows:warped_planks_from_tainted_warped_stem"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_tainted_warped_stem"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "spores--shadows:warped_planks_from_tainted_warped_stem"
+    ]
+  }
+}

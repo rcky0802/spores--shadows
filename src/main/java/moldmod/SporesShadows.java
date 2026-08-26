@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class SporesShadows implements ModInitializer {
 	public static final String MOD_ID = "spores--shadows";
-	public static final String[] WOODS = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry"};
+	public static final String[] WOODS = {"oak", "spruce", "birch", "jungle", "acacia", "dark_oak", "mangrove", "cherry", "crimson", "warped", "bamboo"};
 
 	// This logger is used to write text to the console and the log file.
 	// It is considered best practice to use your mod id as the logger's name.

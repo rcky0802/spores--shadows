@@ -17,8 +17,7 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
         String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
-            String logName = wood + "_log";
-            String woodName = wood + "_wood";
+            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : (wood.equals("bamboo") ? wood + "_block" : wood + "_log"); String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : (wood.equals("bamboo") ? null : wood + "_wood");
             String prefix = wood;
 
             // Logs
@@ -81,3 +80,4 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
 
     protected abstract void generateTooltipsAndConfig(TranslationBuilder builder);
 }
+

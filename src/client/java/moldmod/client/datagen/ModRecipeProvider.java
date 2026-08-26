@@ -25,8 +25,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
-            String logName = wood + "_log";
-            String woodName = wood + "_wood";
+            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : (wood.equals("bamboo") ? wood + "_block" : wood + "_log"); String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : (wood.equals("bamboo") ? null : wood + "_wood");
             String prefix = wood;
 
             // Generate Planks Recipes
@@ -48,12 +47,12 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         // Log -> Wood Recipe Generation
         boolean isLogToWood = false;
         Item vanillaWood = null;
-        if (sourceBase.endsWith("_log") && !sourceBase.startsWith("stripped_")) {
+        if ((sourceBase.endsWith("_log") || sourceBase.endsWith("_stem")) && !sourceBase.startsWith("stripped_")) {
             isLogToWood = true;
-            vanillaWood = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", sourceBase.replace("_log", "_wood")));
-        } else if (sourceBase.startsWith("stripped_") && sourceBase.endsWith("_log")) {
+            vanillaWood = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", sourceBase.replace("_log", "_wood").replace("_stem", "_hyphae")));
+        } else if (sourceBase.startsWith("stripped_") && (sourceBase.endsWith("_log") || sourceBase.endsWith("_stem"))) {
             isLogToWood = true;
-            vanillaWood = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", sourceBase.replace("_log", "_wood")));
+            vanillaWood = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", sourceBase.replace("_log", "_wood").replace("_stem", "_hyphae")));
         }
 
         Item taintedSource = Registries.ITEM.get(SporesShadows.id("tainted_" + sourceBase));
@@ -184,3 +183,4 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         }
     }
 }
+
