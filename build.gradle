@@ -67,9 +67,9 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-	// Polymer for Virtual Resource Packs
-	include modImplementation("eu.pb4:polymer-core:0.9.19+1.21.1")
-	include modImplementation("eu.pb4:polymer-resource-pack:0.9.19+1.21.1")
+	// Polymer for Virtual Resource Packs (Ora dipendenza obbligatoria esterna)
+	modImplementation("eu.pb4:polymer-core:0.9.19+1.21.1")
+	modImplementation("eu.pb4:polymer-resource-pack:0.9.19+1.21.1")
     
     // Jade API
     modCompileOnly "maven.modrinth:jade:15.10.6+fabric"
