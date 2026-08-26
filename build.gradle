@@ -13,7 +13,7 @@ repositories {
 	maven { url "https://maven.blamejared.com/" } // For Jade
 	maven {
 		name = "Modrinth"
-		url = "https://maven.modrinth.com"
+		url = "https://api.modrinth.com/maven"
 		content {
 			includeGroup "maven.modrinth"
 		}
@@ -71,8 +71,8 @@ dependencies {
 	include modImplementation("eu.pb4:polymer-resource-pack:0.9.19+1.21.1")
     
     // Jade API
-    modCompileOnly fileTree(dir: 'libs', include: ['*.jar'])
-    modLocalRuntime fileTree(dir: 'libs', include: ['*.jar'])
+    modCompileOnly "maven.modrinth:jade:15.10.6+fabric"
+    modLocalRuntime "maven.modrinth:jade:15.10.6+fabric"
 }
 
 tasks.withType(AbstractCopyTask).configureEach {

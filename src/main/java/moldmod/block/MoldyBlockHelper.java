@@ -47,6 +47,16 @@ public class MoldyBlockHelper {
 
         float surfaceTemp = world.getBiome(pos).value().getTemperature();
         float temp = surfaceTemp;
+        
+        if (world.getBiome(pos).isIn(net.minecraft.registry.tag.BiomeTags.IS_NETHER) || 
+            (world instanceof net.minecraft.world.World w && w.getRegistryKey() == net.minecraft.world.World.NETHER)) {
+            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0f, 100.0f);
+        }
+        if (world.getBiome(pos).isIn(net.minecraft.registry.tag.BiomeTags.IS_END) || 
+            (world instanceof net.minecraft.world.World w && w.getRegistryKey() == net.minecraft.world.World.END) ||
+            world.getBiome(pos).matchesId(net.minecraft.util.Identifier.of("minecraft", "the_end"))) {
+            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -100.0f, -100.0f);
+        }
 
         // Depth-based temperature normalization
         // From cave_start_y to cave_full_y, temperature transitions to

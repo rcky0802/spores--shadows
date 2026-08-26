@@ -16,12 +16,12 @@ A livello tecnico, la mod inietta un ecosistema completo per ogni singola varian
 
 * **🧱 13 Formati Architettonici**: *Tronchi*, *Tronchi Scortecciati*, *Legno (Wood)*, *Legno Scortecciato*, *Assi (Planks)*, *Scale*, *Lastre*, *Staccionate*, *Cancelletti*, *Porte*, *Botole*, *Pedane a Pressione*, *Pulsanti*.
 
-Per ognuno dei 104 formati base in legno, la mod aggiunge **3 varianti ammuffite** (Intaccato, Ammuffito, Marcio). Inoltre, per ognuno di questi blocchi — compreso il blocco Vanilla originale — viene creata la rispettiva **variante cerata**.
+Per ognuno dei 130 formati base in legno, la mod aggiunge **3 varianti ammuffite** (Intaccato, Ammuffito, Marcio). Inoltre, per ognuno di questi blocchi — compreso il blocco Vanilla originale — viene creata la rispettiva **variante cerata**.
 
-In questo modo, il gioco mette a disposizione ben **728 varianti uniche e ottenibili in Survival**:
-1. Le **104 Varianti Vanilla Cerate**: La copia protetta e incerata del blocco base Vanilla.
-2. Le **312 Varianti Ammuffite**: I tre stadi di decadimento naturali.
-3. Le **312 Varianti Ammuffite Cerate**: I blocchi decaduti ma fermati nel tempo dalla cera.
+In questo modo, il gioco mette a disposizione ben **910 varianti uniche e ottenibili in Survival**:
+1. Le **130 Varianti Vanilla Cerate**: La copia protetta e incerata del blocco base Vanilla.
+2. Le **390 Varianti Ammuffite**: I tre stadi di decadimento naturali.
+3. Le **390 Varianti Ammuffite Cerate**: I blocchi decaduti ma fermati nel tempo dalla cera.
 
 Questo sistema ti permette di ricavare in sopravvivenza blocchi parzialmente ammuffiti per poi "sigillarli" con il favo di miele, potendoli così usare in totale sicurezza per scopi decorativi senza rischio di infettare le costruzioni vicine.
 
@@ -44,6 +44,7 @@ L'avanzamento avviene solo se il "Rischio di Infezione" (`R`), ricalcolato costa
 * 🌡️ **Temperatura (Bioma + Altitudine/Profondità)**: 
   - Agisce come filtro di sopravvivenza. La muffa prolifera **solo** se la temperatura locale è compresa tra `0.15` e `1.5`.
   - **In Superficie**: Dipende dal bioma. Climi estremi come deserti o ghiacciai bloccano totalmente l'infezione bloccando il fattore a `0.0`.
+  - **Nether & End**: Il calore estremo del Nether e il vuoto gelido dell'End sono totalmente letali per la muffa. Il legno non marcirà mai in queste dimensioni.
   - **Sottoterra (`Y < 64`)**: Indipendentemente dal bioma di superficie, scendendo la temperatura si normalizza gradualmente, stabilizzandosi al valore perfetto di `0.5` (mite) sotto `Y=48`. Anche in un deserto o in un bioma ghiacciato, le caverne profonde svilupperanno la muffa!
   - **Alta Quota (`Y > 128`)**: Salendo in quota la temperatura crolla gradualmente, congelando a `-0.5` al livello `Y=256`. Costruire baite in alta montagna preserverà il legno quasi ovunque.
 * ☣️ **Contagio (Catalizzatori)**: Somma un malus diretto se il legno è a contatto con agenti infettivi:
@@ -143,7 +144,7 @@ Per non rovinare l'esperienza di gioco (evitando che i giocatori trovino il mond
 
 ## 📊 Integrazione HUD & Obiettivi
 
-* 🔍 **Integrazione Jade / WTHIT**: La mod è completamente integrata con **Jade** e **WTHIT**. Guardando qualsiasi blocco di legno, l'HUD mostrerà in tempo reale lo stadio esatto di decadimento, il rischio di infezione (%) e se il blocco è cerato.
+* 🔍 **Integrazione Jade / WTHIT**: La mod è completamente integrata con **Jade**. Guardando qualsiasi blocco di legno, l'HUD mostrerà in tempo reale lo stadio esatto di decadimento, il rischio di infezione (%) e se il blocco è cerato. La percentuale di rischio cambia colore dinamicamente (**Grigio = Safe**, **Rosso = A Rischio**). Gli admin possono anche usare il comando `/moldrisk [verbose]` per calcolare l'esatta formula matematica del blocco che stanno guardando!
 * 🏆 **Obiettivi (Advancements)**: Sono presenti 5 obiettivi personalizzati per guidare i giocatori attraverso la comprensione e l'utilizzo delle nuove meccaniche.
 
 ---

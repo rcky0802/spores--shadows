@@ -33,7 +33,7 @@ public class ModModelProvider extends FabricModelProvider {
         String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
-            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : (wood.equals("bamboo") ? wood + "_block" : wood + "_log"); String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : (wood.equals("bamboo") ? null : wood + "_wood");
+            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : wood + "_log"; String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : wood + "_wood";
             String prefix = wood;
 
             Block log = Registries.BLOCK.get(SporesShadows.id("moldy_" + logName));
@@ -105,6 +105,10 @@ public class ModModelProvider extends FabricModelProvider {
             generator.registerParentedItemModel(Registries.ITEM.get(SporesShadows.id("tainted_" + prefix + "_planks")), planks1);
             generator.registerParentedItemModel(Registries.ITEM.get(SporesShadows.id("moldy_" + prefix + "_planks")), planks2);
             generator.registerParentedItemModel(Registries.ITEM.get(SporesShadows.id("rotten_" + prefix + "_planks")), planks3);
+            net.minecraft.item.Item waxedPlanks = net.minecraft.registry.Registries.ITEM.get(moldmod.SporesShadows.id("waxed_" + prefix + "_planks"));
+            if (waxedPlanks != net.minecraft.item.Items.AIR) {
+                generator.registerParentedItemModel(waxedPlanks, Identifier.of("minecraft", "block/" + prefix + "_planks"));
+            }
         }
     }
 
@@ -158,6 +162,10 @@ public class ModModelProvider extends FabricModelProvider {
         generator.registerParentedItemModel(t1, m1);
         generator.registerParentedItemModel(t2, m2);
         generator.registerParentedItemModel(t3, m3);
+        net.minecraft.item.Item t0 = net.minecraft.registry.Registries.ITEM.get(moldmod.SporesShadows.id("waxed_" + net.minecraft.registry.Registries.BLOCK.getId(block).getPath().replace("moldy_", "")));
+        if (t0 != net.minecraft.item.Items.AIR) {
+            generator.registerParentedItemModel(t0, vanillaModel);
+        }
     }
 
     @Override

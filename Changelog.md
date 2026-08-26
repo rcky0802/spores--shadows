@@ -2,18 +2,21 @@
 
 All notable changes to **Spores & Shadows** will be documented in this file.
 
-## [1.0.2] - Quality of Life & Jade Integration
+## [1.1.0] - Quality of Life, Jade Integration & Biome Overhaul
 **Added:**
 - Jade / WTHIT Integration: The HUD now shows the exact decay stage, infection risk (%), and waxed status of any looked-at wood block.
+- Jade HUD percentage is now dynamically aligned with the `/moldrisk` command and features dynamic coloring (Grey for Safe, Red for At Risk).
+- Added full decay support for Nether wood types (Crimson and Warped), including all their block variants (planks, stairs, doors, etc).
 - 5 new Advancements to guide players through the mod's mechanics: *Spores & Shadows*, *Natural Prevention*, *Elbow Grease*, *Short Breath*, *Dust to Dust*.
-- Added full decay support for Bamboo, Crimson (Cremisi), and Warped (Distorto) wood types, including all their block variants (planks, stairs, doors, etc).
 - Advancements and Jade tooltips are fully localized in English, Italian, Spanish, German, and French via DataGen.
 - Stage 3 (Rotten) blocks emit slime sounds when walked on or broken.
 
 **Changed/Fixed:**
-- Fixed a bug where Stage 3 (Rotten) blocks still received a breaking speed bonus from axes (due to the #minecraft:logs tag). They now strictly ignore tool efficiency, taking the same time to break with an axe as with a bare hand.
-- Modified block generation and breaking mechanics for consistency.
-
+- **Nether & End Immunity**: Mold decay is now strictly disabled in all Nether and End biomes (due to extreme temperatures).
+- Fixed a client console spam issue caused by missing Item Models for Vanilla Waxed Items (`waxed_crimson_stem`, etc.) by properly registering them in DataGen.
+- Fixed game-breaking tag load errors where stale block references were still lingering in Vanilla Block Tags.
+- Fixed a bug where Stage 3 (Rotten) blocks still received a breaking speed bonus from axes. They now strictly ignore tool efficiency, taking the same time to break with an axe as with a bare hand.
+- Restored UTF-8 encoding across all JavaDocs, documentation, and translation files.
 ---
 
 ## [1.0.1] - Hotfix

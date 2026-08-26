@@ -20,7 +20,7 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         String[] woods = moldmod.SporesShadows.WOODS;
 
         for (String wood : woods) {
-            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : (wood.equals("bamboo") ? wood + "_block" : wood + "_log"); String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : (wood.equals("bamboo") ? null : wood + "_wood");
+            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : wood + "_log"; String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : wood + "_wood";
             String prefix = wood;
 
             Block vanillaLog = Registries.BLOCK.get(net.minecraft.util.Identifier.of("minecraft", logName));

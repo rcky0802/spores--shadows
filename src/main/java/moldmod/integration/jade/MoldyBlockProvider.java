@@ -24,13 +24,8 @@ public enum MoldyBlockProvider implements IBlockComponentProvider {
             String stageKey = "tooltip.spores--shadows.jade.stage." + stage;
 
             moldmod.config.ModConfig modConfig = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
-            double rValue = MoldyBlockHelper.calculateR(accessor.getLevel(), accessor.getPosition(), false, state);
-            int riskPercent = Math.min(100, (int)Math.round((rValue / modConfig.general.infection_threshold) * 100));
+            double risk = MoldyBlockHelper.calculateR(accessor.getLevel(), accessor.getPosition(), false, state);
             
-            if (stage == 3) {
-                riskPercent = 100;
-            }
-
             tooltip.add(Text.translatable("tooltip.spores--shadows.jade.stage").append(Text.translatable(stageKey).formatted(
                 stage == 0 ? Formatting.GREEN :
                 stage == 1 ? Formatting.YELLOW :
@@ -38,8 +33,10 @@ public enum MoldyBlockProvider implements IBlockComponentProvider {
                 Formatting.RED
             )));
             
-            if (stage < 3) {
-                tooltip.add(Text.translatable("tooltip.spores--shadows.jade.infection", riskPercent));
+            if (risk > 0) {
+                String color = risk >= modConfig.general.infection_threshold ? "§c" : "§7";
+                int riskPercent = (int) (risk * 100);
+                tooltip.add(Text.literal(String.format("Infection Risk: %s%d%%", color, riskPercent)));
             }
             
             tooltip.add(Text.translatable("tooltip.spores--shadows.jade.waxed").append(Text.translatable(waxed ? "tooltip.spores--shadows.jade.yes" : "tooltip.spores--shadows.jade.no").formatted(

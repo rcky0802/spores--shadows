@@ -12,16 +12,16 @@ The mod seamlessly and silently replaces every piece of wood placed by the playe
 
 ### 🔢 Technical Details and Added Blocks
 
-On a technical level, the mod injects a complete ecosystem for every single wood variant (including Bamboo, Crimson, and Warped woods).
+On a technical level, the mod injects a complete ecosystem for every single wood variant (including Crimson, and Warped woods).
 
 * **🧱 13 Architectural Formats**: *Logs*, *Stripped Logs*, *Wood*, *Stripped Wood*, *Planks*, *Stairs*, *Slabs*, *Fences*, *Fence Gates*, *Doors*, *Trapdoors*, *Pressure Plates*, *Buttons*.
 
-For each of the 141 base wood formats, the mod adds **3 moldy variants** (Tainted, Moldy, Rotten). Furthermore, for each of these blocks — including the original Vanilla block — their respective **waxed variant** is created.
+For each of the 130 base wood formats, the mod adds **3 moldy variants** (Tainted, Moldy, Rotten). Furthermore, for each of these blocks — including the original Vanilla block — their respective **waxed variant** is created.
 
-This way, the game provides a whopping **987 unique variants obtainable in Survival**:
-1. The **141 Waxed Vanilla Variants**: The protected and waxed copy of the base Vanilla block.
-2. The **423 Moldy Variants**: The three natural stages of decay.
-3. The **423 Waxed Moldy Variants**: The decayed blocks frozen in time by wax.
+This way, the game provides a whopping **910 unique variants obtainable in Survival**:
+1. The **130 Waxed Vanilla Variants**: The protected and waxed copy of the base Vanilla block.
+2. The **390 Moldy Variants**: The three natural stages of decay.
+3. The **390 Waxed Moldy Variants**: The decayed blocks frozen in time by wax.
 
 This system allows you to obtain partially moldy blocks in survival and then "seal" them with honeycomb, letting you safely use them for decorative purposes without the risk of infecting nearby structures.
 
@@ -43,8 +43,9 @@ Progression only occurs if the "Infection Risk" (`R`), which is constantly recal
 * 🪓 **Material Susceptibility**: Stripped wood is extremely vulnerable (`x1.4`), raw logs are standard (`x1.0`), while wood crafted into planks resists slightly more (`x0.8`).
 * 🌡️ **Temperature (Biome + Altitude/Depth)**: 
   - Acts as a survival filter. Mold **only** thrives if the local temperature is between `0.15` and `1.5`.
-  - **Surface Level**: Depends on the biome. Extreme climates like deserts or glaciers totally halt infection by locking the factor at `0.0`.
-  - **Underground (`Y < 64`)**: Regardless of the surface biome, as you descend, the temperature gradually normalizes, stabilizing at the perfect value of `0.5` (mild) below `Y=48`. Even in a desert or ice biome, deep caves will grow mold!
+  - **On the Surface**: Depends on the biome. Extreme climates like deserts or glaciers completely halt infection by dropping the factor to `0.0`.
+  - **Nether & End**: The extreme heat of the Nether and the freezing void of the End are completely lethal to mold. Wood will never rot in these dimensions.
+  - **Underground (`Y < 64`)**: Regardless of the surface biome, as you descend, the temperature gradually normalizes, stabilizing at a perfect `0.5` (mild) below `Y=48`. Even in a desert or frozen biome, deep caves will develop mold!
   - **High Altitude (`Y > 128`)**: As you climb higher, the temperature gradually drops, freezing at `-0.5` at level `Y=256`. Building cabins high in the mountains will preserve wood almost anywhere.
 * ☣️ **Contagion (Catalysts)**: Adds a direct malus if the wood is in contact with infectious agents:
   - Infected wood: Tainted (`+0.05`), Moldy (`+0.10`), Rotten (`+0.20`).
@@ -141,7 +142,7 @@ To avoid ruining the gameplay experience (preventing players from finding the en
 
 ## 📊 HUD Integration & Advancements
 
-* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade / WTHIT**. When looking at any wood block, the HUD displays its exact decay stage, current infection risk (%), and whether it is waxed.
+* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade**. By looking at any wooden block, the HUD will display in real-time its exact decay stage, the current infection risk (%), and whether the block is waxed. The risk percentage changes color dynamically (**Gray = Safe**, **Red = At Risk**). Admins can also use the `/moldrisk [verbose]` command to calculate the exact mathematical formula of the block they are looking at!
 * 🏆 **Advancements**: Includes 5 custom **Advancements** to guide players through the mechanics:
   - **Spores & Shadows**: Survive the decay of nature.
   - **Natural Prevention**: Use a honeycomb to wax a wood block and stop the mold.

@@ -156,4 +156,53 @@ public class MoldyMathTests {
         
         context.complete();
     }
+    
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testNetherBiomeRejection(TestContext context) {
+        BlockPos center = new BlockPos(2, 2, 2);
+        BlockPos absPos = context.getAbsolutePos(center);
+        BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(net.minecraft.block.Blocks.OAK_LOG).getDefaultState();
+        context.setBlockState(center, log);
+        
+        String command = String.format("fillbiome %d %d %d %d %d %d minecraft:nether_wastes", 
+            absPos.getX(), absPos.getY(), absPos.getZ(), absPos.getX(), absPos.getY(), absPos.getZ());
+            
+        context.getWorld().getServer().getCommandManager().executeWithPrefix(
+            context.getWorld().getServer().getCommandSource().withWorld(context.getWorld()), command);
+            
+        context.waitAndRun(5, () -> {
+            MoldyBlockHelper.MoldRiskResult risk = MoldyBlockHelper.calculateDetailedR(context.getWorld(), absPos, false, log);
+            if (risk.R() != 0.0) {
+                context.throwPositionedException("Nel Nether il rischio di muffa deve essere 0.0! Attuale: " + risk.R(), center);
+            }
+            context.complete();
+        });
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testEndBiomeRejection(TestContext context) {
+        BlockPos center = new BlockPos(2, 2, 2);
+        BlockPos absPos = context.getAbsolutePos(center);
+        BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(net.minecraft.block.Blocks.OAK_LOG).getDefaultState();
+        context.setBlockState(center, log);
+        
+        String command = String.format("fillbiome %d %d %d %d %d %d minecraft:the_end", 
+            absPos.getX(), absPos.getY(), absPos.getZ(), absPos.getX(), absPos.getY(), absPos.getZ());
+            
+        context.getWorld().getServer().getCommandManager().executeWithPrefix(
+            context.getWorld().getServer().getCommandSource().withWorld(context.getWorld()), command);
+            
+        context.waitAndRun(5, () -> {
+            MoldyBlockHelper.MoldRiskResult risk = MoldyBlockHelper.calculateDetailedR(context.getWorld(), absPos, false, log);
+            if (risk.R() != 0.0) {
+                var biome = context.getWorld().getBiome(absPos);
+                String bName = biome.getKey().map(k -> k.getValue().toString()).orElse("unknown");
+                String tags = biome.streamTags().map(t -> t.id().toString()).toList().toString();
+                String err = "Nell'End il rischio di muffa deve essere 0.0! Attuale: " + risk.R() + ", Bioma: " + bName + ", Tags: " + tags;
+                System.err.println("TEST FAILED: " + err);
+                context.throwPositionedException(err, center);
+            }
+            context.complete();
+        });
+    }
 }

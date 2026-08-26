@@ -16,12 +16,12 @@ Sur le plan technique, le mod injecte un écosystème complet pour chaque varian
 
 * **🧱 13 Formats Architecturaux** : *Bûches*, *Bûches Écorcées*, *Bois*, *Bois Écorcé*, *Planches*, *Escaliers*, *Dalles*, *Barrières*, *Portillons*, *Portes*, *Trappes*, *Plaques de Pression*, *Boutons*.
 
-Pour chacun des 104 formats de base en bois, le mod ajoute **3 variantes moisies** (Touché, Moisi, Pourri). De plus, pour chacun de ces blocs — y compris le bloc Vanilla original — la **variante cirée** respective est créée.
+Pour chacun des 130 formats de base en bois, le mod ajoute **3 variantes moisies** (Touché, Moisi, Pourri). De plus, pour chacun de ces blocs — y compris le bloc Vanilla original — la **variante cirée** respective est créée.
 
-Ainsi, le jeu met à disposition pas moins de **728 variantes uniques et obtenables en Survie** :
-1. Les **104 Variantes Vanilla Cirées** : La copie protégée et cirée du bloc Vanilla de base.
-2. Les **312 Variantes Moisies** : Les trois stades naturels de pourriture.
-3. Les **312 Variantes Moisies Cirées** : Les blocs dégradés mais figés dans le temps par la cire.
+Ainsi, le jeu met à disposition pas moins de **910 variantes uniques et obtenables en Survie** :
+1. Les **130 Variantes Vanilla Cirées** : La copie protégée et cirée du bloc Vanilla de base.
+2. Les **390 Variantes Moisies** : Les trois stades naturels de pourriture.
+3. Les **390 Variantes Moisies Cirées** : Les blocs dégradés mais figés dans le temps par la cire.
 
 Ce système vous permet de récupérer des blocs partiellement moisis en survie pour ensuite les "sceller" avec des rayons de miel, pouvant ainsi les utiliser en toute sécurité à des fins décoratives sans risquer d'infecter les constructions voisines.
 
@@ -43,8 +43,9 @@ La progression ne se produit que si le "Risque d'Infection" (`R`), recalculé en
 * 🪓 **Susceptibilité du Matériau** : Le bois écorcé est extrêmement vulnérable (`x1.4`), les bûches brutes sont standard (`x1.0`), tandis que le bois transformé en planches résiste légèrement mieux (`x0.8`).
 * 🌡️ **Température (Biome + Altitude/Profondeur)** : 
   - Agit comme un filtre de survie. La moisissure prolifère **uniquement** si la température locale est comprise entre `0.15` et `1.5`.
-  - **En Surface** : Dépend du biome. Les climats extrêmes comme les déserts ou les glaciers bloquent totalement l'infection en fixant le facteur à `0.0`.
-  - **Sous terre (`Y < 64`)** : Indépendamment du biome de surface, la température se normalise progressivement en descendant, se stabilisant à la valeur parfaite de `0.5` (doux) sous `Y=48`. Même dans un désert ou un biome glacé, les cavernes profondes développeront de la moisissure !
+  - **À la surface** : Dépend du biome. Les climats extrêmes tels que les déserts ou les glaciers arrêtent complètement l'infection en réduisant le facteur à `0.0`.
+  - **Nether & End** : La chaleur extrême du Nether et le vide glacial de l'End sont totalement mortels pour la moisissure. Le bois ne pourrira jamais dans ces dimensions.
+  - **Sous terre (`Y < 64`)** : Indépendamment du biome en surface, au fur et à mesure que vous descendez, la température se normalise progressivement, se stabilisant à un parfait `0.5` (doux) sous `Y=48`. Même dans un désert ou un biome glacé, les grottes profondes développeront de la moisissure !
   - **Haute Altitude (`Y > 128`)** : En prenant de l'altitude, la température chute progressivement, gelant à `-0.5` au niveau `Y=256`. Construire des chalets en haute montagne préservera le bois presque partout.
 * ☣️ **Contagion (Catalyseurs)** : Ajoute un malus direct si le bois est en contact avec des agents infectieux :
   - Bois infecté : Touché (`+0.05`), Moisi (`+0.10`), Pourri (`+0.20`).
@@ -142,7 +143,7 @@ Pour ne pas ruiner l'expérience de jeu (en évitant que les joueurs trouvent le
 
 ## 📊 Intégration HUD et Progrès
 
-* 🔍 **Jade / WTHIT** : Le mod est entièrement intégré avec **Jade** et **WTHIT**. En regardant n'importe quel bloc de bois, le HUD affiche son stade exact de décomposition, le risque d'infection (%) ainsi que son statut ciré ou non.
+* 🔍 **Intégration Jade / WTHIT** : Le mod est entièrement intégré à **Jade**. En regardant n'importe quel bloc de bois, le HUD affichera en temps réel son stade exact de détérioration, le risque actuel d'infection (%) et si le bloc est ciré. Le pourcentage de risque change de couleur de manière dynamique (**Gris = Sûr**, **Rouge = À Risque**). Les administrateurs peuvent également utiliser la commande `/moldrisk [verbose]` pour calculer la formule mathématique exacte du bloc qu'ils regardent !
 * 🏆 **Progrès (Advancements)** : 5 progrès personnalisés sont inclus pour guider les joueurs à travers l'apprentissage et la maîtrise des mécaniques du mod.
 
 ---

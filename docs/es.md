@@ -16,12 +16,12 @@ A nivel técnico, el mod inyecta un ecosistema completo para cada variante de ma
 
 * **🧱 13 Formatos Arquitectónicos**: *Troncos*, *Troncos Sin Corteza*, *Madera (Wood)*, *Madera Sin Corteza*, *Tablones (Planks)*, *Escaleras*, *Losas*, *Vallas*, *Puertas de Valla*, *Puertas*, *Trampillas*, *Placas de Presión*, *Botones*.
 
-Para cada uno de los 104 formatos base de madera, el mod añade **3 variantes enmohecidas** (Deteriorado, Enmohecido, Podrido). Además, para cada uno de estos bloques — incluido el bloque original Vanilla — se crea la respectiva **variante encerada**.
+Para cada uno de los 130 formatos base de madera, el mod añade **3 variantes enmohecidas** (Deteriorado, Enmohecido, Podrido). Además, para cada uno de estos bloques — incluido el bloque original Vanilla — se crea la respectiva **variante encerada**.
 
-De esta manera, el juego pone a disposición **728 variantes únicas y obtenibles en Supervivencia**:
-1. Las **104 Variantes Vanilla Enceradas**: La copia protegida y encerada del bloque base Vanilla.
-2. Las **312 Variantes Enmohecidas**: Las tres etapas de decadencia natural.
-3. Las **312 Variantes Enmohecidas Enceradas**: Los bloques decaídos pero detenidos en el tiempo por la cera.
+De esta manera, el juego pone a disposición **910 variantes únicas y obtenibles en Supervivencia**:
+1. Las **130 Variantes Vanilla Enceradas**: La copia protegida y encerada del bloque base Vanilla.
+2. Las **390 Variantes Enmohecidas**: Las tres etapas de decadencia natural.
+3. Las **390 Variantes Enmohecidas Enceradas**: Los bloques decaídos pero detenidos en el tiempo por la cera.
 
 Este sistema te permite obtener en supervivencia bloques parcialmente enmohecidos para luego "sellarlos" con un panal de miel, pudiendo usarlos con total seguridad para fines decorativos sin riesgo de infectar las construcciones cercanas.
 
@@ -43,8 +43,9 @@ El avance ocurre solo si el "Riesgo de Infección" (`R`), recalculado constantem
 * 🪓 **Susceptibilidad del Material**: La madera sin corteza es extremadamente vulnerable (`x1.4`), los troncos crudos son estándar (`x1.0`), mientras que la madera procesada en tablones resiste un poco más (`x0.8`).
 * 🌡️ **Temperatura (Bioma + Altitud/Profundidad)**: 
   - Actúa como un filtro de supervivencia. El moho prolifera **solo** si la temperatura local está entre `0.15` y `1.5`.
-  - **En la Superficie**: Depende del bioma. Los climas extremos como desiertos o glaciares bloquean totalmente la infección al fijar el factor en `0.0`.
-  - **Bajo Tierra (`Y < 64`)**: Independientemente del bioma de la superficie, al descender la temperatura se normaliza gradualmente, estabilizándose en el valor perfecto de `0.5` (templado) por debajo de `Y=48`. ¡Incluso en un desierto o en un bioma helado, las cavernas profundas desarrollarán moho!
+  - **En la Superficie**: Depende del bioma. Climas extremos como desiertos o glaciares detienen por completo la infección, reduciendo el factor a `0.0`.
+  - **Nether & End**: El calor extremo del Nether y el vacío helado del End son totalmente letales para el moho. La madera nunca se pudrirá en estas dimensiones.
+  - **Bajo Tierra (`Y < 64`)**: Independientemente del bioma de la superficie, a medida que desciendes, la temperatura se normaliza gradualmente, estabilizándose en un perfecto `0.5` (templado) por debajo de `Y=48`. ¡Incluso en un desierto o bioma congelado, las cuevas profundas desarrollarán moho!
   - **Alta Altitud (`Y > 128`)**: Al subir en altitud, la temperatura cae gradualmente, congelándose a `-0.5` en el nivel `Y=256`. Construir cabañas en alta montaña preservará la madera en casi cualquier lugar.
 * ☣️ **Contagio (Catalizadores)**: Suma una penalización directa si la madera está en contacto con agentes infecciosos:
   - Madera infectada: Deteriorada (`+0.05`), Enmohecida (`+0.10`), Podrida (`+0.20`).
@@ -143,7 +144,7 @@ Para no arruinar la experiencia de juego (evitando que los jugadores encuentren 
 
 ## 📊 Integración de HUD y Logros
 
-* 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade** y **WTHIT**. Al mirar cualquier bloque de madera, la interfaz mostrará la etapa exacta de decadencia, el riesgo de infección (%) y si el bloque está encerado.
+* 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade**. Al mirar cualquier bloque de madera, el HUD mostrará en tiempo real su etapa exacta de deterioro, el riesgo actual de infección (%) y si el bloque está encerado. El porcentaje de riesgo cambia de color dinámicamente (**Gris = Seguro**, **Rojo = En Riesgo**). ¡Los administradores también pueden usar el comando `/moldrisk [verbose]` para calcular la fórmula matemática exacta del bloque que están mirando!
 * 🏆 **Logros Personalizados**: Incluye 5 **Logros (Advancements)** diseñados para guiar a los jugadores a través del descubrimiento y dominio de las mecánicas del mod.
 
 ---

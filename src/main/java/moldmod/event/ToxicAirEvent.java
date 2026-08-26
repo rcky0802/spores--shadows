@@ -66,6 +66,7 @@ public class ToxicAirEvent {
                 
                 if (toxicity >= poisonThreshold) {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, poisonDuration, 0, false, false, true));
+                    moldmod.block.MoldyBlockHelper.grantAdvancement(player, "toxic_air");
                 }
             }
         });

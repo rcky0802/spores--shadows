@@ -129,17 +129,6 @@
     "spores--shadows:moldy_warped_pressure_plate",
     "spores--shadows:moldy_warped_button",
     "spores--shadows:moldy_stripped_warped_hyphae",
-    "spores--shadows:moldy_warped_hyphae",
-    "spores--shadows:moldy_stripped_bamboo_block",
-    "spores--shadows:moldy_bamboo_block",
-    "spores--shadows:moldy_bamboo_planks",
-    "spores--shadows:moldy_bamboo_stairs",
-    "spores--shadows:moldy_bamboo_slab",
-    "spores--shadows:moldy_bamboo_fence",
-    "spores--shadows:moldy_bamboo_fence_gate",
-    "spores--shadows:moldy_bamboo_door",
-    "spores--shadows:moldy_bamboo_trapdoor",
-    "spores--shadows:moldy_bamboo_pressure_plate",
-    "spores--shadows:moldy_bamboo_button"
+    "spores--shadows:moldy_warped_hyphae"
   ]
 }

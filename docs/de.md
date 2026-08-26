@@ -16,12 +16,12 @@ Auf technischer Ebene fügt die Mod für jede einzelne Holzvariante ein komplett
 
 * **🧱 13 Architektonische Formate**: *Stämme*, *Entrindete Stämme*, *Holz*, *Entrindetes Holz*, *Bretter*, *Treppen*, *Stufen*, *Zäune*, *Zauntore*, *Türen*, *Falltüren*, *Druckplatten*, *Knöpfe*.
 
-Für jedes der 104 Basis-Holzformate fügt die Mod **3 schimmlige Varianten** hinzu (Befallen, Schimmelig, Verrottet). Zusätzlich wird für jeden dieser Blöcke — einschließlich des ursprünglichen Vanilla-Blocks — die entsprechende **gewachste Variante** erstellt.
+Für jedes der 130 Basis-Holzformate fügt die Mod **3 schimmlige Varianten** hinzu (Befallen, Schimmelig, Verrottet). Zusätzlich wird für jeden dieser Blöcke — einschließlich des ursprünglichen Vanilla-Blocks — die entsprechende **gewachste Variante** erstellt.
 
-Auf diese Weise bietet das Spiel unglaubliche **728 einzigartige Varianten, die im Survival-Modus erhältlich sind**:
-1. Die **104 gewachsten Vanilla-Varianten**: Die geschützte und gewachste Kopie des Vanilla-Basisblocks.
-2. Die **312 schimmligen Varianten**: Die drei natürlichen Zerfallsstadien.
-3. Die **312 gewachsten schimmligen Varianten**: Die verfallenen, aber durch Wachs in der Zeit eingefrorenen Blöcke.
+Auf diese Weise bietet das Spiel unglaubliche **910 einzigartige Varianten, die im Survival-Modus erhältlich sind**:
+1. Die **130 gewachsten Vanilla-Varianten**: Die geschützte und gewachste Kopie des Vanilla-Basisblocks.
+2. Die **390 schimmligen Varianten**: Die drei natürlichen Zerfallsstadien.
+3. Die **390 gewachsten schimmligen Varianten**: Die verfallenen, aber durch Wachs in der Zeit eingefrorenen Blöcke.
 
 Dieses System ermöglicht es dir, teilweise verschimmelte Blöcke im Survival-Modus zu erhalten und sie dann mit einer Honigwabe zu "versiegeln". So können sie völlig sicher für dekorative Zwecke verwendet werden, ohne das Risiko, benachbarte Konstruktionen zu infizieren.
 
@@ -43,8 +43,9 @@ Der Fortschritt findet nur statt, wenn das "Infektionsrisiko" (`R`), das ständi
 * 🪓 **Anfälligkeit des Materials**: Entrindetes Holz ist extrem verletzlich (`x1.4`), rohe Stämme sind Standard (`x1.0`), während zu Brettern verarbeitetes Holz etwas widerstandsfähiger ist (`x0.8`).
 * 🌡️ **Temperatur (Biom + Höhe/Tiefe)**: 
   - Wirkt als Überlebensfilter. Schimmel wächst **nur**, wenn die lokale Temperatur zwischen `0.15` und `1.5` liegt.
-  - **An der Oberfläche**: Hängt vom Biom ab. Extreme Klimazonen wie Wüsten oder Gletscher stoppen die Infektion vollständig, indem sie den Faktor auf `0.0` setzen.
-  - **Unterirdisch (`Y < 64`)**: Unabhängig vom Oberflächenbiom normalisiert sich die Temperatur beim Abstieg allmählich und stabilisiert sich auf den perfekten Wert von `0.5` (mild) unterhalb von `Y=48`. Selbst in einer Wüste oder einem Eisbiom wird sich in tiefen Höhlen Schimmel bilden!
+  - **An der Oberfläche**: Abhängig vom Biom. Extreme Klimazonen wie Wüsten oder Gletscher stoppen die Infektion vollständig und senken den Faktor auf `0.0`.
+  - **Nether & End**: Die extreme Hitze des Nethers und die eisige Leere des Ends sind für Schimmel absolut tödlich. Holz wird in diesen Dimensionen niemals verrotten.
+  - **Unterirdisch (`Y < 64`)**: Unabhängig vom Oberflächenbiom normalisiert sich die Temperatur mit zunehmender Tiefe allmählich und stabilisiert sich unterhalb von `Y=48` bei perfekten `0.5` (mild). Selbst in einer Wüste oder einem eisigen Biom entwickelt sich in tiefen Höhlen Schimmel!
   - **Große Höhen (`Y > 128`)**: Mit zunehmender Höhe sinkt die Temperatur allmählich und friert auf Höhe `Y=256` bei `-0.5` ein. Der Bau von Hütten im Hochgebirge schützt das Holz fast überall.
 * ☣️ **Ansteckung (Katalysatoren)**: Addiert einen direkten Malus, wenn das Holz in Kontakt mit infektiösen Erregern kommt:
   - Infiziertes Holz: Befallen (`+0.05`), Schimmelig (`+0.10`), Verrottet (`+0.20`).
@@ -141,7 +142,7 @@ Um das Spielerlebnis nicht zu ruinieren (und zu vermeiden, dass Spieler die ganz
 
 ## 📊 HUD-Integration & Fortschritte
 
-* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade / WTHIT** integriert. Wenn du einen beliebigen Holzblock ansiehst, zeigt das HUD das genaue Zerfallsstadium, das Infektionsrisiko (in %) und an, ob der Block gewachst ist.
+* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn Sie einen beliebigen Holzblock ansehen, zeigt das HUD in Echtzeit sein genaues Verfallsstadium, das aktuelle Infektionsrisiko (%) und ob der Block gewachst ist. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
 * **🏆 Fortschritte (Advancements)**: 5 benutzerdefinierte Fortschritte leiten Spieler durch die verschiedenen Mechaniken der Mod.
 
 ---
