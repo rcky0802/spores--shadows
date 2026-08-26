@@ -1,0 +1,21 @@
+{
+  "tooltip.spores--shadows.jade.stage": "Fase: ",
+  "tooltip.spores--shadows.jade.infection": "Riesgo de Infección: %d%%",
+  "tooltip.spores--shadows.jade.waxed": "Encerado: ",
+  "tooltip.spores--shadows.jade.yes": "Sí",
+  "tooltip.spores--shadows.jade.no": "No",
+  "tooltip.spores--shadows.jade.stage.0": "Sano",
+  "tooltip.spores--shadows.jade.stage.1": "Contaminado",
+  "tooltip.spores--shadows.jade.stage.2": "Mohoso",
+  "tooltip.spores--shadows.jade.stage.3": "Podrido",
+  "advancements.spores--shadows.root.title": "Spores & Shadows",
+  "advancements.spores--shadows.root.description": "Sobrevive a la decadencia de la naturaleza.",
+  "advancements.spores--shadows.wax_block.title": "Prevención Natural",
+  "advancements.spores--shadows.wax_block.description": "Usa un panal de miel para encerar un bloque de madera y detener el moho.",
+  "advancements.spores--shadows.scrape_mold.title": "Grasa de Codo",
+  "advancements.spores--shadows.scrape_mold.description": "Raspa el moho de un bloque de madera con un hacha.",
+  "advancements.spores--shadows.toxic_air.title": "Respiración Corta",
+  "advancements.spores--shadows.toxic_air.description": "Sufre el veneno del miasma al respirar demasiado moho.",
+  "advancements.spores--shadows.crumble.title": "Polvo al Polvo",
+  "advancements.spores--shadows.crumble.description": "Intenta romper un bloque de madera podrido y mira cómo se desmorona en la nada."
+}

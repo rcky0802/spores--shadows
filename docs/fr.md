@@ -140,6 +140,13 @@ Pour ne pas ruiner l'expérience de jeu (en évitant que les joueurs trouvent le
 
 ---
 
+## 📊 Intégration HUD et Progrès
+
+* 🔍 **Jade / WTHIT** : Le mod est entièrement intégré avec **Jade** et **WTHIT**. En regardant n'importe quel bloc de bois, le HUD affiche son stade exact de décomposition, le risque d'infection (%) ainsi que son statut ciré ou non.
+* 🏆 **Progrès (Advancements)** : 5 progrès personnalisés sont inclus pour guider les joueurs à travers l'apprentissage et la maîtrise des mécaniques du mod.
+
+---
+
 ## ⚙️ Configuration du Mod
 Le mod inclut un menu de configuration accessible directement depuis le jeu (nécessite **Cloth Config** et **ModMenu**) qui vous garantit un contrôle absolu sur chaque mécanique individuelle. 
 Les options sont divisées en 8 catégories principales :

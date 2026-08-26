@@ -172,9 +172,33 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.check_interval_ticks", "Kontrollintervall (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.scan_radius", "Giftwolken-Radius");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_nausea", "Übelkeit-Schwelle");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Gift-Schwelle");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Dauer Übelkeit (Ticks)");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Dauer Gift (Ticks)");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Wasser-Suchradius");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Gift-Schwellenwert");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Übelkeitsdauer (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Giftdauer (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Wasser-Scan-Radius");
+
+        // Jade Tooltips
+        translationBuilder.add("tooltip.spores--shadows.jade.stage", "Stadium: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.infection", "Infektionsrisiko: %d%%");
+        translationBuilder.add("tooltip.spores--shadows.jade.waxed", "Gewachst: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.yes", "Ja");
+        translationBuilder.add("tooltip.spores--shadows.jade.no", "Nein");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.0", "Gesund");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.1", "Befallen");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.2", "Schimmelig");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.3", "Verfault");
+        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Schimmel Info");
+
+        // Advancements
+        translationBuilder.add("advancements.spores--shadows.root.title", "Spores & Shadows");
+        translationBuilder.add("advancements.spores--shadows.root.description", "Überlebe den Zerfall der Natur.");
+        translationBuilder.add("advancements.spores--shadows.wax_block.title", "Natürliche Prävention");
+        translationBuilder.add("advancements.spores--shadows.wax_block.description", "Verwende eine Honigwabe, um einen Holzblock zu wachsen und den Schimmel aufzuhalten.");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.title", "Muskelschmalz");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.description", "Kratze den Schimmel mit einer Axt von einem Holzblock ab.");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.title", "Kurzer Atem");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.description", "Leide unter dem Gift des Miasmas, weil du zu viel Schimmel eingeatmet hast.");
+        translationBuilder.add("advancements.spores--shadows.crumble.title", "Staub zu Staub");
+        translationBuilder.add("advancements.spores--shadows.crumble.description", "Versuche, einen verfaulten Holzblock abzubauen und sieh zu, wie er zu nichts zerfällt.");
     }
 }

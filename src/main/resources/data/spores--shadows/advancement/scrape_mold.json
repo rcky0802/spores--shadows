@@ -1,0 +1,23 @@
+{
+  "parent": "spores--shadows:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:iron_axe"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.scrape_mold.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.scrape_mold.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "scrape": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

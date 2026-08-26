@@ -1,0 +1,23 @@
+{
+  "parent": "spores--shadows:root",
+  "display": {
+    "icon": {
+      "id": "spores--shadows:moldy_oak_log"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.crumble.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.crumble.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "crumble": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

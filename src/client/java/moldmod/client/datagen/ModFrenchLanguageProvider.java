@@ -160,8 +160,32 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.scan_radius", "Rayon du nuage toxique");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_nausea", "Seuil de Nausée");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Seuil de Poison");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Durée Nausée (Ticks)");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Durée Poison (Ticks)");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Rayon de recherche d'eau");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Durée de la Nausée (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Durée du Poison (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Rayon de Balayage de l'Eau");
+
+        // Jade Tooltips
+        translationBuilder.add("tooltip.spores--shadows.jade.stage", "Stade : ");
+        translationBuilder.add("tooltip.spores--shadows.jade.infection", "Risque d'Infection : %d%%");
+        translationBuilder.add("tooltip.spores--shadows.jade.waxed", "Ciré : ");
+        translationBuilder.add("tooltip.spores--shadows.jade.yes", "Oui");
+        translationBuilder.add("tooltip.spores--shadows.jade.no", "Non");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.0", "Sain");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.1", "Contaminé");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.2", "Moisi");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.3", "Pourri");
+        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows : Info Moisissure");
+
+        // Advancements
+        translationBuilder.add("advancements.spores--shadows.root.title", "Spores & Shadows");
+        translationBuilder.add("advancements.spores--shadows.root.description", "Survivez à la décadence de la nature.");
+        translationBuilder.add("advancements.spores--shadows.wax_block.title", "Prévention Naturelle");
+        translationBuilder.add("advancements.spores--shadows.wax_block.description", "Utilisez un rayon de miel pour cirer un bloc de bois et arrêter la moisissure.");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.title", "Huile de Coude");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.description", "Grattez la moisissure d'un bloc de bois avec une hache.");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.title", "Souffle Court");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.description", "Subissez le poison du miasme en respirant trop de moisissure.");
+        translationBuilder.add("advancements.spores--shadows.crumble.title", "Poussière à Poussière");
+        translationBuilder.add("advancements.spores--shadows.crumble.description", "Tentez de briser un bloc de bois pourri et regardez-le s'effriter dans le néant.");
     }
 }

@@ -17,6 +17,13 @@ import net.minecraft.world.World;
 public class MoldyInteractionEvents {
 
     public static void register() {
+        net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
+            if (!world.isClient() && state.contains(MoldyLogBlock.STAGE) && state.get(MoldyLogBlock.STAGE) == 3 && (!state.contains(MoldyLogBlock.WAXED) || !state.get(MoldyLogBlock.WAXED))) {
+                moldmod.block.MoldyBlockHelper.grantAdvancement(player, "crumble");
+            }
+            return true;
+        });
+
         UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) -> {
             // Must be sneaking for mold/wax interactions
             if (!player.isSneaking()) {
@@ -44,6 +51,7 @@ public class MoldyInteractionEvents {
                         }
                         moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, true);
                         world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                        moldmod.block.MoldyBlockHelper.grantAdvancement(player, "wax_block");
                         if (!player.isCreative()) {
                             stack.decrement(1);
                         }
@@ -76,6 +84,7 @@ public class MoldyInteractionEvents {
                             moldmod.block.MoldyBlockHelper.setStage(world, hitResult.getBlockPos(), newState, stage - 1);
                             world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_AXE_SCRAPE, SoundCategory.BLOCKS, 1.0f, 1.0f);
                             stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
+                            moldmod.block.MoldyBlockHelper.grantAdvancement(player, "scrape_mold");
                         }
                         return ActionResult.SUCCESS;
                     }

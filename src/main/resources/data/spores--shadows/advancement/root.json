@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "spores--shadows:moldy_oak_log"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.root.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.root.description"
+    },
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

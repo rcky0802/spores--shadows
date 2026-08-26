@@ -37,8 +37,11 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
             Identifier id = Registries.BLOCK.getId(block);
             if (!id.getNamespace().equals("spores--shadows")) continue;
             
-            axeBuilder.add(block);
             String name = id.getPath();
+            
+            if (!name.contains("rotten_")) {
+                axeBuilder.add(block);
+            }
             
             if (name.contains("fence_gate")) {
                 fenceGates.add(block);

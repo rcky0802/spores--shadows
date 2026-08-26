@@ -133,6 +133,30 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Nausea Duration (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Poison Duration (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Water Scan Radius");
+
+        // Jade Tooltips
+        translationBuilder.add("tooltip.spores--shadows.jade.stage", "Stage: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.infection", "Infection Risk: %d%%");
+        translationBuilder.add("tooltip.spores--shadows.jade.waxed", "Waxed: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.yes", "Yes");
+        translationBuilder.add("tooltip.spores--shadows.jade.no", "No");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.0", "Healthy");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.1", "Tainted");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.2", "Moldy");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.3", "Rotten");
+        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Mold Info");
+
+        // Advancements
+        translationBuilder.add("advancements.spores--shadows.root.title", "Spores & Shadows");
+        translationBuilder.add("advancements.spores--shadows.root.description", "Survive the decay of nature.");
+        translationBuilder.add("advancements.spores--shadows.wax_block.title", "Natural Prevention");
+        translationBuilder.add("advancements.spores--shadows.wax_block.description", "Use a honeycomb to wax a wood block and stop the mold.");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.title", "Elbow Grease");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.description", "Scrape the mold off a wood block using an axe.");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.title", "Short Breath");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.description", "Suffer the poison of the miasma by breathing too much mold.");
+        translationBuilder.add("advancements.spores--shadows.crumble.title", "Dust to Dust");
+        translationBuilder.add("advancements.spores--shadows.crumble.description", "Attempt to break a rotten wood block and watch it crumble into nothing.");
     }
     
     private String capitalize(String str) {

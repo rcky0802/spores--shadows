@@ -1,0 +1,23 @@
+{
+  "parent": "spores--shadows:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:honeycomb"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.wax_block.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.wax_block.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "wax": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

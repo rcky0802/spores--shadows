@@ -141,7 +141,14 @@ Per non rovinare l'esperienza di gioco (evitando che i giocatori trovino il mond
 
 ---
 
-## ⚙️ Mod Configuration
+## 📊 Integrazione HUD & Obiettivi
+
+* 🔍 **Integrazione Jade / WTHIT**: La mod è completamente integrata con **Jade** e **WTHIT**. Guardando qualsiasi blocco di legno, l'HUD mostrerà in tempo reale lo stadio esatto di decadimento, il rischio di infezione (%) e se il blocco è cerato.
+* 🏆 **Obiettivi (Advancements)**: Sono presenti 5 obiettivi personalizzati per guidare i giocatori attraverso la comprensione e l'utilizzo delle nuove meccaniche.
+
+---
+
+## ⚙️ Configurazione della Mod
 La mod include un menu di configurazione accessibile direttamente dal gioco (richiede **Cloth Config** e **ModMenu**) che ti garantisce il controllo assoluto su ogni singola meccanica. 
 Le opzioni sono divise in 7 categorie principali:
 

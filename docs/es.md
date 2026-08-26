@@ -141,6 +141,13 @@ Para no arruinar la experiencia de juego (evitando que los jugadores encuentren 
 
 ---
 
+## 📊 Integración de HUD y Logros
+
+* 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade** y **WTHIT**. Al mirar cualquier bloque de madera, la interfaz mostrará la etapa exacta de decadencia, el riesgo de infección (%) y si el bloque está encerado.
+* 🏆 **Logros Personalizados**: Incluye 5 **Logros (Advancements)** diseñados para guiar a los jugadores a través del descubrimiento y dominio de las mecánicas del mod.
+
+---
+
 ## ⚙️ Configuración del Mod
 El mod incluye un menú de configuración accesible directamente desde el juego (requiere **Cloth Config** y **ModMenu**) que te garantiza un control absoluto sobre cada mecánica individual. 
 Las opciones se dividen en 8 categorías principales:

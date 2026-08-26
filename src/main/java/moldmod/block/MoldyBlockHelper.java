@@ -111,6 +111,7 @@ public class MoldyBlockHelper {
                     if (x == 0 && y == 0 && z == 0) continue;
 
                     mutable.set(cx + x, cy + y, cz + z);
+                    if (world instanceof World realWorld && realWorld.getChunk(mutable.getX() >> 4, mutable.getZ() >> 4, net.minecraft.world.chunk.ChunkStatus.FULL, false) == null) continue;
                     BlockState nearbyState = world.getBlockState(mutable);
 
                     if (nearbyState.isOf(Blocks.MUD) || nearbyState.isOf(Blocks.WATER_CAULDRON)) {
@@ -155,6 +156,7 @@ public class MoldyBlockHelper {
             for (int y = -wr; y <= wr; y++) {
                 for (int z = -wr; z <= wr; z++) {
                     mutable.set(cx + x, cy + y, cz + z);
+                    if (world instanceof World realWorld && realWorld.getChunk(mutable.getX() >> 4, mutable.getZ() >> 4, net.minecraft.world.chunk.ChunkStatus.FULL, false) == null) continue;
                     BlockState nearbyState = world.getBlockState(mutable);
                     
                     if (!nearbyState.getFluidState().isEmpty()) {
@@ -180,9 +182,9 @@ public class MoldyBlockHelper {
 
         int totalLight = 0;
         for (net.minecraft.util.math.Direction dir : net.minecraft.util.math.Direction.values()) {
-            BlockPos offsetPos = pos.offset(dir);
-            int skyLight = world.getLightLevel(net.minecraft.world.LightType.SKY, offsetPos);
-            int blockLight = world.getLightLevel(net.minecraft.world.LightType.BLOCK, offsetPos);
+            mutable.set(pos, dir);
+            int skyLight = world.getLightLevel(net.minecraft.world.LightType.SKY, mutable);
+            int blockLight = world.getLightLevel(net.minecraft.world.LightType.BLOCK, mutable);
             totalLight += Math.max(skyLight, blockLight);
         }
         // Also check the block itself (for transparent blocks like doors/buttons)
@@ -276,6 +278,20 @@ public class MoldyBlockHelper {
         if (R > config.general.infection_threshold) {
             if (currentStage < 3) {
                 setStage(world, pos, state, currentStage + 1);
+            }
+        }
+    }
+
+    public static void grantAdvancement(net.minecraft.entity.player.PlayerEntity player, String advancementName) {
+        if (player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer) {
+            net.minecraft.advancement.AdvancementEntry entry = serverPlayer.getServer().getAdvancementLoader().get(net.minecraft.util.Identifier.of("spores--shadows", advancementName));
+            if (entry != null) {
+                net.minecraft.advancement.AdvancementProgress progress = serverPlayer.getAdvancementTracker().getProgress(entry);
+                if (!progress.isDone()) {
+                    for (String criterion : progress.getUnobtainedCriteria()) {
+                        serverPlayer.getAdvancementTracker().grantCriterion(entry, criterion);
+                    }
+                }
             }
         }
     }

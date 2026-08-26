@@ -10,9 +10,10 @@ repositories {
 	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/" } // For ModMenu if needed
 	maven { url "https://maven.nucleoid.xyz/" } // For Polymer
+	maven { url "https://maven.blamejared.com/" } // For Jade
 	maven {
 		name = "Modrinth"
-		url = "https://api.modrinth.com/maven"
+		url = "https://maven.modrinth.com"
 		content {
 			includeGroup "maven.modrinth"
 		}
@@ -68,6 +69,10 @@ dependencies {
 	// Polymer for Virtual Resource Packs
 	include modImplementation("eu.pb4:polymer-core:0.9.19+1.21.1")
 	include modImplementation("eu.pb4:polymer-resource-pack:0.9.19+1.21.1")
+    
+    // Jade API
+    modCompileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    modLocalRuntime fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 tasks.withType(AbstractCopyTask).configureEach {

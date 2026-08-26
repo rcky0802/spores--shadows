@@ -1,0 +1,21 @@
+{
+  "tooltip.spores--shadows.jade.stage": "Stade : ",
+  "tooltip.spores--shadows.jade.infection": "Risque d'Infection : %d%%",
+  "tooltip.spores--shadows.jade.waxed": "Ciré : ",
+  "tooltip.spores--shadows.jade.yes": "Oui",
+  "tooltip.spores--shadows.jade.no": "Non",
+  "tooltip.spores--shadows.jade.stage.0": "Sain",
+  "tooltip.spores--shadows.jade.stage.1": "Contaminé",
+  "tooltip.spores--shadows.jade.stage.2": "Moisi",
+  "tooltip.spores--shadows.jade.stage.3": "Pourri",
+  "advancements.spores--shadows.root.title": "Spores & Shadows",
+  "advancements.spores--shadows.root.description": "Survivez à la décadence de la nature.",
+  "advancements.spores--shadows.wax_block.title": "Prévention Naturelle",
+  "advancements.spores--shadows.wax_block.description": "Utilisez un rayon de miel pour cirer un bloc de bois et arrêter la moisissure.",
+  "advancements.spores--shadows.scrape_mold.title": "Huile de Coude",
+  "advancements.spores--shadows.scrape_mold.description": "Grattez la moisissure d'un bloc de bois avec une hache.",
+  "advancements.spores--shadows.toxic_air.title": "Souffle Court",
+  "advancements.spores--shadows.toxic_air.description": "Subissez le poison du miasme en respirant trop de moisissure.",
+  "advancements.spores--shadows.crumble.title": "Poussière à Poussière",
+  "advancements.spores--shadows.crumble.description": "Tentez de briser un bloc de bois pourri et regardez-le s'effriter dans le néant."
+}

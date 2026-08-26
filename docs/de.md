@@ -139,6 +139,13 @@ Um das Spielerlebnis nicht zu ruinieren (und zu vermeiden, dass Spieler die ganz
 
 ---
 
+## 📊 HUD-Integration & Fortschritte
+
+* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade / WTHIT** integriert. Wenn du einen beliebigen Holzblock ansiehst, zeigt das HUD das genaue Zerfallsstadium, das Infektionsrisiko (in %) und an, ob der Block gewachst ist.
+* **🏆 Fortschritte (Advancements)**: 5 benutzerdefinierte Fortschritte leiten Spieler durch die verschiedenen Mechaniken der Mod.
+
+---
+
 ## ⚙️ Mod-Konfiguration
 Die Mod enthält ein direkt aus dem Spiel zugängliches Konfigurationsmenü (erfordert **Cloth Config** und **ModMenu**), das dir die absolute Kontrolle über jede einzelne Mechanik garantiert. 
 Die Optionen sind in 8 Hauptkategorien unterteilt:

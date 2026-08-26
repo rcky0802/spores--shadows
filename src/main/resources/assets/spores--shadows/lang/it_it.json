@@ -1,0 +1,21 @@
+{
+  "tooltip.spores--shadows.jade.stage": "Stadio: ",
+  "tooltip.spores--shadows.jade.infection": "Rischio Infezione: %d%%",
+  "tooltip.spores--shadows.jade.waxed": "Cerato: ",
+  "tooltip.spores--shadows.jade.yes": "Sì",
+  "tooltip.spores--shadows.jade.no": "No",
+  "tooltip.spores--shadows.jade.stage.0": "Sano",
+  "tooltip.spores--shadows.jade.stage.1": "Intaccato",
+  "tooltip.spores--shadows.jade.stage.2": "Ammuffito",
+  "tooltip.spores--shadows.jade.stage.3": "Marcio",
+  "advancements.spores--shadows.root.title": "Spores & Shadows",
+  "advancements.spores--shadows.root.description": "Sopravvivi al decadimento della natura.",
+  "advancements.spores--shadows.wax_block.title": "Prevenzione Naturale",
+  "advancements.spores--shadows.wax_block.description": "Usa un favo di miele per cerare un blocco e fermare la muffa.",
+  "advancements.spores--shadows.scrape_mold.title": "Olio di Gomito",
+  "advancements.spores--shadows.scrape_mold.description": "Raschia via la muffa da un blocco di legno con un ascia.",
+  "advancements.spores--shadows.toxic_air.title": "Respiro Corto",
+  "advancements.spores--shadows.toxic_air.description": "Subisci il veleno del miasma respirando troppa muffa.",
+  "advancements.spores--shadows.crumble.title": "Polvere alla Polvere",
+  "advancements.spores--shadows.crumble.description": "Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla."
+}

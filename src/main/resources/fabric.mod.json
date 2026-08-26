@@ -23,6 +23,9 @@
 		],
 		"modmenu": [
 			"moldmod.client.config.ModMenuIntegration"
+		],
+		"jade": [
+			"moldmod.integration.jade.JadePlugin"
 		]
 	},
 	"mixins": [

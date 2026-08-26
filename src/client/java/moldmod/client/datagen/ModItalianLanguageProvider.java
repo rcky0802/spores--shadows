@@ -160,8 +160,32 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.scan_radius", "Raggio Nube Tossica");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_nausea", "Soglia Nausea");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Soglia Veleno");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Durata Nausea (Ticks)");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Durata Veleno (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Durata Nausea (Tick)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Durata Veleno (Tick)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Raggio Scansione Acqua");
+
+        // Jade Tooltips
+        translationBuilder.add("tooltip.spores--shadows.jade.stage", "Stadio: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.infection", "Rischio Infezione: %d%%");
+        translationBuilder.add("tooltip.spores--shadows.jade.waxed", "Cerato: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.yes", "Sì");
+        translationBuilder.add("tooltip.spores--shadows.jade.no", "No");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.0", "Sano");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.1", "Intaccato");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.2", "Ammuffito");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.3", "Marcio");
+        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Info Muffa");
+
+        // Advancements
+        translationBuilder.add("advancements.spores--shadows.root.title", "Spores & Shadows");
+        translationBuilder.add("advancements.spores--shadows.root.description", "Sopravvivi al decadimento della natura.");
+        translationBuilder.add("advancements.spores--shadows.wax_block.title", "Prevenzione Naturale");
+        translationBuilder.add("advancements.spores--shadows.wax_block.description", "Usa un favo di miele per cerare un blocco e fermare la muffa.");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.title", "Olio di Gomito");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.description", "Raschia via la muffa da un blocco di legno con un ascia.");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.title", "Respiro Corto");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.description", "Subisci il veleno del miasma respirando troppa muffa.");
+        translationBuilder.add("advancements.spores--shadows.crumble.title", "Polvere alla Polvere");
+        translationBuilder.add("advancements.spores--shadows.crumble.description", "Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla.");
     }
 }

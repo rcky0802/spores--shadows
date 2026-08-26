@@ -139,6 +139,18 @@ To avoid ruining the gameplay experience (preventing players from finding the en
 
 ---
 
+## 📊 HUD Integration & Advancements
+
+* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade / WTHIT**. When looking at any wood block, the HUD displays its exact decay stage, current infection risk (%), and whether it is waxed.
+* 🏆 **Advancements**: Includes 5 custom **Advancements** to guide players through the mechanics:
+  - **Spores & Shadows**: Survive the decay of nature.
+  - **Natural Prevention**: Use a honeycomb to wax a wood block and stop the mold.
+  - **Elbow Grease**: Scrape the mold off a wood block using an axe.
+  - **Short Breath**: Suffer the poison of the miasma by breathing too much mold.
+  - **Dust to Dust**: Attempt to break a rotten wood block and watch it crumble into nothing.
+
+---
+
 ## ⚙️ Mod Configuration
 The mod includes a configuration menu accessible directly in-game (requires **Cloth Config** and **ModMenu**) that grants you absolute control over every single mechanic. 
 Options are divided into 8 main categories:

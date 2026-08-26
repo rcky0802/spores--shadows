@@ -64,6 +64,14 @@ public class MoldyLogBlock extends PillarBlock {
     }
 
     @Override
+    public net.minecraft.sound.BlockSoundGroup getSoundGroup(BlockState state) {
+        if (state.contains(STAGE) && state.get(STAGE) == 3) {
+            return net.minecraft.sound.BlockSoundGroup.SLIME;
+        }
+        return super.getSoundGroup(state);
+    }
+
+    @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         // If the player right-clicks with an Axe (without sneaking, since sneaking is caught by UseBlockCallback),
         // we strip the log. We preserve the STAGE and WAXED, but set STRUCTURAL to false!

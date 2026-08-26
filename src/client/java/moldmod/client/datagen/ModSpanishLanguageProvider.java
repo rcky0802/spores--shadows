@@ -163,5 +163,29 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Duración Náuseas (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Duración Veneno (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Radio de Escaneo de Agua");
+
+        // Jade Tooltips
+        translationBuilder.add("tooltip.spores--shadows.jade.stage", "Fase: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.infection", "Riesgo de Infección: %d%%");
+        translationBuilder.add("tooltip.spores--shadows.jade.waxed", "Encerado: ");
+        translationBuilder.add("tooltip.spores--shadows.jade.yes", "Sí");
+        translationBuilder.add("tooltip.spores--shadows.jade.no", "No");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.0", "Sano");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.1", "Contaminado");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.2", "Mohoso");
+        translationBuilder.add("tooltip.spores--shadows.jade.stage.3", "Podrido");
+        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Info de Moho");
+
+        // Advancements
+        translationBuilder.add("advancements.spores--shadows.root.title", "Spores & Shadows");
+        translationBuilder.add("advancements.spores--shadows.root.description", "Sobrevive a la decadencia de la naturaleza.");
+        translationBuilder.add("advancements.spores--shadows.wax_block.title", "Prevención Natural");
+        translationBuilder.add("advancements.spores--shadows.wax_block.description", "Usa un panal de miel para encerar un bloque de madera y detener el moho.");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.title", "Grasa de Codo");
+        translationBuilder.add("advancements.spores--shadows.scrape_mold.description", "Raspa el moho de un bloque de madera con un hacha.");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.title", "Respiración Corta");
+        translationBuilder.add("advancements.spores--shadows.toxic_air.description", "Sufre el veneno del miasma al respirar demasiado moho.");
+        translationBuilder.add("advancements.spores--shadows.crumble.title", "Polvo al Polvo");
+        translationBuilder.add("advancements.spores--shadows.crumble.description", "Intenta romper un bloque de madera podrido y mira cómo se desmorona en la nada.");
     }
 }
