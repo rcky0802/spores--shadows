@@ -11,6 +11,7 @@ repositories {
 	maven { url "https://maven.terraformersmc.com/" } // For ModMenu if needed
 	maven { url "https://maven.nucleoid.xyz/" } // For Polymer
 	maven { url "https://maven.blamejared.com/" } // For Jade
+	mavenCentral()
 	maven {
 		name = "Modrinth"
 		url = "https://api.modrinth.com/maven"
@@ -73,6 +74,7 @@ dependencies {
     // Jade API
     modCompileOnly "maven.modrinth:jade:15.10.6+fabric"
     modLocalRuntime "maven.modrinth:jade:15.10.6+fabric"
+    
 }
 
 tasks.withType(AbstractCopyTask).configureEach {

@@ -162,6 +162,12 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Seuil de Poison");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Durée de la Nausée (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Durée du Poison (Ticks)");
+        
+        translationBuilder.add("text.autoconfig.spores--shadows.category.client", "Client & Shaders");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client", "Client & Shaders");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset", "Z-Offset de Moisissure (Correction Shader)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset.@Tooltip[0]", "Ajustez ceci si vous remarquez des clignotements (Z-fighting) avec les shaders.");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset.@Tooltip[1]", "Par défaut : 0.002. Essayez 0.005 ou plus si nécessaire.");
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Rayon de Balayage de l'Eau");
 
         // Jade Tooltips

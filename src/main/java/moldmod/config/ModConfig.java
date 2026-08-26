@@ -40,6 +40,15 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public Toxicity toxicity = new Toxicity();
 
+    @ConfigEntry.Category("client")
+    @ConfigEntry.Gui.CollapsibleObject
+    public Client client = new Client();
+
+    public static class Client {
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public float mold_z_offset = 0.002f;
+    }
+
     public static class General {
         public boolean enable_mold_growth = true;
         public float infection_threshold = 0.40f;

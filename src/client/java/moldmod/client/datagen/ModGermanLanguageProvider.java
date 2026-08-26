@@ -173,8 +173,14 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.scan_radius", "Giftwolken-Radius");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_nausea", "Übelkeit-Schwelle");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Gift-Schwellenwert");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Übelkeitsdauer (Ticks)");
-        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Giftdauer (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Dauer Übelkeit (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Dauer Gift (Ticks)");
+        
+        translationBuilder.add("text.autoconfig.spores--shadows.category.client", "Client & Shader");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client", "Client & Shader");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset", "Schimmel Z-Versatz (Shader-Fix)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset.@Tooltip[0]", "Passen Sie dies an, wenn Sie bei Shadern Z-Fighting (Flackern) bemerken.");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset.@Tooltip[1]", "Standard: 0.002. Versuchen Sie 0.005 oder höher, falls erforderlich.");
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Wasser-Scan-Radius");
 
         // Jade Tooltips

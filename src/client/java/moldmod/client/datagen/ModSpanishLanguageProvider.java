@@ -162,6 +162,12 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Umbral de Veneno");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Duración Náuseas (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Duración Veneno (Ticks)");
+        
+        translationBuilder.add("text.autoconfig.spores--shadows.category.client", "Cliente y Shaders");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client", "Cliente y Shaders");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset", "Z-Offset de Moho (Arreglo Shader)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset.@Tooltip[0]", "Ajusta esto si notas parpadeos (Z-fighting) con shaders.");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.mold_z_offset.@Tooltip[1]", "Por defecto: 0.002. Intenta con 0.005 o superior si es necesario.");
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Radio de Escaneo de Agua");
 
         // Jade Tooltips

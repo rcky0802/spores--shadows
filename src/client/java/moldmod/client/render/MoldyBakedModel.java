@@ -45,7 +45,7 @@ public class MoldyBakedModel extends ForwardingBakedModel {
         if (sprite != null && !sprite.getContents().getId().getPath().equals("missingno")) {
             context.pushTransform(quad -> {
                 Vector3f normal = quad.faceNormal();
-                float offset = 0.002f;
+                float offset = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().client.mold_z_offset;
                 
                 for (int i = 0; i < 4; i++) {
                     float x = quad.x(i) + normal.x * offset;
@@ -71,7 +71,7 @@ public class MoldyBakedModel extends ForwardingBakedModel {
         if (sprite != null && !sprite.getContents().getId().getPath().equals("missingno")) {
             context.pushTransform(quad -> {
                 Vector3f normal = quad.faceNormal();
-                float offset = 0.002f;
+                float offset = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().client.mold_z_offset;
                 
                 for (int i = 0; i < 4; i++) {
                     float x = quad.x(i) + normal.x * offset;

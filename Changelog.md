@@ -1,4 +1,4 @@
-# Changelog
+﻿# Changelog
 
 All notable changes to **Spores & Shadows** will be documented in this file.
 
@@ -10,6 +10,7 @@ All notable changes to **Spores & Shadows** will be documented in this file.
 - 5 new Advancements to guide players through the mod's mechanics: *Spores & Shadows*, *Natural Prevention*, *Elbow Grease*, *Short Breath*, *Dust to Dust*.
 - Advancements and Jade tooltips are fully localized in English, Italian, Spanish, German, and French via DataGen.
 - Stage 3 (Rotten) blocks emit slime sounds when walked on or broken.
+- **Shader Compatibility:** Added `Mold Z-Offset` parameter to the in-game Client Config menu to fix Z-fighting/flickering with modern shaders (Sodium/Iris).
 
 **Changed/Fixed:**
 - **Nether & End Immunity**: Mold decay is now strictly disabled in all Nether and End biomes (due to extreme temperatures).

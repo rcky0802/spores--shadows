@@ -1,4 +1,4 @@
-# 🍄 Spores & Shadows
+﻿# 🍄 Spores & Shadows
 
 **Have you ever built a majestic wooden cabin thinking it would stand untouched forever?**
 
@@ -6,7 +6,7 @@
 
 ---
 
-### ✨ Key Features
+### 🧱 Key Features
 
 * **Dynamic Decay (4 Stages):** Wood progresses from *Vanilla ➔ Tainted ➔ Moldy ➔ Rotten*. Infection risk rises with moisture (rain, water proximity, depth below Y=64), darkness, and contact with contagions (mud, podzol, mushrooms). Sunlight, extreme cold, and Nether heat halt the rot.
 * **Active Maintenance (`Shift + Right Click`):** Scrape off mold layers with an **Axe** (consumes durability) or seal blocks permanently with a **Honeycomb** to freeze decay, prevent rot, and stop contagion.
@@ -14,6 +14,7 @@
 * **Hardcore Penalties:** Rotten wood yields 0 drops when broken, provides no furnace fuel, reduces crafting yields, and causes wooden **Redstone buttons & pressure plates to jam active** for up to 22.5 seconds (though it excels as high-potency composter fertilizer).
 * **Ruined World Gen:** Naturally generated structures (Shipwrecks, Mineshafts, Swamp Huts, Zombie Villages, Trail Ruins) generate pre-weathered with realistic environmental rot.
 * **HUD & Tooltip Support:** Full native integration with **Jade** and **WTHIT** to view real-time infection risk percentages and decay tiers directly in-game.
+* **Shader Compatibility:** Built-in configurable `Mold Z-Offset` parameter to prevent Z-fighting and flickering when using modern shaders.
 
 ---
 
@@ -21,8 +22,8 @@
 
 Every single mechanic—from infection thresholds and temperature sensitivity to structure decay percentages and miasma radius—is fully customizable in-game via Cloth Config.
 
-👉 **[Read the Full Documentation & Formulas on GitHub](https://github.com/rcky0802/spores--shadows)**
+📚 **[Read the Full Documentation & Formulas on GitHub](https://github.com/rcky0802/spores--shadows)**
 
 ---
 
-_**Requires:** Fabric API, Polymer, Cloth Config. (Optional: ModMenu, Jade, Indium)_
+_**Requires:** Fabric API, Polymer, Cloth Config. (Optional: ModMenu, Jade, Sodium/Iris for Shaders)_
