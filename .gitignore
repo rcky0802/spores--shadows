@@ -1,4 +1,4 @@
-# gradle
+﻿# gradle
 
 .gradle/
 build/
@@ -52,4 +52,6 @@ usercache.json
 usernamecache.json
 banned-ips.json
 banned-players.json
-.agents/rules
+
+# agents
+.agents/
