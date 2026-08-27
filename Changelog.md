@@ -1,9 +1,16 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to **Spores & Shadows** will be documented in this file.
 
-## [1.1.0] - Quality of Life, Jade Integration & Biome Overhaul
+## [1.2.0] - Toxic Miasma Overhaul & Flood Fill
 **Added:**
+- Overhauled the Toxic Miasma mechanic using a highly-optimized O(R³) Flood Fill algorithm. The toxic gas now realistically propagates through slightly open spaces (trapdoors, doors, stairs) and is blocked by solid walls.
+- **Natural Ventilation**: Added the ability for players to create air vents using partial blocks (fences, walls, iron bars) to dissipate the miasma out of confined rooms, heavily reducing the toxicity score.
+- The miasma now scales based on the volume of the room. Rooms larger than 180 blocks, or open-air areas, are completely immune to toxic gas buildup.
+- Added a new tier of poisoning for slightly contaminated rooms: Hunger effect (Miasma > 8.0) and light mycelium particles.
+- Added a new admin command `/miasma` to inspect the exact properties of the room the player is standing in (Volume, Toxic Score, Ventilation Score, Net Miasma, and Status).
+
+## [1.1.0] - Quality of Life, Jade Integration & Biome Overhaul
 - Jade / WTHIT Integration: The HUD now shows the exact decay stage, infection risk (%), and waxed status of any looked-at wood block.
 - Jade HUD percentage is now dynamically aligned with the `/moldrisk` command and features dynamic coloring (Grey for Safe, Red for At Risk).
 - Added full decay support for Nether wood types (Crimson and Warped), including all their block variants (planks, stairs, doors, etc).

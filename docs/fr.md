@@ -70,15 +70,16 @@ Le joueur n'est pas sans défense face à la nature. En vous équipant du bon ou
 
 ## ☠️ Dangers Environnementaux (Miasme)
 - ✨ **Particules de Spores** : Les blocs au stade **Moisi** ou **Pourri** émettent des spores depuis leurs faces exposées (désactivé sous l'eau).
-- 🤢 **Miasme Toxique** : Le mod scanne un rayon de 4 blocs autour du joueur. Chaque bloc ajoute son stade de décomposition au score total de toxicité :
-  - **Touché** : +1
-  - **Moisi** : +2
-  - **Pourri** : +3
-  - *(Les blocs cirés sont inoffensifs et comptent pour 0).*
+- 🤢 **Miasme Toxique** : Grâce à un algorithme avancé de *Flood Fill*, le jeu calcule la propagation des gaz toxiques confinés dans des espaces clos. Si vous êtes en plein air ou dans des zones immensément vastes, les spores se disperseront sans conséquence. Cependant, dans les pièces fermées ou les petites caves (jusqu'à 180 blocs de volume), le miasme stagnera et s'accumulera dangereusement.
+  - Chaque bloc moisi ou pourri non ciré infectera l'air de la pièce en ajoutant des points de toxicité.
+  - Les murs solides bloqueront l'air, mais les portes entrouvertes, les trappes ou les escaliers lui permettront de passer dans les pièces adjacentes.
+  - **Ventilation Naturelle** : Les blocs partiels en contact avec l'extérieur (comme les clôtures, les murets ou les barreaux de fer) agissent comme des bouches d'aération, réduisant drastiquement le score net de miasme !
   
-  **Effets** :
-  - Score > **15** : **Nausée**
-  - Score > **35** : **Nausée + Poison**
+  **Effets selon la concentration nette** :
+  - Miasme > **8** : **Faim** (Spores légères)
+  - Miasme > **16** : **Nausée + Poison** (Spores denses)
+  
+  *(Utilisez la nouvelle commande admin `/miasma` pour mesurer les données et le volume exact de la pièce dans laquelle vous vous trouvez !)*
 
 ---
 

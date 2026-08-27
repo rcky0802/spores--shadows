@@ -56,15 +56,16 @@ L'avanzamento avviene solo se il "Rischio di Infezione" (`R`), ricalcolato costa
 ## ☠️ Pericoli Ambientali (Miasma)
 
 - ✨ **Particelle di Spore**: I blocchi negli stadi **Ammuffito** e **Marcio** emettono spore dalle facce esposte (disabilitato sott'acqua).
-- 🤢 **Miasma Tossico**: La mod scansiona un raggio di 4 blocchi attorno al giocatore. Ogni blocco aggiunge il suo livello di decadimento al punteggio totale di tossicità:
-  - **Contagiato**: +1
-  - **Ammuffito**: +2
-  - **Marcio**: +3
-  - *(I blocchi cerati sono sicuri e valgono 0).*
+- 🤢 **Miasma Tossico**: Attraverso un algoritmo avanzato di *Flood Fill*, il gioco calcola la propagazione dei gas tossici confinati negli spazi chiusi. Se ti trovi all'aperto o in aree immensamente vaste, le spore si disperderanno senza conseguenze. Tuttavia, in stanze chiuse o piccole cantine (fino a 180 blocchi di volume), il miasma ristagnerà e si accumulerà pericolosamente.
+  - Ogni blocco ammuffito o marcio non cerato infetterà l'aria della stanza aggiungendo punti di tossicità.
+  - Le pareti solide bloccheranno l'aria, ma porte socchiuse, botole o scale ne permetteranno il passaggio nelle stanze adiacenti.
+  - **Ventilazione Naturale**: I blocchi parziali a contatto con l'esterno (come staccionate, muretti o finestre con sbarre in ferro) agiscono da presa d'aria riducendo drasticamente il punteggio di miasma netto!
   
-  **Effetti**:
-  - Punteggio > **15**: **Nausea**
-  - Punteggio > **35**: **Nausea + Veleno**
+  **Effetti in base alla concentrazione netta**:
+  - Miasma > **8**: **Fame** (Particelle leggere)
+  - Miasma > **16**: **Nausea + Veleno** (Spore dense)
+  
+  *(Usa il nuovo comando admin `/miasma` per misurare i dati e il volume esatto della stanza in cui ti trovi!)*
 
 ---
 

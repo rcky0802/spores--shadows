@@ -56,15 +56,16 @@ El avance ocurre solo si el "Riesgo de Infección" (`R`), recalculado constantem
 ## ☠️ Peligros Ambientales (Miasma)
 
 - ✨ **Partículas de Esporas**: Los bloques en la etapa **Enmohecido** o **Podrido** emiten esporas desde las caras expuestas (desactivado bajo el agua).
-- 🤢 **Miasma Tóxico**: El mod escanea un radio de 4 bloques alrededor del jugador. Cada bloque añade su etapa de decadencia a la puntuación total de toxicidad:
-  - **Deteriorado**: +1
-  - **Enmohecido**: +2
-  - **Podrido**: +3
-  - *(Los bloques encerados son seguros y aportan 0).*
+- 🤢 **Miasma Tóxico**: A través de un avanzado algoritmo de *Flood Fill*, el juego calcula la propagación de los gases tóxicos confinados en espacios cerrados. Si estás al aire libre o en áreas inmensamente vastas, las esporas se dispersarán sin consecuencias. Sin embargo, en habitaciones cerradas o sótanos pequeños (hasta 180 bloques de volumen), el miasma se estancará y se acumulará peligrosamente.
+  - Cada bloque enmohecido o podrido sin encerar infectará el aire de la habitación, añadiendo puntos de toxicidad.
+  - Las paredes sólidas bloquearán el aire, pero las puertas entreabiertas, trampillas o escaleras permitirán que pase a las habitaciones adyacentes.
+  - **Ventilación Natural**: Los bloques parciales en contacto con el exterior (como vallas, muros o barrotes de hierro) actúan como salidas de aire, reduciendo drásticamente la puntuación neta del miasma.
   
-  **Efectos**:
-  - Puntuación > **15**: **Náusea**
-  - Puntuación > **35**: **Náusea + Veneno**
+  **Efectos basados en la concentración neta**:
+  - Miasma > **8**: **Hambre** (Esporas ligeras)
+  - Miasma > **16**: **Náusea + Veneno** (Esporas densas)
+  
+  *(¡Usa el nuevo comando de administrador `/miasma` para medir los datos y el volumen exacto de la habitación en la que te encuentras!)*
 
 ---
 

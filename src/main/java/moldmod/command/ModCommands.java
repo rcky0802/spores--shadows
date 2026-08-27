@@ -29,6 +29,10 @@ public class ModCommands {
                 .then(CommandManager.literal("verbose")
                         .executes(context -> executeMoldRisk(context, true))));
                 
+        dispatcher.register(CommandManager.literal("miasma")
+                .requires(source -> source.hasPermissionLevel(2))
+                .executes(ModCommands::executeMiasma));
+
         dispatcher.register(CommandManager.literal("spores")
                 .requires(source -> source.hasPermissionLevel(2))
                 .then(CommandManager.literal("reload").executes(ModCommands::executeSporesReload)));
@@ -37,6 +41,42 @@ public class ModCommands {
     private static int executeSporesReload(CommandContext<ServerCommandSource> context) {
         AutoConfig.getConfigHolder(ModConfig.class).load();
         context.getSource().sendMessage(Text.literal("§a[Spores & Shadows] Configuration reloaded successfully!"));
+        return 1;
+    }
+
+    private static int executeMiasma(CommandContext<ServerCommandSource> context) {
+        ServerCommandSource source = context.getSource();
+        if (!(source.getEntity() instanceof ServerPlayerEntity player)) {
+            return 0;
+        }
+
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        int radius = config.toxicity.scan_radius;
+
+        moldmod.event.ToxicAirEvent.MiasmaResult result = moldmod.event.ToxicAirEvent.calculateMiasma(player, radius);
+
+        source.sendMessage(Text.literal("§a[Miasma Scanner] §eRilevazione in corso..."));
+        
+        if (result.openAir) {
+            source.sendMessage(Text.literal("§7- Ambiente: §bAperto §7(Il miasma si disperde liberamente nel cielo)"));
+        } else if (result.volume >= 180) { // MAX_AIR_VOLUME
+            source.sendMessage(Text.literal(String.format("§7- Ambiente: §aChiuso ma molto ampio §7(Volume >= %s blocchi, l'aria è pulita)", result.volume)));
+        } else {
+            source.sendMessage(Text.literal(String.format("§7- Ambiente: §cSpazio Confinato §7(Volume: %s blocchi analizzati)", result.volume)));
+        }
+
+        source.sendMessage(Text.literal(String.format("§7- Punteggio Tossicità (da muffa): §c+%.2f", result.toxicScore)));
+        source.sendMessage(Text.literal(String.format("§7- Punteggio Ventilazione (da fessure/buchi): §a-%.2f", result.ventilationScore)));
+        source.sendMessage(Text.literal(String.format("§7- Miasma Netto: §6%.2f", Math.max(0, result.netMiasma))));
+
+        if (result.netMiasma >= 16.0) {
+            source.sendMessage(Text.literal("§4[ATTENZIONE] Livello letale! Nausea e Veleno imminenti!"));
+        } else if (result.netMiasma >= 8.0) {
+            source.sendMessage(Text.literal("§e[ATTENZIONE] Livello moderato! Fame imminente."));
+        } else {
+            source.sendMessage(Text.literal("§a[SICURO] Livello di miasma innocuo."));
+        }
+
         return 1;
     }
 

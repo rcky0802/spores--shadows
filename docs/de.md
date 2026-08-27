@@ -54,15 +54,16 @@ Der Fortschritt findet nur statt, wenn das "Infektionsrisiko" (`R`), das ständi
 ## ☠️ Umweltgefahren (Miasma)
 
 - ✨ **Sporenpartikel**: Blöcke im Stadium **Schimmelig** oder **Verrottet** geben Sporen an exponierten Flächen ab (unter Wasser deaktiviert).
-- 🤢 **Toxisches Miasma**: Die Mod scannt einen Radius von 4 Blöcken um den Spieler. Jeder Block addiert seine Zerfallsstufe zum gesamten Toxizitätswert:
-  - **Befallen**: +1
-  - **Schimmelig**: +2
-  - **Verrottet**: +3
-  - *(Gewachste Blöcke sind sicher und tragen 0 bei).*
+- 🤢 **Toxisches Miasma**: Durch einen fortschrittlichen *Flood Fill*-Algorithmus berechnet das Spiel die Ausbreitung giftiger Gase in geschlossenen Räumen. Wenn du dich im Freien oder in riesigen Gebieten befindest, zerstreuen sich die Sporen folgenlos. In geschlossenen Räumen oder kleinen Kellern (bis zu 180 Blöcken Volumen) stagniert das Miasma jedoch und sammelt sich gefährlich an.
+  - Jeder unversiegelte schimmelige oder verrottete Block infiziert die Raumluft und fügt Toxizitätspunkte hinzu.
+  - Massive Wände blockieren die Luft, aber angelehnte Türen, Falltüren oder Treppen lassen sie in angrenzende Räume strömen.
+  - **Natürliche Belüftung**: Teilblöcke mit Kontakt zur Außenwelt (wie Zäune, Mauern oder Eisengitter) wirken als Lüftungsöffnungen und reduzieren den Netto-Miasma-Wert drastisch!
   
-  **Effekte**:
-  - Wert > **15**: **Übelkeit**
-  - Wert > **35**: **Übelkeit + Vergiftung**
+  **Effekte basierend auf der Nettokonzentration**:
+  - Miasma > **8**: **Hunger** (Leichte Sporen)
+  - Miasma > **16**: **Übelkeit + Vergiftung** (Dichte Sporen)
+  
+  *(Verwende den neuen Admin-Befehl `/miasma`, um die Daten und das genaue Volumen deines aktuellen Raums zu messen!)*
 
 ---
 

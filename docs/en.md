@@ -54,15 +54,16 @@ Progression only occurs if the "Infection Risk" (`R`), which is constantly recal
 ## ☠️ Environmental Hazards (Miasma)
 
 - ✨ **Spore Particles**: Blocks in the **Moldy** or **Rotten** stage emit spores from exposed faces (disabled underwater).
-- 🤢 **Toxic Miasma**: The mod scans a 4-block radius around the player. Each block adds its decay stage to the total toxicity score:
-  - **Tainted**: +1
-  - **Moldy**: +2
-  - **Rotten**: +3
-  - *(Waxed blocks are safe and contribute 0).*
+- 🤢 **Toxic Miasma**: Through an advanced *Flood Fill* algorithm, the game calculates the propagation of toxic gases confined in closed spaces. If you are outdoors or in immensely vast areas, the spores will disperse without consequences. However, in closed rooms or small cellars (up to 180 blocks in volume), the miasma will stagnate and dangerously accumulate.
+  - Every non-waxed moldy or rotten block will infect the air of the room, adding toxicity points.
+  - Solid walls will block the air, but slightly open doors, trapdoors, or stairs will allow it to pass into adjacent rooms.
+  - **Natural Ventilation**: Partial blocks in contact with the outside (such as fences, walls, or iron bars) act as air vents, drastically reducing the net miasma score!
   
-  **Effects**:
-  - Score > **15**: **Nausea**
-  - Score > **35**: **Nausea + Poison**
+  **Effects based on net concentration**:
+  - Miasma > **8**: **Hunger** (Light spores)
+  - Miasma > **16**: **Nausea + Poison** (Dense spores)
+  
+  *(Use the new admin command `/miasma` to measure the data and the exact volume of the room you are in!)*
 
 ---
 
