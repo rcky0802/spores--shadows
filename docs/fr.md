@@ -143,7 +143,7 @@ Pour ne pas ruiner l'expérience de jeu (en évitant que les joueurs trouvent le
 
 ## 📊 Intégration HUD et Progrès
 
-* 🔍 **Intégration Jade / WTHIT** : Le mod est entièrement intégré à **Jade**. En regardant n'importe quel bloc de bois, le HUD affichera en temps réel son stade exact de détérioration, le risque actuel d'infection (%) et si le bloc est ciré. Le pourcentage de risque change de couleur de manière dynamique (**Gris = Sûr**, **Rouge = À Risque**). Les administrateurs peuvent également utiliser la commande `/moldrisk [verbose]` pour calculer la formule mathématique exacte du bloc qu'ils regardent !
+* 🔍 **Intégration Jade / WTHIT** : Le mod est entièrement intégré à **Jade**. En regardant n'importe quel bloc de bois, le HUD affichera nativement sa variante précise (ex. "Waxed Tainted Oak Planks") et son icône, ainsi que le risque actuel d'infection (%). Le risque est évalué exactement à 0% pour les blocs cirés, et est masqué pour les blocs complètement pourris (Rotten). Le pourcentage de risque change de couleur de manière dynamique (**Gris = Sûr**, **Rouge = À Risque**). Les administrateurs peuvent également utiliser la commande `/moldrisk [verbose]` pour calculer la formule mathématique exacte du bloc qu'ils regardent !
 * 🏆 **Progrès (Advancements)** : 5 progrès personnalisés sont inclus pour guider les joueurs à travers l'apprentissage et la maîtrise des mécaniques du mod.
 
 ---

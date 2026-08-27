@@ -142,7 +142,7 @@ Um das Spielerlebnis nicht zu ruinieren (und zu vermeiden, dass Spieler die ganz
 
 ## 📊 HUD-Integration & Fortschritte
 
-* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn Sie einen beliebigen Holzblock ansehen, zeigt das HUD in Echtzeit sein genaues Verfallsstadium, das aktuelle Infektionsrisiko (%) und ob der Block gewachst ist. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
+* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn Sie einen beliebigen Holzblock ansehen, zeigt das HUD nativ seine genaue Variante (z. B. "Waxed Tainted Oak Planks") und sein Symbol an, zusammen mit dem aktuellen Infektionsrisiko (%). Das Risiko wird für gewachste Blöcke exakt mit 0% bewertet und bei vollständig verrotteten Blöcken (Rotten) ausgeblendet. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
 * **🏆 Fortschritte (Advancements)**: 5 benutzerdefinierte Fortschritte leiten Spieler durch die verschiedenen Mechaniken der Mod.
 
 ---

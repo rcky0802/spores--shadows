@@ -144,7 +144,7 @@ Per non rovinare l'esperienza di gioco (evitando che i giocatori trovino il mond
 
 ## 📊 Integrazione HUD & Obiettivi
 
-* 🔍 **Integrazione Jade / WTHIT**: La mod è completamente integrata con **Jade**. Guardando qualsiasi blocco di legno, l'HUD mostrerà in tempo reale lo stadio esatto di decadimento, il rischio di infezione (%) e se il blocco è cerato. La percentuale di rischio cambia colore dinamicamente (**Grigio = Safe**, **Rosso = A Rischio**). Gli admin possono anche usare il comando `/moldrisk [verbose]` per calcolare l'esatta formula matematica del blocco che stanno guardando!
+* 🔍 **Integrazione Jade / WTHIT**: La mod è completamente integrata con **Jade**. Guardando qualsiasi blocco di legno, l'HUD mostrerà in modo nativo la sua variante precisa (es. "Waxed Tainted Oak Planks") e la sua icona, insieme al rischio di infezione (%) attuale. Il rischio calcola esattamente lo 0% per i blocchi cerati e viene nascosto per i blocchi completamente marci (Rotten). La percentuale di rischio cambia colore dinamicamente (**Grigio = Sicuro**, **Rosso = A Rischio**). Gli admin possono anche usare il comando `/moldrisk [verbose]` per calcolare l'esatta formula matematica del blocco che stanno guardando!
 * 🏆 **Obiettivi (Advancements)**: Sono presenti 5 obiettivi personalizzati per guidare i giocatori attraverso la comprensione e l'utilizzo delle nuove meccaniche.
 
 ---

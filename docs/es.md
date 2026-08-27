@@ -144,7 +144,7 @@ Para no arruinar la experiencia de juego (evitando que los jugadores encuentren 
 
 ## 📊 Integración de HUD y Logros
 
-* 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade**. Al mirar cualquier bloque de madera, el HUD mostrará en tiempo real su etapa exacta de deterioro, el riesgo actual de infección (%) y si el bloque está encerado. El porcentaje de riesgo cambia de color dinámicamente (**Gris = Seguro**, **Rojo = En Riesgo**). ¡Los administradores también pueden usar el comando `/moldrisk [verbose]` para calcular la fórmula matemática exacta del bloque que están mirando!
+* 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade**. Al mirar cualquier bloque de madera, el HUD mostrará de forma nativa su variante precisa (ej. "Waxed Tainted Oak Planks") y su icono, junto con el riesgo de infección (%) actual. El riesgo se evalúa exactamente al 0% para los bloques encerados y se oculta para los bloques completamente podridos (Rotten). El porcentaje de riesgo cambia de color dinámicamente (**Gris = Seguro**, **Rojo = En Riesgo**). ¡Los administradores también pueden usar el comando `/moldrisk [verbose]` para calcular la fórmula matemática exacta del bloque que están mirando!
 * 🏆 **Logros Personalizados**: Incluye 5 **Logros (Advancements)** diseñados para guiar a los jugadores a través del descubrimiento y dominio de las mecánicas del mod.
 
 ---

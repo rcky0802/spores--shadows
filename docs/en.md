@@ -142,7 +142,7 @@ To avoid ruining the gameplay experience (preventing players from finding the en
 
 ## 📊 HUD Integration & Advancements
 
-* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade**. By looking at any wooden block, the HUD will display in real-time its exact decay stage, the current infection risk (%), and whether the block is waxed. The risk percentage changes color dynamically (**Gray = Safe**, **Red = At Risk**). Admins can also use the `/moldrisk [verbose]` command to calculate the exact mathematical formula of the block they are looking at!
+* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade**. By looking at any wooden block, the HUD will natively display its precise variant (e.g. "Waxed Tainted Oak Planks") and its icon, along with the current infection risk (%). The risk evaluates to exactly 0% for waxed blocks, and is hidden for fully rotten blocks. The risk percentage changes color dynamically (**Gray = Safe**, **Red = At Risk**). Admins can also use the `/moldrisk [verbose]` command to calculate the exact mathematical formula of the block they are looking at!
 * 🏆 **Advancements**: Includes 5 custom **Advancements** to guide players through the mechanics:
   - **Spores & Shadows**: Survive the decay of nature.
   - **Natural Prevention**: Use a honeycomb to wax a wood block and stop the mold.

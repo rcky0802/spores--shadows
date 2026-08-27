@@ -1,6 +1,15 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to **Spores & Shadows** will be documented in this file.
+
+## [1.1.1] - Jade UI & Performance Hotfix
+**Fixed:**
+- Fixed a visual bug in Jade HUD where all healthy, waxed, and infected wood blocks were mistakenly labeled generically as "Moldy" variants. Jade now dynamically reads and displays the precise name and icon for every block state (e.g. "Waxed Tainted Oak Planks").
+- Removed redundant "Waxed: Yes/No" text from the Jade tooltip, as it's now integrated natively into the block name.
+- Fixed the Jade Infection Risk tooltip showing non-zero values on waxed blocks; it now correctly calculates and explicitly shows "Infection Risk: 0%".
+- **Performance**: Fully rotten (Stage 3) blocks now instantly abort environmental risk scans and no longer display the Infection Risk tooltip, saving server resources in highly infected areas.
+
+---
 
 ## [1.1.0] - Quality of Life, Jade Integration & Biome Overhaul
 **Added:**
