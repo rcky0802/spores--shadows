@@ -4,10 +4,22 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
+
+    private static final Map<String, String> WOOD_NAMES = Map.of(
+        "oak", "de Chêne",
+        "spruce", "de Sapin",
+        "birch", "de Bouleau",
+        "jungle", "d'Acajou",
+        "acacia", "d'Acacia",
+        "dark_oak", "de Chêne Noir",
+        "mangrove", "de Palétuvier",
+        "cherry", "de Cerisier",
+        "crimson", "carmin",
+        "warped", "biscornu"
+    );
 
     public ModFrenchLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "fr_fr", registryLookup);
@@ -15,17 +27,7 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
 
     @Override
     protected String getTranslation(String wood, String blockType, String state) {
-        Map<String, String> names = new HashMap<>();
-        names.put("oak", "de Chêne");
-        names.put("spruce", "de Sapin");
-        names.put("birch", "de Bouleau");
-        names.put("jungle", "d'Acajou");
-        names.put("acacia", "d'Acacia");
-        names.put("dark_oak", "de Chêne Noir");
-        names.put("mangrove", "de Palétuvier");
-        names.put("cherry", "de Cerisier");
-
-        String wName = names.get(wood);
+        String wName = WOOD_NAMES.get(wood);
         String blockName = "";
         boolean isFeminine = false;
         boolean isPlural = false;
@@ -44,6 +46,10 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
             case "trapdoor": blockName = "Trappe"; isFeminine = true; break;
             case "pressure_plate": blockName = "Plaque de pression"; isFeminine = true; break;
             case "button": blockName = "Bouton"; break;
+            case "stem": blockName = "Tige"; isFeminine = true; break;
+            case "stripped_stem": blockName = "Tige écorcée"; isFeminine = true; break;
+            case "hyphae": blockName = "Hyphes"; isFeminine = true; isPlural = true; break;
+            case "stripped_hyphae": blockName = "Hyphes écorcées"; isFeminine = true; isPlural = true; break;
         }
 
         String stateStr = "";
@@ -61,7 +67,7 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
     @Override
     protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".waxed", "Ciré");
-        translationBuilder.add("item.spores--shadows.waxed_format", "%s ciré");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", "%s ciré");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_1", "Peut être transformé en planches propres avec perte de matériau,");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_2", "mais ne peut être utilisé pour les recettes vanilla normales.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_1", "Utile uniquement pour les fabrications simples (bâtons, barrières).");

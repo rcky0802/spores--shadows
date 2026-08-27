@@ -1,0 +1,24 @@
+{
+  "values": [
+    "spores--shadows:moldy_oak_fence",
+    "spores--shadows:waxed_oak_fence",
+    "spores--shadows:moldy_spruce_fence",
+    "spores--shadows:waxed_spruce_fence",
+    "spores--shadows:moldy_birch_fence",
+    "spores--shadows:waxed_birch_fence",
+    "spores--shadows:moldy_jungle_fence",
+    "spores--shadows:waxed_jungle_fence",
+    "spores--shadows:moldy_acacia_fence",
+    "spores--shadows:waxed_acacia_fence",
+    "spores--shadows:moldy_dark_oak_fence",
+    "spores--shadows:waxed_dark_oak_fence",
+    "spores--shadows:moldy_mangrove_fence",
+    "spores--shadows:waxed_mangrove_fence",
+    "spores--shadows:moldy_cherry_fence",
+    "spores--shadows:waxed_cherry_fence",
+    "spores--shadows:moldy_crimson_fence",
+    "spores--shadows:waxed_crimson_fence",
+    "spores--shadows:moldy_warped_fence",
+    "spores--shadows:waxed_warped_fence"
+  ]
+}

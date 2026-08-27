@@ -39,32 +39,43 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
             
             String name = id.getPath();
             
-            if (!name.contains("rotten_")) {
+            if (!name.contains(moldmod.SporesShadowsConstants.MoldStage.ROTTEN.getName() + "_")) {
                 axeBuilder.add(block);
             }
             
+            boolean isHealthyWaxed = name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten");
+
             if (name.contains("fence_gate")) {
                 fenceGates.add(block);
             } else if (name.contains("fence")) {
                 fences.add(block);
-                woodenFences.add(block);
+                if (isHealthyWaxed) woodenFences.add(block);
             } else if (name.contains("stairs")) {
                 stairs.add(block);
-                woodenStairs.add(block);
+                if (isHealthyWaxed) woodenStairs.add(block);
             } else if (name.contains("slab")) {
                 slabs.add(block);
-                woodenSlabs.add(block);
+                if (isHealthyWaxed) woodenSlabs.add(block);
             } else if (name.contains("trapdoor")) {
                 trapdoors.add(block);
-                woodenTrapdoors.add(block);
+                if (isHealthyWaxed) woodenTrapdoors.add(block);
             } else if (name.contains("door")) {
                 doors.add(block);
-                woodenDoors.add(block);
+                if (isHealthyWaxed) woodenDoors.add(block);
+            } else if (name.contains("button") || name.contains("pressure_plate")) {
+                // Do not tag buttons and pressure plates as logs
             } else if (name.contains("planks")) {
-                // Do not add to planks tag to prevent usage in recipes like sticks, crafting tables, etc.
+                // Do not add infected planks to planks tag to prevent usage in recipes like sticks, crafting tables, etc.
+                if (isHealthyWaxed) {
+                    getOrCreateTagBuilder(BlockTags.PLANKS).add(block);
+                }
             } else {
-                logs.add(block);
-                logsThatBurn.add(block);
+                if (isHealthyWaxed) {
+                    logs.add(block);
+                    if (!name.contains("crimson") && !name.contains("warped")) {
+                        logsThatBurn.add(block);
+                    }
+                }
             }
         }
     }

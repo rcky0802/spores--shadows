@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:acacia_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_acacia_planks"
+      }
+    ]
+  },
+  "pattern": [
+    "##",
+    "##",
+    "##"
+  ],
+  "result": {
+    "count": 3,
+    "id": "minecraft:acacia_door"
+  }
+}

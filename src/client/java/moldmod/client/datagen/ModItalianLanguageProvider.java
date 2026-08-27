@@ -4,10 +4,22 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
+
+    private static final Map<String, String> WOOD_NAMES = Map.ofEntries(
+        Map.entry("oak", "di Quercia"),
+        Map.entry("spruce", "di Abete"),
+        Map.entry("birch", "di Betulla"),
+        Map.entry("jungle", "della Giungla"),
+        Map.entry("acacia", "di Acacia"),
+        Map.entry("dark_oak", "di Quercia Scura"),
+        Map.entry("mangrove", "di Mangrovia"),
+        Map.entry("cherry", "di Ciliegio"),
+        Map.entry("crimson", "Cremisi"),
+        Map.entry("warped", "Distorto")
+    );
 
     public ModItalianLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "it_it", registryLookup);
@@ -15,26 +27,20 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
 
     @Override
     protected String getTranslation(String wood, String blockType, String state) {
-        Map<String, String> names = new HashMap<>();
-        names.put("oak", "di Quercia");
-        names.put("spruce", "di Abete");
-        names.put("birch", "di Betulla");
-        names.put("jungle", "della Giungla");
-        names.put("acacia", "di Acacia");
-        names.put("dark_oak", "di Quercia Scura");
-        names.put("mangrove", "di Mangrovia");
-        names.put("cherry", "di Ciliegio");
-
-        String wName = names.get(wood);
+        String wName = WOOD_NAMES.get(wood);
         String blockName = "";
         boolean isFeminine = false;
         boolean isPlural = false;
 
         switch (blockType) {
             case "log": blockName = "Tronco"; break;
-            case "stripped_log": blockName = "Tronco Sortecciato"; break;
+            case "stripped_log": blockName = "Tronco Scortecciato"; break;
             case "wood": blockName = "Legno"; break;
-            case "stripped_wood": blockName = "Legno Sortecciato"; break;
+            case "stripped_wood": blockName = "Legno Scortecciato"; break;
+            case "stem": blockName = "Gambo"; break;
+            case "stripped_stem": blockName = "Gambo Scortecciato"; break;
+            case "hyphae": blockName = "Ife"; isFeminine = true; isPlural = true; break;
+            case "stripped_hyphae": blockName = "Ife Scortecciate"; isFeminine = true; isPlural = true; break;
             case "planks": blockName = "Assi"; isFeminine = true; isPlural = true; break;
             case "slab": blockName = "Lastra"; isFeminine = true; break;
             case "stairs": blockName = "Scale"; isFeminine = true; isPlural = true; break;
@@ -61,7 +67,7 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
     @Override
     protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".waxed", "Cerato");
-        translationBuilder.add("item.spores--shadows.waxed_format", "%s Cerato");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", "%s Cerato");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_1", "Può essere trasformato in assi pulite con perdita di materiale,");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_2", "ma non può essere usato per normali ricette vanilla.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_1", "Utile solo per crafting semplici (bastoni, staccionate).");
@@ -116,7 +122,7 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.environment.min_temperature_survival", "Temp Minima Sopravvivenza");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.environment.max_temperature_survival", "Temp Massima Sopravvivenza");
 
-        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.stripped_wood_multiplier", "Suscettibilità Legno Sortecciato");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.stripped_wood_multiplier", "Suscettibilità Legno Scortecciato");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.planks_multiplier", "Suscettibilità Assi di Legno");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.default_multiplier", "Suscettibilità Legno Predefinita");
         
@@ -186,18 +192,18 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.1", "Intaccato");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.2", "Ammuffito");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.3", "Marcio");
-        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Info Muffa");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_info", "Spores & Shadows: Info Muffa");
 
         // Advancements
-        translationBuilder.add("advancement..spores--shadows.root.title", "Spores & Shadows");
-        translationBuilder.add("advancement..spores--shadows.root.description", "Sopravvivi al decadimento della natura.");
-        translationBuilder.add("advancement..spores--shadows.wax_block.title", "Prevenzione Naturale");
-        translationBuilder.add("advancement..spores--shadows.wax_block.description", "Usa un favo di miele per cerare un blocco e fermare la muffa.");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.title", "Olio di Gomito");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.description", "Raschia via la muffa da un blocco di legno con un ascia.");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.title", "Respiro Corto");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.description", "Subisci il veleno del miasma respirando troppa muffa.");
-        translationBuilder.add("advancement..spores--shadows.crumble.title", "Polvere alla Polvere");
-        translationBuilder.add("advancement..spores--shadows.crumble.description", "Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.description", "Sopravvivi al decadimento della natura.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Prevenzione Naturale");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Usa un favo di miele per cerare un blocco e fermare la muffa.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Olio di Gomito");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Raschia via la muffa da un blocco di legno con un ascia.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Respiro Corto");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Subisci il veleno del miasma respirando troppa muffa.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Polvere alla Polvere");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla.");
     }
 }

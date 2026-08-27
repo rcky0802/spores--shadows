@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "spores--shadows:waxed_dark_oak_wood"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:dark_oak_planks"
+  }
+}

@@ -17,7 +17,8 @@ public class SporesShadowsDataGenerator implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-        pack.addProvider(ModBlockTagProvider::new);
+        ModBlockTagProvider blockTagProvider = pack.addProvider(ModBlockTagProvider::new);
+        pack.addProvider((output, registriesFuture) -> new moldmod.client.datagen.ModItemTagProvider(output, registriesFuture, blockTagProvider));
         pack.addProvider(ModLootTableProvider::new);
         pack.addProvider(ModEnglishLanguageProvider::new);
         pack.addProvider(ModItalianLanguageProvider::new);

@@ -35,9 +35,9 @@ public class StructureDegradationTest {
                     
                     if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG))) {
                         int stage = result.get(MoldyLogBlock.STAGE);
-                        if (stage == 0) moldy++;
-                        else if (stage == 1) tainted++;
-                        else if (stage == 2) rotten++;
+                        if (stage == moldmod.SporesShadowsConstants.MoldStage.MOLDY.getId()) moldy++;
+                        else if (stage == moldmod.SporesShadowsConstants.MoldStage.TAINTED.getId()) tainted++;
+                        else if (stage == moldmod.SporesShadowsConstants.MoldStage.ROTTEN.getId()) rotten++;
                     }
                 }
             }
@@ -61,7 +61,7 @@ public class StructureDegradationTest {
                         context.getAbsolutePos(new BlockPos(x, 2, 0)),
                         (StructureWorldAccess) context.getWorld()
                 );
-                if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)) && result.get(MoldyLogBlock.STAGE) == 2) {
+                if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)) && result.get(MoldyLogBlock.STAGE) == moldmod.SporesShadowsConstants.MoldStage.ROTTEN.getId()) {
                     rotten++;
                 }
             }
@@ -83,7 +83,7 @@ public class StructureDegradationTest {
                         context.getAbsolutePos(new BlockPos(x, 2, 0)),
                         (StructureWorldAccess) context.getWorld()
                 );
-                if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)) && result.get(MoldyLogBlock.STAGE) == 1) {
+                if (result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)) && result.get(MoldyLogBlock.STAGE) == moldmod.SporesShadowsConstants.MoldStage.TAINTED.getId()) {
                     tainted++;
                 }
             }

@@ -12,7 +12,7 @@ Die Mod ersetzt nahtlos und unbemerkt jedes vom Spieler platzierte (oder natürl
 
 ### 🔢 Technische Details und neue Blöcke
 
-Auf technischer Ebene fügt die Mod für jede einzelne Holzvariante ein komplettes Ökosystem ein.
+Auf technischer Ebene fügt die Mod für jede einzelne Holzvariante ein komplettes Ökosystem ein (einschließlich Karmesin- und Wirrholz).
 
 * **🧱 13 Architektonische Formate**: *Stämme*, *Entrindete Stämme*, *Holz*, *Entrindetes Holz*, *Bretter*, *Treppen*, *Stufen*, *Zäune*, *Zauntore*, *Türen*, *Falltüren*, *Druckplatten*, *Knöpfe*.
 
@@ -51,19 +51,21 @@ Der Fortschritt findet nur statt, wenn das "Infektionsrisiko" (`R`), das ständi
   - Infiziertes Holz: Befallen (`+0.05`), Schimmelig (`+0.10`), Verrottet (`+0.20`).
   - Umgebung: Schlamm (`+0.05`), Podsol/Myzel (`+0.15`), Pilze (`+0.25`), Sporenblüte (`+0.80`).
 
+---
+
 ## ☠️ Umweltgefahren (Miasma)
 
 - ✨ **Sporenpartikel**: Blöcke im Stadium **Schimmelig** oder **Verrottet** geben Sporen an exponierten Flächen ab (unter Wasser deaktiviert).
-- 🤢 **Toxisches Miasma**: Durch einen fortschrittlichen *Flood Fill*-Algorithmus berechnet das Spiel die Ausbreitung giftiger Gase in geschlossenen Räumen. Wenn du dich im Freien oder in riesigen Gebieten befindest, zerstreuen sich die Sporen folgenlos. In geschlossenen Räumen oder kleinen Kellern (bis zu 180 Blöcken Volumen) stagniert das Miasma jedoch und sammelt sich gefährlich an.
-  - Jeder unversiegelte schimmelige oder verrottete Block infiziert die Raumluft und fügt Toxizitätspunkte hinzu.
-  - Massive Wände blockieren die Luft, aber angelehnte Türen, Falltüren oder Treppen lassen sie in angrenzende Räume strömen.
+- 🤢 **Toxisches Miasma (Volumetrisches System)**: Durch einen fortschrittlichen *Volumetrischen Flood-Fill-Algorithmus* berechnet das Spiel die Luftverschmutzung und die Ausbreitung giftiger Gase in geschlossenen Räumen basierend auf der Raumgröße und der Schimmeldichte. Wenn du dich im Freien oder in riesigen offenen Gebieten befindest, zerstreuen sich die Sporen harmlos. In geschlossenen Räumen oder kleinen Kellern (bis zu 180 Blöcken Volumen) stagniert das Miasma jedoch und sammelt sich gefährlich an.
+  - Jeder ungewachste schimmelige oder verrottete Block infiziert die Raumluft und erhöht die toxische Belastung.
+  - Massive Wände blockieren die Gase, aber angelehnte Türen, Falltüren oder Treppen lassen das Miasma in angrenzende Räume strömen.
   - **Natürliche Belüftung**: Teilblöcke mit Kontakt zur Außenwelt (wie Zäune, Mauern oder Eisengitter) wirken als Lüftungsöffnungen und reduzieren den Netto-Miasma-Wert drastisch!
   
   **Effekte basierend auf der Nettokonzentration**:
-  - Miasma > **8**: **Hunger** (Leichte Sporen)
-  - Miasma > **16**: **Übelkeit + Vergiftung** (Dichte Sporen)
+  - Miasma > **8**: **Hunger** (Leichte Sporenkonzentration)
+  - Miasma > **16**: **Übelkeit + Vergiftung** (Dichte Sporenkonzentration)
   
-  *(Verwende den neuen Admin-Befehl `/miasma`, um die Daten und das genaue Volumen deines aktuellen Raums zu messen!)*
+  *(💡 Sowohl die Schwellenwerte für Übelkeit und Vergiftung als auch die Effektdauer und Scan-Parameter sind über Cloth Config / ModMenu zu 100% konfigurierbar! Verwende den Admin-Befehl `/miasma`, um die Messwerte und das genaue Volumen deines aktuellen Raums anzuzeigen!)*
 
 ---
 
@@ -76,7 +78,7 @@ Der Spieler ist der Natur nicht schutzlos ausgeliefert. Durch Ausrüsten des ric
   - Wenn der Block **Gewachst** ist, entfernt die Axt die Wachsschicht und stellt den normalen Lebenszyklus wieder her.
   - Wenn der Block **Befallen oder Schimmelig** ist, kratzt die Axt die oberflächliche Pilzschicht ab und reduziert den Zerfall um 1 Stufe. Ein Block auf Stufe 1 wird wieder perfekt sauber (Stufe 0 Vanilla).
   *(Jedes Abkratzen verbraucht wie gewohnt Haltbarkeit).*
-* 🐝 **Verwendung der Honigwabe (Wachsen)**: Durch *Shift + Rechtsklick* mit einer Honigwabe auf einen Block in *jedem* Stadium wird dieser **Gewachst**. Gewachstes Holz ist versiegelt: Es wird immun gegen Umwelteinflüsse, friert seinen Zerfall auf unbestimmte Zeit ein und verliert die Fähigkeit, benachbarte Blöcke zu infizieren. 
+* 🐝 **Verwendung der Honigwabe (Wachsen)**: Durch *Shift + Rechtsklick* mit einer Honigwabe auf einen Block in *jedem* Stadium wird dieser **Gewachst**. Gewachstes Holz ist versiegelt: Es wird immun gegen Umwelteinflüsse, friert seinen Zerfall auf unbestimmte Zeit ein und verliert die Fähigkeit, benachbarte Blöcke zu infizieren oder zum toxischen Miasma beizutragen. 
 
 *Smarte Funktion: Wenn du diese Aktionen an einem mehrteiligen Block (wie der oberen oder unteren Hälfte einer Tür) durchführst, wird die Aktualisierung sofort und völlig synchron auf die gesamte Struktur angewendet!*
 
@@ -89,14 +91,17 @@ Die Verwendung von verrottetem Holz zum Crafting ist unklug. Die innere Struktur
 * 💥 **Strukturelle Integrität (Drop) und Abbau**:
   Das bevorzugte Werkzeug zum Abbauen dieser Blöcke bleibt die **Axt** (genau wie in Vanilla), mit der einzigen Ausnahme der Blöcke auf Stufe 3, die so schwach sind, dass ihnen kein Werkzeug zugeordnet ist (sie zerbröckeln selbst mit bloßen Händen in einem Augenblick).
   - Vanilla-Blöcke und **befallene** Blöcke bleiben solide (droppen immer zu **100%**).
-  - **Schimmelige** Blöcke sind zerbrechlich: Sie haben nur eine **50%ige** Chance, sich selbst zu droppen, andernfalls zerfallen sie zu Nichts.
+  - **Schimmelige** Blöcke sind zerbrechlich: Sie haben standardmäßig nur eine **50%ige** Chance, sich selbst zu droppen, andernfalls zerfallen sie zu Nichts.
   - **Verrottete** Blöcke zerbröckeln bei Berührung sofort (**0%** Drop-Chance).
   
-  *(💡 **Das Geheimnis des Wachses**: Das Wachsen eines Blocks festigt seine Struktur. Jeder Block der Mod, selbst der verrottete, wird, wenn er **gewachst** ist, immer eine **100%ige Drop-Chance** haben, selbst ohne Verwendung von Behutsamkeit!)*
-* 🛠️ **Crafting-Ertrag (Rückgewinnung)**:
-  Du kannst infiziertes Holz weiterhin auf der Werkbank verwenden, um grundlegende Gegenstände (wie Bretter, Stufen, Treppen oder Stöcke) herzustellen. Der Endgegenstand wird immer perfekt sauber sein (**Vanilla**), aber da du gezwungen bist, die verrotteten Teile des ursprünglichen Holzes zu verwerfen, wird die Menge der erhaltenen Gegenstände drastisch sinken:
+  *(💡 **Das Geheimnis des Wachses**: Das Wachsen eines Blocks festigt seine Struktur. Jeder Block der Mod, selbst im Stadium **Verrottet** (Rotten) — wo das Holz normalerweise bei Berührung zu Staub zerfallen würde —, **garantiert im gewachsten Zustand immer einen 100%igen Drop**, selbst ohne Behutsamkeit!)*
   
-  *(💡 **Hybrides Crafting**: Infizierte und gewachste Holzblöcke desselben Schimmelstadiums können nun beliebig in derselben Crafting-Matrix gemischt werden, um saubere Vanilla-Gegenstände herzustellen!)*
+  *(⚙️ Alle Drop-Wahrscheinlichkeiten sind über Cloth Config / ModMenu zu 100% konfigurierbar).*
+
+* 🛠️ **Crafting-Ertrag (Rückgewinnung) und Hybrides Crafting**:
+  Du kannst infiziertes Holz weiterhin auf der Werkbank verwenden, um grundlegende Gegenstände (wie Bretter, Stufen, Treppen oder Stöcke) herzustellen. Der Endgegenstand wird immer perfekt sauber sein (**Vanilla**), aber da du gezwungen bist, die verrotteten Teile des ursprünglichen Holzes zu verwerfen, sinkt die Menge der erhaltenen Gegenstände drastisch.
+  
+  *(💡 **Hybrides Crafting**: Gewachste Blöcke können beim Crafting völlig frei mit normalen infizierten Blöcken desselben Schimmelstadiums in der Werkbank gemischt werden, um saubere Gegenstände herzustellen!)*
 
   | Materialqualität | 🌳 Bsp: Stamm ➔ Bretter | 🦯 Bsp: Bretter ➔ Stöcke |
   | :--- | :---: | :---: |
@@ -105,22 +110,27 @@ Die Verwendung von verrottetem Holz zum Crafting ist unklug. Die innere Struktur
   | 🦠 **Schimmelig** | 1 Stamm ➔ **1** Brett | 2 Bretter ➔ **1** Stock |
   | ☠️ **Verrottet** | *Ungültiges Rezept* ❌ | *Ungültiges Rezept* ❌ |
 
-* 🔥 **Brennwert**: 
-  - Befallenes Holz brennt mit halber Effizienz (**50%**).
-  - Schimmeliges Holz sinkt auf ein Viertel der Effizienz (**25%**).
-  - Verrottetes Holz verbrennt in wenigen Augenblicken (**12.5%**), was es als Brennstoff nutzlos macht.
+* 🔥 **Brennwert (Ofen-Effizienz)**: 
+  Die Brennstoffeffizienz im Ofen nimmt mit fortschreitendem Schimmelbefall drastisch ab:
+  - **Vanilla (Gesund)**: Brennt mit voller Effizienz (**100%**).
+  - **Befallen**: Brennt mit halber Effizienz (**50%**).
+  - **Schimmelig**: Sinkt auf ein Viertel der Effizienz (**25%**).
+  - **Verrottet**: Verbrennt in wenigen Augenblicken (**12.5%**), was es als Brennstoff nahezu nutzlos macht.
+  
+  *(⚙️ Diese Multiplikatoren (100% ➔ 50% ➔ 25% ➔ 12.5%) sind über Cloth Config / ModMenu zu 100% anpassbar).*
+
 * ♻️ **Komposter (Die positive Seite der Fäulnis)**:
   Wenn ein Block zu verrottet ist, um damit zu bauen, recycele ihn! Das gesamte Holz der Mod wurde in den Vanilla-Komposter integriert, um Knochenmehl zu erzeugen. Je stärker das Holz zersetzt (und reich an Sporen) ist, desto höher ist die Erfolgschance:
   - Befallenes Holz: **50%**
   - Schimmeliges Holz: **65%**
   - Verrottetes Holz: **85%** (Hervorragender Dünger!)
 * 🔴 **Redstone-Komponenten (Knöpfe und Druckplatten)**:
-  Schimmel beeinträchtigt die inneren Mechanismen der Redstone-Komponenten, sodass diese klemmen und viel länger aktiv bleiben. Ein normaler, gesunder Holzknopf bleibt beispielsweise 1,5 Sekunden (30 Ticks) aktiv, aber je mehr er verrottet:
+  Schimmel beeinträchtigt die inneren Mechanismen der Redstone-Komponenten, sodass diese klemmen und viel länger aktiv bleiben. Ein normaler, gesunder Holzknopf bleibt beispielsweise 1,5 Sekunden (30 Ticks), aber je mehr er verrottet:
   - Befallen: **3 Sekunden** (60 Ticks).
   - Schimmelig: **7,5 Sekunden** (150 Ticks).
   - Verrottet: **22,5 Sekunden** (450 Ticks).
 
-*(💡 **Hinweis zu gewachsten Blöcken**: Wachs ist ein umweltbedingtes Dichtmittel, verhindert aber nicht die Nutzung des Gegenstands! Du kannst gewachste Blöcke in der Werkbank verwenden, im Ofen verbrennen oder in den Komposter werfen: Sie verhalten sich genau wie ihr unbewachstes Gegenstück und behalten die exakt gleichen Mali oder Boni bei, die ausschließlich an ihren inneren Fäulnisgrad gebunden sind).*
+*(💡 **Hinweis zu gewachsten Blöcken**: Wachs ist ein umweltbedingtes Schutz- und Dichtmittel, beeinträchtigt jedoch weder die Verwendung beim Crafting noch die Verbrennungseigenschaften! Gewachste Blöcke können nahtlos im Crafting-Gitter mit ungewachsten Blöcken kombiniert werden, im Ofen verbrannt werden (wobei sie exakt dieselben Brennwerte wie ihre ungewachsten Pendants besitzen) oder kompostiert werden. Sie behalten dieselben Boni und Mali ihres Schimmelstadiums bei — bieten aber den entscheidenden Vorteil, dass sie beim Abbau **immer zu 100% droppen**, selbst auf der verrotteten Stufe).*
 
 ---
 
@@ -145,8 +155,13 @@ Um das Spielerlebnis nicht zu ruinieren (und zu vermeiden, dass Spieler die ganz
 
 ## 📊 HUD-Integration & Fortschritte
 
-* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn Sie einen beliebigen Holzblock ansehen, zeigt das HUD nativ seine genaue Variante (z. B. "Waxed Tainted Oak Planks") und sein Symbol an, zusammen mit dem aktuellen Infektionsrisiko (%). Das Risiko wird für gewachste Blöcke exakt mit 0% bewertet und bei vollständig verrotteten Blöcken (Rotten) ausgeblendet. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
-* **🏆 Fortschritte (Advancements)**: 5 benutzerdefinierte Fortschritte leiten Spieler durch die verschiedenen Mechaniken der Mod.
+* 🔍 **Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn du einen beliebigen Holzblock ansiehst, zeigt das HUD nativ seine genaue Variante (z. B. "Waxed Tainted Oak Planks") und sein Symbol an, zusammen mit dem aktuellen Infektionsrisiko (%). Das Risiko wird für gewachste Blöcke exakt mit 0% bewertet und bei vollständig verrotteten Blöcken (Rotten) ausgeblendet. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
+* 🏆 **Fortschritte (Advancements)**: 5 benutzerdefinierte Fortschritte leiten die Spieler durch die Mechaniken der Mod:
+  - **Spores & Shadows**: Überlebe den Verfall der Natur.
+  - **Natürliche Vorbeugung**: Verwende eine Honigwabe, um einen Holzblock zu wachsen und den Schimmel zu stoppen.
+  - **Muskelschmalz**: Kratze den Schimmel mit einer Axt von einem Holzblock ab.
+  - **Kurzer Atem**: Erleide die Vergiftung durch das Miasma, weil du zu viel Schimmel eingeatmet hast.
+  - **Asche zu Asche**: Versuche, einen verrotteten Holzblock abzubauen, und sieh zu, wie er zu Nichts zerfällt.
 
 ---
 
@@ -158,7 +173,7 @@ Die Optionen sind in 8 Hauptkategorien unterteilt:
 * 🌡️ **Umgebung (Environment)**: Ändere die Basiswerte für Regen/Trockenheit, die Boni für Wasser oder passe an, in welchen Höhen und bei welchen Temperaturen der Schimmel einfrieren oder sich vermehren soll.
 * 🪓 **Anfälligkeit (Susceptibility)**: Stelle ein, wie schnell bearbeitete Blöcke (Bretter) im Vergleich zu rohen oder entrindeten Blöcken verrotten.
 * ☣️ **Katalysatoren (Catalysts)**: Balanciere die Aggressivität von Pilzen, Schlamm, *Sporenblüten* und den infizierten Holzblöcken selbst aus.
+* ☠️ **Toxizität (Toxicity)**: Ermöglicht die vollständige Konfiguration des volumetrischen Miasma-Systems: Passe die Schwellenwerte für Übelkeit und Vergiftung, die Dauer der Statuseffekte sowie Scan-Radien und Raumvolumen nach Belieben an.
 * 🗺️ **Strukturen (Structures)**: Passe detailliert (Prozentsatz für Prozentsatz) an, wie Schiffswracks, Dörfer und Minen generiert werden.
-* 🔥 **Ofen (Furnace Multipliers)**: Ändere die Brenneffizienz von Holz für die verschiedenen Zerfallsstadien.
-* 💥 **Drops**: Erhöhe oder senke die Drop-Rate von zerbrechlichem Holz, wenn du die Mod als zu bestrafend empfindest.
-* 🤢 **Toxizität (Toxicity)**: Ermöglicht die Änderung von Schwellenwerten, Dauer und Radius der Giftwolke sowie des Wasser-Scan-Radius.
+* 🔥 **Ofen (Furnace Multipliers)**: Modifiziere die Brenneffizienz (100% ➔ 50% ➔ 25% ➔ 12.5%) von Holz für die verschiedenen Zerfallsstadien.
+* 💥 **Drops**: Erhöhe oder senke die Drop-Raten von zerbrechlichem Holz (wie die 50% für schimmeliges oder 0% für verrottetes Holz), wenn du die Mod anpassen möchtest.

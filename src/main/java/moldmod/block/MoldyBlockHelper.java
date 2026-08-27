@@ -259,21 +259,11 @@ public class MoldyBlockHelper {
         }
     }
 
-    public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random,
-            net.minecraft.block.Block block) {
+    public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
                 .getConfigHolder(moldmod.config.ModConfig.class).getConfig();
         if (!config.general.enable_mold_growth)
             return;
-
-        if (state.get(MoldyLogBlock.WAXED))
-            return;
-
-        if (state.contains(MoldyLogBlock.STRUCTURAL) && state.get(MoldyLogBlock.STRUCTURAL)) {
-            if (config.general.structures_immune) {
-                return;
-            }
-        }
 
         int currentStage = state.get(MoldyLogBlock.STAGE);
 

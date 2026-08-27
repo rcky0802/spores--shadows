@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "spores--shadows:mangrove_wood_from_waxed_mangrove_log"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_vanilla": {
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:waxed_mangrove_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_waxed_vanilla"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "spores--shadows:mangrove_wood_from_waxed_mangrove_log"
+    ]
+  }
+}

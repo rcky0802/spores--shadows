@@ -1,4 +1,4 @@
-# Spores & Shadows 
+﻿# Spores & Shadows 
 
 **Spores & Shadows** est un mod pour Minecraft (Fabric 1.21.1) qui introduit un écosystème dynamique, réaliste et implacable de pourriture environnementale pour le bois. Aucune structure n'est à l'abri du temps et des éléments !
 
@@ -8,7 +8,7 @@
 
 Avez-vous déjà construit une majestueuse cabane en bois en pensant qu'elle resterait intacte, défiant les siècles, sans aucun besoin d'entretien ? **Spores & Shadows** révolutionne cette certitude, transformant le bois d'un simple bloc inerte en un matériau vivant, vulnérable et réactif à son environnement.
 
-Le mod remplace de manière totalement transparente et silencieuse chaque morceau de bois placé par le joueur (ou généré naturellement dans les structures comme les épaves et les mines) par une variante "dormante". Avec le temps, les agents atmosphériques comme la pluie, l'humidité, l'obscurité et même le biome dans lequel vous vous trouvez scelleront le destin de vos constructions, vous forçant à protéger vos bâtiments ou à assister impuissant à leur déclin inexorable.
+Le mod remplace de manière totalement transparente et silencieuse chaque morceau de bois placé par le joueur (ou généré naturellement dans les structures comme les épaves et les mines) par une variante dormante. Avec le temps, les agents atmosphériques comme la pluie, l'humidité, l'obscurité et même le biome dans lequel vous vous trouvez scelleront le destin de vos constructions, vous forçant à protéger vos bâtiments ou à assister impuissant à leur déclin inexorable.
 
 ### 🔢 Détails Techniques et Blocs Ajoutés
 
@@ -23,7 +23,7 @@ Ainsi, le jeu met à disposition pas moins de **910 variantes uniques et obtenab
 2. Les **390 Variantes Moisies** : Les trois stades naturels de pourriture.
 3. Les **390 Variantes Moisies Cirées** : Les blocs dégradés mais figés dans le temps par la cire.
 
-Ce système vous permet de récupérer des blocs partiellement moisis en survie pour ensuite les "sceller" avec des rayons de miel, pouvant ainsi les utiliser en toute sécurité à des fins décoratives sans risquer d'infecter les constructions voisines.
+Ce système vous permet de récupérer des blocs partiellement moisis en survie pour ensuite les sceller avec des rayons de miel, pouvant ainsi les utiliser en toute sécurité à des fins décoratives sans risquer d'infecter les constructions voisines.
 
 ---
 
@@ -31,7 +31,7 @@ Ce système vous permet de récupérer des blocs partiellement moisis en survie 
 
 Le bois traverse 4 stades de pourriture : **Vanilla (0) ➔ Touché (1) ➔ Moisi (2) ➔ Pourri (3)**.
 
-La progression ne se produit que si le "Risque d'Infection" (`R`), recalculé en permanence, dépasse le seuil fixe de **0.4**. La formule exacte est :
+La progression ne se produit que si le Risque d'Infection (`R`), recalculé en permanence, dépasse le seuil fixe de **0.4**. La formule exacte est :
 `R = ((Humidité * Lumière * Susceptibilité) + Contagion) * Température`
 
 ### Facteurs et Variables Exactes
@@ -53,6 +53,23 @@ La progression ne se produit que si le "Risque d'Infection" (`R`), recalculé en
 
 ---
 
+## ☠️ Dangers Environnementaux (Miasme)
+
+- ✨ **Particules de Spores** : Les blocs au stade **Moisi** ou **Pourri** émettent des spores depuis leurs faces exposées (désactivé sous l'eau).
+- 🤢 **Miasme Toxique (Système Volumétrique)** : Grâce à un algorithme avancé de *Flood Fill*, le système calcule la pollution de l'air de manière volumétrique selon la taille de la pièce close et la densité de moisissure. Si vous êtes en plein air ou dans des espaces immensément vastes, les spores se disperseront sans conséquence. Cependant, dans les pièces fermées ou les petites caves (jusqu'à 180 blocs de volume), le miasme stagnera et s'accumulera dangereusement.
+  - Chaque bloc moisi ou pourri non ciré infectera l'air de la pièce en ajoutant des points de toxicité. Les blocs cirés ne contribuent pas au miasme.
+  - Les murs solides bloqueront l'air, mais les portes entrouvertes, les trappes ou les escaliers lui permettront de passer dans les pièces adjacentes.
+  - **Ventilation Naturelle** : Les blocs partiels en contact avec l'extérieur (comme les clôtures, les murets ou les barreaux de fer) agissent comme des bouches d'aération, réduisant drastiquement le score net de miasme !
+  
+  **Effets selon la concentration nette (Seuils 100% configurables)** :
+  - Miasme > **8** : **Faim** (Spores légères)
+  - Miasme > **16** : **Nausée + Poison** (Spores denses)
+  *(Les seuils de déclenchement pour la Nausée et le Poison sont entièrement personnalisables via ModMenu / Cloth Config !)*
+  
+  *(Utilisez la nouvelle commande admin `/miasma` pour mesurer les données et le volume exact de la pièce dans laquelle vous vous trouvez !)*
+
+---
+
 ## 🛠️ Interactions et Prévention
 
 Le joueur n'est pas sans défense face à la nature. En vous équipant du bon outil et en agissant en **mode furtif (Sneaking / Maj)**, vous pouvez interagir directement avec l'état vital du bois. 
@@ -62,24 +79,9 @@ Le joueur n'est pas sans défense face à la nature. En vous équipant du bon ou
   - Si le bloc est **Ciré**, la hache retirera la couche de cire, restaurant le cycle vital normal.
   - Si le bloc est **Touché ou Moisi**, la hache grattera la couche superficielle de champignons, réduisant la dégradation d'un stade. Un bloc au Stade 1 redeviendra parfaitement propre (Stade 0 Vanilla).
   *(Chaque grattage consomme normalement de la durabilité).*
-* 🐝 **Utilisation du Rayon de Miel (Cirage)** : En faisant *Maj + Clic Droit* avec un rayon de miel sur un bloc à *n'importe quel* stade, il deviendra **Ciré**. Le bois ciré est scellé : il devient immunisé contre les dommages environnementaux, fige sa dégradation à l'infini et perd sa capacité à infecter les blocs voisins. 
+* 🐝 **Utilisation du Rayon de Miel (Cirage)** : En faisant *Maj + Clic Droit* avec un rayon de miel sur un bloc à *n'importe quel* stade, il deviendra **Ciré**. Le bois ciré est scellé : il devient immunisé contre les dommages environnementaux, fige sa dégradation à l'infini, n'émet plus de miasme toxique et perd sa capacité à infecter les blocs voisins. 
 
 *Fonctionnalité Intelligente : Si vous effectuez ces actions sur un bloc multiple (comme la moitié supérieure ou inférieure d'une Porte), la mise à jour sera appliquée instantanément et en totale synchronisation à l'ensemble de la structure !*
-
----
-
-## ☠️ Dangers Environnementaux (Miasme)
-- ✨ **Particules de Spores** : Les blocs au stade **Moisi** ou **Pourri** émettent des spores depuis leurs faces exposées (désactivé sous l'eau).
-- 🤢 **Miasme Toxique** : Grâce à un algorithme avancé de *Flood Fill*, le jeu calcule la propagation des gaz toxiques confinés dans des espaces clos. Si vous êtes en plein air ou dans des zones immensément vastes, les spores se disperseront sans conséquence. Cependant, dans les pièces fermées ou les petites caves (jusqu'à 180 blocs de volume), le miasme stagnera et s'accumulera dangereusement.
-  - Chaque bloc moisi ou pourri non ciré infectera l'air de la pièce en ajoutant des points de toxicité.
-  - Les murs solides bloqueront l'air, mais les portes entrouvertes, les trappes ou les escaliers lui permettront de passer dans les pièces adjacentes.
-  - **Ventilation Naturelle** : Les blocs partiels en contact avec l'extérieur (comme les clôtures, les murets ou les barreaux de fer) agissent comme des bouches d'aération, réduisant drastiquement le score net de miasme !
-  
-  **Effets selon la concentration nette** :
-  - Miasme > **8** : **Faim** (Spores légères)
-  - Miasme > **16** : **Nausée + Poison** (Spores denses)
-  
-  *(Utilisez la nouvelle commande admin `/miasma` pour mesurer les données et le volume exact de la pièce dans laquelle vous vous trouvez !)*
 
 ---
 
@@ -90,13 +92,14 @@ Utiliser du bois pourri pour l'artisanat n'est pas sage. La structure interne du
 * 💥 **Intégrité Structurelle (Loot) et Minage** :
   L'outil de prédilection pour miner ces blocs reste la **Hache** (exactement comme dans Vanilla), à la seule exception des blocs au Stade 3, si fragiles qu'ils n'ont aucun outil associé (ils s'effritent en un instant même à mains nues).
   - Les blocs Vanilla et **Touchés** restent solides (ils tombent toujours à **100%**).
-  - Les blocs **Moisis** sont fragiles : ils n'ont que **50%** de chances de se lâcher eux-mêmes, sinon ils se briseront en morceaux et disparaîtront.
-  - Les blocs **Pourris** s'effritent instantanément au toucher (probabilité de loot de **0%**).
+  - Les blocs **Moisis** sont fragiles : ils n'ont par défaut que **50%** de chances de se lâcher eux-mêmes, sinon ils se briseront en morceaux et disparaîtront.
+  - Les blocs **Pourris** s'effritent instantanément au toucher (probabilité de drop par défaut de **0%**).
+  - *(Toutes les probabilités de drop sont 100% configurables via Cloth Config / ModMenu !)*
   
-  *(💡 **Le secret de la Cire** : Cirer un bloc consolide sa structure. N'importe quel bloc du mod, même Pourri, s'il est **Ciré** aura toujours **100% de chances de loot**, même sans utiliser l'enchantement Délicatesse !)*
-* 🛠️ **Rendement de l'Artisanat (Récupération)** :
+  *(💡 **Le secret de la Cire** : Cirer un bloc consolide sa structure. N'importe quel bloc du mod, même au stade **Pourri** (Rotten) où le bois se briserait normalement en poussière, **garantit un drop à 100%** s'il est **Ciré**, même sans utiliser l'enchantement Délicatesse !)*
+* 🛠️ **Rendement de l'Artisanat (Récupération) et Artisanat Hybride** :
   Vous pouvez toujours utiliser le bois infecté dans l'établi pour fabriquer des objets de base (comme des Planches, Dalles, Escaliers ou Bâtons). L'objet final sera toujours parfaitement propre (**Vanilla**), mais comme vous êtes forcé de jeter les parties pourries du bois d'origine, la quantité d'objets obtenus chutera drastiquement.
-  *(💡 **Artisanat Hybride** : Vous pouvez mélanger librement des blocs de bois infectés et leurs variantes cirées du même stade de moisissure dans la même grille de fabrication sans aucun problème !)*
+  Grâce à l'**Artisanat Hybride**, vous pouvez mélanger librement des blocs de bois normaux/infectés et leurs variantes cirées (du même stade de moisissure) dans la même grille de fabrication sans aucun problème !
 
   | Qualité du Matériau | 🌳 Ex : Bûche ➔ Planches | 🦯 Ex : Planches ➔ Bâtons |
   | :--- | :---: | :---: |
@@ -108,7 +111,8 @@ Utiliser du bois pourri pour l'artisanat n'est pas sage. La structure interne du
 * 🔥 **Pouvoir Combustible** : 
   - Le bois Touché brûle avec une efficacité réduite de moitié (**50%**).
   - Le Moisi tombe à un quart de l'efficacité (**25%**).
-  - Le Pourri brûle en quelques instants (**12.5%**), le rendant inutile comme combustible.
+  - Le Pourri brûle en quelques instants (**12.5%**), le rendant quasi inutile comme combustible.
+  - *(L'efficacité du combustible pour chaque stade de décomposition est 100% configurable via ModMenu / Cloth Config !)*
 * ♻️ **Composteur (Le bon côté de la Pourriture)** :
   Si un bloc est trop pourri pour construire avec, recyclez-le ! Tout le bois du mod a été intégré avec le Composteur Vanilla pour générer de la Poudre d'Os. Plus le bois est dégradé (et riche en spores), plus la probabilité de succès sera grande :
   - Bois Touché : **50%**
@@ -120,7 +124,7 @@ Utiliser du bois pourri pour l'artisanat n'est pas sage. La structure interne du
   - Moisi : **7,5 secondes** (150 ticks).
   - Pourri : **22,5 secondes** (450 ticks).
 
-*(💡 **Note sur les Blocs Cirés** : La cera est un scellant environnemental, mais ne bloque pas l'utilisation de l'objet ! Vous pouvez utiliser les blocs cirés dans l'établi, les brûler dans le four ou les jeter dans le composteur : ils se comporteront exactement comme leur homologue non ciré, conservant les mêmes malus ou bonus liés uniquement à leur niveau interne de pourriture).*
+*(💡 **Note sur les Blocs Cirés** : La cire est un scellant environnemental, mais ne bloque pas l'utilisation de l'objet ! Vous pouvez utiliser les blocs cirés dans l'établi (les mélanger avec le bois non ciré), les brûler dans le four (**ils conservent les mêmes propriétés et la même efficacité de combustion que leur homologue non ciré**) ou les jeter dans le composteur : ils se comporteront exactement comme leur contrepartie non cirée, conservant les mêmes malus ou bonus liés uniquement à leur niveau interne de pourriture).*
 
 ---
 
@@ -138,15 +142,20 @@ Les structures sont divisées en 4 niveaux de dégradation de base :
 
 **🛡️ L'Immunité du Bois Naturel et des Structures** :
 Pour ne pas ruiner l'expérience de jeu (en évitant que les joueurs trouvent le monde entier déjà effondré avant de pouvoir l'explorer), il y a deux exceptions à la pourriture automatique :
-* **Arbres Natifs** : Les arbres générés naturellement (ou cultivés à partir de pousses) ne génèrent pas de moisissure car le bois est encore "vivant". Seul le bois abattu et travaillé par le joueur commence à pourrir.
-* **Structures Suspendues** : Les structures se génèrent avec le pourcentage de moisissure indiqué ci-dessus, mais ensuite "se figent". Les blocs des structures sont nativement immunisés contre l'avancée de la pourriture, à moins que le joueur n'interagisse avec eux (ex. en les cassant, en les grattant ou en les modifiant). Cette protection sauve les villages de la destruction spontanée. Si vous souhaitez une expérience super-hardcore, vous pouvez désactiver l'immunité des structures depuis le menu de configuration !
+* **Arbres Natifs** : Les arbres générés naturellement (ou cultivés à partir de pousses) ne génèrent pas de moisissure car le bois est encore vivant. Seul le bois abattu et travaillé par le joueur commence à pourrir.
+* **Structures Suspendues** : Les structures se génèrent avec le pourcentage de moisissure indiqué ci-dessus, mais ensuite se figent. Les blocs des structures sont nativement immunisés contre l'avancée de la pourriture, à moins que le joueur n'interagisse avec eux (ex. en les cassant, en les grattant ou en les modifiant). Cette protection sauve les villages de la destruction spontanée. Si vous souhaitez une expérience super-hardcore, vous pouvez désactiver l'immunité des structures depuis le menu de configuration !
 
 ---
 
 ## 📊 Intégration HUD et Progrès
 
-* 🔍 **Intégration Jade / WTHIT** : Le mod est entièrement intégré à **Jade**. En regardant n'importe quel bloc de bois, le HUD affichera nativement sa variante précise (ex. "Waxed Tainted Oak Planks") et son icône, ainsi que le risque actuel d'infection (%). Le risque est évalué exactement à 0% pour les blocs cirés, et est masqué pour les blocs complètement pourris (Rotten). Le pourcentage de risque change de couleur de manière dynamique (**Gris = Sûr**, **Rouge = À Risque**). Les administrateurs peuvent également utiliser la commande `/moldrisk [verbose]` pour calculer la formule mathématique exacte du bloc qu'ils regardent !
-* 🏆 **Progrès (Advancements)** : 5 progrès personnalisés sont inclus pour guider les joueurs à travers l'apprentissage et la maîtrise des mécaniques du mod.
+* 🔍 **Intégration Jade / WTHIT** : Le mod est entièrement intégré à **Jade**. En regardant n'importe quel bloc de bois, le HUD affichera nativement sa variante précise (ex. Waxed Tainted Oak Planks) et son icône, ainsi que le risque actuel d'infection (%). Le risque est évalué exactement à 0% pour les blocs cirés, et est masqué pour les blocs complètement pourris (Rotten). Le pourcentage de risque change de couleur de manière dynamique (**Gris = Sûr**, **Rouge = À Risque**). Les administrateurs peuvent également utiliser la commande `/moldrisk [verbose]` pour calculer la formule mathématique exacte du bloc qu'ils regardent !
+* 🏆 **Progrès (Advancements)** : 5 progrès personnalisés sont inclus pour guider les joueurs à travers l'apprentissage et la maîtrise des mécaniques du mod :
+  - **Spores & Shadows** : Survivez au déclin de la nature.
+  - **Prévention Naturelle** : Utilisez un rayon de miel pour cirer un bloc de bois et stopper la moisissure.
+  - **Huile de Coude** : Grattez la moisissure d'un bloc de bois à l'aide d'une hache.
+  - **Souffle Court** : Subissez le poison du miasme en respirant trop de moisissure.
+  - **Poussière à la Poussière** : Tentez de casser un bloc de bois pourri et regardez-le s'effriter en poussière.
 
 ---
 
@@ -158,7 +167,7 @@ Les options sont divisées en 8 catégories principales :
 * 🌡️ **Environnement (Environment)** : Modifiez les valeurs de base pour la pluie/sécheresse, les bonus pour l'eau, ou personnalisez à quelles altitudes et températures la moisissure doit geler ou proliférer.
 * 🪓 **Susceptibilité (Susceptibility)** : Ajustez la vitesse à laquelle les blocs travaillés (planches) pourrissent par rapport aux blocs bruts ou écorcés.
 * ☣️ **Catalyseurs (Catalysts)** : Équilibrez l'agressivité des champignons, de la boue, des *fleurs sporifères* et des blocs de bois infectés eux-mêmes.
+* ☠️ **Toxicité (Toxicity)** : Personnalisez les seuils du Miasme Toxique pour la Nausée et le Poison, modifiez le rayon de détection et la durée des effets de statut.
 * 🗺️ **Structures (Structures)** : Personnalisez en détail (pourcentage par pourcentage) la façon dont les épaves, les villages et les mines sont générés.
-* 🔥 **Four (Furnace Multipliers)** : Modifiez l'efficacité de cuisson du bois pour les différents stades de pourriture.
-* 💥 **Loot** : Augmentez ou diminuez le taux de butin du bois fragile, si vous trouvez le mod trop punitif.
-* ☠️ **Toxicité (Toxicity)** : Modifiez les seuils, la durée et le rayon du nuage toxique, ainsi que le rayon de détection de l'eau.
+* 🔥 **Four (Furnace Multipliers)** : Modifiez l'efficacité de cuisson du bois pour les différents stades de pourriture (100% -> 50% -> 25% -> 12.5% par défaut).
+* 💥 **Loot (Drops)** : Augmentez ou diminuez les probabilités de drop du bois fragile et pourri selon vos préférences.

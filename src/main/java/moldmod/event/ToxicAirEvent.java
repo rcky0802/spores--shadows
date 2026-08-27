@@ -82,7 +82,7 @@ public class ToxicAirEvent {
 
         moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
 
-        if (result.netMiasma >= 16.0 || (densita >= 0.18 && result.netMiasma >= 10.0)) {
+        if (result.netMiasma >= config.toxicity.threshold_poison || (densita >= 0.18 && result.netMiasma >= config.toxicity.threshold_nausea)) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, config.toxicity.duration_poison_ticks, config.toxicity.poison_amplifier, false, false, true));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, config.toxicity.duration_nausea_ticks, config.toxicity.nausea_amplifier, false, false, true));
             MoldyBlockHelper.grantAdvancement(player, "toxic_air");

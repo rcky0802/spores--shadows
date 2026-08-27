@@ -7,29 +7,28 @@ import eu.pb4.polymer.resourcepack.api.ResourcePackBuilder;
 
 public class MoldyJsonGenerator {
 
-    private static final int[] STAGES = {0, 1, 2, 3};
-    private static final String[] STAGES_NAMES = {"waxed", "tainted", "moldy", "rotten"};
+    
+    
 
     public static void generateAll(ResourcePackBuilder builder) {
         for (moldmod.SporesShadowsConstants.MoldyWoodType moldyWoodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
             String wood = moldyWoodType.name();
-            String p = wood.equals("bamboo") ? "bamboo" : wood;
             String logName = moldyWoodType.getLogName();
             String woodName = moldyWoodType.getWoodName();
 
-            genPlanks(builder, wood, p);
+            genPlanks(builder, wood, wood);
             genLog(builder, wood, logName, false);
             genLog(builder, wood, "stripped_" + logName, false);
             genLog(builder, wood, woodName, true);
             genLog(builder, wood, "stripped_" + woodName, true);
-            genSlab(builder, wood, p);
-            genStairs(builder, wood, p);
-            genDoor(builder, wood, p);
-            genTrapdoor(builder, wood, p);
-            genFence(builder, wood, p);
-            genGate(builder, wood, p);
-            genPressurePlate(builder, wood, p);
-            genButton(builder, wood, p);
+            genSlab(builder, wood, wood);
+            genStairs(builder, wood, wood);
+            genDoor(builder, wood, wood);
+            genTrapdoor(builder, wood, wood);
+            genFence(builder, wood, wood);
+            genGate(builder, wood, wood);
+            genPressurePlate(builder, wood, wood);
+            genButton(builder, wood, wood);
         }
     }
 
@@ -37,12 +36,16 @@ public class MoldyJsonGenerator {
         builder.addData("assets/" + moldmod.SporesShadows.MOD_ID + "/" + path + ".json", json.toString().getBytes());
     }
 
-    private static void genItemModel(ResourcePackBuilder builder, String wood, String baseName, String parentModelName, int stage, boolean is2d, String idPrefix) {
+    private static void genItemModel(ResourcePackBuilder builder, String baseName, String parentModelName, int stage, boolean is2d, String idPrefix) {
+        String stageName = "";
+        for (moldmod.SporesShadowsConstants.MoldStage ms : moldmod.SporesShadowsConstants.MoldStage.values()) {
+            if (ms.getId() == stage) stageName = ms.getName();
+        }
         String itemName;
         if (idPrefix.equals("waxed_")) {
-            itemName = stage == 0 ? "waxed_" + baseName : "waxed_" + STAGES_NAMES[stage] + "_" + baseName;
+            itemName = stage == 0 ? "waxed_" + baseName : "waxed_" + stageName + "_" + baseName;
         } else {
-            itemName = STAGES_NAMES[stage] + "_" + baseName;
+            itemName = stageName + "_" + baseName;
         }
         JsonObject json = new JsonObject();
         if (is2d) {
@@ -82,7 +85,7 @@ public class MoldyJsonGenerator {
         for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
             String blockId = idPrefix + prefix + "_planks";
             JsonObject variants = new JsonObject();
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     JsonObject model = new JsonObject();
@@ -94,7 +97,7 @@ public class MoldyJsonGenerator {
                     write(builder, "models/block/" + blockId + "_stage_" + stage, model);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_planks" : blockId + "_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_planks", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_planks", itemParent, stage, false, idPrefix); }
                 
                 String m = stage == 0 ? "minecraft:block/" + prefix + "_planks" : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
                 for (String common : getCommonProps()) {
@@ -119,7 +122,7 @@ public class MoldyJsonGenerator {
             String vanillaTex = "minecraft:block/" + textureBase;
             String topTex = isWood ? vanillaTex : vanillaTex + "_top";
             
-        for (int stage : STAGES) {
+        for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
             JsonObject model = new JsonObject();
             JsonObject textures = new JsonObject();
             if (stage > 0) {
@@ -132,7 +135,7 @@ public class MoldyJsonGenerator {
             }
             
             String itemParent = stage == 0 ? "minecraft:block/" + logName : blockId + "_stage_" + stage;
-            if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, logName, itemParent, stage, false, idPrefix); }
+            if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, logName, itemParent, stage, false, idPrefix); }
             
             String m = stage == 0 ? "minecraft:block/" + logName : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
                 for (String common : getCommonProps()) {
@@ -156,7 +159,7 @@ public class MoldyJsonGenerator {
         for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
             String blockId = idPrefix + prefix + "_slab";
             JsonObject variants = new JsonObject();
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     JsonObject mBot = new JsonObject();
@@ -172,7 +175,7 @@ public class MoldyJsonGenerator {
                     write(builder, "models/block/" + blockId + "_stage_" + stage + "_top", mTop);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_slab" : blockId + "_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_slab", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_slab", itemParent, stage, false, idPrefix); }
                 
                 String mBottom = stage == 0 ? "minecraft:block/" + prefix + "_slab" : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
                 String mTopStr = stage == 0 ? "minecraft:block/" + prefix + "_slab_top" : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage + "_top";
@@ -209,7 +212,7 @@ public class MoldyJsonGenerator {
             String[] shapes = {"straight", "inner_left", "inner_right", "outer_left", "outer_right"};
             String[] halfs = {"bottom", "top"};
 
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_stairs");
@@ -224,7 +227,7 @@ public class MoldyJsonGenerator {
                     write(builder, "models/block/" + blockId + "_stage_" + stage + "_outer", mOut);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_stairs" : blockId + "_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_stairs", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_stairs", itemParent, stage, false, idPrefix); }
 
                 for (int f = 0; f < facings.length; f++) {
                     String facing = facings[f];
@@ -269,7 +272,7 @@ public class MoldyJsonGenerator {
         for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
             String blockId = idPrefix + prefix + "_door";
             JsonObject variants = new JsonObject();
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 if (stage > 0) {
                     String texBot = "minecraft:block/" + prefix + "_door_bottom";
                     String texTop = "minecraft:block/" + prefix + "_door_top";
@@ -327,7 +330,7 @@ public class MoldyJsonGenerator {
             String[] facings = {"north", "east", "south", "west"};
             int[] yRots = {0, 90, 180, 270};
 
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_trapdoor";
                 if (stage > 0) {
                     JsonObject mBot = new JsonObject(); mBot.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_orientable_trapdoor_bottom");
@@ -341,7 +344,7 @@ public class MoldyJsonGenerator {
                     write(builder, "models/block/" + blockId + "_open_stage_" + stage, mOpn);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_trapdoor_bottom" : blockId + "_bottom_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_trapdoor", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_trapdoor", itemParent, stage, false, idPrefix); }
 
                 for (int f = 0; f < facings.length; f++) {
                     String facing = facings[f];
@@ -374,7 +377,7 @@ public class MoldyJsonGenerator {
         for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
             String blockId = idPrefix + prefix + "_fence";
             JsonArray multipart = new JsonArray();
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     JsonObject mP = new JsonObject(); mP.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_fence_post");
@@ -388,7 +391,7 @@ public class MoldyJsonGenerator {
                     write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mI);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_fence_inventory" : blockId + "_inventory_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_fence", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_fence", itemParent, stage, false, idPrefix); }
 
                 String mPost = stage == 0 ? "minecraft:block/" + prefix + "_fence_post" : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_post_stage_" + stage;
                 String mSide = stage == 0 ? "minecraft:block/" + prefix + "_fence_side" : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_side_stage_" + stage;
@@ -430,7 +433,7 @@ public class MoldyJsonGenerator {
             String[] facings = {"north", "east", "south", "west"};
             int[] yRots = {0, 90, 180, 270};
 
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_fence_gate");
@@ -442,7 +445,7 @@ public class MoldyJsonGenerator {
                     JsonObject mWO = new JsonObject(); mWO.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_fence_gate_wall_open"); mWO.add("textures", tDef); write(builder, "models/block/" + blockId + "_wall_open_stage_" + stage, mWO);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_fence_gate" : blockId + "_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_fence_gate", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_fence_gate", itemParent, stage, false, idPrefix); }
 
                 for (int f = 0; f < facings.length; f++) {
                     String facing = facings[f];
@@ -479,7 +482,7 @@ public class MoldyJsonGenerator {
             String blockId = idPrefix + prefix + "_pressure_plate";
             JsonObject variants = new JsonObject();
             
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     // Normal
@@ -494,7 +497,7 @@ public class MoldyJsonGenerator {
                 }
                 
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_pressure_plate" : blockId + "_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_pressure_plate", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_pressure_plate", itemParent, stage, false, idPrefix); }
                 
                 for (String powered : new String[]{"false", "true"}) {
                     String m = stage == 0 ? "minecraft:block/" + prefix + "_pressure_plate" + (powered.equals("true") ? "_down" : "") : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + (powered.equals("true") ? "_down_" : "_") + "stage_" + stage;
@@ -516,7 +519,7 @@ public class MoldyJsonGenerator {
             JsonObject variants = new JsonObject();
             String[] facings = {"north", "east", "south", "west"};
 
-            for (int stage : STAGES) {
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     // Normal
@@ -537,7 +540,7 @@ public class MoldyJsonGenerator {
                 }
                 
                 String itemParent = stage == 0 ? "minecraft:item/" + prefix + "_button" : blockId + "_inventory_stage_" + stage;
-                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, wood, prefix + "_button", itemParent, stage, false, idPrefix); }
+                if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_button", itemParent, stage, false, idPrefix); }
                 
                 for (String face : new String[]{"floor", "wall", "ceiling"}) {
                     for (String facing : facings) {

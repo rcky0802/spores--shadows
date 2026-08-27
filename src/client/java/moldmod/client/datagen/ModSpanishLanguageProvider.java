@@ -4,10 +4,22 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
+
+    private static final Map<String, String> WOOD_NAMES = Map.ofEntries(
+            Map.entry("oak", "de Roble"),
+            Map.entry("spruce", "de Abeto"),
+            Map.entry("birch", "de Abedul"),
+            Map.entry("jungle", "de Jungla"),
+            Map.entry("acacia", "de Acacia"),
+            Map.entry("dark_oak", "de Roble Oscuro"),
+            Map.entry("mangrove", "de Manglar"),
+            Map.entry("cherry", "de Cerezo"),
+            Map.entry("crimson", "Carmesí"),
+            Map.entry("warped", "Deformado")
+    );
 
     public ModSpanishLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "es_es", registryLookup);
@@ -15,17 +27,7 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
 
     @Override
     protected String getTranslation(String wood, String blockType, String state) {
-        Map<String, String> names = new HashMap<>();
-        names.put("oak", "de Roble");
-        names.put("spruce", "de Abeto");
-        names.put("birch", "de Abedul");
-        names.put("jungle", "de Jungla");
-        names.put("acacia", "de Acacia");
-        names.put("dark_oak", "de Roble Oscuro");
-        names.put("mangrove", "de Manglar");
-        names.put("cherry", "de Cerezo");
-
-        String wName = names.get(wood);
+        String wName = WOOD_NAMES.get(wood);
         String blockName = "";
         boolean isFeminine = false;
         boolean isPlural = false;
@@ -35,6 +37,10 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
             case "stripped_log": blockName = "Tronco sin corteza"; break;
             case "wood": blockName = "Madera"; isFeminine = true; break;
             case "stripped_wood": blockName = "Madera sin corteza"; isFeminine = true; break;
+            case "stem": blockName = "Tallo"; break;
+            case "stripped_stem": blockName = "Tallo sin corteza"; break;
+            case "hyphae": blockName = "Hifas"; isFeminine = true; isPlural = true; break;
+            case "stripped_hyphae": blockName = "Hifas sin corteza"; isFeminine = true; isPlural = true; break;
             case "planks": blockName = "Tablones"; isPlural = true; break;
             case "slab": blockName = "Losa"; isFeminine = true; break;
             case "stairs": blockName = "Escaleras"; isFeminine = true; isPlural = true; break;
@@ -61,7 +67,7 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
     @Override
     protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".waxed", "Encerado");
-        translationBuilder.add("item.spores--shadows.waxed_format", "%s encerado");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", "%s encerado");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_1", "Se puede transformar en tablones limpios perdiendo material,");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_2", "pero no se puede usar para recetas vanilla normales.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_1", "Solo útil para crafteos simples (palos, vallas, etc).");
@@ -183,18 +189,18 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.1", "Contaminado");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.2", "Mohoso");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.3", "Podrido");
-        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Info de Moho");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_info", "Spores & Shadows: Info de Moho");
 
         // Advancements
-        translationBuilder.add("advancement..spores--shadows.root.title", "Spores & Shadows");
-        translationBuilder.add("advancement..spores--shadows.root.description", "Sobrevive a la decadencia de la naturaleza.");
-        translationBuilder.add("advancement..spores--shadows.wax_block.title", "Prevención Natural");
-        translationBuilder.add("advancement..spores--shadows.wax_block.description", "Usa un panal de miel para encerar un bloque de madera y detener el moho.");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.title", "Grasa de Codo");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.description", "Raspa el moho de un bloque de madera con un hacha.");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.title", "Respiración Corta");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.description", "Sufre el veneno del miasma al respirar demasiado moho.");
-        translationBuilder.add("advancement..spores--shadows.crumble.title", "Polvo al Polvo");
-        translationBuilder.add("advancement..spores--shadows.crumble.description", "Intenta romper un bloque de madera podrido y mira cómo se desmorona en la nada.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.description", "Sobrevive a la decadencia de la naturaleza.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Prevención Natural");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Usa un panal de miel para encerar un bloque de madera y detener el moho.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Grasa de Codo");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Raspa el moho de un bloque de madera con un hacha.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Respiración Corta");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Sufre el veneno del miasma al respirar demasiado moho.");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Polvo al Polvo");
+        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Intenta romper un bloque de madera podrido y mira cómo se desmorona en la nada.");
     }
 }

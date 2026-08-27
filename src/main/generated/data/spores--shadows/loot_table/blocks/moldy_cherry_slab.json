@@ -41,6 +41,10 @@
                       "properties": {
                         "waxed": "true"
                       }
+                    },
+                    {
+                      "chance": 0.0,
+                      "condition": "minecraft:random_chance"
                     }
                   ]
                 }

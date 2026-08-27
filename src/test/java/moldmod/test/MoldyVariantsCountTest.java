@@ -1,6 +1,5 @@
 package moldmod.test;
 
-import moldmod.SporesShadows;
 import moldmod.block.ModBlocks;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.item.Item;
@@ -12,12 +11,6 @@ public class MoldyVariantsCountTest {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testTechnicalDetailsAndVariantCounts(TestContext context) {
 
-        // 1. Verify Wood Types
-        String[] woods = SporesShadows.WOODS;
-        if (woods.length != 10) {
-            context.throwPositionedException("Expected 10 wood types, but found " + woods.length,
-                    context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
-        }
 
         // 2. Verify Base Formats Count
         // 10 woods * 13 formats = 130 base formats.

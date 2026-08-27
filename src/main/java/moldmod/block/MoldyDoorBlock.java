@@ -38,19 +38,11 @@ public class MoldyDoorBlock extends DoorBlock {
         // Only tick the LOWER half so the door doesn't age twice as fast.
         // The lower half will sync changes to the upper half automatically via MoldyBlockHelper.
         if (state.get(net.minecraft.block.DoorBlock.HALF) == net.minecraft.block.enums.DoubleBlockHalf.LOWER) {
-            MoldyBlockHelper.randomTick(state, world, pos, random, this);
+            MoldyBlockHelper.randomTick(state, world, pos, random);
         }
     }
 
-    @Override
-    public float calcBlockBreakingDelta(BlockState state, PlayerEntity player, net.minecraft.world.BlockView world, BlockPos pos) {
-        if (state.get(MoldyLogBlock.STAGE) == 3) {
-            float f = state.getHardness(world, pos);
-            if (f == -1.0F) return 0.0F;
-            return 1.0F / f / 30.0F; // Same speed always
-        }
-        return super.calcBlockBreakingDelta(state, player, world, pos);
-    }
+
 
     @Override
     protected net.minecraft.util.ActionResult onUse(BlockState state, net.minecraft.world.World world, BlockPos pos, PlayerEntity player, net.minecraft.util.hit.BlockHitResult hit) {

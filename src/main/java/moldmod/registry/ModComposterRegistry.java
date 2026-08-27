@@ -8,12 +8,10 @@ import net.minecraft.registry.Registries;
 public class ModComposterRegistry {
 
     public static void register() {
-        String[] woods = moldmod.SporesShadows.WOODS;
-
-        for (String wood : woods) {
-            String logName = wood + "_log";
-            String woodName = wood + "_wood";
-            String prefix = wood;
+        for (moldmod.SporesShadowsConstants.MoldyWoodType woodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+            String logName = woodType.getLogName();
+            String woodName = woodType.getWoodName();
+            String prefix = woodType.name();
 
             registerForSet(logName);
             registerForSet("stripped_" + logName);

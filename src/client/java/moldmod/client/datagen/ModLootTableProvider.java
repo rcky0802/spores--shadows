@@ -17,10 +17,10 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        String[] woods = moldmod.SporesShadows.WOODS;
-
-        for (String wood : woods) {
-            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : wood + "_log"; String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : wood + "_wood";
+        for (moldmod.SporesShadowsConstants.MoldyWoodType woodTypeObj : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+            String wood = woodTypeObj.name();
+            String logName = woodTypeObj.getLogName();
+            String woodName = woodTypeObj.getWoodName();
             String prefix = wood;
 
             Block vanillaLog = Registries.BLOCK.get(net.minecraft.util.Identifier.of("minecraft", logName));
@@ -137,26 +137,24 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
                 .rolls(net.minecraft.loot.provider.number.ConstantLootNumberProvider.create(1.0F))
                 .with(net.minecraft.loot.entry.AlternativeEntry.builder(
                     net.minecraft.loot.entry.ItemEntry.builder(stage3)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 3)))
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.ROTTEN.getId())))
                         .conditionally(
                             net.minecraft.loot.condition.AnyOfLootCondition.builder(
-                                this.createSilkTouchCondition(),
-                                isWaxed
-                            )
+                                this.createSilkTouchCondition(), isWaxed, net.minecraft.loot.condition.RandomChanceLootCondition.builder(me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().drops.stage_3_drop_chance) )
                         ),
                     net.minecraft.loot.entry.ItemEntry.builder(stage2)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 2)))
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.MOLDY.getId())))
                         .conditionally(
                             net.minecraft.loot.condition.AnyOfLootCondition.builder(
                                 this.createSilkTouchCondition(),
                                 isWaxed,
-                                net.minecraft.loot.condition.RandomChanceLootCondition.builder(0.5F)
+                                net.minecraft.loot.condition.RandomChanceLootCondition.builder(me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().drops.stage_2_drop_chance)
                             )
                         ),
                     net.minecraft.loot.entry.ItemEntry.builder(stage1)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 1))),
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.TAINTED.getId()))),
                     net.minecraft.loot.entry.ItemEntry.builder(vanillaBlock)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 0)))
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.WAXED.getId())))
                 ))
                 .apply(net.minecraft.loot.function.CopyStateLootFunction.builder(baseBlock).addProperty(MoldyLogBlock.WAXED))
             )
@@ -169,17 +167,19 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
                 .rolls(net.minecraft.loot.provider.number.ConstantLootNumberProvider.create(1.0F))
                 .with(net.minecraft.loot.entry.AlternativeEntry.builder(
                     net.minecraft.loot.entry.ItemEntry.builder(stage3)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 3))),
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.ROTTEN.getId()))),
                     net.minecraft.loot.entry.ItemEntry.builder(stage2)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 2))),
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.MOLDY.getId()))),
                     net.minecraft.loot.entry.ItemEntry.builder(stage1)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 1))),
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.TAINTED.getId()))),
                     net.minecraft.loot.entry.ItemEntry.builder(stage0)
-                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, 0)))
+                        .conditionally(net.minecraft.loot.condition.BlockStatePropertyLootCondition.builder(baseBlock).properties(net.minecraft.predicate.StatePredicate.Builder.create().exactMatch(MoldyLogBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.WAXED.getId())))
                 ))
                 .apply(net.minecraft.loot.function.CopyStateLootFunction.builder(baseBlock).addProperty(MoldyLogBlock.WAXED))
             )
         );
     }
 }
+
+
 

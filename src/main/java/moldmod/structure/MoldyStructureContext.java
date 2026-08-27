@@ -143,11 +143,11 @@ public class MoldyStructureContext {
         // ---------------------------------------------
 
         if (r < rotten) {
+            return getConvertedState(state, 3);
+        } else if (r < rotten + moldy) {
             return getConvertedState(state, 2);
-        } else if (r < rotten + tainted) {
+        } else if (r < rotten + moldy + tainted) {
             return getConvertedState(state, 1);
-        } else if (r < rotten + tainted + moldy) {
-            return getConvertedState(state, 0);
         }
 
         return state;

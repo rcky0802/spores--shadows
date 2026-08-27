@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    [
+      {
+        "item": "minecraft:cherry_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_cherry_planks"
+      }
+    ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:cherry_button"
+  }
+}

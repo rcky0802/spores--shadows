@@ -47,7 +47,7 @@ El avance ocurre solo si el "Riesgo de Infección" (`R`), recalculado constantem
   - **Nether & End**: El calor extremo del Nether y el vacío helado del End son totalmente letales para el moho. La madera nunca se pudrirá en estas dimensiones.
   - **Bajo Tierra (`Y < 64`)**: Independientemente del bioma de la superficie, a medida que desciendes, la temperatura se normaliza gradualmente, estabilizándose en un perfecto `0.5` (templado) por debajo de `Y=48`. ¡Incluso en un desierto o bioma congelado, las cuevas profundas desarrollarán moho!
   - **Alta Altitud (`Y > 128`)**: Al subir en altitud, la temperatura cae gradualmente, congelándose a `-0.5` en el nivel `Y=256`. Construir cabañas en alta montaña preservará la madera en casi cualquier lugar.
-* ☣️ **Contagio (Catalizadores)**: Suma una penalización directa si la madera está en contacto con agentes infecciosos:
+* ☣️ **Contagio (Catalizadores)**: Suma una penalización directa si la madera está en contacto con agentes infectieux:
   - Madera infectada: Deteriorada (`+0.05`), Enmohecida (`+0.10`), Podrida (`+0.20`).
   - Entorno: Barro (`+0.05`), Podzol/Micelio (`+0.15`), Hongos (`+0.25`), Flor de Esporas (`+0.80`).
 
@@ -56,16 +56,16 @@ El avance ocurre solo si el "Riesgo de Infección" (`R`), recalculado constantem
 ## ☠️ Peligros Ambientales (Miasma)
 
 - ✨ **Partículas de Esporas**: Los bloques en la etapa **Enmohecido** o **Podrido** emiten esporas desde las caras expuestas (desactivado bajo el agua).
-- 🤢 **Miasma Tóxico**: A través de un avanzado algoritmo de *Flood Fill*, el juego calcula la propagación de los gases tóxicos confinados en espacios cerrados. Si estás al aire libre o en áreas inmensamente vastas, las esporas se dispersarán sin consecuencias. Sin embargo, en habitaciones cerradas o sótanos pequeños (hasta 180 bloques de volumen), el miasma se estancará y se acumulará peligrosamente.
+- 🤢 **Miasma Tóxico (Sistema Volumétrico)**: A través de un avanzado algoritmo de *Flood Fill*, el juego calcula volumétricamente la propagación de gases tóxicos en espacios cerrados en base al tamaño de la habitación y la densidad del moho. Si estás al aire libre o en áreas inmensamente vastas, las esporas se dispersarán sin consecuencias. Sin embargo, en habitaciones cerradas o sótanos pequeños (hasta 180 bloques de volumen), el miasma se estancará y se acumulará peligrosamente.
   - Cada bloque enmohecido o podrido sin encerar infectará el aire de la habitación, añadiendo puntos de toxicidad.
-  - Las paredes sólidas bloquearán el aire, pero las puertas entreabiertas, trampillas o escaleras permitirán que pase a las habitaciones adyacentes.
+  - Las paredes sólidas bloquearán el gas, pero aberturas como puertas entreabiertas, trampillas o escaleras permitirán que el miasma fluya hacia habitaciones adyacentes.
   - **Ventilación Natural**: Los bloques parciales en contacto con el exterior (como vallas, muros o barrotes de hierro) actúan como salidas de aire, reduciendo drásticamente la puntuación neta del miasma.
   
-  **Efectos basados en la concentración neta**:
-  - Miasma > **8**: **Hambre** (Esporas ligeras)
-  - Miasma > **16**: **Náusea + Veneno** (Esporas densas)
+  **Efectos basados en la concentración neta y densidad**:
+  - Miasma > **8** (o densidad leve): **Hambre** (Partículas ligeras de esporas)
+  - Miasma > **16** (o densidad alta): **Náusea + Veneno** (Partículas densas de esporas)
   
-  *(¡Usa el nuevo comando de administrador `/miasma` para medir los datos y el volumen exacto de la habitación en la que te encuentras!)*
+  *(¡Los umbrales de activación para Náusea y Veneno, así como las duraciones de los efectos y el radio de escaneo, son totalmente configurables en Cloth Config / ModMenu! Usa el comando `/miasma` para medir en tiempo real el volumen y la toxicidad de la habitación).*
 
 ---
 
@@ -78,7 +78,7 @@ El jugador no está indefenso frente a la naturaleza. Equipando la herramienta a
   - Si el bloque está **Encerado**, el hacha eliminará la capa de cera restaurando el ciclo vital normal.
   - Si el bloque está **Deteriorado o Enmohecido**, el hacha raspará la capa superficial de hongos, reduciendo la decadencia en 1 etapa. Un bloque en la Etapa 1 volverá a estar perfectamente limpio (Etapa 0 Vanilla).
   *(Cada raspado consume durabilidad normalmente).*
-* 🐝 **Uso del Panal (Waxing)**: Haciendo *Shift + Clic Derecho* con un panal de miel en un bloque en *cualquier* etapa, este se convertirá en **Encerado**. La madera encerada está sellada: se vuelve inmune al daño ambiental, congela su decadencia infinitamente y pierde la capacidad de infectar bloques cercanos. 
+* 🐝 **Uso del Panal (Waxing)**: Haciendo *Shift + Clic Derecho* con un panal de miel en un bloque en *cualquier* etapa, este se convertirá en **Encerado**. La madera encerada está sellada: se vuelve inmune al daño ambiental, congela su decadencia infinitamente y pierde la capacidad de infectar bloques cercanos o de emitir miasma tóxico. 
 
 *Función Inteligente: ¡Si realizas estas acciones en un bloque múltiple (como la mitad superior o inferior de una Puerta), la actualización se aplicará instantáneamente y en total sincronía a toda la estructura!*
 
@@ -94,8 +94,8 @@ Usar madera podrida para la fabricación no es sabio. La estructura interna del 
   - Los bloques **Enmohecidos** son frágiles: solo tienen un **50%** de probabilidad de obtenerse a sí mismos, de lo contrario se harán añicos en la nada.
   - Los bloques **Podridos** se desmoronan instantáneamente al tacto (probabilidad de obtención del **0%**).
   
-  *(💡 **El secreto de la Cera**: Encerar un bloque consolida su estructura. Cualquier bloque del mod, incluso el Podrido, si está **Encerado** siempre tendrá un **100% de probabilidad de obtención**, ¡incluso sin usar Toque de Seda!)*
-* 🛠️ **Rendimiento de Fabricación (Recuperación)**:
+  *(💡 **El secreto de la Cera**: Encerar un bloque consolida su estructura. Cualquier bloque del mod, **incluso en el estadio Podrido (Rotten)** donde normalmente se haría añicos, al estar **Encerado garantiza el drop al 100%**, ¡incluso sin necesidad del encantamiento Toque de Seda! Además, las probabilidades de drop base son 100% configurables).*
+* 🛠️ **Rendimiento de Fabricación (Recuperación) y Elaboración Híbrida**:
   Todavía puedes usar la madera infectada en la mesa de trabajo para fabricar objetos básicos (como Tablones, Losas, Escaleras o Palos). El objeto final siempre estará perfectamente limpio (**Vanilla**), pero dado que te ves obligado a descartar las partes podridas de la madera original, la cantidad de objetos obtenidos caerá drásticamente:
 
   | Calidad del Material | 🌳 Ej: Tronco ➔ Tablones | 🦯 Ej: Tablones ➔ Palos |
@@ -105,10 +105,17 @@ Usar madera podrida para la fabricación no es sabio. La estructura interna del 
   | 🦠 **Enmohecido** | 1 Tronco ➔ **1** Tablón | 2 Tablones ➔ **1** Palo |
   | ☠️ **Podrido** | *Receta Inválida* ❌ | *Receta Inválida* ❌ |
 
-* 🔥 **Poder Combustible**: 
-  - La madera Deteriorada se quema con eficiencia reducida a la mitad (**50%**).
-  - La Enmohecida baja a un cuarto de eficiencia (**25%**).
-  - La Podrida se quema en unos instantes (**12.5%**), haciéndola inútil como combustible.
+  *(💡 **Elaboración Híbrida**: Gracias a la compatibilidad de recetas, ¡puedes mezclar libremente bloques de madera infectada y sus variantes enceradas del mismo estadio en la misma cuadrícula de crafteo para producir tablones limpios u otros objetos sin ningún problema!)*
+
+* 🔥 **Poder Combustible (Horno)**: 
+  A medida que avanza la podredumbre, la madera pierde densidad y poder calorífico:
+  - **Sano (Vanilla)**: Eficiencia normal (**100%**).
+  - **Deteriorado**: Se quema con eficiencia reducida a la mitad (**50%**).
+  - **Enmohecido**: Cae a un cuarto de eficiencia (**25%**).
+  - **Podrido**: Se consume en pocos instantes (**12.5%**), haciéndola prácticamente inútil como combustible.
+  
+  *(💡 **100% Configurable**: La eficiencia del combustible en el horno decresce con el moho y es 100% configurable mediante ModMenu / Cloth Config).*
+
 * ♻️ **Compostador (El lado positivo de la Podredumbre)**:
   Si un bloque está demasiado podrido para construir con él, ¡recíclalo! Toda la madera del mod ha sido integrada con el Compostador Vanilla para generar Polvo de Hueso. Cuanto más degradada esté la madera (y rica en esporas), mayor será la probabilidad de éxito:
   - Madera Deteriorada: **50%**
@@ -120,9 +127,10 @@ Usar madera podrida para la fabricación no es sabio. La estructura interna del 
   - Enmohecido: **7,5 segundos** (150 ticks).
   - Podrido: **22,5 segundos** (450 ticks).
 
-*(💡 **Nota sobre los Bloques Encerados**: ¡La cera es un sellador ambiental, pero no bloquea el uso del objeto!
-* **Elaboración Híbrida**: Puedes mezclar libremente bloques de madera infectada y sus correspondientes variantes enceradas (de la misma etapa de moho) en la misma cuadrícula de fabricación para producir tablones Vanilla limpios u otros objetos.
-* **Combustible y Compostaje**: Puedes quemarlos en el horno o tirarlos al compostador; se comportarán exactamente con los mismos tiempos y probabilidades que su contraparte no encerada, manteniendo las mismas penalizaciones o bonificaciones vinculadas a su nivel interno de podredumbre).*
+*(💡 **Propiedades de los Bloques Encerados**: ¡La cera es un sellador ambiental y protector estructural, pero no altera el uso práctico del objeto!:
+* **Elaboración Híbrida**: Se pueden mezclar con madera no encerada del mismo estado de moho en la cuadrícula de fabricación.
+* **Combustión Idéntica**: Mantienen exactamente las mismas propiedades de combustible en el horno que su contraparte no encerada (50%, 25%, 12.5% según su nivel de deterioro).
+* **Garantía de Drop**: **Garantizan el drop al 100%** al ser picados, incluso en el estadio "Podrido" (Rotten), donde normalmente la madera se haría añicos).*
 
 ---
 
@@ -148,7 +156,12 @@ Para no arruinar la experiencia de juego (evitando que los jugadores encuentren 
 ## 📊 Integración de HUD y Logros
 
 * 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade**. Al mirar cualquier bloque de madera, el HUD mostrará de forma nativa su variante precisa (ej. "Waxed Tainted Oak Planks") y su icono, junto con el riesgo de infección (%) actual. El riesgo se evalúa exactamente al 0% para los bloques encerados y se oculta para los bloques completamente podridos (Rotten). El porcentaje de riesgo cambia de color dinámicamente (**Gris = Seguro**, **Rojo = En Riesgo**). ¡Los administradores también pueden usar el comando `/moldrisk [verbose]` para calcular la fórmula matemática exacta del bloque que están mirando!
-* 🏆 **Logros Personalizados**: Incluye 5 **Logros (Advancements)** diseñados para guiar a los jugadores a través del descubrimiento y dominio de las mecánicas del mod.
+* 🏆 **Logros Personalizados**: Incluye 5 **Logros (Advancements)** diseñados para guiar a los jugadores a través del descubrimiento y dominio de las mecánicas del mod:
+  - **Spores & Shadows**: Sobrevive a la decadencia de la naturaleza.
+  - **Prevención Natural**: Usa un panal de miel para encerar un bloque de madera y detener el moho.
+  - **Mano de Santo**: Raspa el moho de un bloque de madera utilizando un hacha.
+  - **Falta de Aire**: Sufre el veneno del miasma por respirar demasiado moho.
+  - **Polvo al Polvo**: Intenta picar un bloque de madera podrida y observa cómo se desmorona en la nada.
 
 ---
 
@@ -157,10 +170,10 @@ El mod incluye un menú de configuración accesible directamente desde el juego 
 Las opciones se dividen en 8 categorías principales:
 
 * 🛠️ **General**: ¡Desactiva el crecimiento del moho globalmente, cambia el umbral de infección, expande el radio de escaneo o **desactiva la inmunidad de las estructuras** para que las aldeas se pudran espontáneamente!
-* 🌡️ **Entorno (Environment)**: Modifica los valores base para lluvia/seco, las bonificaciones para el agua, o personaliza a qué altitudes y temperaturas el moho debe congelarse o proliferar.
+* 🌡️ **Entorno (Environment)**: Modifica los valores base para lluvia/seco, las bonificaciones para el agua, o personaliza a qué altitudes y temperaturas el moho debe congelare o proliferar.
 * 🪓 **Susceptibilidad (Susceptibility)**: Ajusta qué tan rápido se pudren los bloques procesados (tablones) en comparación con los crudos o sin corteza.
 * ☣️ **Catalizadores (Catalysts)**: Equilibra la agresividad de los hongos, el barro, la *flor de esporas* (spore blossom) y los propios bloques de madera infectada.
+* ☠️ **Toxicidad (Toxicity)**: Permite personalizar el Miasma Tóxico Volumétrico: ajustar los umbrales de activación para Náusea y Veneno, la duración y amplificador de los efectos, y el radio de escaneo de la habitación.
 * 🗺️ **Estructuras (Structures)**: Personaliza en detalle (porcentaje a porcentaje) cómo se generan los naufragios, las aldeas y las minas.
-* ☠️ **Toxicidad (Toxicity)**: Permite ajustar los umbrales de Miasma, la duración de los efectos, el radio de la nube tóxica y el radio de escaneo de agua.
-* 🔥 **Horno (Furnace Multipliers)**: Modifica la eficiencia de cocción de la madera para las diversas etapas de decadencia.
-* 💥 **Obtención (Drop)**: Sube o baja la tasa de obtención (drop rate) de la madera frágil, si consideras que el mod es demasiado punitivo.
+* 🔥 **Horno (Furnace Multipliers)**: Modifica la eficiencia de combustible de la madera para cada etapa de decadencia (100% -> 50% -> 25% -> 12.5% por defecto), siendo 100% configurable.
+* 💥 **Obtención (Drops)**: Sube o baja la tasa de obtención (drop rate) de la madera frágil y podrida, totalmente configurable si consideras que el mod es demasiado benevolente o punitivo.

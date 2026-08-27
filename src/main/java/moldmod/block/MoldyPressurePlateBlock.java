@@ -35,7 +35,7 @@ public class MoldyPressurePlateBlock extends PressurePlateBlock {
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.randomTick(state, world, pos, random);
-        MoldyBlockHelper.randomTick(state, world, pos, random, this);
+        MoldyBlockHelper.randomTick(state, world, pos, random);
     }
 
     @Override

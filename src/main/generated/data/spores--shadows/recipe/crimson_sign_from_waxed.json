@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:crimson_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_crimson_planks"
+      }
+    ],
+    "|": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    " | "
+  ],
+  "result": {
+    "count": 3,
+    "id": "minecraft:crimson_sign"
+  }
+}

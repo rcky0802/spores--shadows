@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:oak_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_oak_planks"
+      }
+    ]
+  },
+  "pattern": [
+    "#",
+    "#"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:stick"
+  }
+}

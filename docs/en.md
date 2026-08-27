@@ -1,4 +1,4 @@
-# Spores & Shadows 
+﻿# Spores & Shadows 
 
 **Spores & Shadows** is a Minecraft mod (Fabric 1.21.1) that introduces a dynamic, realistic, and unforgiving environmental decay ecosystem for wood. No structure is safe from time and the elements!
 
@@ -8,11 +8,11 @@
 
 Have you ever built a majestic wooden cabin thinking it would stand there untouched, defying the centuries without any need for maintenance? **Spores & Shadows** revolutionizes this certainty, transforming wood from a simple inert block into a living, vulnerable material that reacts to the surrounding environment.
 
-The mod seamlessly and silently replaces every piece of wood placed by the player (or naturally generated in structures like shipwrecks and mineshafts) with a "dormant" variant. Over time, environmental factors such as rain, moisture, darkness, and even the biome you are in will determine the fate of your builds, forcing you to protect your structures or watch helplessly as they inevitably decay.
+The mod seamlessly and silently replaces every piece of wood placed by the player (or naturally generated in structures like shipwrecks and mineshafts) with a dormant variant. Over time, environmental factors such as rain, moisture, darkness, and even the biome you are in will determine the fate of your builds, forcing you to protect your structures or watch helplessly as they inevitably decay.
 
 ### 🔢 Technical Details and Added Blocks
 
-On a technical level, the mod injects a complete ecosystem for every single wood variant (including Crimson, and Warped woods).
+On a technical level, the mod injects a complete ecosystem for every single wood variant (including Crimson and Warped woods).
 
 * **🧱 13 Architectural Formats**: *Logs*, *Stripped Logs*, *Wood*, *Stripped Wood*, *Planks*, *Stairs*, *Slabs*, *Fences*, *Fence Gates*, *Doors*, *Trapdoors*, *Pressure Plates*, *Buttons*.
 
@@ -23,7 +23,7 @@ This way, the game provides a whopping **910 unique variants obtainable in Survi
 2. The **390 Moldy Variants**: The three natural stages of decay.
 3. The **390 Waxed Moldy Variants**: The decayed blocks frozen in time by wax.
 
-This system allows you to obtain partially moldy blocks in survival and then "seal" them with honeycomb, letting you safely use them for decorative purposes without the risk of infecting nearby structures.
+This system allows you to obtain partially moldy blocks in survival and then seal them with honeycomb, letting you safely use them for decorative purposes without the risk of infecting nearby structures.
 
 ---
 
@@ -31,7 +31,7 @@ This system allows you to obtain partially moldy blocks in survival and then "se
 
 Wood goes through 4 stages of decay: **Vanilla (0) ➔ Tainted (1) ➔ Moldy (2) ➔ Rotten (3)**.
 
-Progression only occurs if the "Infection Risk" (`R`), which is constantly recalculated, exceeds the fixed threshold of **0.4**. The exact formula is:
+Progression only occurs if the Infection Risk (`R`), which is constantly recalculated, exceeds the fixed threshold of **0.4**. The exact formula is:
 `R = ((Moisture * Light * Susceptibility) + Contagion) * Temperature`
 
 ### Exact Factors and Variables
@@ -51,19 +51,22 @@ Progression only occurs if the "Infection Risk" (`R`), which is constantly recal
   - Infected wood: Tainted (`+0.05`), Moldy (`+0.10`), Rotten (`+0.20`).
   - Environment: Mud (`+0.05`), Podzol/Mycelium (`+0.15`), Mushrooms (`+0.25`), Spore Blossom (`+0.80`).
 
-## ☠️ Environmental Hazards (Miasma)
+---
+
+## ☠️ Environmental Hazards (Volumetric Miasma)
 
 - ✨ **Spore Particles**: Blocks in the **Moldy** or **Rotten** stage emit spores from exposed faces (disabled underwater).
-- 🤢 **Toxic Miasma**: Through an advanced *Flood Fill* algorithm, the game calculates the propagation of toxic gases confined in closed spaces. If you are outdoors or in immensely vast areas, the spores will disperse without consequences. However, in closed rooms or small cellars (up to 180 blocks in volume), the miasma will stagnate and dangerously accumulate.
-  - Every non-waxed moldy or rotten block will infect the air of the room, adding toxicity points.
-  - Solid walls will block the air, but slightly open doors, trapdoors, or stairs will allow it to pass into adjacent rooms.
-  - **Natural Ventilation**: Partial blocks in contact with the outside (such as fences, walls, or iron bars) act as air vents, drastically reducing the net miasma score!
+- 🤢 **Volumetric Toxic Miasma**: Using an advanced 3D *Flood Fill* algorithm, the game calculates the accumulation and dispersion of toxic spores confined in enclosed spaces. In wide-open outdoor environments, spores harmlessly disperse. However, in enclosed rooms or cellars (up to 180 air blocks in volume), the miasma stagnates and accumulates based on room volume and mold density:
+  - **Toxicity & Density Calculation**: Every exposed, non-waxed moldy or rotten block contributes toxicity points. The system evaluates the net miasma and spore density ($\text{Density} = \frac{\text{Net Miasma}}{\text{Room Volume}}$) across the enclosed space.
+  - **Airflow & Permeability**: Solid walls fully block the airflow, while open doors, trapdoors, or stairs allow toxic air to seep into adjacent rooms.
+  - **Natural Ventilation**: Partial blocks facing the outside world (such as fences, walls, iron bars, or open windows) act as passive air vents, drastically reducing the net miasma score!
   
-  **Effects based on net concentration**:
-  - Miasma > **8**: **Hunger** (Light spores)
-  - Miasma > **16**: **Nausea + Poison** (Dense spores)
+  **Concentration & Status Effects**:
+  - **Warning Spores** (Ambient Mycelium Particles): Net Miasma $\ge 3.0$ or Density $\ge 0.04$.
+  - **Hunger** (Light Spores): Net Miasma $\ge 8.0$ (or Density $\ge 0.09$ & Net Miasma $\ge 5.0$).
+  - **Nausea + Poison** (Dense Spore Blossom Spores): Net Miasma $\ge \text{Poison Threshold}$ (default `35.0`) or (Density $\ge 0.18$ & Net Miasma $\ge \text{Nausea Threshold}$, default `15.0`).
   
-  *(Use the new admin command `/miasma` to measure the data and the exact volume of the room you are in!)*
+  *(💡 **Full Configurability**: Thresholds for Nausea and Poison, check intervals, effect durations, and amplifiers are 100% configurable in-game via **Cloth Config / ModMenu**! Use the admin command `/miasma` to inspect the exact volume, density, and net miasma of your room).*
 
 ---
 
@@ -89,12 +92,17 @@ Using rotten wood for crafting is unwise. The internal structure of the material
 * 💥 **Structural Integrity (Drops) and Mining**:
   The preferred tool for mining these blocks remains the **Axe** (exactly as in Vanilla), with the only exception being Stage 3 blocks, which are so weak they have no associated tool (they crumble instantly even with bare hands).
   - Vanilla and **Tainted** blocks remain solid (they always drop at **100%**).
-  - **Moldy** blocks are fragile: they only have a **50%** chance to drop themselves, otherwise they will shatter into nothingness.
-  - **Rotten** blocks crumble instantly upon touch (**0%** drop chance).
+  - **Moldy** blocks are fragile: by default, they have a **50%** chance to drop themselves, otherwise shattering into dust.
+  - **Rotten** blocks crumble instantly upon touch (default **0%** drop chance).
   
-  *(💡 **The Secret of Wax**: Waxing a block consolidates its structure. Any block from the mod, even Rotten ones, if **Waxed** will always have a **100% drop chance**, even without using Silk Touch!)*
-* 🛠️ **Crafting Yield (Recovery)**:
-  You can still use infected wood in a crafting table to craft basic items (like Planks, Slabs, Stairs, or Sticks). The final item will always be perfectly clean (**Vanilla**), but since you are forced to discard the rotten parts of the original wood, the quantity of items obtained will drop drastically. *(💡 **Hybrid Crafting**: You can freely mix normal infected wood and its waxed variants of the same decay stage in the same crafting grid!)*
+  *(💡 **The Secret of Wax**: Waxing a block consolidates its internal structure. Any block from the mod, even **Rotten** wood, if **Waxed** will **guarantee a 100% drop chance** upon breaking without requiring Silk Touch!)*
+  
+  *(⚙️ **Full Configurability**: Drop chances for Moldy and Rotten blocks are 100% configurable via **Cloth Config / ModMenu**).*
+
+* 🛠️ **Crafting Yield (Recovery) & Hybrid Crafting**:
+  You can still use infected wood in a crafting table to craft basic items (like Planks, Slabs, Stairs, or Sticks). The final item will always be perfectly clean (**Vanilla**), but since you are forced to discard the rotten parts of the original wood, the quantity of items obtained will drop drastically.
+  
+  *(💡 **Hybrid Crafting**: You can freely mix normal infected wood and its waxed variants of the same decay stage in the same crafting grid to craft clean planks or other recipes without issue!)*
 
   | Material Quality | 🌳 Ex: Log ➔ Planks | 🦯 Ex: Planks ➔ Sticks |
   | :--- | :---: | :---: |
@@ -103,10 +111,15 @@ Using rotten wood for crafting is unwise. The internal structure of the material
   | 🦠 **Moldy** | 1 Log ➔ **1** Plank | 2 Planks ➔ **1** Stick |
   | ☠️ **Rotten** | *Invalid Recipe* ❌ | *Invalid Recipe* ❌ |
 
-* 🔥 **Fuel Power**: 
-  - Tainted wood burns with halved efficiency (**50%**).
-  - Moldy wood drops to a quarter of the efficiency (**25%**).
-  - Rotten wood burns up in mere moments (**12.5%**), making it useless as fuel.
+* 🔥 **Fuel Power (Furnace Efficiency)**: 
+  As wood decays, its internal combustion efficiency decreases significantly:
+  - **Healthy (Vanilla / Stage 0)**: Full furnace efficiency (**100%** / `1.0x`).
+  - **Tainted (Stage 1)**: Burns with halved efficiency (**50%** / `0.5x`).
+  - **Moldy (Stage 2)**: Drops to a quarter efficiency (**25%** / `0.25x`).
+  - **Rotten (Stage 3)**: Burns up in mere moments (**12.5%** / `0.125x`), making it nearly useless as fuel.
+  
+  *(⚙️ **Full Configurability**: All furnace burn multipliers across every decay stage are 100% customizable in-game via **Cloth Config / ModMenu**).*
+
 * ♻️ **Composter (The Bright Side of Rot)**:
   If a block is too rotten to build with, recycle it! All wood from the mod has been integrated with the Vanilla Composter to generate Bone Meal. The more degraded (and spore-rich) the wood is, the higher the chance of success:
   - Tainted Wood: **50%**
@@ -118,7 +131,7 @@ Using rotten wood for crafting is unwise. The internal structure of the material
   - Moldy: **7.5 seconds** (150 ticks).
   - Rotten: **22.5 seconds** (450 ticks).
 
-*(💡 **Note on Waxed Blocks**: Wax is an environmental sealant, but it does not block the use of the item! You can use waxed blocks in the crafting table, burn them in the furnace, or toss them in the composter: they will behave exactly like their unwaxed counterpart, maintaining the exact same penalties or bonuses tied solely to their internal rot level).*
+*(💡 **Note on Waxed Blocks**: Wax is an environmental sealant, but it does not restrict standard item usage! Waxed blocks can be freely mixed in crafting grids (Hybrid Crafting), burned in furnaces, or tossed into composters. They maintain the exact same combustion efficiency and composting probabilities as their unwaxed counterparts, while **guaranteeing a 100% drop rate** even at the Rotten stage).*
 
 ---
 
@@ -136,14 +149,14 @@ Structures are divided into 4 base levels of decay:
 
 **🛡️ The Immunity of Natural Wood and Structures**:
 To avoid ruining the gameplay experience (preventing players from finding the entire world already collapsed before they can explore it), there are two exceptions to automatic decay:
-* **Native Trees**: Naturally generated trees (or those grown from saplings) do not generate mold because the wood is still "alive". Only wood chopped down and processed by the player begins to rot.
-* **Suspended Structures**: Structures generate with the mold percentage indicated above, but then they "freeze". Structure blocks are natively immune to the progression of rot, unless the player interacts with them (e.g., breaking, scraping, or modifying them). This protection saves villages from spontaneous destruction. If you want a super-hardcore experience, you can disable structure immunity from the configuration menu!
+* **Native Trees**: Naturally generated trees (or those grown from saplings) do not generate mold because the wood is still alive. Only wood chopped down and processed by the player begins to rot.
+* **Suspended Structures**: Structures generate with the mold percentage indicated above, but then they freeze. Structure blocks are natively immune to the progression of rot, unless the player interacts with them (e.g., breaking, scraping, or modifying them). This protection saves villages from spontaneous destruction. If you want a super-hardcore experience, you can disable structure immunity from the configuration menu!
 
 ---
 
 ## 📊 HUD Integration & Advancements
 
-* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade**. By looking at any wooden block, the HUD will natively display its precise variant (e.g. "Waxed Tainted Oak Planks") and its icon, along with the current infection risk (%). The risk evaluates to exactly 0% for waxed blocks, and is hidden for fully rotten blocks. The risk percentage changes color dynamically (**Gray = Safe**, **Red = At Risk**). Admins can also use the `/moldrisk [verbose]` command to calculate the exact mathematical formula of the block they are looking at!
+* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade**. By looking at any wooden block, the HUD will natively display its precise variant (e.g. Waxed Tainted Oak Planks) and its icon, along with the current infection risk (%). The risk evaluates to exactly 0% for waxed blocks, and is hidden for fully rotten blocks. The risk percentage changes color dynamically (**Gray = Safe**, **Red = At Risk**). Admins can also use the `/moldrisk [verbose]` command to calculate the exact mathematical formula of the block they are looking at!
 * 🏆 **Advancements**: Includes 5 custom **Advancements** to guide players through the mechanics:
   - **Spores & Shadows**: Survive the decay of nature.
   - **Natural Prevention**: Use a honeycomb to wax a wood block and stop the mold.
@@ -155,13 +168,14 @@ To avoid ruining the gameplay experience (preventing players from finding the en
 
 ## ⚙️ Mod Configuration
 The mod includes a configuration menu accessible directly in-game (requires **Cloth Config** and **ModMenu**) that grants you absolute control over every single mechanic. 
-Options are divided into 8 main categories:
+Options are divided into 9 main categories:
 
-* 🛠️ **General**: Disable mold growth globally, change the infection threshold, expand the environment scanning radius, or **disable structure immunity** to let villages spontaneously rot!
+* 🛠️ **General**: Disable mold growth globally, change the infection threshold, expand the environment scanning radius, adjust axe scrape durability damage, or **disable structure immunity** to let villages spontaneously rot!
 * 🌡️ **Environment**: Modify the base values for rain/dryness, bonuses for water adjacency, or customize at what altitudes and temperatures mold should freeze or thrive.
 * 🪓 **Susceptibility**: Adjust how fast processed blocks (planks) rot compared to raw or stripped ones.
 * ☣️ **Catalysts**: Balance the aggressiveness of mushrooms, mud, *spore blossoms*, and infected wood blocks themselves.
-* ☠️ **Toxicity**: Customize the Toxic Miasma thresholds for Nausea and Poison, alter the scan radius, and change how long the status effects last.
+* ☠️ **Toxicity**: Customize the Volumetric Miasma thresholds for Nausea and Poison, check intervals, scan radius, effect durations, and status effect amplifiers.
 * 🗺️ **Structures**: Customize in detail (percentage by percentage) how shipwrecks, villages, and mineshafts generate.
-* 🔥 **Furnace Multipliers**: Modify the smelting efficiency of wood for the various stages of decay.
-* 💥 **Drops**: Raise or lower the drop rate of fragile wood, if you find the mod too punishing.
+* 🔥 **Furnace Multipliers**: Modify the smelting and fuel burn efficiency for all decay stages (100% -> 50% -> 25% -> 12.5%).
+* 💥 **Drops**: Raise or lower the drop rates of fragile wood (Moldy: default 50%, Rotten: default 0%).
+* 🖥️ **Client**: Adjust visual parameters such as Mold Z-Offset for seamless rendering and compatibility with modern shaders (Sodium / Iris).

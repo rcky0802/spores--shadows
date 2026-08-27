@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "spores--shadows:birch_planks_from_waxed_stripped_birch_log"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_vanilla": {
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:waxed_stripped_birch_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_waxed_vanilla"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "spores--shadows:birch_planks_from_waxed_stripped_birch_log"
+    ]
+  }
+}

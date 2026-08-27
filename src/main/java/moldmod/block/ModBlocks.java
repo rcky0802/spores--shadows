@@ -208,16 +208,7 @@ public class ModBlocks {
                     super.appendTooltip(stack, context, tooltip, type);
                     appendMoldyTooltip(name, stack, tooltip);
                 }
-                @Override
-                public net.minecraft.text.Text getName(ItemStack stack) {
-                    net.minecraft.text.Text originalName = super.getName(stack);
-                    net.minecraft.component.type.BlockStateComponent comp = stack.get(net.minecraft.component.DataComponentTypes.BLOCK_STATE);
-                    boolean isStackWaxed = comp != null && comp.getValue(MoldyLogBlock.WAXED) == Boolean.TRUE;
-                    if (isStackWaxed && !name.startsWith("waxed_")) {
-                        return net.minecraft.text.Text.translatable("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", originalName);
-                    }
-                    return originalName;
-                }
+
             };
         } else {
             item = new BlockItem(baseBlock, settings) {
@@ -230,16 +221,7 @@ public class ModBlocks {
                     super.appendTooltip(stack, context, tooltip, type);
                     appendMoldyTooltip(name, stack, tooltip);
                 }
-                @Override
-                public net.minecraft.text.Text getName(ItemStack stack) {
-                    net.minecraft.text.Text originalName = super.getName(stack);
-                    net.minecraft.component.type.BlockStateComponent comp = stack.get(net.minecraft.component.DataComponentTypes.BLOCK_STATE);
-                    boolean isStackWaxed = comp != null && comp.getValue(MoldyLogBlock.WAXED) == Boolean.TRUE;
-                    if (isStackWaxed && !name.startsWith("waxed_")) {
-                        return net.minecraft.text.Text.translatable("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", originalName);
-                    }
-                    return originalName;
-                }
+
             };
         }
         return Registry.register(Registries.ITEM, SporesShadows.id(name), item);

@@ -2,6 +2,23 @@
 
 All notable changes to **Spores & Shadows** will be documented in this file.
 
+
+## [1.2.0] - Toxic Miasma Overhaul, Config & Final Polish
+**Added:**
+- Overhauled the Toxic Miasma mechanic using a highly-optimized O(R³) Flood Fill algorithm. The toxic gas now realistically propagates through slightly open spaces (trapdoors, doors, stairs) and is blocked by solid walls.
+- **Natural Ventilation**: Added the ability for players to create air vents using partial blocks (fences, walls, iron bars) to dissipate the miasma out of confined rooms, heavily reducing the toxicity score.
+- The miasma now scales based on the volume of the room. Rooms larger than 180 blocks, or open-air areas, are completely immune to toxic gas buildup.
+- Added a new tier of poisoning for slightly contaminated rooms: Hunger effect (Miasma > 8.0) and light mycelium particles.
+- Added a new admin command `/miasma` to inspect the exact properties of the room the player is standing in (Volume, Toxic Score, Ventilation Score, Net Miasma, and Status).
+
+**Changed / Refactored:**
+- **Full Configurability Restored**: Restored and wired all `ModConfig` keys (Drops, Toxicity thresholds, Furnace Multipliers). Every single penalty (from furnace efficiency to toxic miasma thresholds) is now 100% customizable in-game via Cloth Config!
+- **Massive Code Cleanup**: Conducted a deep codebase audit. Wiped out hundreds of lines of dead code, redundant mixins (`BlockPickMixin`), orphaned arrays (`SporesShadows.WOODS`), and unused compiler warnings.
+- **DataGen Optimization**: Migrated all 5 Language Providers (`EN`, `IT`, `FR`, `ES`, `DE`) to use highly optimized static HashMaps (`Map.of()`) and removed all hardcoded MOD_ID strings.
+- **Documentation Overhaul**: Completely updated the user manual (`docs/*.md`) in 5 languages to reflect the newest 1.2.0 features (Flood fill, hybrid crafting, 100% safe waxed drops, and total configurability).
+
+---
+
 ## [1.1.1] - The Architecture & Quality of Life Update
 **Major Backend Refactor:**
 - **Split Registries**: We performed a massive backend overhaul, splitting "Waxed" and "Moldy" blocks into two completely distinct block IDs (e.g., `waxed_oak_log` vs `moldy_oak_log`) instead of relying on a blockstate property. This allowed us to bypass Vanilla limitations and implement a huge wave of requested features!
@@ -23,16 +40,6 @@ All notable changes to **Spores & Shadows** will be documented in this file.
 
 ---
 
-## [1.2.0] - Toxic Miasma Overhaul & Flood Fill
-**Added:**
-- Overhauled the Toxic Miasma mechanic using a highly-optimized O(R³) Flood Fill algorithm. The toxic gas now realistically propagates through slightly open spaces (trapdoors, doors, stairs) and is blocked by solid walls.
-- **Natural Ventilation**: Added the ability for players to create air vents using partial blocks (fences, walls, iron bars) to dissipate the miasma out of confined rooms, heavily reducing the toxicity score.
-- The miasma now scales based on the volume of the room. Rooms larger than 180 blocks, or open-air areas, are completely immune to toxic gas buildup.
-- Added a new tier of poisoning for slightly contaminated rooms: Hunger effect (Miasma > 8.0) and light mycelium particles.
-- Added a new admin command `/miasma` to inspect the exact properties of the room the player is standing in (Volume, Toxic Score, Ventilation Score, Net Miasma, and Status).
-
----
-
 ## [1.1.0] - Quality of Life, Jade Integration & Biome Overhaul
 - Jade / WTHIT Integration: The HUD now shows the exact decay stage, infection risk (%), and waxed status of any looked-at wood block.
 - Jade HUD percentage is now dynamically aligned with the `/moldrisk` command and features dynamic coloring (Grey for Safe, Red for At Risk).
@@ -48,6 +55,7 @@ All notable changes to **Spores & Shadows** will be documented in this file.
 - Fixed game-breaking tag load errors where stale block references were still lingering in Vanilla Block Tags.
 - Fixed a bug where Stage 3 (Rotten) blocks still received a breaking speed bonus from axes. They now strictly ignore tool efficiency, taking the same time to break with an axe as with a bare hand.
 - Restored UTF-8 encoding across all JavaDocs, documentation, and translation files.
+
 ---
 
 ## [1.0.1] - Hotfix

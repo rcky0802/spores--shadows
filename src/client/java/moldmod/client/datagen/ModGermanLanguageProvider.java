@@ -4,10 +4,22 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.Map;
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
+
+    private static final Map<String, String> WOOD_TRANSLATIONS = Map.of(
+        "oak", "Eichen",
+        "spruce", "Fichten",
+        "birch", "Birken",
+        "jungle", "Tropenbaum",
+        "acacia", "Akazien",
+        "dark_oak", "Schwarzeichen",
+        "mangrove", "Mangroven",
+        "cherry", "Kirschblüten",
+        "crimson", "Karmesin",
+        "warped", "Wirr"
+    );
 
     public ModGermanLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, "de_de", registryLookup);
@@ -15,17 +27,7 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
 
     @Override
     protected String getTranslation(String wood, String blockType, String state) {
-        Map<String, String> names = new HashMap<>();
-        names.put("oak", "Eichen");
-        names.put("spruce", "Fichten");
-        names.put("birch", "Birken");
-        names.put("jungle", "Tropenbaum");
-        names.put("acacia", "Akazien");
-        names.put("dark_oak", "Schwarzeichen");
-        names.put("mangrove", "Mangroven");
-        names.put("cherry", "Kirschblüten");
-
-        String wName = names.get(wood);
+        String wName = WOOD_TRANSLATIONS.get(wood);
 
         String blockSuffix = "";
         String gender = "n"; // n = neuter, m = masculine, f = feminine
@@ -35,6 +37,10 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
             case "stripped_log": blockSuffix = "stamm"; gender = "m"; wName = "entrindeter " + wName; break;
             case "wood": blockSuffix = "holz"; gender = "n"; break;
             case "stripped_wood": blockSuffix = "holz"; gender = "n"; wName = "entrindetes " + wName; break;
+            case "stem": blockSuffix = "stiel"; gender = "m"; break;
+            case "stripped_stem": blockSuffix = "stiel"; gender = "m"; wName = "entrindeter " + wName; break;
+            case "hyphae": blockSuffix = "hyphen"; gender = "f"; break;
+            case "stripped_hyphae": blockSuffix = "hyphen"; gender = "f"; wName = "entrindete " + wName; break;
             case "planks": blockSuffix = "holzbretter"; gender = "f"; break; // Plural acts like feminine for adjectives
             case "slab": blockSuffix = "holzstufe"; gender = "f"; break;
             case "stairs": blockSuffix = "holztreppe"; gender = "f"; break;
@@ -83,7 +89,7 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
     @Override
     protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".waxed", "Gewachst");
-        translationBuilder.add("item.spores--shadows.waxed_format", "Gewachstes %s");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", "Gewachstes %s");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_1", "Kann unter Materialverlust zu sauberen Brettern verarbeitet werden,");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_2", "ist aber für normale Vanilla-Rezepte unbrauchbar.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_1", "Nur für einfache Rezepte nützlich (Stöcke, Zäune).");
@@ -205,18 +211,18 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.1", "Befallen");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.2", "Schimmelig");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.3", "Verfault");
-        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Schimmel Info");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_info", "Spores & Shadows: Schimmel Info");
 
         // Advancements
-        translationBuilder.add("advancement..spores--shadows.root.title", "Spores & Shadows");
-        translationBuilder.add("advancement..spores--shadows.root.description", "Überlebe den Zerfall der Natur.");
-        translationBuilder.add("advancement..spores--shadows.wax_block.title", "Natürliche Prävention");
-        translationBuilder.add("advancement..spores--shadows.wax_block.description", "Verwende eine Honigwabe, um einen Holzblock zu wachsen und den Schimmel aufzuhalten.");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.title", "Muskelschmalz");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.description", "Kratze den Schimmel mit einer Axt von einem Holzblock ab.");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.title", "Kurzer Atem");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.description", "Leide unter dem Gift des Miasmas, weil du zu viel Schimmel eingeatmet hast.");
-        translationBuilder.add("advancement..spores--shadows.crumble.title", "Staub zu Staub");
-        translationBuilder.add("advancement..spores--shadows.crumble.description", "Versuche, einen verfaulten Holzblock abzubauen und sieh zu, wie er zu nichts zerfällt.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.description", "Überlebe den Zerfall der Natur.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Natürliche Prävention");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Verwende eine Honigwabe, um einen Holzblock zu wachsen und den Schimmel aufzuhalten.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Muskelschmalz");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Kratze den Schimmel mit einer Axt von einem Holzblock ab.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Kurzer Atem");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Leide unter dem Gift des Miasmas, weil du zu viel Schimmel eingeatmet hast.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Staub zu Staub");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Versuche, einen verfaulten Holzblock abzubauen und sieh zu, wie er zu nichts zerfällt.");
     }
 }
