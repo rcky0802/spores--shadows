@@ -74,4 +74,26 @@ public class ToxicAirTests {
 
         context.complete();
     }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testManhattanRadiusLimit(TestContext context) {
+        BlockPos center = new BlockPos(2, 2, 2);
+        
+        // Creiamo un lungo tunnel di aria (15 blocchi), circondato da pietra in alto per evitare openAir
+        for (int i = 0; i < 15; i++) {
+            BlockPos p = center.add(i, 0, 0);
+            context.setBlockState(p, Blocks.AIR);
+            context.setBlockState(p.add(0, 1, 0), Blocks.STONE); // Soffitto
+        }
+        
+        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(center));
+        
+        // Il raggio di manhattan è 8. Quindi partendo da 2,2,2 può esplorare in +X al massimo per 8 blocchi.
+        // Volume esplorato non dovrebbe MAI superare 9 (centro + 8 blocchi avanti)
+        if (result.volume > 9) {
+            context.throwPositionedException("Il raggio di manhattan non sta limitando la ricerca! Volume esplorato: " + result.volume, center);
+        }
+        
+        context.complete();
+    }
 }

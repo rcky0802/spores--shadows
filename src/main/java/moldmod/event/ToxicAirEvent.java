@@ -22,6 +22,7 @@ import java.util.Set;
 public class ToxicAirEvent {
 
     private static final int MAX_AIR_VOLUME = 180;
+    private static final int MAX_MANHATTAN_RADIUS = 8;
     private static final Direction[] DIRECTIONS = Direction.values();
 
     public static void register() {
@@ -48,13 +49,15 @@ public class ToxicAirEvent {
         public final double netMiasma;
         public final boolean openAir;
         public final int volume;
+        public final Set<BlockPos> airBlocks;
 
-        public MiasmaResult(double toxicScore, double ventilationScore, double netMiasma, boolean openAir, int volume) {
+        public MiasmaResult(double toxicScore, double ventilationScore, double netMiasma, boolean openAir, int volume, Set<BlockPos> airBlocks) {
             this.toxicScore = toxicScore;
             this.ventilationScore = ventilationScore;
             this.netMiasma = netMiasma;
             this.openAir = openAir;
             this.volume = volume;
+            this.airBlocks = airBlocks;
         }
     }
 
@@ -67,7 +70,7 @@ public class ToxicAirEvent {
             return;
         }
 
-        MiasmaResult result = calculateMiasma(player, radius);
+        MiasmaResult result = calculateMiasma(world, eyePos);
 
         // Se l'ambiente è aperto o supera il volume massimo, il gas si disperde
         if (result.openAir || result.volume >= MAX_AIR_VOLUME) {
@@ -75,26 +78,54 @@ public class ToxicAirEvent {
         }
 
         // Applicazione Effetti e Particelle
-        if (result.netMiasma >= 16.0) {
+        double densita = result.netMiasma / Math.max(result.volume, 1);
+
+        if (result.netMiasma >= 16.0 || (densita >= 0.18 && result.netMiasma >= 10.0)) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1, false, false, true));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 100, 0, false, false, true));
             MoldyBlockHelper.grantAdvancement(player, "toxic_air");
             
-            // Particelle dense
-            world.spawnParticles(player, ParticleTypes.SPORE_BLOSSOM_AIR, false, 
-                    player.getX(), player.getEyeY(), player.getZ(), 20, 0.5, 0.5, 0.5, 0.0);
-        } else if (result.netMiasma >= 8.0) {
+            // Dense particles in the room
+            int count = Math.min(result.volume, 40);
+            java.util.List<BlockPos> airList = new java.util.ArrayList<>(result.airBlocks);
+            java.util.Collections.shuffle(airList);
+            for (int i = 0; i < count; i++) {
+                BlockPos p = airList.get(i);
+                world.spawnParticles(player, ParticleTypes.SPORE_BLOSSOM_AIR, false, 
+                        p.getX() + 0.5 + (world.random.nextDouble() - 0.5), p.getY() + 0.5 + (world.random.nextDouble() - 0.5), p.getZ() + 0.5 + (world.random.nextDouble() - 0.5), 1, 0.0, 0.0, 0.0, 0.0);
+                if (world.random.nextBoolean()) {
+                    world.spawnParticles(player, ParticleTypes.FALLING_SPORE_BLOSSOM, false, 
+                        p.getX() + 0.5 + (world.random.nextDouble() - 0.5), p.getY() + 0.8, p.getZ() + 0.5 + (world.random.nextDouble() - 0.5), 1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
+        } else if (result.netMiasma >= 8.0 || (densita >= 0.09 && result.netMiasma >= 5.0)) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 80, 0, false, false, true));
             
-            // Particelle leggere
-            world.spawnParticles(player, ParticleTypes.MYCELIUM, false, 
-                    player.getX(), player.getEyeY(), player.getZ(), 5, 0.4, 0.4, 0.4, 0.0);
+            // Light particles in the room
+            int count = Math.min(result.volume / 2, 20);
+            java.util.List<BlockPos> airList = new java.util.ArrayList<>(result.airBlocks);
+            java.util.Collections.shuffle(airList);
+            for (int i = 0; i < count; i++) {
+                BlockPos p = airList.get(i);
+                world.spawnParticles(player, ParticleTypes.MYCELIUM, false, 
+                        p.getX() + 0.5 + (world.random.nextDouble() - 0.5), p.getY() + 0.5 + (world.random.nextDouble() - 0.5), p.getZ() + 0.5 + (world.random.nextDouble() - 0.5), 1, 0.0, 0.0, 0.0, 0.0);
+            }
+        } else if (result.netMiasma >= 3.0 || densita >= 0.04) {
+            // Warning particles in the room (no status effects yet)
+            int count = Math.min(result.volume / 4, 10);
+            if (count > 0) {
+                java.util.List<BlockPos> airList = new java.util.ArrayList<>(result.airBlocks);
+                java.util.Collections.shuffle(airList);
+                for (int i = 0; i < count; i++) {
+                    BlockPos p = airList.get(i);
+                    world.spawnParticles(player, ParticleTypes.MYCELIUM, false, 
+                            p.getX() + 0.5 + (world.random.nextDouble() - 0.5), p.getY() + 0.5 + (world.random.nextDouble() - 0.5), p.getZ() + 0.5 + (world.random.nextDouble() - 0.5), 1, 0.0, 0.0, 0.0, 0.0);
+                }
+            }
         }
     }
 
-    public static MiasmaResult calculateMiasma(ServerPlayerEntity player, int radius) {
-        ServerWorld world = (ServerWorld) player.getWorld();
-        BlockPos eyePos = BlockPos.ofFloored(player.getEyePos());
+    public static MiasmaResult calculateMiasma(ServerWorld world, BlockPos eyePos) {
         Queue<BlockPos> queue = new ArrayDeque<>();
         Set<BlockPos> visited = new HashSet<>();
 
@@ -123,8 +154,14 @@ public class ToxicAirEvent {
 
                 if (canAirPass(world, currentPos, currentState, neighborPos, neighborState, dir)) {
                     // Il flusso d'aria passa (aria, porte/botole aperte, spazi vuoti)
-                    if (visited.add(neighborPos)) {
-                        queue.add(neighborPos);
+                    int distManhattan = Math.abs(eyePos.getX() - neighborPos.getX()) + 
+                                        Math.abs(eyePos.getY() - neighborPos.getY()) + 
+                                        Math.abs(eyePos.getZ() - neighborPos.getZ());
+                    
+                    if (distManhattan <= MAX_MANHATTAN_RADIUS) {
+                        if (visited.add(neighborPos)) {
+                            queue.add(neighborPos);
+                        }
                     }
                 } else {
                     // Parete o perimetro solido: processa il blocco di confine
@@ -150,7 +187,7 @@ public class ToxicAirEvent {
         }
 
         double netMiasma = toxicScore - ventilationScore;
-        return new MiasmaResult(toxicScore, ventilationScore, netMiasma, openAir, visited.size());
+        return new MiasmaResult(toxicScore, ventilationScore, netMiasma, openAir, visited.size(), visited);
     }
 
     public static boolean canAirPass(World world, BlockPos fromPos, BlockState fromState, BlockPos toPos, BlockState toState, Direction dir) {

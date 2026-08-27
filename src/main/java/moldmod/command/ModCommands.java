@@ -50,10 +50,7 @@ public class ModCommands {
             return 0;
         }
 
-        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-        int radius = config.toxicity.scan_radius;
-
-        moldmod.event.ToxicAirEvent.MiasmaResult result = moldmod.event.ToxicAirEvent.calculateMiasma(player, radius);
+        moldmod.event.ToxicAirEvent.MiasmaResult result = moldmod.event.ToxicAirEvent.calculateMiasma((net.minecraft.server.world.ServerWorld)player.getWorld(), BlockPos.ofFloored(player.getEyePos()));
 
         source.sendMessage(Text.literal("§a[Miasma Scanner] §eRilevazione in corso..."));
         
@@ -65,13 +62,16 @@ public class ModCommands {
             source.sendMessage(Text.literal(String.format("§7- Ambiente: §cSpazio Confinato §7(Volume: %s blocchi analizzati)", result.volume)));
         }
 
+        double densita = result.netMiasma / Math.max(result.volume, 1);
+
         source.sendMessage(Text.literal(String.format("§7- Punteggio Tossicità (da muffa): §c+%.2f", result.toxicScore)));
         source.sendMessage(Text.literal(String.format("§7- Punteggio Ventilazione (da fessure/buchi): §a-%.2f", result.ventilationScore)));
         source.sendMessage(Text.literal(String.format("§7- Miasma Netto: §6%.2f", Math.max(0, result.netMiasma))));
+        source.sendMessage(Text.literal(String.format("§7- Densità Spore: §d%.3f", densita)));
 
-        if (result.netMiasma >= 16.0) {
+        if (result.netMiasma >= 16.0 || (densita >= 0.18 && result.netMiasma >= 10.0)) {
             source.sendMessage(Text.literal("§4[ATTENZIONE] Livello letale! Nausea e Veleno imminenti!"));
-        } else if (result.netMiasma >= 8.0) {
+        } else if (result.netMiasma >= 8.0 || (densita >= 0.09 && result.netMiasma >= 5.0)) {
             source.sendMessage(Text.literal("§e[ATTENZIONE] Livello moderato! Fame imminente."));
         } else {
             source.sendMessage(Text.literal("§a[SICURO] Livello di miasma innocuo."));

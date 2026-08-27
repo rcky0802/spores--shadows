@@ -39,7 +39,7 @@ public class MoldyBlockHelper {
 
     public static MoldRiskResult calculateDetailedR(net.minecraft.world.WorldAccess world, BlockPos pos,
             boolean isWaxed, BlockState stateToCheck) {
-        if (isWaxed)
+        if (isWaxed || (stateToCheck.contains(MoldyLogBlock.STAGE) && stateToCheck.get(MoldyLogBlock.STAGE) >= 3))
             return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0f, 0.0f);
 
         moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
