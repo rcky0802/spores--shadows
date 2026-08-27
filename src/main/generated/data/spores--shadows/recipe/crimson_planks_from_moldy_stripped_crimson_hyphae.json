@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:moldy_stripped_crimson_hyphae"
-    }
+    [
+      {
+        "item": "spores--shadows:moldy_stripped_crimson_hyphae"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_stripped_crimson_hyphae"
+      }
+    ]
   ],
   "result": {
     "count": 1,

@@ -5,7 +5,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import net.minecraft.util.math.MathHelper;
 
-@Config(name = "spores--shadows")
+@Config(name = moldmod.SporesShadows.MOD_ID)
 public class ModConfig implements ConfigData {
 
     @ConfigEntry.Category("general")
@@ -57,6 +57,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean structures_immune = true;
         public boolean show_debug_in_chat = false;
+        public int axe_scrape_damage = 1;
     }
 
     public static class Susceptibility {
@@ -143,7 +144,9 @@ public class ModConfig implements ConfigData {
         public int threshold_nausea = 15;
         public int threshold_poison = 35;
         public int duration_nausea_ticks = 140;
-        public int duration_poison_ticks = 80;
+        public int duration_poison_ticks = 100;
+        public int nausea_amplifier = 0;
+        public int poison_amplifier = 0;
     }
 
     @Override
@@ -164,3 +167,4 @@ public class ModConfig implements ConfigData {
         toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 10);
     }
 }
+

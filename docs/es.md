@@ -120,7 +120,9 @@ Usar madera podrida para la fabricación no es sabio. La estructura interna del 
   - Enmohecido: **7,5 segundos** (150 ticks).
   - Podrido: **22,5 segundos** (450 ticks).
 
-*(💡 **Nota sobre los Bloques Encerados**: ¡La cera es un sellador ambiental, pero no bloquea el uso del objeto! Puedes usar los bloques encerados en la mesa de trabajo, quemarlos en el horno o tirarlos al compostador: se comportarán exactamente como su contraparte no encerada, manteniendo las mismas penalizaciones o bonificaciones vinculadas únicamente a su nivel interno de podredumbre).*
+*(💡 **Nota sobre los Bloques Encerados**: ¡La cera es un sellador ambiental, pero no bloquea el uso del objeto!
+* **Elaboración Híbrida**: Puedes mezclar libremente bloques de madera infectada y sus correspondientes variantes enceradas (de la misma etapa de moho) en la misma cuadrícula de fabricación para producir tablones Vanilla limpios u otros objetos.
+* **Combustible y Compostaje**: Puedes quemarlos en el horno o tirarlos al compostador; se comportarán exactamente con los mismos tiempos y probabilidades que su contraparte no encerada, manteniendo las mismas penalizaciones o bonificaciones vinculadas a su nivel interno de podredumbre).*
 
 ---
 
@@ -145,7 +147,7 @@ Para no arruinar la experiencia de juego (evitando que los jugadores encuentren 
 
 ## 📊 Integración de HUD y Logros
 
-* 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade**. Al mirar cualquier bloque de madera, el HUD mostrará en tiempo real su etapa exacta de deterioro, el riesgo actual de infección (%) y si el bloque está encerado. El porcentaje de riesgo cambia de color dinámicamente (**Gris = Seguro**, **Rojo = En Riesgo**). ¡Los administradores también pueden usar el comando `/moldrisk [verbose]` para calcular la fórmula matemática exacta del bloque que están mirando!
+* 🔍 **Integración con Jade / WTHIT**: El mod está completamente integrado con **Jade**. Al mirar cualquier bloque de madera, el HUD mostrará de forma nativa su variante precisa (ej. "Waxed Tainted Oak Planks") y su icono, junto con el riesgo de infección (%) actual. El riesgo se evalúa exactamente al 0% para los bloques encerados y se oculta para los bloques completamente podridos (Rotten). El porcentaje de riesgo cambia de color dinámicamente (**Gris = Seguro**, **Rojo = En Riesgo**). ¡Los administradores también pueden usar el comando `/moldrisk [verbose]` para calcular la fórmula matemática exacta del bloque que están mirando!
 * 🏆 **Logros Personalizados**: Incluye 5 **Logros (Advancements)** diseñados para guiar a los jugadores a través del descubrimiento y dominio de las mecánicas del mod.
 
 ---

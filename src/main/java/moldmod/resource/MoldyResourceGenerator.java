@@ -12,42 +12,49 @@ public class MoldyResourceGenerator {
 
     public static void initialize() {
         // Tells Polymer to include our mod's base resources in the virtual pack
-        PolymerResourcePackUtils.addModAssets("spores--shadows");
+        PolymerResourcePackUtils.addModAssets(moldmod.SporesShadows.MOD_ID);
 
         // Register a virtual asset source
         PolymerResourcePackUtils.RESOURCE_PACK_CREATION_EVENT.register(builder -> {
             
-            String[] woods = moldmod.SporesShadows.WOODS;
-            String[] stages = {"waxed", "tainted", "moldy", "rotten"};
-            
             // Generate ALL block JSONs (models, blockstates) in RAM!
-            MoldyJsonGenerator.generateAll(builder, woods);
+            MoldyJsonGenerator.generateAll(builder);
             
-            for (String wood : woods) {
-                for (int i = 0; i < stages.length; i++) {
-                    String stageName = stages[i];
-                    String itemName = stageName + "_" + wood + "_door";
-                    
-                    String layer0 = i == 0 ? "minecraft:item/" + wood + "_door" : "spores--shadows:item/" + itemName;
-                    // 1. JSON MODEL GENERATION (In Memory)
-                    String modelJson = """
-                        {
-                          "parent": "minecraft:item/generated",
-                          "textures": {
-                            "layer0": "%s"
-                          }
+            for (moldmod.SporesShadowsConstants.MoldyWoodType moldyWoodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+                String wood = moldyWoodType.name();
+                for (moldmod.SporesShadowsConstants.MoldStage stageEnum : moldmod.SporesShadowsConstants.MoldStage.values()) {
+                    int i = stageEnum.getId();
+                    for (String prefix : new String[]{"moldy_", "waxed_"}) {
+                        String itemName;
+                        if (prefix.equals("waxed_")) {
+                            itemName = i == 0 ? "waxed_" + wood + "_door" : "waxed_" + stageEnum.getName() + "_" + wood + "_door";
+                        } else {
+                            if (i == 0) continue;
+                            itemName = stageEnum.getName() + "_" + wood + "_door";
                         }
-                        """.formatted(layer0);
-                    
-                    builder.addData("assets/spores--shadows/models/item/" + itemName + ".json", modelJson.getBytes());
-
-                    // If it is waxed (stage 0), there's no need to generate a masked texture, use the vanilla one!
-                    if (i == 0) continue;
+                        
+                        String texName = i == 0 ? "minecraft:item/" + wood + "_door" : moldmod.SporesShadows.MOD_ID + ":item/" + stageEnum.getName() + "_" + wood + "_door";
+                        String layer0 = texName;
+                        
+                        // 1. JSON MODEL GENERATION (In Memory)
+                        String modelJson = """
+                            {
+                              "parent": "minecraft:item/generated",
+                              "textures": {
+                                "layer0": "%s"
+                              }
+                            }
+                            """.formatted(layer0);
+                        
+                        builder.addData("assets/" + moldmod.SporesShadows.MOD_ID + "/models/item/" + itemName + ".json", modelJson.getBytes());
+                        
+                        // If it is waxed (stage 0) or we are generating for waxed_ prefix (stage > 0), there's no need to generate a new masked texture!
+                        if (i == 0 || prefix.equals("waxed_")) continue;
 
                     // 2. TEXTURE GENERATION (In Memory with Alpha Masking)
                     try {
                         InputStream doorIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/minecraft/textures/item/" + wood + "_door.png");
-                        InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/spores--shadows/textures/block/mold_stage_" + i + ".png");
+                        InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/" + moldmod.SporesShadows.MOD_ID + "/textures/block/mold_stage_" + i + ".png");
                         
                         if (doorIn != null && moldIn != null) {
                             BufferedImage doorImage = ImageIO.read(doorIn);
@@ -82,11 +89,12 @@ public class MoldyResourceGenerator {
                             byte[] imageBytes = baos.toByteArray();
                             
                             // Inject the virtual texture!
-                            builder.addData("assets/spores--shadows/textures/item/" + itemName + ".png", imageBytes);
+                            builder.addData("assets/" + moldmod.SporesShadows.MOD_ID + "/textures/item/" + itemName + ".png", imageBytes);
                         }
                     } catch (Exception e) {
                         System.err.println("Error during dynamic generation of the door: " + itemName);
                         e.printStackTrace();
+                    }
                     }
                 }
             }

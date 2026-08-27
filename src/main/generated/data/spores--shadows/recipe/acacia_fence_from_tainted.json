@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "spores--shadows:tainted_acacia_planks"
-    },
+    "#": [
+      {
+        "item": "spores--shadows:tainted_acacia_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_acacia_planks"
+      }
+    ],
     "|": {
       "item": "minecraft:stick"
     }

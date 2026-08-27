@@ -95,6 +95,8 @@ Die Verwendung von verrottetem Holz zum Crafting ist unklug. Die innere Struktur
   *(💡 **Das Geheimnis des Wachses**: Das Wachsen eines Blocks festigt seine Struktur. Jeder Block der Mod, selbst der verrottete, wird, wenn er **gewachst** ist, immer eine **100%ige Drop-Chance** haben, selbst ohne Verwendung von Behutsamkeit!)*
 * 🛠️ **Crafting-Ertrag (Rückgewinnung)**:
   Du kannst infiziertes Holz weiterhin auf der Werkbank verwenden, um grundlegende Gegenstände (wie Bretter, Stufen, Treppen oder Stöcke) herzustellen. Der Endgegenstand wird immer perfekt sauber sein (**Vanilla**), aber da du gezwungen bist, die verrotteten Teile des ursprünglichen Holzes zu verwerfen, wird die Menge der erhaltenen Gegenstände drastisch sinken:
+  
+  *(💡 **Hybrides Crafting**: Infizierte und gewachste Holzblöcke desselben Schimmelstadiums können nun beliebig in derselben Crafting-Matrix gemischt werden, um saubere Vanilla-Gegenstände herzustellen!)*
 
   | Materialqualität | 🌳 Bsp: Stamm ➔ Bretter | 🦯 Bsp: Bretter ➔ Stöcke |
   | :--- | :---: | :---: |
@@ -143,7 +145,7 @@ Um das Spielerlebnis nicht zu ruinieren (und zu vermeiden, dass Spieler die ganz
 
 ## 📊 HUD-Integration & Fortschritte
 
-* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn Sie einen beliebigen Holzblock ansehen, zeigt das HUD in Echtzeit sein genaues Verfallsstadium, das aktuelle Infektionsrisiko (%) und ob der Block gewachst ist. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
+* **🔍 Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn Sie einen beliebigen Holzblock ansehen, zeigt das HUD nativ seine genaue Variante (z. B. "Waxed Tainted Oak Planks") und sein Symbol an, zusammen mit dem aktuellen Infektionsrisiko (%). Das Risiko wird für gewachste Blöcke exakt mit 0% bewertet und bei vollständig verrotteten Blöcken (Rotten) ausgeblendet. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
 * **🏆 Fortschritte (Advancements)**: 5 benutzerdefinierte Fortschritte leiten Spieler durch die verschiedenen Mechaniken der Mod.
 
 ---

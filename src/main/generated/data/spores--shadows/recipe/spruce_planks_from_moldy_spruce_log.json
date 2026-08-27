@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:moldy_spruce_log"
-    }
+    [
+      {
+        "item": "spores--shadows:moldy_spruce_log"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_spruce_log"
+      }
+    ]
   ],
   "result": {
     "count": 1,

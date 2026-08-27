@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "#": {
-      "item": "spores--shadows:tainted_birch_planks"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:tainted_birch_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_birch_planks"
+      }
+    ]
   },
   "pattern": [
     "##",

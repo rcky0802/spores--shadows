@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:moldy_crimson_stem"
-    }
+    [
+      {
+        "item": "spores--shadows:moldy_crimson_stem"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_crimson_stem"
+      }
+    ]
   ],
   "result": {
     "count": 1,

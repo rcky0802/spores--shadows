@@ -14,7 +14,7 @@ public class MoldyInfectionRuleTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testCannotInfectWaxedBlock(TestContext context) {
-        BlockState waxedLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+        BlockState waxedLog = ModBlocks.MOLDY_TO_WAXED.get(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)).getDefaultState()
                 .with(MoldyLogBlock.WAXED, true)
                 .with(MoldyLogBlock.STRUCTURAL, false); // Explicitly not structural
                 
@@ -79,3 +79,4 @@ public class MoldyInfectionRuleTests {
         context.complete();
     }
 }
+

@@ -68,4 +68,9 @@ public class MoldyButtonBlock extends ButtonBlock {
             default -> 30;
         };
     }
+
+    @Override
+    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    }
 }

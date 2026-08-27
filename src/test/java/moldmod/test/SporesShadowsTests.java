@@ -73,7 +73,7 @@ public class SporesShadowsTests {
     public void testScrapingWaxTakesPriorityAndConsumesDurability(TestContext context) {
         BlockPos pos = new BlockPos(0, 2, 0);
         // Stage 1 AND Waxed -> Should only remove wax!
-        BlockState waxedTaintedLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+        BlockState waxedTaintedLog = ModBlocks.MOLDY_TO_WAXED.get(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)).getDefaultState()
                 .with(MoldyLogBlock.STAGE, 1).with(MoldyLogBlock.WAXED, true);
         context.setBlockState(pos, waxedTaintedLog);
 
@@ -199,10 +199,10 @@ public class SporesShadowsTests {
         
         simulatePlayerUse(context, bottomPos, player);
 
-        // Bottom should be waxed
-        context.expectBlockProperty(bottomPos, MoldyLogBlock.WAXED, true);
-        // Top should be auto-synced to waxed
-        context.expectBlockProperty(topPos, MoldyLogBlock.WAXED, true);
+        // Bottom should be waxed block
+        context.expectBlock(ModBlocks.MOLDY_TO_WAXED.get(doorBlock), bottomPos);
+        // Top should be auto-synced to waxed block
+        context.expectBlock(ModBlocks.MOLDY_TO_WAXED.get(doorBlock), topPos);
         
         context.complete();
     }
@@ -215,11 +215,11 @@ public class SporesShadowsTests {
         net.minecraft.block.Block doorBlock = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_DOOR);
         
         // Stage 1, Waxed
-        BlockState bottomState = doorBlock.getDefaultState()
+        BlockState bottomState = ModBlocks.MOLDY_TO_WAXED.get(doorBlock).getDefaultState()
                 .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
                 .with(MoldyLogBlock.STAGE, 1).with(MoldyLogBlock.WAXED, true);
                 
-        BlockState topState = doorBlock.getDefaultState()
+        BlockState topState = ModBlocks.MOLDY_TO_WAXED.get(doorBlock).getDefaultState()
                 .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.UPPER)
                 .with(MoldyLogBlock.STAGE, 1).with(MoldyLogBlock.WAXED, true);
                 
@@ -236,10 +236,10 @@ public class SporesShadowsTests {
         // Use axe on TOP half
         simulatePlayerUse(context, topPos, player);
 
-        // Top should have wax removed
-        context.expectBlockProperty(topPos, MoldyLogBlock.WAXED, false);
+        // Top should have wax removed (changed to moldy block)
+        context.expectBlock(doorBlock, topPos);
         // Bottom should auto-sync and have wax removed
-        context.expectBlockProperty(bottomPos, MoldyLogBlock.WAXED, false);
+        context.expectBlock(doorBlock, bottomPos);
         
         context.complete();
     }
@@ -371,3 +371,4 @@ public class SporesShadowsTests {
 
     // Old tests moved to MoldyCraftingAndFuelTests.java
 }
+

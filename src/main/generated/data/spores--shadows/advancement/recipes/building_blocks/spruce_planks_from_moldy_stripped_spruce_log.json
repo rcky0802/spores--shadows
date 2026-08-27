@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_moldy_stripped_spruce_log": {
+    "has_moldy": {
       "conditions": {
         "items": [
           {
@@ -16,12 +16,23 @@
         "recipe": "spores--shadows:spruce_planks_from_moldy_stripped_spruce_log"
       },
       "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_moldy": {
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:waxed_moldy_stripped_spruce_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_moldy_stripped_spruce_log"
+      "has_moldy",
+      "has_waxed_moldy"
     ]
   ],
   "rewards": {

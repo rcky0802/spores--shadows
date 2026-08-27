@@ -94,7 +94,7 @@ Using rotten wood for crafting is unwise. The internal structure of the material
   
   *(💡 **The Secret of Wax**: Waxing a block consolidates its structure. Any block from the mod, even Rotten ones, if **Waxed** will always have a **100% drop chance**, even without using Silk Touch!)*
 * 🛠️ **Crafting Yield (Recovery)**:
-  You can still use infected wood in a crafting table to craft basic items (like Planks, Slabs, Stairs, or Sticks). The final item will always be perfectly clean (**Vanilla**), but since you are forced to discard the rotten parts of the original wood, the quantity of items obtained will drop drastically:
+  You can still use infected wood in a crafting table to craft basic items (like Planks, Slabs, Stairs, or Sticks). The final item will always be perfectly clean (**Vanilla**), but since you are forced to discard the rotten parts of the original wood, the quantity of items obtained will drop drastically. *(💡 **Hybrid Crafting**: You can freely mix normal infected wood and its waxed variants of the same decay stage in the same crafting grid!)*
 
   | Material Quality | 🌳 Ex: Log ➔ Planks | 🦯 Ex: Planks ➔ Sticks |
   | :--- | :---: | :---: |
@@ -143,7 +143,7 @@ To avoid ruining the gameplay experience (preventing players from finding the en
 
 ## 📊 HUD Integration & Advancements
 
-* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade**. By looking at any wooden block, the HUD will display in real-time its exact decay stage, the current infection risk (%), and whether the block is waxed. The risk percentage changes color dynamically (**Gray = Safe**, **Red = At Risk**). Admins can also use the `/moldrisk [verbose]` command to calculate the exact mathematical formula of the block they are looking at!
+* 🔍 **Jade / WTHIT Integration**: The mod is fully integrated with **Jade**. By looking at any wooden block, the HUD will natively display its precise variant (e.g. "Waxed Tainted Oak Planks") and its icon, along with the current infection risk (%). The risk evaluates to exactly 0% for waxed blocks, and is hidden for fully rotten blocks. The risk percentage changes color dynamically (**Gray = Safe**, **Red = At Risk**). Admins can also use the `/moldrisk [verbose]` command to calculate the exact mathematical formula of the block they are looking at!
 * 🏆 **Advancements**: Includes 5 custom **Advancements** to guide players through the mechanics:
   - **Spores & Shadows**: Survive the decay of nature.
   - **Natural Prevention**: Use a honeycomb to wax a wood block and stop the mold.

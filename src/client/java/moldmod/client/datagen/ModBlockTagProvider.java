@@ -35,7 +35,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
 
         for (net.minecraft.block.Block block : Registries.BLOCK) {
             Identifier id = Registries.BLOCK.getId(block);
-            if (!id.getNamespace().equals("spores--shadows")) continue;
+            if (!id.getNamespace().equals(moldmod.SporesShadows.MOD_ID)) continue;
             
             String name = id.getPath();
             
@@ -69,3 +69,4 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
         }
     }
 }
+

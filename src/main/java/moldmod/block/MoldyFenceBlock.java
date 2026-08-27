@@ -47,5 +47,9 @@ public class MoldyFenceBlock extends FenceBlock {
         }
         return super.calcBlockBreakingDelta(state, player, world, pos);
     }
-}
 
+    @Override
+    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    }
+}

@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "spores--shadows:tainted_crimson_planks"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:tainted_crimson_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_crimson_planks"
+      }
+    ]
   },
   "pattern": [
     "#",

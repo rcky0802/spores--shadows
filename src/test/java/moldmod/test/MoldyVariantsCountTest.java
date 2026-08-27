@@ -36,7 +36,7 @@ public class MoldyVariantsCountTest {
 
         for (Item item : net.minecraft.registry.Registries.ITEM) {
             net.minecraft.util.Identifier id = net.minecraft.registry.Registries.ITEM.getId(item);
-            if (!id.getNamespace().equals("spores--shadows")) continue;
+            if (!id.getNamespace().equals(moldmod.SporesShadows.MOD_ID)) continue;
             
             String name = id.getPath();
             if (name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten")) {
@@ -56,15 +56,14 @@ public class MoldyVariantsCountTest {
             context.throwPositionedException("Expected 390 Moldy variants, but got " + moldyVariants,
                     context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
         }
-        if (waxedMoldyVariants != 0) {
-            context.throwPositionedException("Expected 0 separate Waxed Moldy item registrations (they use NBT), but got " + waxedMoldyVariants,
+        if (waxedMoldyVariants != 390) {
+            context.throwPositionedException("Expected 390 separate Waxed Moldy item registrations, but got " + waxedMoldyVariants,
                     context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
         }
 
         int totalVariants = waxedVanillaVariants + moldyVariants + waxedMoldyVariants;
-        if (totalVariants != 520) {
-            context.throwPositionedException(
-                    "Expected exactly 520 total unique items, but counted " + totalVariants,
+        if (totalVariants != 910) {
+            context.throwPositionedException("Expected 910 total variants, but got " + totalVariants,
                     context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
         }
 
@@ -72,3 +71,4 @@ public class MoldyVariantsCountTest {
         context.complete();
     }
 }
+

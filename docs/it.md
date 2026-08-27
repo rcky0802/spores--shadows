@@ -95,12 +95,13 @@ Usare legno marcio per l'artigianato non è saggio. La struttura interna del mat
   - I blocchi **Marci** si sbriciolano istantaneamente al tocco (probabilità di drop dello **0%**).
   
   *(💡 **Il segreto della Cera**: Incerare un blocco ne consolida la struttura. Qualsiasi blocco della mod, perfino il Marcio, se **Cerato** avrà sempre il **100% di probabilità di drop**, anche senza usare il Tocco di Velluto!)*
-* 🛠️ **Resa di Crafting (Recupero)**:
-  Puoi ancora usare il legno infetto nel banco da lavoro per craftare oggetti di base (come Assi, Lastre, Scale o Bastoni). L'oggetto finale sarà sempre perfettamente pulito (**Vanilla**), ma poiché sei costretto a scartare le parti marce del legno originario, la quantità di oggetti ottenuti crollerà drasticamente:
+* 🛠️ **Resa di Crafting (Recupero) e Crafting Ibrido**:
+  Puoi ancora usare il legno infetto nel banco da lavoro per craftare oggetti di base (come Assi, Lastre, Scale o Bastoni). L'oggetto finale sarà sempre perfettamente pulito (**Vanilla**), ma poiché sei costretto a scartare le parti marce del legno originario, la quantità di oggetti ottenuti crollerà drasticamente. 
+  Inoltre, grazie al **Crafting ibrido**, puoi mischiare liberamente blocchi di legno infetto e quelli cerati (dello stesso stadio di muffa) nella stessa griglia di crafting per produrre assi pulite o altri oggetti senza alcun problema!
 
   | Qualità del Materiale | 🌳 Es: Tronco ➔ Assi | 🦯 Es: Assi ➔ Bastoni |
   | :--- | :---: | :---: |
-  | 🌲 **Sano (Vanilla)**5 | 1 Tronco ➔ **4** Assi | 2 Assi ➔ **4** Bastoni |
+  | 🌲 **Sano (Vanilla)** | 1 Tronco ➔ **4** Assi | 2 Assi ➔ **4** Bastoni |
   | 🟢 **Intaccato** | 1 Tronco ➔ **2** Assi | 2 Assi ➔ **2** Bastoni |
   | 🦠 **Ammuffito** | 1 Tronco ➔ **1** Asse | 2 Assi ➔ **1** Bastone |
   | ☠️ **Marcio** | *Ricetta Invalida* ❌ | *Ricetta Invalida* ❌ |
@@ -145,7 +146,7 @@ Per non rovinare l'esperienza di gioco (evitando che i giocatori trovino il mond
 
 ## 📊 Integrazione HUD & Obiettivi
 
-* 🔍 **Integrazione Jade / WTHIT**: La mod è completamente integrata con **Jade**. Guardando qualsiasi blocco di legno, l'HUD mostrerà in tempo reale lo stadio esatto di decadimento, il rischio di infezione (%) e se il blocco è cerato. La percentuale di rischio cambia colore dinamicamente (**Grigio = Safe**, **Rosso = A Rischio**). Gli admin possono anche usare il comando `/moldrisk [verbose]` per calcolare l'esatta formula matematica del blocco che stanno guardando!
+* 🔍 **Integrazione Jade / WTHIT**: La mod è completamente integrata con **Jade**. Guardando qualsiasi blocco di legno, l'HUD mostrerà in modo nativo la sua variante precisa (es. "Waxed Tainted Oak Planks") e la sua icona, insieme al rischio di infezione (%) attuale. Il rischio calcola esattamente lo 0% per i blocchi cerati e viene nascosto per i blocchi completamente marci (Rotten). La percentuale di rischio cambia colore dinamicamente (**Grigio = Sicuro**, **Rosso = A Rischio**). Gli admin possono anche usare il comando `/moldrisk [verbose]` per calcolare l'esatta formula matematica del blocco che stanno guardando!
 * 🏆 **Obiettivi (Advancements)**: Sono presenti 5 obiettivi personalizzati per guidare i giocatori attraverso la comprensione e l'utilizzo delle nuove meccaniche.
 
 ---

@@ -95,7 +95,8 @@ Utiliser du bois pourri pour l'artisanat n'est pas sage. La structure interne du
   
   *(💡 **Le secret de la Cire** : Cirer un bloc consolide sa structure. N'importe quel bloc du mod, même Pourri, s'il est **Ciré** aura toujours **100% de chances de loot**, même sans utiliser l'enchantement Délicatesse !)*
 * 🛠️ **Rendement de l'Artisanat (Récupération)** :
-  Vous pouvez toujours utiliser le bois infecté dans l'établi pour fabriquer des objets de base (comme des Planches, Dalles, Escaliers ou Bâtons). L'objet final sera toujours parfaitement propre (**Vanilla**), mais comme vous êtes forcé de jeter les parties pourries du bois d'origine, la quantité d'objets obtenus chutera drastiquement :
+  Vous pouvez toujours utiliser le bois infecté dans l'établi pour fabriquer des objets de base (comme des Planches, Dalles, Escaliers ou Bâtons). L'objet final sera toujours parfaitement propre (**Vanilla**), mais comme vous êtes forcé de jeter les parties pourries du bois d'origine, la quantité d'objets obtenus chutera drastiquement.
+  *(💡 **Artisanat Hybride** : Vous pouvez mélanger librement des blocs de bois infectés et leurs variantes cirées du même stade de moisissure dans la même grille de fabrication sans aucun problème !)*
 
   | Qualité du Matériau | 🌳 Ex : Bûche ➔ Planches | 🦯 Ex : Planches ➔ Bâtons |
   | :--- | :---: | :---: |
@@ -144,7 +145,7 @@ Pour ne pas ruiner l'expérience de jeu (en évitant que les joueurs trouvent le
 
 ## 📊 Intégration HUD et Progrès
 
-* 🔍 **Intégration Jade / WTHIT** : Le mod est entièrement intégré à **Jade**. En regardant n'importe quel bloc de bois, le HUD affichera en temps réel son stade exact de détérioration, le risque actuel d'infection (%) et si le bloc est ciré. Le pourcentage de risque change de couleur de manière dynamique (**Gris = Sûr**, **Rouge = À Risque**). Les administrateurs peuvent également utiliser la commande `/moldrisk [verbose]` pour calculer la formule mathématique exacte du bloc qu'ils regardent !
+* 🔍 **Intégration Jade / WTHIT** : Le mod est entièrement intégré à **Jade**. En regardant n'importe quel bloc de bois, le HUD affichera nativement sa variante précise (ex. "Waxed Tainted Oak Planks") et son icône, ainsi que le risque actuel d'infection (%). Le risque est évalué exactement à 0% pour les blocs cirés, et est masqué pour les blocs complètement pourris (Rotten). Le pourcentage de risque change de couleur de manière dynamique (**Gris = Sûr**, **Rouge = À Risque**). Les administrateurs peuvent également utiliser la commande `/moldrisk [verbose]` pour calculer la formule mathématique exacte du bloc qu'ils regardent !
 * 🏆 **Progrès (Advancements)** : 5 progrès personnalisés sont inclus pour guider les joueurs à travers l'apprentissage et la maîtrise des mécaniques du mod.
 
 ---

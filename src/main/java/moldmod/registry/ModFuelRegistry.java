@@ -41,6 +41,10 @@ public class ModFuelRegistry {
         Item moldy = Registries.ITEM.get(SporesShadows.id("moldy_" + baseName));
         Item rotten = Registries.ITEM.get(SporesShadows.id("rotten_" + baseName));
 
+        Item waxedTainted = Registries.ITEM.get(SporesShadows.id("waxed_tainted_" + baseName));
+        Item waxedMoldy = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + baseName));
+        Item waxedRotten = Registries.ITEM.get(SporesShadows.id("waxed_rotten_" + baseName));
+
         // Stage 0 = 100%, Stage 1 = 50%, Stage 2 = 25%, Stage 3 = 12.5% (min 37 ticks)
         if (waxed != net.minecraft.item.Items.AIR) {
             FuelRegistry.INSTANCE.add(waxed, baseFuel);
@@ -48,11 +52,20 @@ public class ModFuelRegistry {
         if (tainted != net.minecraft.item.Items.AIR) {
             FuelRegistry.INSTANCE.add(tainted, Math.max(37, (int)(baseFuel * 0.5f)));
         }
+        if (waxedTainted != net.minecraft.item.Items.AIR) {
+            FuelRegistry.INSTANCE.add(waxedTainted, Math.max(37, (int)(baseFuel * 0.5f)));
+        }
         if (moldy != net.minecraft.item.Items.AIR) {
             FuelRegistry.INSTANCE.add(moldy, Math.max(37, (int)(baseFuel * 0.25f)));
         }
+        if (waxedMoldy != net.minecraft.item.Items.AIR) {
+            FuelRegistry.INSTANCE.add(waxedMoldy, Math.max(37, (int)(baseFuel * 0.25f)));
+        }
         if (rotten != net.minecraft.item.Items.AIR) {
             FuelRegistry.INSTANCE.add(rotten, Math.max(37, (int)(baseFuel * 0.125f)));
+        }
+        if (waxedRotten != net.minecraft.item.Items.AIR) {
+            FuelRegistry.INSTANCE.add(waxedRotten, Math.max(37, (int)(baseFuel * 0.125f)));
         }
     }
 }

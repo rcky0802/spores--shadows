@@ -63,4 +63,9 @@ public class MoldyFenceGateBlock extends FenceGateBlock {
         }
         return super.onUse(state, world, pos, player, hit);
     }
+
+    @Override
+    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    }
 }

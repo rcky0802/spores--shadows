@@ -2,6 +2,27 @@
 
 All notable changes to **Spores & Shadows** will be documented in this file.
 
+## [1.1.1] - The Architecture & Quality of Life Update
+**Major Backend Refactor:**
+- **Split Registries**: We performed a massive backend overhaul, splitting "Waxed" and "Moldy" blocks into two completely distinct block IDs (e.g., `waxed_oak_log` vs `moldy_oak_log`) instead of relying on a blockstate property. This allowed us to bypass Vanilla limitations and implement a huge wave of requested features!
+- **Single Source of Truth (SoT)**: Refactored the entire project to use a unified Data and Constant core for all generation elements. Zero hardcoded woods, stages, or IDs in loops!
+
+**Added / Changed:**
+- **Configurable Magic Numbers**: Added `axe_scrape_damage`, `nausea_amplifier`, and `poison_amplifier` to the configuration file (Mod Menu / Cloth Config) for full modpack customization!
+- **Hybrid Crafting**: You can now freely mix normal infected wood and waxed infected wood (of the same decay stage) in the same crafting grid!
+- **Furnace & Composter Parity**: Waxed blocks are no longer inert! They now burn in furnaces and can be composted with the exact same timings and probabilities as their unwaxed counterparts.
+- **Safe Extraction (Drops)**: Waxing a "Rotten" (Stage 3) block now structurally reinforces it. Breaking a waxed rotten block guarantees a 100% drop rate, completely bypassing the crumbling mechanic without needing Silk Touch!
+- **Inventory Parity**: Waxed blocks now display their lore/descriptions in the inventory, informing players that they can still be broken down into planks.
+- **True Inventory Models**: Because Waxed blocks are now standalone items, they no longer look like standard moldy wood in your inventory. They have their own dedicated items!
+- **Performance Boost**: Waxed blocks no longer receive Random Ticks from the server, entirely skipping the mold spread calculations and drastically saving CPU resources on large builds.
+
+**Fixed:**
+- **Jade HUD UI**: Jade now dynamically reads and displays the precise name and icon for every block state (e.g. "Waxed Tainted Oak Planks"). Redundant "Waxed: Yes/No" and "Stage" texts were removed. 
+- **Jade HUD Logic**: The Infection Risk tooltip is now completely hidden on Waxed blocks (since their risk is zero) and on Rotten blocks (Stage 3).
+- **Tooltips Fix**: Fixed a bug where waxed blocks were missing their gameplay lore (e.g. "Structurally weakened") in the inventory.
+
+---
+
 ## [1.2.0] - Toxic Miasma Overhaul & Flood Fill
 **Added:**
 - Overhauled the Toxic Miasma mechanic using a highly-optimized O(R³) Flood Fill algorithm. The toxic gas now realistically propagates through slightly open spaces (trapdoors, doors, stairs) and is blocked by solid walls.
@@ -9,6 +30,8 @@ All notable changes to **Spores & Shadows** will be documented in this file.
 - The miasma now scales based on the volume of the room. Rooms larger than 180 blocks, or open-air areas, are completely immune to toxic gas buildup.
 - Added a new tier of poisoning for slightly contaminated rooms: Hunger effect (Miasma > 8.0) and light mycelium particles.
 - Added a new admin command `/miasma` to inspect the exact properties of the room the player is standing in (Volume, Toxic Score, Ventilation Score, Net Miasma, and Status).
+
+---
 
 ## [1.1.0] - Quality of Life, Jade Integration & Biome Overhaul
 - Jade / WTHIT Integration: The HUD now shows the exact decay stage, infection risk (%), and waxed status of any looked-at wood block.

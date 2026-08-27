@@ -80,9 +80,11 @@ public class ToxicAirEvent {
         // Applicazione Effetti e Particelle
         double densita = result.netMiasma / Math.max(result.volume, 1);
 
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+
         if (result.netMiasma >= 16.0 || (densita >= 0.18 && result.netMiasma >= 10.0)) {
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 60, 1, false, false, true));
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 100, 0, false, false, true));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, config.toxicity.duration_poison_ticks, config.toxicity.poison_amplifier, false, false, true));
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, config.toxicity.duration_nausea_ticks, config.toxicity.nausea_amplifier, false, false, true));
             MoldyBlockHelper.grantAdvancement(player, "toxic_air");
             
             // Dense particles in the room

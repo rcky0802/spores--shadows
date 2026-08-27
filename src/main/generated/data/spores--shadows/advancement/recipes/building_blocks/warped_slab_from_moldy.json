@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_moldy_warped_planks": {
+    "has_moldy": {
       "conditions": {
         "items": [
           {
@@ -16,12 +16,23 @@
         "recipe": "spores--shadows:warped_slab_from_moldy"
       },
       "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_moldy": {
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:waxed_moldy_warped_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_moldy_warped_planks"
+      "has_moldy",
+      "has_waxed_moldy"
     ]
   ],
   "rewards": {
