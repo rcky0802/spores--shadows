@@ -87,7 +87,7 @@ public class MoldyInteractionEvents {
                             }
                             moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, false);
                             world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                            stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
+                            stack.damage(me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().general.axe_scrape_damage, player, PlayerEntity.getSlotForHand(hand));
                         }
                     }
                     return ActionResult.SUCCESS;
@@ -101,7 +101,7 @@ public class MoldyInteractionEvents {
                             }
                             moldmod.block.MoldyBlockHelper.setStage(world, hitResult.getBlockPos(), newState, stage - 1);
                             world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_AXE_SCRAPE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                            stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
+                            stack.damage(me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().general.axe_scrape_damage, player, PlayerEntity.getSlotForHand(hand));
                             moldmod.block.MoldyBlockHelper.grantAdvancement(player, "scrape_mold");
                         }
                         return ActionResult.SUCCESS;

@@ -27,16 +27,16 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
 
     @Override
     protected void generateTooltipsAndConfig(TranslationBuilder translationBuilder) {
-        translationBuilder.add("tooltip.spores--shadows.waxed", "Waxed");
-        translationBuilder.add("item.spores--shadows.waxed_format", "Waxed %s");
-        translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_1", "Can be broken down into clean planks with material loss,");
-        translationBuilder.add("tooltip.spores--shadows.moldy_log_desc_2", "but cannot be used for normal vanilla recipes.");
-        translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_1", "Only useful for simple crafting (sticks, fences, etc).");
-        translationBuilder.add("tooltip.spores--shadows.moldy_planks_desc_2", "Cannot be used in complex recipes at full efficiency.");
-        translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_1", "Degraded wood component.");
-        translationBuilder.add("tooltip.spores--shadows.moldy_general_desc_2", "Structurally weakened by mold.");
-        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_1", "Mold has compromised the mechanism.");
-        translationBuilder.add("tooltip.spores--shadows.moldy_redstone_desc_2", "Activation duration is significantly longer.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".waxed", "Waxed");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", "Waxed %s");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_1", "Can be broken down into clean planks with material loss,");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_2", "but cannot be used for normal vanilla recipes.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_1", "Only useful for simple crafting (sticks, fences, etc).");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_2", "Cannot be used in complex recipes at full efficiency.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_1", "Degraded wood component.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_2", "Structurally weakened by mold.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_1", "Mold has compromised the mechanism.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_2", "Activation duration is significantly longer.");
 
         translationBuilder.add("text.autoconfig.spores--shadows.title", "Spores & Shadows Config");
         translationBuilder.add("text.autoconfig.spores--shadows.category.general", "General");
@@ -63,6 +63,7 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.general.structures_immune", "Generated Structures are Immune");
         translationBuilder.add("text.autoconfig.spores--shadows.option.general.structures_immune.@Tooltip", "If true, naturally generated structures (shipwrecks, villages) will not rot until interacted with.");
         translationBuilder.add("text.autoconfig.spores--shadows.option.general.show_debug_in_chat", "Show Debug Math in Chat");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.general.axe_scrape_damage", "Axe Scrape Damage");
 
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.rain_humidity_base", "Base Humidity (Raining/Snowing)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.dry_humidity_base", "Base Humidity (Clear/Dry)");
@@ -132,6 +133,8 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.threshold_poison", "Poison Threshold");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_nausea_ticks", "Nausea Duration (Ticks)");
         translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.duration_poison_ticks", "Poison Duration (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.nausea_amplifier", "Nausea Amplifier");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.toxicity.poison_amplifier", "Poison Amplifier");
         
         translationBuilder.add("text.autoconfig.spores--shadows.category.client", "Client & Shaders");
         translationBuilder.add("text.autoconfig.spores--shadows.option.client", "Client & Shaders");
@@ -141,15 +144,15 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig.spores--shadows.option.environment.water_scan_radius", "Water Scan Radius");
 
         // Jade Tooltips
-        translationBuilder.add("tooltip.spores--shadows.jade.stage", "Stage: ");
-        translationBuilder.add("tooltip.spores--shadows.jade.infection", "Infection Risk: %d%%");
-        translationBuilder.add("tooltip.spores--shadows.jade.waxed", "Waxed: ");
-        translationBuilder.add("tooltip.spores--shadows.jade.yes", "Yes");
-        translationBuilder.add("tooltip.spores--shadows.jade.no", "No");
-        translationBuilder.add("tooltip.spores--shadows.jade.stage.0", "Healthy");
-        translationBuilder.add("tooltip.spores--shadows.jade.stage.1", "Tainted");
-        translationBuilder.add("tooltip.spores--shadows.jade.stage.2", "Moldy");
-        translationBuilder.add("tooltip.spores--shadows.jade.stage.3", "Rotten");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage", "Stage: ");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.infection", "Infection Risk: %d%%");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.waxed", "Waxed: ");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.yes", "Yes");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.no", "No");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.0", "Healthy");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.1", "Tainted");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.2", "Moldy");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.3", "Rotten");
         translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows: Mold Info");
 
         // Advancements
@@ -174,3 +177,5 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         return result.toString().trim();
     }
 }
+
+

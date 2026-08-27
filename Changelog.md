@@ -5,8 +5,10 @@ All notable changes to **Spores & Shadows** will be documented in this file.
 ## [1.1.1] - The Architecture & Quality of Life Update
 **Major Backend Refactor:**
 - **Split Registries**: We performed a massive backend overhaul, splitting "Waxed" and "Moldy" blocks into two completely distinct block IDs (e.g., `waxed_oak_log` vs `moldy_oak_log`) instead of relying on a blockstate property. This allowed us to bypass Vanilla limitations and implement a huge wave of requested features!
+- **Single Source of Truth (SoT)**: Refactored the entire project to use a unified Data and Constant core for all generation elements. Zero hardcoded woods, stages, or IDs in loops!
 
 **Added / Changed:**
+- **Configurable Magic Numbers**: Added `axe_scrape_damage`, `nausea_amplifier`, and `poison_amplifier` to the configuration file (Mod Menu / Cloth Config) for full modpack customization!
 - **Hybrid Crafting**: You can now freely mix normal infected wood and waxed infected wood (of the same decay stage) in the same crafting grid!
 - **Furnace & Composter Parity**: Waxed blocks are no longer inert! They now burn in furnaces and can be composted with the exact same timings and probabilities as their unwaxed counterparts.
 - **Safe Extraction (Drops)**: Waxing a "Rotten" (Stage 3) block now structurally reinforces it. Breaking a waxed rotten block guarantees a 100% drop rate, completely bypassing the crumbling mechanic without needing Silk Touch!

@@ -28,7 +28,7 @@ public enum MoldyBlockProvider implements IBlockComponentProvider {
             if (stage < 3 && !waxed) {
                 net.minecraft.util.Formatting color = risk >= modConfig.general.infection_threshold ? net.minecraft.util.Formatting.RED : net.minecraft.util.Formatting.GRAY;
                 int riskPercent = (int) (risk * 100);
-                tooltip.add(Text.translatable("tooltip.spores--shadows.jade.infection", riskPercent).formatted(color));
+                tooltip.add(Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.infection", riskPercent).formatted(color));
             }
 
         }
@@ -36,6 +36,9 @@ public enum MoldyBlockProvider implements IBlockComponentProvider {
 
     @Override
     public Identifier getUid() {
-        return Identifier.of("spores--shadows", "moldy_info");
+        return Identifier.of(moldmod.SporesShadows.MOD_ID, "moldy_info");
     }
 }
+
+
+

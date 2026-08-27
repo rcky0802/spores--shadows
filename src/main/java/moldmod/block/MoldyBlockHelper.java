@@ -178,7 +178,7 @@ public class MoldyBlockHelper {
                             localHumidityBonus += config.environment.water_adjacent_bonus;
                             waterBlocksFound++;
                             if (waterBlocksFound >= maxWaterBlocksNeeded) {
-                                break waterSearch; // Ottimizzazione estrema: esce dal loop se ha raggiunto il cap di umidità
+                                break waterSearch; // Ottimizzazione estrema: esce dal loop se ha raggiunto il cap di umiditÃ 
                             }
                         }
                     }
@@ -297,7 +297,7 @@ public class MoldyBlockHelper {
 
     public static void grantAdvancement(net.minecraft.entity.player.PlayerEntity player, String advancementName) {
         if (player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer) {
-            net.minecraft.advancement.AdvancementEntry entry = serverPlayer.getServer().getAdvancementLoader().get(net.minecraft.util.Identifier.of("spores--shadows", advancementName));
+            net.minecraft.advancement.AdvancementEntry entry = serverPlayer.getServer().getAdvancementLoader().get(net.minecraft.util.Identifier.of(moldmod.SporesShadows.MOD_ID, advancementName));
             if (entry != null) {
                 net.minecraft.advancement.AdvancementProgress progress = serverPlayer.getAdvancementTracker().getProgress(entry);
                 if (!progress.isDone()) {
@@ -337,3 +337,4 @@ public class MoldyBlockHelper {
         return new net.minecraft.item.ItemStack(block.asItem());
     }
 }
+

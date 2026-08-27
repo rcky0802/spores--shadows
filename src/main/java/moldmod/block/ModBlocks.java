@@ -31,14 +31,8 @@ public class ModBlocks {
     public static void registerModBlocks() {
         SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 
-        String[] woods = moldmod.SporesShadows.WOODS;
-
-        for (String wood : woods) {
-            if (wood.equals("crimson") || wood.equals("warped")) {
-                registerWoodSet(wood, wood + "_stem", wood + "_hyphae");
-            } else {
-                registerWoodSet(wood, wood + "_log", wood + "_wood");
-            }
+        for (moldmod.SporesShadowsConstants.MoldyWoodType wood : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+            registerWoodSet(wood);
         }
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
@@ -55,7 +49,11 @@ public class ModBlocks {
         });
     }
 
-    private static void registerWoodSet(String prefix, String logName, String woodName) {
+    private static void registerWoodSet(moldmod.SporesShadowsConstants.MoldyWoodType moldyWoodType) {
+        String prefix = moldyWoodType.name();
+        String logName = moldyWoodType.getLogName();
+        String woodName = moldyWoodType.getWoodName();
+        
         // Vanilla Blocks
         Block vanillaLog = Registries.BLOCK.get(Identifier.of("minecraft", logName));
         Block vanillaStrippedLog = Registries.BLOCK.get(Identifier.of("minecraft", "stripped_" + logName));
@@ -65,30 +63,8 @@ public class ModBlocks {
         Block strippedLog = registerBlock("moldy_stripped_" + logName, new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaStrippedLog).ticksRandomly(), null));
         Block log = registerBlock("moldy_" + logName, new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaLog).ticksRandomly(), strippedLog));
         Block planks = registerBlock("moldy_" + prefix + "_planks", new MoldyPlanksBlock(AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
-        BlockSetType setType = switch (prefix) {
-            case "spruce" -> BlockSetType.SPRUCE;
-            case "birch" -> BlockSetType.BIRCH;
-            case "jungle" -> BlockSetType.JUNGLE;
-            case "acacia" -> BlockSetType.ACACIA;
-            case "dark_oak" -> BlockSetType.DARK_OAK;
-            case "mangrove" -> BlockSetType.MANGROVE;
-            case "cherry" -> BlockSetType.CHERRY;
-            case "crimson" -> BlockSetType.CRIMSON;
-            case "warped" -> BlockSetType.WARPED;
-            default -> BlockSetType.OAK;
-        };
-        WoodType woodType = switch (prefix) {
-            case "spruce" -> WoodType.SPRUCE;
-            case "birch" -> WoodType.BIRCH;
-            case "jungle" -> WoodType.JUNGLE;
-            case "acacia" -> WoodType.ACACIA;
-            case "dark_oak" -> WoodType.DARK_OAK;
-            case "mangrove" -> WoodType.MANGROVE;
-            case "cherry" -> WoodType.CHERRY;
-            case "crimson" -> WoodType.CRIMSON;
-            case "warped" -> WoodType.WARPED;
-            default -> WoodType.OAK;
-        };
+        BlockSetType setType = moldyWoodType.setType();
+        WoodType woodType = moldyWoodType.woodType();
         
         Block stairs = registerBlock("moldy_" + prefix + "_stairs", new MoldyStairsBlock(planks.getDefaultState(), AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
         Block slab = registerBlock("moldy_" + prefix + "_slab", new MoldySlabBlock(AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
@@ -202,13 +178,14 @@ public class ModBlocks {
     private static void registerStageItems(Block vanillaBlock, String baseName, Block moldyBlock, Block waxedBlock) {
         Item vanillaItem = vanillaBlock.asItem();
         java.util.List<Item> items = new java.util.ArrayList<>();
-        items.add(registerStageItem("waxed_" + baseName, waxedBlock, 0, true));
-        items.add(registerStageItem("tainted_" + baseName, moldyBlock, 1, false));
-        items.add(registerStageItem("waxed_tainted_" + baseName, waxedBlock, 1, true));
-        items.add(registerStageItem("moldy_" + baseName, moldyBlock, 2, false));
-        items.add(registerStageItem("waxed_moldy_" + baseName, waxedBlock, 2, true));
-        items.add(registerStageItem("rotten_" + baseName, moldyBlock, 3, false));
-        items.add(registerStageItem("waxed_rotten_" + baseName, waxedBlock, 3, true));
+        for (moldmod.SporesShadowsConstants.MoldStage stage : moldmod.SporesShadowsConstants.MoldStage.values()) {
+            if (stage == moldmod.SporesShadowsConstants.MoldStage.WAXED) {
+                items.add(registerStageItem("waxed_" + baseName, waxedBlock, stage.getId(), true));
+            } else {
+                items.add(registerStageItem(stage.getName() + "_" + baseName, moldyBlock, stage.getId(), false));
+                items.add(registerStageItem("waxed_" + stage.getName() + "_" + baseName, waxedBlock, stage.getId(), true));
+            }
+        }
         MOLDY_ITEMS_BY_VANILLA.put(vanillaItem, items);
         MOLDY_ITEMS_BY_BLOCK.put(moldyBlock, items);
         MOLDY_ITEMS_BY_BLOCK.put(waxedBlock, items);
@@ -224,7 +201,7 @@ public class ModBlocks {
             item = new net.minecraft.item.TallBlockItem(baseBlock, settings) {
                 @Override
                 public String getTranslationKey() {
-                    return "item.spores--shadows." + name;
+                    return "item." + moldmod.SporesShadows.MOD_ID + "." + name;
                 }
                 @Override
                 public void appendTooltip(ItemStack stack, Item.TooltipContext context, java.util.List<net.minecraft.text.Text> tooltip, net.minecraft.item.tooltip.TooltipType type) {
@@ -237,7 +214,7 @@ public class ModBlocks {
                     net.minecraft.component.type.BlockStateComponent comp = stack.get(net.minecraft.component.DataComponentTypes.BLOCK_STATE);
                     boolean isStackWaxed = comp != null && comp.getValue(MoldyLogBlock.WAXED) == Boolean.TRUE;
                     if (isStackWaxed && !name.startsWith("waxed_")) {
-                        return net.minecraft.text.Text.translatable("item.spores--shadows.waxed_format", originalName);
+                        return net.minecraft.text.Text.translatable("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", originalName);
                     }
                     return originalName;
                 }
@@ -246,7 +223,7 @@ public class ModBlocks {
             item = new BlockItem(baseBlock, settings) {
                 @Override
                 public String getTranslationKey() {
-                    return "item.spores--shadows." + name;
+                    return "item." + moldmod.SporesShadows.MOD_ID + "." + name;
                 }
                 @Override
                 public void appendTooltip(ItemStack stack, Item.TooltipContext context, java.util.List<net.minecraft.text.Text> tooltip, net.minecraft.item.tooltip.TooltipType type) {
@@ -259,7 +236,7 @@ public class ModBlocks {
                     net.minecraft.component.type.BlockStateComponent comp = stack.get(net.minecraft.component.DataComponentTypes.BLOCK_STATE);
                     boolean isStackWaxed = comp != null && comp.getValue(MoldyLogBlock.WAXED) == Boolean.TRUE;
                     if (isStackWaxed && !name.startsWith("waxed_")) {
-                        return net.minecraft.text.Text.translatable("item.spores--shadows.waxed_format", originalName);
+                        return net.minecraft.text.Text.translatable("item." + moldmod.SporesShadows.MOD_ID + ".waxed_format", originalName);
                     }
                     return originalName;
                 }
@@ -269,17 +246,21 @@ public class ModBlocks {
     }
     private static void appendMoldyTooltip(String name, ItemStack stack, java.util.List<net.minecraft.text.Text> tooltip) {
         if (name.contains("log") || name.contains("wood")) {
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_log_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_log_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_log_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
         } else if (name.contains("planks")) {
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_planks_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_planks_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_planks_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
         } else if (name.contains("button") || name.contains("pressure_plate")) {
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_redstone_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_redstone_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
         } else {
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_general_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
-            tooltip.add(net.minecraft.text.Text.translatable("tooltip.spores--shadows.moldy_general_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_1").formatted(net.minecraft.util.Formatting.GRAY));
+            tooltip.add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_2").formatted(net.minecraft.util.Formatting.GRAY));
         }
     }
 }
+
+
+
+

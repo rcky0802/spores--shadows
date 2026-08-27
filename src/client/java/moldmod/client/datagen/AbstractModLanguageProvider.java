@@ -14,79 +14,41 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
 
     @Override
     public void generateTranslations(RegistryWrapper.WrapperLookup registryLookup, TranslationBuilder translationBuilder) {
-        String[] woods = moldmod.SporesShadows.WOODS;
-
-        for (String wood : woods) {
-            String logName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_stem" : wood + "_log"; String woodName = (wood.equals("crimson") || wood.equals("warped")) ? wood + "_hyphae" : wood + "_wood";
+        for (moldmod.SporesShadowsConstants.MoldyWoodType woodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+            String wood = woodType.name();
+            String logName = woodType.getLogName();
+            String woodName = woodType.getWoodName();
             String prefix = wood;
 
-            // Logs
-            translationBuilder.add("block.spores--shadows.moldy_" + logName, getTranslation(wood, "log", "moldy"));
-            translationBuilder.add("block.spores--shadows.waxed_" + logName, getTranslation(wood, "log", "waxed"));
-            translationBuilder.add("item.spores--shadows.waxed_" + logName, getTranslation(wood, "log", "waxed"));
-            translationBuilder.add("item.spores--shadows.tainted_" + logName, getTranslation(wood, "log", "tainted"));
-            translationBuilder.add("item.spores--shadows.waxed_tainted_" + logName, getTranslation(wood, "log", "waxed_tainted"));
-            translationBuilder.add("item.spores--shadows.moldy_" + logName, getTranslation(wood, "log", "moldy"));
-            translationBuilder.add("item.spores--shadows.waxed_moldy_" + logName, getTranslation(wood, "log", "waxed_moldy"));
-            translationBuilder.add("item.spores--shadows.rotten_" + logName, getTranslation(wood, "log", "rotten"));
-            translationBuilder.add("item.spores--shadows.waxed_rotten_" + logName, getTranslation(wood, "log", "waxed_rotten"));
+            // Block mapping for translations
+            java.util.Map<String, String> blockSuffixMap = new java.util.LinkedHashMap<>();
+            blockSuffixMap.put(logName, "log");
+            blockSuffixMap.put("stripped_" + logName, "stripped_log");
+            blockSuffixMap.put(woodName, "wood");
+            blockSuffixMap.put("stripped_" + woodName, "stripped_wood");
+            blockSuffixMap.put(prefix + "_planks", "planks");
 
-            // Stripped Logs
-            translationBuilder.add("block.spores--shadows.moldy_stripped_" + logName, getTranslation(wood, "stripped_log", "moldy"));
-            translationBuilder.add("block.spores--shadows.waxed_stripped_" + logName, getTranslation(wood, "stripped_log", "waxed"));
-            translationBuilder.add("item.spores--shadows.waxed_stripped_" + logName, getTranslation(wood, "stripped_log", "waxed"));
-            translationBuilder.add("item.spores--shadows.tainted_stripped_" + logName, getTranslation(wood, "stripped_log", "tainted"));
-            translationBuilder.add("item.spores--shadows.waxed_tainted_stripped_" + logName, getTranslation(wood, "stripped_log", "waxed_tainted"));
-            translationBuilder.add("item.spores--shadows.moldy_stripped_" + logName, getTranslation(wood, "stripped_log", "moldy"));
-            translationBuilder.add("item.spores--shadows.waxed_moldy_stripped_" + logName, getTranslation(wood, "stripped_log", "waxed_moldy"));
-            translationBuilder.add("item.spores--shadows.rotten_stripped_" + logName, getTranslation(wood, "stripped_log", "rotten"));
-            translationBuilder.add("item.spores--shadows.waxed_rotten_stripped_" + logName, getTranslation(wood, "stripped_log", "waxed_rotten"));
+            for (String blockKey : moldmod.SporesShadowsConstants.BLOCK_TYPES) {
+                blockSuffixMap.put(prefix + "_" + blockKey, blockKey);
+            }
 
-            // Wood
-            translationBuilder.add("block.spores--shadows.moldy_" + woodName, getTranslation(wood, "wood", "moldy"));
-            translationBuilder.add("block.spores--shadows.waxed_" + woodName, getTranslation(wood, "wood", "waxed"));
-            translationBuilder.add("item.spores--shadows.waxed_" + woodName, getTranslation(wood, "wood", "waxed"));
-            translationBuilder.add("item.spores--shadows.tainted_" + woodName, getTranslation(wood, "wood", "tainted"));
-            translationBuilder.add("item.spores--shadows.waxed_tainted_" + woodName, getTranslation(wood, "wood", "waxed_tainted"));
-            translationBuilder.add("item.spores--shadows.moldy_" + woodName, getTranslation(wood, "wood", "moldy"));
-            translationBuilder.add("item.spores--shadows.waxed_moldy_" + woodName, getTranslation(wood, "wood", "waxed_moldy"));
-            translationBuilder.add("item.spores--shadows.rotten_" + woodName, getTranslation(wood, "wood", "rotten"));
-            translationBuilder.add("item.spores--shadows.waxed_rotten_" + woodName, getTranslation(wood, "wood", "waxed_rotten"));
+            for (java.util.Map.Entry<String, String> entry : blockSuffixMap.entrySet()) {
+                String suffix = entry.getKey();
+                String type = entry.getValue();
 
-            // Stripped Wood
-            translationBuilder.add("block.spores--shadows.moldy_stripped_" + woodName, getTranslation(wood, "stripped_wood", "moldy"));
-            translationBuilder.add("block.spores--shadows.waxed_stripped_" + woodName, getTranslation(wood, "stripped_wood", "waxed"));
-            translationBuilder.add("item.spores--shadows.waxed_stripped_" + woodName, getTranslation(wood, "stripped_wood", "waxed"));
-            translationBuilder.add("item.spores--shadows.tainted_stripped_" + woodName, getTranslation(wood, "stripped_wood", "tainted"));
-            translationBuilder.add("item.spores--shadows.waxed_tainted_stripped_" + woodName, getTranslation(wood, "stripped_wood", "waxed_tainted"));
-            translationBuilder.add("item.spores--shadows.moldy_stripped_" + woodName, getTranslation(wood, "stripped_wood", "moldy"));
-            translationBuilder.add("item.spores--shadows.waxed_moldy_stripped_" + woodName, getTranslation(wood, "stripped_wood", "waxed_moldy"));
-            translationBuilder.add("item.spores--shadows.rotten_stripped_" + woodName, getTranslation(wood, "stripped_wood", "rotten"));
-            translationBuilder.add("item.spores--shadows.waxed_rotten_stripped_" + woodName, getTranslation(wood, "stripped_wood", "waxed_rotten"));
+                // Block translations (only for moldy and waxed base)
+                translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".moldy_" + suffix, getTranslation(wood, type, "moldy"));
+                translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".waxed_" + suffix, getTranslation(wood, type, "waxed"));
 
-            // Planks
-            translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_planks", getTranslation(wood, "planks", "moldy"));
-            translationBuilder.add("block.spores--shadows.waxed_" + prefix + "_planks", getTranslation(wood, "planks", "waxed"));
-            translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_planks", getTranslation(wood, "planks", "waxed"));
-            translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_planks", getTranslation(wood, "planks", "tainted"));
-            translationBuilder.add("item.spores--shadows.waxed_tainted_" + prefix + "_planks", getTranslation(wood, "planks", "waxed_tainted"));
-            translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_planks", getTranslation(wood, "planks", "moldy"));
-            translationBuilder.add("item.spores--shadows.waxed_moldy_" + prefix + "_planks", getTranslation(wood, "planks", "waxed_moldy"));
-            translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_planks", getTranslation(wood, "planks", "rotten"));
-            translationBuilder.add("item.spores--shadows.waxed_rotten_" + prefix + "_planks", getTranslation(wood, "planks", "waxed_rotten"));
-
-            // Mod Blocks
-            String[] blocks = {"slab", "stairs", "fence", "fence_gate", "door", "trapdoor", "pressure_plate", "button"};
-            for (String blockKey : blocks) {
-                translationBuilder.add("block.spores--shadows.moldy_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "moldy"));
-                translationBuilder.add("block.spores--shadows.waxed_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "waxed"));
-                translationBuilder.add("item.spores--shadows.waxed_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "waxed"));
-                translationBuilder.add("item.spores--shadows.tainted_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "tainted"));
-                translationBuilder.add("item.spores--shadows.waxed_tainted_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "waxed_tainted"));
-                translationBuilder.add("item.spores--shadows.moldy_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "moldy"));
-                translationBuilder.add("item.spores--shadows.waxed_moldy_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "waxed_moldy"));
-                translationBuilder.add("item.spores--shadows.rotten_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "rotten"));
-                translationBuilder.add("item.spores--shadows.waxed_rotten_" + prefix + "_" + blockKey, getTranslation(wood, blockKey, "waxed_rotten"));
+                // Item translations for all stages
+                for (moldmod.SporesShadowsConstants.MoldStage stage : moldmod.SporesShadowsConstants.MoldStage.values()) {
+                    if (stage == moldmod.SporesShadowsConstants.MoldStage.WAXED) {
+                        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".waxed_" + suffix, getTranslation(wood, type, "waxed"));
+                    } else {
+                        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + "." + stage.getName() + "_" + suffix, getTranslation(wood, type, stage.getName()));
+                        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".waxed_" + stage.getName() + "_" + suffix, getTranslation(wood, type, "waxed_" + stage.getName()));
+                    }
+                }
             }
         }
         
@@ -104,4 +66,6 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
 
     protected abstract void generateTooltipsAndConfig(TranslationBuilder builder);
 }
+
+
 

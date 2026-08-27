@@ -36,7 +36,7 @@ public class MoldyVariantsCountTest {
 
         for (Item item : net.minecraft.registry.Registries.ITEM) {
             net.minecraft.util.Identifier id = net.minecraft.registry.Registries.ITEM.getId(item);
-            if (!id.getNamespace().equals("spores--shadows")) continue;
+            if (!id.getNamespace().equals(moldmod.SporesShadows.MOD_ID)) continue;
             
             String name = id.getPath();
             if (name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten")) {
@@ -71,3 +71,4 @@ public class MoldyVariantsCountTest {
         context.complete();
     }
 }
+

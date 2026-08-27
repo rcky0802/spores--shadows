@@ -60,12 +60,12 @@ public class ToxicAirEvent {
 
                 // Applica gli effetti in base alla tossicità accumulata
                 if (toxicity >= nauseaThreshold) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, nauseaDuration, 0, false, false, true));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, nauseaDuration, config.toxicity.nausea_amplifier, false, false, true));
                     moldmod.block.MoldyBlockHelper.grantAdvancement(player, "toxic_air");
                 }
                 
                 if (toxicity >= poisonThreshold) {
-                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, poisonDuration, 0, false, false, true));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, poisonDuration, config.toxicity.poison_amplifier, false, false, true));
                     moldmod.block.MoldyBlockHelper.grantAdvancement(player, "toxic_air");
                 }
             }
