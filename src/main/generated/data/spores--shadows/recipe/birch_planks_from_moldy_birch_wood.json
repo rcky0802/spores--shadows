@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:moldy_birch_wood"
-    }
+    [
+      {
+        "item": "spores--shadows:moldy_birch_wood"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_birch_wood"
+      }
+    ]
   ],
   "result": {
     "count": 1,

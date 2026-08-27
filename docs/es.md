@@ -119,7 +119,9 @@ Usar madera podrida para la fabricación no es sabio. La estructura interna del 
   - Enmohecido: **7,5 segundos** (150 ticks).
   - Podrido: **22,5 segundos** (450 ticks).
 
-*(💡 **Nota sobre los Bloques Encerados**: ¡La cera es un sellador ambiental, pero no bloquea el uso del objeto! Puedes usar los bloques encerados en la mesa de trabajo, quemarlos en el horno o tirarlos al compostador: se comportarán exactamente como su contraparte no encerada, manteniendo las mismas penalizaciones o bonificaciones vinculadas únicamente a su nivel interno de podredumbre).*
+*(💡 **Nota sobre los Bloques Encerados**: ¡La cera es un sellador ambiental, pero no bloquea el uso del objeto!
+* **Elaboración Híbrida**: Puedes mezclar libremente bloques de madera infectada y sus correspondientes variantes enceradas (de la misma etapa de moho) en la misma cuadrícula de fabricación para producir tablones Vanilla limpios u otros objetos.
+* **Combustible y Compostaje**: Puedes quemarlos en el horno o tirarlos al compostador; se comportarán exactamente con los mismos tiempos y probabilidades que su contraparte no encerada, manteniendo las mismas penalizaciones o bonificaciones vinculadas a su nivel interno de podredumbre).*
 
 ---
 

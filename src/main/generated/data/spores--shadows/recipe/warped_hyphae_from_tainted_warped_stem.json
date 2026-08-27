@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spores--shadows:tainted_warped_stem"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:tainted_warped_stem"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_warped_stem"
+      }
+    ]
   },
   "pattern": [
     "##",

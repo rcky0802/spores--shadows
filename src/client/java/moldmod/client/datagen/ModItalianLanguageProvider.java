@@ -51,6 +51,9 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         else if (state.equals("waxed")) stateStr = isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato");
         else if (state.equals("tainted")) stateStr = isFeminine ? (isPlural ? "Intaccate" : "Intaccata") : (isPlural ? "Intaccati" : "Intaccato");
         else if (state.equals("rotten")) stateStr = isFeminine ? (isPlural ? "Marcie" : "Marcia") : (isPlural ? "Marci" : "Marcio");
+        else if (state.equals("waxed_tainted")) stateStr = (isFeminine ? (isPlural ? "Intaccate" : "Intaccata") : (isPlural ? "Intaccati" : "Intaccato")) + " " + (isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato"));
+        else if (state.equals("waxed_moldy")) stateStr = (isFeminine ? (isPlural ? "Ammuffite" : "Ammuffita") : (isPlural ? "Ammuffiti" : "Ammuffito")) + " " + (isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato"));
+        else if (state.equals("waxed_rotten")) stateStr = (isFeminine ? (isPlural ? "Marcie" : "Marcia") : (isPlural ? "Marci" : "Marcio")) + " " + (isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato"));
 
         return blockName + " " + wName + " " + stateStr;
     }

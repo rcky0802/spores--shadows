@@ -93,7 +93,7 @@ Using rotten wood for crafting is unwise. The internal structure of the material
   
   *(💡 **The Secret of Wax**: Waxing a block consolidates its structure. Any block from the mod, even Rotten ones, if **Waxed** will always have a **100% drop chance**, even without using Silk Touch!)*
 * 🛠️ **Crafting Yield (Recovery)**:
-  You can still use infected wood in a crafting table to craft basic items (like Planks, Slabs, Stairs, or Sticks). The final item will always be perfectly clean (**Vanilla**), but since you are forced to discard the rotten parts of the original wood, the quantity of items obtained will drop drastically:
+  You can still use infected wood in a crafting table to craft basic items (like Planks, Slabs, Stairs, or Sticks). The final item will always be perfectly clean (**Vanilla**), but since you are forced to discard the rotten parts of the original wood, the quantity of items obtained will drop drastically. *(💡 **Hybrid Crafting**: You can freely mix normal infected wood and its waxed variants of the same decay stage in the same crafting grid!)*
 
   | Material Quality | 🌳 Ex: Log ➔ Planks | 🦯 Ex: Planks ➔ Sticks |
   | :--- | :---: | :---: |

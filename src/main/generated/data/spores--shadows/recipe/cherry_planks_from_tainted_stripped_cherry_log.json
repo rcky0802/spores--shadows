@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:tainted_stripped_cherry_log"
-    }
+    [
+      {
+        "item": "spores--shadows:tainted_stripped_cherry_log"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_stripped_cherry_log"
+      }
+    ]
   ],
   "result": {
     "count": 2,

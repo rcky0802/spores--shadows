@@ -23,10 +23,12 @@ public enum MoldyBlockProvider implements IBlockComponentProvider {
             double risk = MoldyBlockHelper.calculateR(accessor.getLevel(), accessor.getPosition(), waxed, state);
             
             int stage = state.get(MoldyLogBlock.STAGE);
-            if (stage < 3) {
-                String color = risk >= modConfig.general.infection_threshold ? "§c" : "§7";
+                
+            // Infection risk (only if not completely healthy/waxed)
+            if (stage < 3 && !waxed) {
+                net.minecraft.util.Formatting color = risk >= modConfig.general.infection_threshold ? net.minecraft.util.Formatting.RED : net.minecraft.util.Formatting.GRAY;
                 int riskPercent = (int) (risk * 100);
-                tooltip.add(Text.literal(String.format("Infection Risk: %s%d%%", color, riskPercent)));
+                tooltip.add(Text.translatable("tooltip.spores--shadows.jade.infection", riskPercent).formatted(color));
             }
 
         }

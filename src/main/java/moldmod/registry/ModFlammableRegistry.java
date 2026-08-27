@@ -18,10 +18,14 @@ public class ModFlammableRegistry {
             // Vanilla Log = 5, 5
             registerForBlock("moldy_" + logName, 10, 10);
             registerForBlock("moldy_stripped_" + logName, 10, 10);
+            registerForBlock("waxed_" + logName, 10, 10);
+            registerForBlock("waxed_stripped_" + logName, 10, 10);
             
             if (woodName != null) {
                 registerForBlock("moldy_" + woodName, 10, 10);
                 registerForBlock("moldy_stripped_" + woodName, 10, 10);
+                registerForBlock("waxed_" + woodName, 10, 10);
+                registerForBlock("waxed_stripped_" + woodName, 10, 10);
             }
 
             // Vanilla Planks = 5, 20
@@ -30,6 +34,12 @@ public class ModFlammableRegistry {
             registerForBlock("moldy_" + prefix + "_slab", 10, 30);
             registerForBlock("moldy_" + prefix + "_fence", 10, 30);
             registerForBlock("moldy_" + prefix + "_fence_gate", 10, 30);
+            
+            registerForBlock("waxed_" + prefix + "_planks", 10, 30);
+            registerForBlock("waxed_" + prefix + "_stairs", 10, 30);
+            registerForBlock("waxed_" + prefix + "_slab", 10, 30);
+            registerForBlock("waxed_" + prefix + "_fence", 10, 30);
+            registerForBlock("waxed_" + prefix + "_fence_gate", 10, 30);
         }
     }
 

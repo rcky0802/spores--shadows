@@ -51,6 +51,9 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         else if (state.equals("waxed")) stateStr = isFeminine ? (isPlural ? "cirées" : "cirée") : (isPlural ? "cirés" : "ciré");
         else if (state.equals("tainted")) stateStr = isFeminine ? (isPlural ? "entachées" : "entachée") : (isPlural ? "entachés" : "entaché");
         else if (state.equals("rotten")) stateStr = isFeminine ? (isPlural ? "pourries" : "pourrie") : (isPlural ? "pourris" : "pourri");
+        else if (state.equals("waxed_tainted")) stateStr = (isFeminine ? (isPlural ? "entachées" : "entachée") : (isPlural ? "entachés" : "entaché")) + " " + (isFeminine ? (isPlural ? "cirées" : "cirée") : (isPlural ? "cirés" : "ciré"));
+        else if (state.equals("waxed_moldy")) stateStr = (isFeminine ? (isPlural ? "moisies" : "moisie") : (isPlural ? "moisis" : "moisi")) + " " + (isFeminine ? (isPlural ? "cirées" : "cirée") : (isPlural ? "cirés" : "ciré"));
+        else if (state.equals("waxed_rotten")) stateStr = (isFeminine ? (isPlural ? "pourries" : "pourrie") : (isPlural ? "pourris" : "pourri")) + " " + (isFeminine ? (isPlural ? "cirées" : "cirée") : (isPlural ? "cirés" : "ciré"));
 
         return blockName + " " + wName + " " + stateStr;
     }

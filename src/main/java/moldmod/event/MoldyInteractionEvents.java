@@ -45,15 +45,24 @@ public class MoldyInteractionEvents {
             if (stack.isOf(Items.HONEYCOMB)) {
                 if (!isWaxed) {
                     if (!world.isClient) {
-                        BlockState newState = state.with(MoldyLogBlock.WAXED, true);
-                        if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
-                            newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
-                        }
-                        moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, true);
-                        world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                        moldmod.block.MoldyBlockHelper.grantAdvancement(player, "wax_block");
-                        if (!player.isCreative()) {
-                            stack.decrement(1);
+                        net.minecraft.block.Block waxedBlock = moldmod.block.ModBlocks.MOLDY_TO_WAXED.get(state.getBlock());
+                        if (waxedBlock != null) {
+                            BlockState newState = waxedBlock.getDefaultState();
+                            for (net.minecraft.state.property.Property<?> property : state.getProperties()) {
+                                if (newState.contains(property)) {
+                                    newState = copyProperty(newState, state, property);
+                                }
+                            }
+                            newState = newState.with(MoldyLogBlock.WAXED, true);
+                            if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
+                                newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
+                            }
+                            moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, true);
+                            world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                            moldmod.block.MoldyBlockHelper.grantAdvancement(player, "wax_block");
+                            if (!player.isCreative()) {
+                                stack.decrement(1);
+                            }
                         }
                     }
                     return ActionResult.SUCCESS;
@@ -64,13 +73,22 @@ public class MoldyInteractionEvents {
             if (stack.getItem() instanceof AxeItem) {
                 if (isWaxed) {
                     if (!world.isClient) {
-                        BlockState newState = state.with(MoldyLogBlock.WAXED, false);
-                        if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
-                            newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
+                        net.minecraft.block.Block moldyBlock = moldmod.block.ModBlocks.WAXED_TO_MOLDY.get(state.getBlock());
+                        if (moldyBlock != null) {
+                            BlockState newState = moldyBlock.getDefaultState();
+                            for (net.minecraft.state.property.Property<?> property : state.getProperties()) {
+                                if (newState.contains(property)) {
+                                    newState = copyProperty(newState, state, property);
+                                }
+                            }
+                            newState = newState.with(MoldyLogBlock.WAXED, false);
+                            if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
+                                newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
+                            }
+                            moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, false);
+                            world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                            stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
                         }
-                        moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, false);
-                        world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                        stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
                     }
                     return ActionResult.SUCCESS;
                 } else {
@@ -98,5 +116,9 @@ public class MoldyInteractionEvents {
 
             return ActionResult.PASS;
         });
+    }
+
+    private static <T extends Comparable<T>> BlockState copyProperty(BlockState to, BlockState from, net.minecraft.state.property.Property<T> property) {
+        return to.with(property, from.get(property));
     }
 }

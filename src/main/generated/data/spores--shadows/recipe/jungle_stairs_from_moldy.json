@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spores--shadows:moldy_jungle_planks"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:moldy_jungle_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_jungle_planks"
+      }
+    ]
   },
   "pattern": [
     "#  ",

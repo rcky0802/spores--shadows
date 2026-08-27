@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:moldy_acacia_wood"
-    }
+    [
+      {
+        "item": "spores--shadows:moldy_acacia_wood"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_acacia_wood"
+      }
+    ]
   ],
   "result": {
     "count": 1,

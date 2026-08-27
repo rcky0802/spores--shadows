@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:tainted_stripped_oak_log"
-    }
+    [
+      {
+        "item": "spores--shadows:tainted_stripped_oak_log"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_stripped_oak_log"
+      }
+    ]
   ],
   "result": {
     "count": 2,

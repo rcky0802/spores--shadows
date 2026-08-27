@@ -72,7 +72,7 @@ public class MoldyMiningAndLootTests {
     public void testWaxedBlockAlwaysDrops(TestContext context) {
         BlockPos pos = new BlockPos(0, 2, 0);
         // Even at Stage 3, if it's WAXED, it MUST drop guaranteed!
-        BlockState waxedRottenLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+        BlockState waxedRottenLog = ModBlocks.MOLDY_TO_WAXED.get(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG)).getDefaultState()
                 .with(MoldyLogBlock.STAGE, 3)
                 .with(MoldyLogBlock.WAXED, true);
         context.setBlockState(pos, waxedRottenLog);
@@ -84,7 +84,7 @@ public class MoldyMiningAndLootTests {
             context.throwPositionedException("Waxed block MUST drop even at Stage 3 without Silk Touch!", pos);
         }
         
-        if (!drops.get(0).getItem().equals(net.minecraft.registry.Registries.ITEM.get(moldmod.SporesShadows.id("rotten_oak_log")))) {
+        if (!drops.get(0).getItem().equals(net.minecraft.registry.Registries.ITEM.get(moldmod.SporesShadows.id("waxed_rotten_oak_log")))) {
             context.throwPositionedException("Did not drop correct item!", pos);
         }
 

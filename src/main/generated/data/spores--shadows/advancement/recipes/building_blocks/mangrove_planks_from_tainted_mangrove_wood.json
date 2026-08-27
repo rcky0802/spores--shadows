@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_tainted_mangrove_wood": {
+    "has_tainted": {
       "conditions": {
         "items": [
           {
@@ -16,12 +16,23 @@
         "recipe": "spores--shadows:mangrove_planks_from_tainted_mangrove_wood"
       },
       "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_waxed_tainted": {
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:waxed_tainted_mangrove_wood"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
-      "has_tainted_mangrove_wood"
+      "has_tainted",
+      "has_waxed_tainted"
     ]
   ],
   "rewards": {

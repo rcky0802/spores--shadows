@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "spores--shadows:tainted_warped_planks"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:tainted_warped_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_warped_planks"
+      }
+    ]
   },
   "pattern": [
     "#",

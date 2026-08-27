@@ -22,7 +22,6 @@ public class SporesShadows implements ModInitializer {
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
 
-		moldmod.block.TestReflection.run();
 		LOGGER.info("Hello Fabric world!");
 		me.shedaniel.autoconfig.AutoConfig.register(moldmod.config.ModConfig.class, me.shedaniel.autoconfig.serializer.JanksonConfigSerializer::new);
 		
@@ -31,7 +30,6 @@ public class SporesShadows implements ModInitializer {
 		moldmod.block.ModBlocks.registerModBlocks();
 		moldmod.event.MoldyInteractionEvents.register();
 		moldmod.event.ToxicAirEvent.register();
-		moldmod.block.TestReflection4.run();
 		moldmod.command.ModCommands.registerCommands();
 		moldmod.registry.ModFuelRegistry.register();
 		moldmod.registry.ModComposterRegistry.register();

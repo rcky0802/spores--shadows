@@ -29,6 +29,9 @@ public class MoldyBlockHelper {
     }
 
     public static boolean hasRandomTicks(BlockState state) {
+        if (net.minecraft.registry.Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("waxed_")) {
+            return false;
+        }
         return canBeInfected(state);
     }
 
@@ -304,5 +307,33 @@ public class MoldyBlockHelper {
                 }
             }
         }
+    }
+
+    public static net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, BlockPos pos, BlockState state) {
+        net.minecraft.block.Block block = state.getBlock();
+        int stage = state.contains(MoldyLogBlock.STAGE) ? state.get(MoldyLogBlock.STAGE) : 0;
+        boolean waxed = state.contains(MoldyLogBlock.WAXED) && state.get(MoldyLogBlock.WAXED);
+        
+        java.util.List<net.minecraft.item.Item> items = ModBlocks.MOLDY_ITEMS_BY_BLOCK.get(block);
+        if (items != null && items.size() == 7) {
+            if (stage == 0) {
+                if (!waxed) {
+                    net.minecraft.block.Block moldyBlock = block;
+                    if (ModBlocks.WAXED_TO_MOLDY.containsKey(block)) {
+                        moldyBlock = ModBlocks.WAXED_TO_MOLDY.get(block);
+                    }
+                    for (java.util.Map.Entry<net.minecraft.block.Block, net.minecraft.block.Block> entry : ModBlocks.VANILLA_TO_MOLDY.entrySet()) {
+                        if (entry.getValue() == moldyBlock) {
+                            return new net.minecraft.item.ItemStack(entry.getKey().asItem());
+                        }
+                    }
+                }
+                return new net.minecraft.item.ItemStack(items.get(0));
+            }
+            if (stage == 1) return new net.minecraft.item.ItemStack(waxed ? items.get(2) : items.get(1));
+            if (stage == 2) return new net.minecraft.item.ItemStack(waxed ? items.get(4) : items.get(3));
+            if (stage == 3) return new net.minecraft.item.ItemStack(waxed ? items.get(6) : items.get(5));
+        }
+        return new net.minecraft.item.ItemStack(block.asItem());
     }
 }

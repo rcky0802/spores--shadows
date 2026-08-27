@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spores--shadows:tainted_spruce_planks"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:tainted_spruce_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_spruce_planks"
+      }
+    ]
   },
   "pattern": [
     "###"

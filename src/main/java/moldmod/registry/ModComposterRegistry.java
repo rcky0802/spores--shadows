@@ -39,14 +39,29 @@ public class ModComposterRegistry {
         Item moldy = Registries.ITEM.get(SporesShadows.id("moldy_" + baseName));
         Item rotten = Registries.ITEM.get(SporesShadows.id("rotten_" + baseName));
 
+        Item waxedTainted = Registries.ITEM.get(SporesShadows.id("waxed_tainted_" + baseName));
+        Item waxedMoldy = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + baseName));
+        Item waxedRotten = Registries.ITEM.get(SporesShadows.id("waxed_rotten_" + baseName));
+
         if (tainted != net.minecraft.item.Items.AIR) {
             net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(tainted, 0.50f);
         }
+        if (waxedTainted != net.minecraft.item.Items.AIR) {
+            net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(waxedTainted, 0.50f);
+        }
+
         if (moldy != net.minecraft.item.Items.AIR) {
             net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(moldy, 0.65f);
         }
+        if (waxedMoldy != net.minecraft.item.Items.AIR) {
+            net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(waxedMoldy, 0.65f);
+        }
+
         if (rotten != net.minecraft.item.Items.AIR) {
             net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(rotten, 0.85f);
+        }
+        if (waxedRotten != net.minecraft.item.Items.AIR) {
+            net.fabricmc.fabric.api.registry.CompostingChanceRegistry.INSTANCE.add(waxedRotten, 0.85f);
         }
     }
 }

@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "#": {
-      "item": "spores--shadows:tainted_mangrove_planks"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:tainted_mangrove_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_mangrove_planks"
+      }
+    ]
   },
   "pattern": [
     "#  ",

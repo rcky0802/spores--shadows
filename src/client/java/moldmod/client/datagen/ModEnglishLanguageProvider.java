@@ -14,7 +14,7 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
     @Override
     protected String getTranslation(String wood, String blockType, String state) {
         String capitalizedWood = capitalize(wood.replace("_", " "));
-        String stateStr = capitalize(state);
+        String stateStr = capitalize(state.replace("_", " "));
         
         String typeStr = capitalize(blockType.replace("_", " "));
         if (blockType.equals("pressure_plate")) typeStr = "Pressure Plate";

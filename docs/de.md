@@ -94,6 +94,8 @@ Die Verwendung von verrottetem Holz zum Crafting ist unklug. Die innere Struktur
   *(💡 **Das Geheimnis des Wachses**: Das Wachsen eines Blocks festigt seine Struktur. Jeder Block der Mod, selbst der verrottete, wird, wenn er **gewachst** ist, immer eine **100%ige Drop-Chance** haben, selbst ohne Verwendung von Behutsamkeit!)*
 * 🛠️ **Crafting-Ertrag (Rückgewinnung)**:
   Du kannst infiziertes Holz weiterhin auf der Werkbank verwenden, um grundlegende Gegenstände (wie Bretter, Stufen, Treppen oder Stöcke) herzustellen. Der Endgegenstand wird immer perfekt sauber sein (**Vanilla**), aber da du gezwungen bist, die verrotteten Teile des ursprünglichen Holzes zu verwerfen, wird die Menge der erhaltenen Gegenstände drastisch sinken:
+  
+  *(💡 **Hybrides Crafting**: Infizierte und gewachste Holzblöcke desselben Schimmelstadiums können nun beliebig in derselben Crafting-Matrix gemischt werden, um saubere Vanilla-Gegenstände herzustellen!)*
 
   | Materialqualität | 🌳 Bsp: Stamm ➔ Bretter | 🦯 Bsp: Bretter ➔ Stöcke |
   | :--- | :---: | :---: |

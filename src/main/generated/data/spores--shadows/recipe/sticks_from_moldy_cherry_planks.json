@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": {
-      "item": "spores--shadows:moldy_cherry_planks"
-    }
+    "#": [
+      {
+        "item": "spores--shadows:moldy_cherry_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_cherry_planks"
+      }
+    ]
   },
   "pattern": [
     "#",

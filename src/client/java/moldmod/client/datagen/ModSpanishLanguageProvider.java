@@ -51,6 +51,9 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         else if (state.equals("waxed")) stateStr = isFeminine ? (isPlural ? "enceradas" : "encerada") : (isPlural ? "encerados" : "encerado");
         else if (state.equals("tainted")) stateStr = isFeminine ? (isPlural ? "manchadas" : "manchada") : (isPlural ? "manchados" : "manchado");
         else if (state.equals("rotten")) stateStr = isFeminine ? (isPlural ? "podridas" : "podrida") : (isPlural ? "podridos" : "podrido");
+        else if (state.equals("waxed_tainted")) stateStr = (isFeminine ? (isPlural ? "manchadas" : "manchada") : (isPlural ? "manchados" : "manchado")) + " " + (isFeminine ? (isPlural ? "enceradas" : "encerada") : (isPlural ? "encerados" : "encerado"));
+        else if (state.equals("waxed_moldy")) stateStr = (isFeminine ? (isPlural ? "mohosas" : "mohosa") : (isPlural ? "mohosos" : "mohoso")) + " " + (isFeminine ? (isPlural ? "enceradas" : "encerada") : (isPlural ? "encerados" : "encerado"));
+        else if (state.equals("waxed_rotten")) stateStr = (isFeminine ? (isPlural ? "podridas" : "podrida") : (isPlural ? "podridos" : "podrido")) + " " + (isFeminine ? (isPlural ? "enceradas" : "encerada") : (isPlural ? "encerados" : "encerado"));
 
         return blockName + " " + wName + " " + stateStr;
     }

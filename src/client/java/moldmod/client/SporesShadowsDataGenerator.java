@@ -7,7 +7,6 @@ import moldmod.client.datagen.ModBlockTagProvider;
 import moldmod.client.datagen.ModEnglishLanguageProvider;
 import moldmod.client.datagen.ModItalianLanguageProvider;
 import moldmod.client.datagen.ModLootTableProvider;
-import moldmod.client.datagen.ModModelProvider;
 import moldmod.client.datagen.ModRecipeProvider;
 import moldmod.client.datagen.ModSpanishLanguageProvider;
 import moldmod.client.datagen.ModFrenchLanguageProvider;
@@ -20,7 +19,6 @@ public class SporesShadowsDataGenerator implements DataGeneratorEntrypoint {
 
         pack.addProvider(ModBlockTagProvider::new);
         pack.addProvider(ModLootTableProvider::new);
-        pack.addProvider(ModModelProvider::new);
         pack.addProvider(ModEnglishLanguageProvider::new);
         pack.addProvider(ModItalianLanguageProvider::new);
         pack.addProvider(ModSpanishLanguageProvider::new);

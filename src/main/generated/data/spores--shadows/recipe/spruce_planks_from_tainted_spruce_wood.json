@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:tainted_spruce_wood"
-    }
+    [
+      {
+        "item": "spores--shadows:tainted_spruce_wood"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_spruce_wood"
+      }
+    ]
   ],
   "result": {
     "count": 2,

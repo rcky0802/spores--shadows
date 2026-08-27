@@ -94,7 +94,8 @@ Utiliser du bois pourri pour l'artisanat n'est pas sage. La structure interne du
   
   *(💡 **Le secret de la Cire** : Cirer un bloc consolide sa structure. N'importe quel bloc du mod, même Pourri, s'il est **Ciré** aura toujours **100% de chances de loot**, même sans utiliser l'enchantement Délicatesse !)*
 * 🛠️ **Rendement de l'Artisanat (Récupération)** :
-  Vous pouvez toujours utiliser le bois infecté dans l'établi pour fabriquer des objets de base (comme des Planches, Dalles, Escaliers ou Bâtons). L'objet final sera toujours parfaitement propre (**Vanilla**), mais comme vous êtes forcé de jeter les parties pourries du bois d'origine, la quantité d'objets obtenus chutera drastiquement :
+  Vous pouvez toujours utiliser le bois infecté dans l'établi pour fabriquer des objets de base (comme des Planches, Dalles, Escaliers ou Bâtons). L'objet final sera toujours parfaitement propre (**Vanilla**), mais comme vous êtes forcé de jeter les parties pourries du bois d'origine, la quantité d'objets obtenus chutera drastiquement.
+  *(💡 **Artisanat Hybride** : Vous pouvez mélanger librement des blocs de bois infectés et leurs variantes cirées du même stade de moisissure dans la même grille de fabrication sans aucun problème !)*
 
   | Qualité du Matériau | 🌳 Ex : Bûche ➔ Planches | 🦯 Ex : Planches ➔ Bâtons |
   | :--- | :---: | :---: |

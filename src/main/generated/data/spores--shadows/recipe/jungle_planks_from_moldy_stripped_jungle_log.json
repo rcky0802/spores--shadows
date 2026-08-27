@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:moldy_stripped_jungle_log"
-    }
+    [
+      {
+        "item": "spores--shadows:moldy_stripped_jungle_log"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_stripped_jungle_log"
+      }
+    ]
   ],
   "result": {
     "count": 1,

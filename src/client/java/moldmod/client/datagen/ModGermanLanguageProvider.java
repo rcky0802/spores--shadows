@@ -63,6 +63,18 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
             if (gender.equals("m")) stateStr = "Verrotteter";
             else if (gender.equals("f")) stateStr = "Verrottete";
             else stateStr = "Verrottetes";
+        } else if (state.equals("waxed_tainted")) {
+            if (gender.equals("m")) stateStr = "Gewachster befallener";
+            else if (gender.equals("f")) stateStr = "Gewachste befallene";
+            else stateStr = "Gewachstes befallenes";
+        } else if (state.equals("waxed_moldy")) {
+            if (gender.equals("m")) stateStr = "Gewachster schimmeliger";
+            else if (gender.equals("f")) stateStr = "Gewachste schimmelige";
+            else stateStr = "Gewachstes schimmeliges";
+        } else if (state.equals("waxed_rotten")) {
+            if (gender.equals("m")) stateStr = "Gewachster verrotteter";
+            else if (gender.equals("f")) stateStr = "Gewachste verrottete";
+            else stateStr = "Gewachstes verrottetes";
         }
 
         return stateStr + " " + wName + blockSuffix;

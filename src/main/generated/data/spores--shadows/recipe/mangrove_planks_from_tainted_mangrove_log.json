@@ -2,9 +2,14 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "spores--shadows:tainted_mangrove_log"
-    }
+    [
+      {
+        "item": "spores--shadows:tainted_mangrove_log"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_mangrove_log"
+      }
+    ]
   ],
   "result": {
     "count": 2,
