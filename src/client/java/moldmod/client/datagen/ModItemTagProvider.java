@@ -18,6 +18,8 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         // Copy block tags to item tags automatically!
         copy(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN);
         copy(BlockTags.LOGS, ItemTags.LOGS);
+        copy(BlockTags.CRIMSON_STEMS, ItemTags.CRIMSON_STEMS);
+        copy(BlockTags.WARPED_STEMS, ItemTags.WARPED_STEMS);
         copy(BlockTags.PLANKS, ItemTags.PLANKS);
         
         copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
@@ -30,5 +32,15 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.FENCES, ItemTags.FENCES);
         copy(BlockTags.DOORS, ItemTags.DOORS);
         copy(BlockTags.TRAPDOORS, ItemTags.TRAPDOORS);
+
+        FabricTagBuilder nonFlammable = getOrCreateTagBuilder(ItemTags.NON_FLAMMABLE_WOOD);
+        for (net.minecraft.item.Item item : net.minecraft.registry.Registries.ITEM) {
+            net.minecraft.util.Identifier id = net.minecraft.registry.Registries.ITEM.getId(item);
+            if (!id.getNamespace().equals(moldmod.SporesShadows.MOD_ID)) continue;
+            String name = id.getPath();
+            if ((name.contains("crimson") || name.contains("warped")) && name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten")) {
+                nonFlammable.add(item);
+            }
+        }
     }
 }

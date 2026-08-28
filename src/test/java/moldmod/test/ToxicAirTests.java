@@ -79,11 +79,18 @@ public class ToxicAirTests {
     public void testManhattanRadiusLimit(TestContext context) {
         BlockPos center = new BlockPos(2, 2, 2);
         
-        // Creiamo un lungo tunnel di aria (15 blocchi), circondato da pietra in alto per evitare openAir
-        for (int i = 0; i < 15; i++) {
-            BlockPos p = center.add(i, 0, 0);
-            context.setBlockState(p, Blocks.AIR);
-            context.setBlockState(p.add(0, 1, 0), Blocks.STONE); // Soffitto
+        // Creiamo un tunnel 1x1x15 sigillato su tutti i lati tranne lungo X
+        for (int dx = -1; dx <= 15; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    BlockPos p = center.add(dx, dy, dz);
+                    if (dy == 0 && dz == 0 && dx >= 0 && dx < 15) {
+                        context.setBlockState(p, Blocks.AIR);
+                    } else {
+                        context.setBlockState(p, Blocks.STONE);
+                    }
+                }
+            }
         }
         
         ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(center));
@@ -94,6 +101,130 @@ public class ToxicAirTests {
             context.throwPositionedException("Il raggio di manhattan non sta limitando la ricerca! Volume esplorato: " + result.volume, center);
         }
         
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testEnclosedRoomToxicity(TestContext context) {
+        // Costruiamo una scatola sigillata 3x3x3 di pietra attorno al centro (2,2,2)
+        BlockPos center = new BlockPos(2, 2, 2);
+        for (int x = 1; x <= 3; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE);
+                }
+            }
+        }
+        // Centro vuoto (aria)
+        context.setBlockState(center, Blocks.AIR);
+
+        // Mettiamo un blocco di legno infetto Stadio 2 su una parete interna (1, 2, 2)
+        BlockState moldyLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+                .with(MoldyLogBlock.STAGE, 2)
+                .with(MoldyLogBlock.WAXED, false);
+        context.setBlockState(new BlockPos(1, 2, 2), moldyLog);
+
+        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(center));
+
+        if (result.openAir) {
+            context.throwPositionedException("La stanza sigillata non dovrebbe essere considerata openAir!", center);
+        }
+        if (result.volume != 1) {
+            context.throwPositionedException("Il volume d'aria della stanza dovrebbe essere esattamente 1 blocco, trovato: " + result.volume, center);
+        }
+        if (result.toxicScore <= 0.0) {
+            context.throwPositionedException("Il punteggio di tossicità dovrebbe essere positivo per il legno allo Stadio 2!", center);
+        }
+        if (result.ventilationScore != 0.0) {
+            context.throwPositionedException("In una stanza sigillata il punteggio di ventilazione deve essere 0!", center);
+        }
+        if (result.netMiasma != result.toxicScore) {
+            context.throwPositionedException("In assenza di ventilazione, netMiasma deve coincidere con toxicScore!", center);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testOpenAirDissipation(TestContext context) {
+        BlockPos center = new BlockPos(2, 2, 2);
+        BlockPos absCenter = context.getAbsolutePos(center);
+        int topY = context.getWorld().getTopY(net.minecraft.world.Heightmap.Type.MOTION_BLOCKING, absCenter.getX(), absCenter.getZ());
+        BlockPos skyPos = new BlockPos(absCenter.getX(), Math.max(topY, absCenter.getY()), absCenter.getZ());
+
+        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), skyPos);
+
+        if (!result.openAir) {
+            context.throwPositionedException("Un blocco alla coordinata topY del cielo deve avere openAir = true!", center);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testWaxedWoodMiasmaImmunity(TestContext context) {
+        // Stanza sigillata con blocchi infetti tutti cerati
+        BlockPos center = new BlockPos(2, 2, 2);
+        for (int x = 1; x <= 3; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE);
+                }
+            }
+        }
+        context.setBlockState(center, Blocks.AIR);
+
+        // Blocco Marcio (Stadio 3) ma Cerato
+        BlockState waxedRotten = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+                .with(MoldyLogBlock.STAGE, 3)
+                .with(MoldyLogBlock.WAXED, true);
+        context.setBlockState(new BlockPos(1, 2, 2), waxedRotten);
+
+        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(center));
+
+        if (result.toxicScore != 0.0) {
+            context.throwPositionedException("Il legno cerato non deve produrre alcuno score di tossicità, trovato: " + result.toxicScore, center);
+        }
+        if (result.netMiasma != 0.0) {
+            context.throwPositionedException("Il miasma netto per legno cerato deve essere 0, trovato: " + result.netMiasma, center);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testVentilationWithGaps(TestContext context) {
+        // Stanza con soffitto parziale per permettere la ventilazione esterna
+        BlockPos center = new BlockPos(2, 2, 2);
+        for (int x = 1; x <= 3; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE);
+                }
+            }
+        }
+        context.setBlockState(center, Blocks.AIR);
+
+        // Parete con staccionata verso l'esterno (e aria sopra di essa per comunicare col cielo)
+        context.setBlockState(new BlockPos(1, 2, 2), Blocks.OAK_FENCE);
+        context.setBlockState(new BlockPos(1, 3, 2), Blocks.AIR);
+
+        // Blocco infetto su altra parete
+        BlockState moldy = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+                .with(MoldyLogBlock.STAGE, 2)
+                .with(MoldyLogBlock.WAXED, false);
+        context.setBlockState(new BlockPos(3, 2, 2), moldy);
+
+        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(center));
+
+        if (result.toxicScore <= 0.0) {
+            context.throwPositionedException("La tossicità da muffa deve essere presente!", center);
+        }
+        // Il calcolo deve restituire un netMiasma inferiore o uguale al toxicScore grazie alla ventilazione
+        if (result.netMiasma > result.toxicScore) {
+            context.throwPositionedException("Il miasma netto non può superare il toxicScore lordo!", center);
+        }
+
         context.complete();
     }
 }

@@ -26,6 +26,9 @@
 		],
 		"jade": [
 			"moldmod.integration.jade.JadePlugin"
+		],
+		"jei_mod_plugin": [
+			"moldmod.client.integration.jei.SporesShadowsJEIPlugin"
 		]
 	},
 	"mixins": [

@@ -187,12 +187,25 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.toxicity", "Toxizität");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity", "Toxizität");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.enable_toxic_air", "Toxische Luft / Miasma aktivieren");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.check_interval_ticks", "Kontrollintervall (Ticks)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.scan_radius", "Giftwolken-Radius");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.max_air_volume", "Max. Luftvolumen (m³)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.max_manhattan_radius", "Max. Manhattan-Radius");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.mold_toxicity_multiplier", "Schimmel-Toxizitätsmultiplikator");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.ventilation_gap_bonus", "Belüftungsbonus pro Öffnung");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.threshold_hunger", "Hunger-Schwellenwert");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.threshold_nausea", "Übelkeit-Schwelle");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.threshold_poison", "Gift-Schwellenwert");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.density_threshold_high", "Hohe Dichteschwelle");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.density_threshold_medium", "Mittlere Dichteschwelle");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.density_threshold_low", "Niedrige Dichteschwelle");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.duration_hunger_ticks", "Dauer Hunger (Ticks)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.duration_nausea_ticks", "Dauer Übelkeit (Ticks)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.duration_poison_ticks", "Dauer Gift (Ticks)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.hunger_amplifier", "Hunger-Verstärker");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.nausea_amplifier", "Übelkeit-Verstärker");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.poison_amplifier", "Gift-Verstärker");
         
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.client", "Client & Shader");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.client", "Client & Shader");
@@ -200,6 +213,32 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.client.mold_z_offset.@Tooltip[0]", "Passen Sie dies an, wenn Sie bei Shadern Z-Fighting (Flackern) bemerken.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.client.mold_z_offset.@Tooltip[1]", "Standard: 0.002. Versuchen Sie 0.005 oder höher, falls erforderlich.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.environment.water_scan_radius", "Wasser-Scan-Radius");
+
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.flammability", "Entflammbarkeit");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability", "Entflammbarkeit");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.enable_flammability", "Entflammbarkeitsskalierung aktivieren");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_1_burn_bonus", "Stufe 1 (Befallen) Entzündungs-Bonus");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_1_spread_bonus", "Stufe 1 (Befallen) Ausbreitungs-Bonus");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_2_burn_bonus", "Stufe 2 (Schimmlig) Entzündungs-Bonus");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_2_spread_bonus", "Stufe 2 (Schimmlig) Ausbreitungs-Bonus");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_3_burn_bonus", "Stufe 3 (Verfault) Entzündungs-Bonus");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_3_spread_bonus", "Stufe 3 (Verfault) Ausbreitungs-Bonus");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.waxed_burn_bonus", "Gewachstes Holz Entzündungs-Bonus");
+
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.blast_resistance", "Explosionsresistenz");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance", "Explosionsresistenz");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.enable_blast_resistance_scaling", "Explosionsresistenzskalierung aktivieren");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.stage_1_multiplier", "Stufe 1 (Befallen) Resistenz-Multiplikator");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.stage_2_multiplier", "Stufe 2 (Schimmlig) Resistenz-Multiplikator");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.stage_3_multiplier", "Stufe 3 (Verfault) Resistenz-Multiplikator");
+
+        // Hardness & Degradation
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.hardness", "Härte & Zersetzung");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.enable_hardness_scaling", "Härteskalierung aktivieren");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.stage_1_multiplier", "Stufe 1 Härtemultiplikator (Befallen)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.stage_2_multiplier", "Stufe 2 Härtemultiplikator (Schimmelig)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.stage_3_multiplier", "Stufe 3 Härtemultiplikator (Morsch)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.enable_break_spore_cloud", "Sporenwolke beim Abbau erzeugen (ohne Behutsamkeit)");
 
         // Jade Tooltips
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage", "Stadium: ");
@@ -224,5 +263,10 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Leide unter dem Gift des Miasmas, weil du zu viel Schimmel eingeatmet hast.");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Staub zu Staub");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Versuche, einen verfaulten Holzblock abzubauen und sieh zu, wie er zu nichts zerfällt.");
+
+        // JEI
+        translationBuilder.add("jei.spores--shadows.category.waxing", "Wachsen");
+        translationBuilder.add("jei.spores--shadows.category.scraping", "Axt-Schaben");
+        translationBuilder.add("jei.spores--shadows.info.rotten_wood", "Morsches Holz ist brüchig und zerfällt. Es kann nicht mit einer Axt geheilt werden. Es erfordert Behutsamkeit zum Abbau, sonst zerfällt es beim Zerstören zu Staub.");
     }
 }

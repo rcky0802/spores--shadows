@@ -18,8 +18,9 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
         FabricTagBuilder axeBuilder = getOrCreateTagBuilder(BlockTags.AXE_MINEABLE);
         FabricTagBuilder logsThatBurn = getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN);
         FabricTagBuilder logs = getOrCreateTagBuilder(BlockTags.LOGS);
+        FabricTagBuilder crimsonStems = getOrCreateTagBuilder(BlockTags.CRIMSON_STEMS);
+        FabricTagBuilder warpedStems = getOrCreateTagBuilder(BlockTags.WARPED_STEMS);
 
-        
         FabricTagBuilder fences = getOrCreateTagBuilder(BlockTags.FENCES);
         FabricTagBuilder woodenFences = getOrCreateTagBuilder(BlockTags.WOODEN_FENCES);
         FabricTagBuilder fenceGates = getOrCreateTagBuilder(BlockTags.FENCE_GATES);
@@ -44,24 +45,25 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
             }
             
             boolean isHealthyWaxed = name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten");
+            boolean isNether = name.contains("crimson") || name.contains("warped");
 
             if (name.contains("fence_gate")) {
                 fenceGates.add(block);
             } else if (name.contains("fence")) {
                 fences.add(block);
-                if (isHealthyWaxed) woodenFences.add(block);
+                if (isHealthyWaxed && !isNether) woodenFences.add(block);
             } else if (name.contains("stairs")) {
                 stairs.add(block);
-                if (isHealthyWaxed) woodenStairs.add(block);
+                if (isHealthyWaxed && !isNether) woodenStairs.add(block);
             } else if (name.contains("slab")) {
                 slabs.add(block);
-                if (isHealthyWaxed) woodenSlabs.add(block);
+                if (isHealthyWaxed && !isNether) woodenSlabs.add(block);
             } else if (name.contains("trapdoor")) {
                 trapdoors.add(block);
-                if (isHealthyWaxed) woodenTrapdoors.add(block);
+                if (isHealthyWaxed && !isNether) woodenTrapdoors.add(block);
             } else if (name.contains("door")) {
                 doors.add(block);
-                if (isHealthyWaxed) woodenDoors.add(block);
+                if (isHealthyWaxed && !isNether) woodenDoors.add(block);
             } else if (name.contains("button") || name.contains("pressure_plate")) {
                 // Do not tag buttons and pressure plates as logs
             } else if (name.contains("planks")) {
@@ -71,8 +73,12 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 }
             } else {
                 if (isHealthyWaxed) {
-                    logs.add(block);
-                    if (!name.contains("crimson") && !name.contains("warped")) {
+                    if (name.contains("crimson")) {
+                        crimsonStems.add(block);
+                    } else if (name.contains("warped")) {
+                        warpedStems.add(block);
+                    } else {
+                        logs.add(block);
                         logsThatBurn.add(block);
                     }
                 }

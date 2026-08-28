@@ -21,14 +21,13 @@ import java.util.Set;
 
 public class ToxicAirEvent {
 
-    private static final int MAX_AIR_VOLUME = 180;
-    private static final int MAX_MANHATTAN_RADIUS = 8;
     private static final Direction[] DIRECTIONS = Direction.values();
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(server -> {
             int currentTick = server.getTicks();
             moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            if (!config.toxicity.enable_toxic_air) return;
 
             int checkInterval = config.toxicity.check_interval_ticks;
             int radius = config.toxicity.scan_radius;
@@ -70,19 +69,18 @@ public class ToxicAirEvent {
             return;
         }
 
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
         MiasmaResult result = calculateMiasma(world, eyePos);
 
         // Se l'ambiente è aperto o supera il volume massimo, il gas si disperde
-        if (result.openAir || result.volume >= MAX_AIR_VOLUME) {
+        if (result.openAir || result.volume >= config.toxicity.max_air_volume) {
             return;
         }
 
         // Applicazione Effetti e Particelle
         double densita = result.netMiasma / Math.max(result.volume, 1);
 
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
-
-        if (result.netMiasma >= config.toxicity.threshold_poison || (densita >= 0.18 && result.netMiasma >= config.toxicity.threshold_nausea)) {
+        if (result.netMiasma >= config.toxicity.threshold_poison || (densita >= config.toxicity.density_threshold_high && result.netMiasma >= config.toxicity.threshold_nausea)) {
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, config.toxicity.duration_poison_ticks, config.toxicity.poison_amplifier, false, false, true));
             player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, config.toxicity.duration_nausea_ticks, config.toxicity.nausea_amplifier, false, false, true));
             MoldyBlockHelper.grantAdvancement(player, "toxic_air");
@@ -100,8 +98,8 @@ public class ToxicAirEvent {
                         p.getX() + 0.5 + (world.random.nextDouble() - 0.5), p.getY() + 0.8, p.getZ() + 0.5 + (world.random.nextDouble() - 0.5), 1, 0.0, 0.0, 0.0, 0.0);
                 }
             }
-        } else if (result.netMiasma >= 8.0 || (densita >= 0.09 && result.netMiasma >= 5.0)) {
-            player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 80, 0, false, false, true));
+        } else if (result.netMiasma >= config.toxicity.threshold_hunger || (densita >= config.toxicity.density_threshold_medium && result.netMiasma >= (config.toxicity.threshold_hunger / 2.0))) {
+            player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, config.toxicity.duration_hunger_ticks, config.toxicity.hunger_amplifier, false, false, true));
             
             // Light particles in the room
             int count = Math.min(result.volume / 2, 20);
@@ -112,7 +110,7 @@ public class ToxicAirEvent {
                 world.spawnParticles(player, ParticleTypes.MYCELIUM, false, 
                         p.getX() + 0.5 + (world.random.nextDouble() - 0.5), p.getY() + 0.5 + (world.random.nextDouble() - 0.5), p.getZ() + 0.5 + (world.random.nextDouble() - 0.5), 1, 0.0, 0.0, 0.0, 0.0);
             }
-        } else if (result.netMiasma >= 3.0 || densita >= 0.04) {
+        } else if (result.netMiasma >= (config.toxicity.threshold_hunger / 3.0) || densita >= config.toxicity.density_threshold_low) {
             // Warning particles in the room (no status effects yet)
             int count = Math.min(result.volume / 4, 10);
             if (count > 0) {
@@ -128,6 +126,12 @@ public class ToxicAirEvent {
     }
 
     public static MiasmaResult calculateMiasma(ServerWorld world, BlockPos eyePos) {
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+        int maxAirVolume = config.toxicity.max_air_volume;
+        int maxManhattanRadius = config.toxicity.max_manhattan_radius;
+        float moldToxMult = config.toxicity.mold_toxicity_multiplier;
+        float ventBonus = config.toxicity.ventilation_gap_bonus;
+
         Queue<BlockPos> queue = new ArrayDeque<>();
         Set<BlockPos> visited = new HashSet<>();
 
@@ -138,7 +142,7 @@ public class ToxicAirEvent {
         double ventilationScore = 0.0;
         boolean openAir = false;
 
-        while (!queue.isEmpty() && visited.size() < MAX_AIR_VOLUME) {
+        while (!queue.isEmpty() && visited.size() < maxAirVolume) {
             BlockPos currentPos = queue.poll();
             BlockState currentState = world.getBlockState(currentPos);
 
@@ -160,7 +164,7 @@ public class ToxicAirEvent {
                                         Math.abs(eyePos.getY() - neighborPos.getY()) + 
                                         Math.abs(eyePos.getZ() - neighborPos.getZ());
                     
-                    if (distManhattan <= MAX_MANHATTAN_RADIUS) {
+                    if (distManhattan <= maxManhattanRadius) {
                         if (visited.add(neighborPos)) {
                             queue.add(neighborPos);
                         }
@@ -173,7 +177,7 @@ public class ToxicAirEvent {
                         boolean isWaxed = neighborState.contains(MoldyLogBlock.WAXED) && neighborState.get(MoldyLogBlock.WAXED);
                         if (!isWaxed) {
                             int stage = neighborState.get(MoldyLogBlock.STAGE);
-                            toxicScore += (stage * 0.75);
+                            toxicScore += (stage * moldToxMult);
                         }
                     }
 
@@ -181,7 +185,7 @@ public class ToxicAirEvent {
                     if (!neighborState.isFullCube(world, neighborPos)) {
                         int neighborTopY = world.getTopY(Heightmap.Type.MOTION_BLOCKING, neighborPos.getX(), neighborPos.getZ());
                         if (neighborPos.getY() + 1 >= neighborTopY) {
-                            ventilationScore += 3.0;
+                            ventilationScore += ventBonus;
                         }
                     }
                 }

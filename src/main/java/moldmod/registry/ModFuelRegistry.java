@@ -9,6 +9,9 @@ public class ModFuelRegistry {
 
     public static void register() {
         for (moldmod.SporesShadowsConstants.MoldyWoodType woodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+            if (woodType.isNether()) {
+                continue;
+            }
             String logName = woodType.getLogName();
             String woodName = woodType.getWoodName();
             String prefix = woodType.name();

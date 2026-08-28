@@ -67,14 +67,18 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-	// Polymer for Virtual Resource Packs (Ora dipendenza obbligatoria esterna)
+	// Polymer for Virtual Resource Packs
 	modImplementation("eu.pb4:polymer-core:0.9.19+1.21.1")
 	modImplementation("eu.pb4:polymer-resource-pack:0.9.19+1.21.1")
     
-    // Jade API
+    // Jade API & Runtime
     modCompileOnly "maven.modrinth:jade:15.10.6+fabric"
     modLocalRuntime "maven.modrinth:jade:15.10.6+fabric"
     
+    // JEI API & Runtime (Optional Integration)
+    modCompileOnly "mezz.jei:jei-1.21.1-common-api-intermediary:19.21.0.247"
+    modCompileOnly "mezz.jei:jei-1.21.1-fabric-api:19.21.0.247"
+    modLocalRuntime "maven.modrinth:jei:19.21.0.247"
 }
 
 tasks.withType(AbstractCopyTask).configureEach {

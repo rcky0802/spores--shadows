@@ -59,4 +59,46 @@ public class BlockMixin {
             }
         }
     }
+
+    @Inject(method = "onBreak", at = @At("HEAD"))
+    private void spawnSporeCloudOnBreak(World world, BlockPos pos, BlockState state, net.minecraft.entity.player.PlayerEntity player, org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable<BlockState> cir) {
+        if (state.contains(MoldyLogBlock.STAGE)) {
+            int stage = state.get(MoldyLogBlock.STAGE);
+            if (stage < 2) return;
+
+            moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            if (config == null || config.hardness == null || !config.hardness.enable_break_spore_cloud) return;
+
+            boolean isWaxed = (state.contains(MoldyLogBlock.WAXED) && state.get(MoldyLogBlock.WAXED))
+                    || net.minecraft.registry.Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("waxed_");
+            if (isWaxed) return;
+
+            boolean hasSilkTouch = false;
+            if (player != null) {
+                net.minecraft.item.ItemStack tool = player.getMainHandStack();
+                var silkTouchEntry = world.getRegistryManager().get(net.minecraft.registry.RegistryKeys.ENCHANTMENT).getEntry(net.minecraft.enchantment.Enchantments.SILK_TOUCH);
+                if (silkTouchEntry.isPresent()) {
+                    hasSilkTouch = net.minecraft.enchantment.EnchantmentHelper.getLevel(silkTouchEntry.get(), tool) > 0;
+                }
+            }
+
+            if (!hasSilkTouch) {
+                if (world instanceof net.minecraft.server.world.ServerWorld serverWorld) {
+                    double cx = pos.getX() + 0.5;
+                    double cy = pos.getY() + 0.5;
+                    double cz = pos.getZ() + 0.5;
+
+                    int countAir = (stage == 3) ? 35 : 20;
+                    int countFalling = (stage == 3) ? 20 : 10;
+                    int countMycelium = (stage == 3) ? 25 : 12;
+
+                    serverWorld.spawnParticles(ParticleTypes.SPORE_BLOSSOM_AIR, cx, cy, cz, countAir, 0.4, 0.4, 0.4, 0.05);
+                    serverWorld.spawnParticles(ParticleTypes.FALLING_SPORE_BLOSSOM, cx, cy, cz, countFalling, 0.3, 0.3, 0.3, 0.02);
+                    serverWorld.spawnParticles(ParticleTypes.MYCELIUM, cx, cy, cz, countMycelium, 0.35, 0.35, 0.35, 0.02);
+
+                    world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_FUNGUS_BREAK, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 0.8f);
+                }
+            }
+        }
+    }
 }

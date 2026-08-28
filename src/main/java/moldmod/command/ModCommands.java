@@ -28,6 +28,12 @@ public class ModCommands {
                 .executes(context -> executeMoldRisk(context, false))
                 .then(CommandManager.literal("verbose")
                         .executes(context -> executeMoldRisk(context, true))));
+
+        dispatcher.register(CommandManager.literal("moldyrisk")
+                .requires(source -> source.hasPermissionLevel(2))
+                .executes(context -> executeMoldRisk(context, false))
+                .then(CommandManager.literal("verbose")
+                        .executes(context -> executeMoldRisk(context, true))));
                 
         dispatcher.register(CommandManager.literal("miasma")
                 .requires(source -> source.hasPermissionLevel(2))
@@ -52,29 +58,29 @@ public class ModCommands {
 
         moldmod.event.ToxicAirEvent.MiasmaResult result = moldmod.event.ToxicAirEvent.calculateMiasma((net.minecraft.server.world.ServerWorld)player.getWorld(), BlockPos.ofFloored(player.getEyePos()));
 
-        source.sendMessage(Text.literal("§a[Miasma Scanner] §eRilevazione in corso..."));
+        source.sendMessage(Text.literal("§a[Miasma Scanner] §eScanning environment..."));
         
         if (result.openAir) {
-            source.sendMessage(Text.literal("§7- Ambiente: §bAperto §7(Il miasma si disperde liberamente nel cielo)"));
+            source.sendMessage(Text.literal("§7- Environment: §bOpen Air §7(Miasma dissipates freely into the sky)"));
         } else if (result.volume >= 180) { // MAX_AIR_VOLUME
-            source.sendMessage(Text.literal(String.format("§7- Ambiente: §aChiuso ma molto ampio §7(Volume >= %s blocchi, l'aria è pulita)", result.volume)));
+            source.sendMessage(Text.literal(String.format("§7- Environment: §aEnclosed but very large §7(Volume >= %s blocks, air remains clean)", result.volume)));
         } else {
-            source.sendMessage(Text.literal(String.format("§7- Ambiente: §cSpazio Confinato §7(Volume: %s blocchi analizzati)", result.volume)));
+            source.sendMessage(Text.literal(String.format("§7- Environment: §cConfined Space §7(Volume: %s blocks analyzed)", result.volume)));
         }
 
         double densita = result.netMiasma / Math.max(result.volume, 1);
 
-        source.sendMessage(Text.literal(String.format("§7- Punteggio Tossicità (da muffa): §c+%.2f", result.toxicScore)));
-        source.sendMessage(Text.literal(String.format("§7- Punteggio Ventilazione (da fessure/buchi): §a-%.2f", result.ventilationScore)));
-        source.sendMessage(Text.literal(String.format("§7- Miasma Netto: §6%.2f", Math.max(0, result.netMiasma))));
-        source.sendMessage(Text.literal(String.format("§7- Densità Spore: §d%.3f", densita)));
+        source.sendMessage(Text.literal(String.format("§7- Toxicity Score (from mold): §c+%.2f", result.toxicScore)));
+        source.sendMessage(Text.literal(String.format("§7- Ventilation Score (from openings/gaps): §a-%.2f", result.ventilationScore)));
+        source.sendMessage(Text.literal(String.format("§7- Net Miasma: §6%.2f", Math.max(0, result.netMiasma))));
+        source.sendMessage(Text.literal(String.format("§7- Spore Density: §d%.3f", densita)));
 
         if (result.netMiasma >= 16.0 || (densita >= 0.18 && result.netMiasma >= 10.0)) {
-            source.sendMessage(Text.literal("§4[ATTENZIONE] Livello letale! Nausea e Veleno imminenti!"));
+            source.sendMessage(Text.literal("§4[WARNING] Lethal level! Nausea and Poison imminent!"));
         } else if (result.netMiasma >= 8.0 || (densita >= 0.09 && result.netMiasma >= 5.0)) {
-            source.sendMessage(Text.literal("§e[ATTENZIONE] Livello moderato! Fame imminente."));
+            source.sendMessage(Text.literal("§e[WARNING] Moderate level! Hunger imminent."));
         } else {
-            source.sendMessage(Text.literal("§a[SICURO] Livello di miasma innocuo."));
+            source.sendMessage(Text.literal("§a[SAFE] Harmless miasma level."));
         }
 
         return 1;

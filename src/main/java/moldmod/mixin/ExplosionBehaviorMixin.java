@@ -20,14 +20,17 @@ public class ExplosionBehaviorMixin {
     @Inject(method = "getBlastResistance", at = @At("RETURN"), cancellable = true)
     private void modifyMoldyBlastResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, CallbackInfoReturnable<Optional<Float>> cir) {
         if (blockState.contains(MoldyLogBlock.STAGE)) {
+            moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            if (!config.blastResistance.enable_blast_resistance_scaling) {
+                return;
+            }
             int stage = blockState.get(MoldyLogBlock.STAGE);
             Optional<Float> original = cir.getReturnValue();
             if (original.isPresent()) {
                 float res = original.get();
-                // Reduce resistance: Stage 1 = 80%, Stage 2 = 50%, Stage 3 = 10%
-                if (stage == 1) res *= 0.8f;
-                else if (stage == 2) res *= 0.5f;
-                else if (stage == 3) res = 0.1f; // Instantly destroyed
+                if (stage == 1) res *= config.blastResistance.stage_1_multiplier;
+                else if (stage == 2) res *= config.blastResistance.stage_2_multiplier;
+                else if (stage == 3) res *= config.blastResistance.stage_3_multiplier;
                 cir.setReturnValue(Optional.of(res));
             }
         }

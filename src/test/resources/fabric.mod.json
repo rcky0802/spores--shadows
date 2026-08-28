@@ -7,12 +7,19 @@
 	"entrypoints": {
 		"fabric-gametest": [
 			"moldmod.test.SporesShadowsTests",
+			"moldmod.test.MoldyInteractionTests",
 			"moldmod.test.MoldyInfectionRuleTests",
-			"moldmod.test.MoldyMiningAndLootTests",
-			"moldmod.test.MoldyCraftingAndFuelTests",
+			"moldmod.test.MoldyHardnessAndMiningSpeedTests",
+			"moldmod.test.MoldyDropAndLootTests",
+			"moldmod.test.MoldyFuelAndSmeltingTests",
+			"moldmod.test.MoldyComposterTests",
+			"moldmod.test.MoldyFlammabilityTests",
+			"moldmod.test.MoldyBlastResistanceTests",
+			"moldmod.test.MoldyCraftingYieldsTests",
 			"moldmod.test.MoldyVariantsCountTest",
 			"moldmod.test.MoldyMathTests",
-			"moldmod.test.StructureDegradationTest"
+			"moldmod.test.StructureDegradationTest",
+			"moldmod.test.ToxicAirTests"
 		]
 	},
     "depends": {

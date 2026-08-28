@@ -8,36 +8,71 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FireBlock.class)
+@Mixin(value = FireBlock.class, priority = 900)
 public class FireBlockMixin {
 
-    @Inject(method = "getBurnChance(Lnet/minecraft/block/BlockState;)I", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getBurnChance(Lnet/minecraft/block/BlockState;)I", at = @At("HEAD"), cancellable = true)
     private void increaseMoldyBurnChance(BlockState state, CallbackInfoReturnable<Integer> cir) {
         if (state.contains(MoldyLogBlock.STAGE)) {
-            int stage = state.get(MoldyLogBlock.STAGE);
-            if (stage > 0) {
-                // Vanilla wood is usually 5 burn chance. Moldy is drier/more flammable.
-                int original = cir.getReturnValue();
-                // If it wasn't flammable at all, we don't make it flammable, unless we want to?
-                // Wood is 5. Let's add 15 per stage.
-                if (original > 0) {
-                    cir.setReturnValue(original + (stage * 15));
-                }
+            net.minecraft.util.Identifier id = net.minecraft.registry.Registries.BLOCK.getId(state.getBlock());
+            String path = id.getPath();
+
+            if (path.contains("crimson") || path.contains("warped") || path.contains("button") || path.contains("pressure_plate")) {
+                cir.setReturnValue(0);
+                return;
             }
+
+            int base = 5;
+
+            moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            if (config == null || config.flammability == null || !config.flammability.enable_flammability) {
+                cir.setReturnValue(base);
+                return;
+            }
+
+            int stage = state.get(MoldyLogBlock.STAGE);
+            boolean isWaxed = (state.contains(MoldyLogBlock.WAXED) && state.get(MoldyLogBlock.WAXED))
+                    || path.startsWith("waxed_");
+
+            int bonus = 0;
+            if (stage == 1) bonus += config.flammability.stage_1_burn_bonus;
+            else if (stage == 2) bonus += config.flammability.stage_2_burn_bonus;
+            else if (stage == 3) bonus += config.flammability.stage_3_burn_bonus;
+
+            if (isWaxed) {
+                bonus += config.flammability.waxed_burn_bonus;
+            }
+
+            cir.setReturnValue(base + bonus);
         }
     }
 
-    @Inject(method = "getSpreadChance(Lnet/minecraft/block/BlockState;)I", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getSpreadChance(Lnet/minecraft/block/BlockState;)I", at = @At("HEAD"), cancellable = true)
     private void increaseMoldySpreadChance(BlockState state, CallbackInfoReturnable<Integer> cir) {
         if (state.contains(MoldyLogBlock.STAGE)) {
-            int stage = state.get(MoldyLogBlock.STAGE);
-            if (stage > 0) {
-                // Vanilla wood is usually 5 spread chance.
-                int original = cir.getReturnValue();
-                if (original > 0) {
-                    cir.setReturnValue(original + (stage * 15));
-                }
+            net.minecraft.util.Identifier id = net.minecraft.registry.Registries.BLOCK.getId(state.getBlock());
+            String path = id.getPath();
+
+            if (path.contains("crimson") || path.contains("warped") || path.contains("button") || path.contains("pressure_plate")) {
+                cir.setReturnValue(0);
+                return;
             }
+
+            int base = (path.contains("log") || path.contains("wood")) ? 5 : 20;
+
+            moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            if (config == null || config.flammability == null || !config.flammability.enable_flammability) {
+                cir.setReturnValue(base);
+                return;
+            }
+
+            int stage = state.get(MoldyLogBlock.STAGE);
+            int bonus = 0;
+            if (stage == 1) bonus += config.flammability.stage_1_spread_bonus;
+            else if (stage == 2) bonus += config.flammability.stage_2_spread_bonus;
+            else if (stage == 3) bonus += config.flammability.stage_3_spread_bonus;
+
+            cir.setReturnValue(base + bonus);
         }
     }
 }

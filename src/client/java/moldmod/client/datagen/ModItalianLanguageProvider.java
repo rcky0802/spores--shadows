@@ -166,12 +166,23 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
 
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.toxicity", "Tossicità");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity", "Tossicità");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.enable_toxic_air", "Abilita Aria Tossica / Miasma");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.check_interval_ticks", "Intervallo Controlli (Ticks)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.scan_radius", "Raggio Nube Tossica");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.max_air_volume", "Volume Massimo Aria (m³)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.max_manhattan_radius", "Raggio Manhattan Massimo");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.mold_toxicity_multiplier", "Moltiplicatore Tossicità Muffa");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.ventilation_gap_bonus", "Bonus Ventilazione per Fessura");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.threshold_hunger", "Soglia Fame");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.threshold_nausea", "Soglia Nausea");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.threshold_poison", "Soglia Veleno");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.density_threshold_high", "Soglia Densità Alta");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.density_threshold_medium", "Soglia Densità Media");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.density_threshold_low", "Soglia Densità Bassa");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.duration_hunger_ticks", "Durata Fame (Tick)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.duration_nausea_ticks", "Durata Nausea (Tick)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.duration_poison_ticks", "Durata Veleno (Tick)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.hunger_amplifier", "Potenza Fame (Amplificatore)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.nausea_amplifier", "Potenza Nausea (Amplificatore)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.poison_amplifier", "Potenza Veleno (Amplificatore)");
         
@@ -181,6 +192,34 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.client.mold_z_offset.@Tooltip[0]", "Aumenta questo valore se noti problemi grafici (Z-fighting) con shader.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.client.mold_z_offset.@Tooltip[1]", "Predefinito: 0.002. Prova 0.005 o superiori se necessario.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.environment.water_scan_radius", "Raggio Scansione Acqua");
+
+        // Flammability
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.flammability", "Infiammabilità");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability", "Infiammabilità");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.enable_flammability", "Abilita Scalamento Infiammabilità");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_1_burn_bonus", "Bonus Probabilità Innesco Stadio 1 (Intaccato)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_1_spread_bonus", "Bonus Propagazione Fuoco Stadio 1 (Intaccato)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_2_burn_bonus", "Bonus Probabilità Innesco Stadio 2 (Ammuffito)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_2_spread_bonus", "Bonus Propagazione Fuoco Stadio 2 (Ammuffito)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_3_burn_bonus", "Bonus Probabilità Innesco Stadio 3 (Marcio)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.stage_3_spread_bonus", "Bonus Propagazione Fuoco Stadio 3 (Marcio)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.flammability.waxed_burn_bonus", "Bonus Innesco Legno Cerato");
+
+        // Blast Resistance
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.blast_resistance", "Resistenza Esplosioni");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance", "Resistenza Esplosioni");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.enable_blast_resistance_scaling", "Abilita Scalamento Resistenza Esplosioni");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.stage_1_multiplier", "Moltiplicatore Resistenza Stadio 1 (Intaccato)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.stage_2_multiplier", "Moltiplicatore Resistenza Stadio 2 (Ammuffito)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.blast_resistance.stage_3_multiplier", "Moltiplicatore Resistenza Stadio 3 (Marcio)");
+
+        // Hardness
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.hardness", "Durezza e Degrado");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.enable_hardness_scaling", "Abilita Scalamento Durezza");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.stage_1_multiplier", "Moltiplicatore Durezza Stadio 1 (Contaminato)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.stage_2_multiplier", "Moltiplicatore Durezza Stadio 2 (Ammuffito)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.stage_3_multiplier", "Moltiplicatore Durezza Stadio 3 (Marcio)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.hardness.enable_break_spore_cloud", "Nuvola di Spore alla Rottura (Senza Tocco di Velluto)");
 
         // Jade Tooltips
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage", "Stadio: ");
@@ -205,5 +244,10 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Subisci il veleno del miasma respirando troppa muffa.");
         translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Polvere alla Polvere");
         translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla.");
+
+        // JEI Integration
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Ceratura");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Raschiamento con Ascia");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Il legno marcio è friabile e degradato. Non può essere curato con un'ascia. Richiede Tocco di Velluto per essere raccolto, altrimenti si disintegrerà nel nulla quando viene rotto.");
     }
 }

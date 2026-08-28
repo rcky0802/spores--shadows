@@ -1,179 +1,305 @@
 # Spores & Shadows 
 
-**Spores & Shadows** ist eine Mod für Minecraft (Fabric 1.21.1), die ein dynamisches, realistisches und unerbittliches Ökosystem für den Zerfall von Holz einführt. Keine Struktur ist vor der Zeit und den Elementen sicher!
+**Spores & Shadows** ist eine Mod für Minecraft (Fabric 1.21.1), die ein dynamisches, hochrealistisches und unerbittliches Ökosystem für den Zerfall von Holz einführt. Keine hölzerne Struktur ist vor der Zeit, Feuchtigkeit und den Elementen sicher!
+
+---
+
+## 📑 Inhaltsverzeichnis
+1. [🌳 Übersicht und Inhalte](#-übersicht-und-inhalte)
+2. [🦠 Der Schimmelkreislauf](#-der-schimmelkreislauf)
+3. [☠️ Umweltgefahren (Volumetrisches Miasma)](#️-umweltgefahren-volumetrisches-miasma)
+4. [🛠️ Interaktionen und Vorbeugung](#️-interaktionen-und-vorbeugung)
+5. [⚖️ Physikalische Eigenschaften, Strafen und Crafting](#️-physikalische-eigenschaften-strafen-und-crafting)
+6. [🗺️ Generierung von Strukturen](#️-generierung-von-strukturen)
+7. [📊 HUD-, JEI- & Mod-Integrationen](#-hud--jei--mod-integrationen)
+8. [💻 Admin- und Debug-Befehle](#-admin--und-debug-befehle)
+9. [⚙️ Mod-Konfiguration (Cloth Config)](#️-mod-konfiguration-cloth-config)
 
 ---
 
 ## 🌳 Übersicht und Inhalte
 
-Hast du jemals eine majestätische Holzhütte gebaut und gedacht, dass sie unversehrt bleibt, die Jahrhunderte überdauert und keinerlei Wartung bedarf? **Spores & Shadows** revolutioniert diese Gewissheit und verwandelt Holz von einem einfachen inerten Block in ein lebendiges, verletzliches und auf die Umgebung reagierendes Material.
+Hast du jemals eine majestätische Holzhütte gebaut und gedacht, dass sie unversehrt bleibt, die Jahrhunderte überdauert und keinerlei Wartung bedarf? **Spores & Shadows** revolutioniert diese Gewissheit und verwandelt Holz von einem einfachen, statischen Block in ein lebendiges, verletzliches und auf die Umgebung reagierendes Material.
 
-Die Mod ersetzt nahtlos und unbemerkt jedes vom Spieler platzierte (oder natürlich in Strukturen wie Schiffswracks und Minen generierte) Holz durch eine "ruhende" Variante. Im Laufe der Zeit werden Witterungseinflüsse wie Regen, Feuchtigkeit, Dunkelheit und sogar das Biom, in dem du dich befindest, das Schicksal deiner Konstruktionen besiegeln. Du bist gezwungen, deine Gebäude zu schützen oder hilflos ihrem unaufhaltsamen Verfall zuzusehen.
+Die Mod ersetzt nahtlos und unbemerkt jedes vom Spieler platzierte (oder natürlich in Strukturen wie Schiffswracks und Minenschächten generierte) Holz durch eine ruhende Variante. Im Laufe der Zeit besiegeln Witterungseinflüsse wie Regen, Feuchtigkeit, Dunkelheit, Tiefe und das lokale Biom das Schicksal deiner Bauten. Du bist gefordert, deine Gebäude aktiv zu pflegen und zu schützen – oder ihrem unaufhaltsamen Verfall zuzusehen.
 
 ### 🔢 Technische Details und neue Blöcke
 
-Auf technischer Ebene fügt die Mod für jede einzelne Holzvariante ein komplettes Ökosystem ein (einschließlich Karmesin- und Wirrholz).
+Auf technischer Ebene fügt die Mod für jede einzelne Holzvariante des Spiels ein vollständiges Ökosystem hinzu (einschließlich Karmesin- und Wirrholz aus dem Nether):
 
 * **🧱 13 Architektonische Formate**: *Stämme*, *Entrindete Stämme*, *Holz*, *Entrindetes Holz*, *Bretter*, *Treppen*, *Stufen*, *Zäune*, *Zauntore*, *Türen*, *Falltüren*, *Druckplatten*, *Knöpfe*.
 
-Für jedes der 130 Basis-Holzformate fügt die Mod **3 schimmlige Varianten** hinzu (Befallen, Schimmelig, Verrottet). Zusätzlich wird für jeden dieser Blöcke — einschließlich des ursprünglichen Vanilla-Blocks — die entsprechende **gewachste Variante** erstellt.
+Für jedes der 130 Basis-Holzformate implementiert die Mod **3 schimmlige Zerfallsvarianten** (*Befallen*, *Schimmelig*, *Verrottet*). Zusätzlich existiert für jeden dieser Blöcke – einschließlich des ursprünglichen Vanilla-Basisblocks – eine entsprechende **gewachste Variante**.
 
-Auf diese Weise bietet das Spiel unglaubliche **910 einzigartige Varianten, die im Survival-Modus erhältlich sind**:
-1. Die **130 gewachsten Vanilla-Varianten**: Die geschützte und gewachste Kopie des Vanilla-Basisblocks.
+Auf diese Weise bietet das Spiel **910 einzigartige Varianten, die im Survival-Modus voll erhältlich und nutzbar sind**:
+1. Die **130 gewachsten Vanilla-Varianten**: Die geschützte und versiegelte Kopie des Basisblocks.
 2. Die **390 schimmligen Varianten**: Die drei natürlichen Zerfallsstadien.
-3. Die **390 gewachsten schimmligen Varianten**: Die verfallenen, aber durch Wachs in der Zeit eingefrorenen Blöcke.
+3. Die **390 gewachsten schimmligen Varianten**: Die verfallenen, aber durch Bienenwachs in der Zeit dauerhaft konservierten Blöcke.
 
-Dieses System ermöglicht es dir, teilweise verschimmelte Blöcke im Survival-Modus zu erhalten und sie dann mit einer Honigwabe zu "versiegeln". So können sie völlig sicher für dekorative Zwecke verwendet werden, ohne das Risiko, benachbarte Konstruktionen zu infizieren.
+> [!TIP]
+> **Konservierung & Dekoration**: Du kannst verwitterte oder überwucherte Blöcke gezielt im Survival-Modus entstehen lassen und sie anschließend mit einer Honigwabe versiegeln. Dadurch behält der Block seine einzigartige morbide Textur, verliert aber jegliche Ansteckungskraft und gast kein Miasma mehr aus.
 
 ---
 
 ## 🦠 Der Schimmelkreislauf
 
-Das Holz durchläuft 4 Zerfallsstadien: **Vanilla (0) ➔ Befallen (1) ➔ Schimmelig (2) ➔ Verrottet (3)**.
+Holz durchläuft 4 aufeinanderfolgende Zerfallsstadien:  
+**Gesund / Vanilla (0) ➔ Befallen (1) ➔ Schimmelig (2) ➔ Verrottet (3)**.
 
-Der Fortschritt findet nur statt, wenn das "Infektionsrisiko" (`R`), das ständig neu berechnet wird, den festen Schwellenwert von **0.4** überschreitet. Die genaue Formel lautet:
-`R = ((Feuchtigkeit * Licht * Anfälligkeit) + Ansteckung) * Temperatur`
+Ein Übergang in die nächste Stufe wird bei jedem Zufallsticker berechnet und vollzieht sich nur, wenn das dynamische **Infektionsrisiko ($R$)** den konfigurierten Schwellenwert von standardmäßig **0.40** überschreitet:
 
-### Genaue Faktoren und Variablen
-* 💧 **Feuchtigkeit (Klima + Tiefe + Wasser)**: 
-  - Der Basiswert hängt vom Niederschlag des Bioms ab (Regen/Schnee: `0.8`, Trocken: `0.3`). 
-  - **Tiefen-Malus**: Wenn man unter den Meeresspiegel sinkt (`Y < 64`), steigt die Feuchtigkeit rapide um `+0.01` für jeden Block Tiefe, was Minen zu extrem feuchten Umgebungen macht.
-  - **Lokaler Malus**: Die Nähe zu Wasserblöcken (`+0.15`) oder Kesseln (`+0.10`) fügt dem Block zusätzliche Feuchtigkeit hinzu.
-* ☀️ **Licht (UV)**: Skaliert linear von `0.0` (Lichtlevel 15, blockiert die Infektion vollständig) bis `1.0` (Totale Dunkelheit).
-* 🪓 **Anfälligkeit des Materials**: Entrindetes Holz ist extrem verletzlich (`x1.4`), rohe Stämme sind Standard (`x1.0`), während zu Brettern verarbeitetes Holz etwas widerstandsfähiger ist (`x0.8`).
-* 🌡️ **Temperatur (Biom + Höhe/Tiefe)**: 
-  - Wirkt als Überlebensfilter. Schimmel wächst **nur**, wenn die lokale Temperatur zwischen `0.15` und `1.5` liegt.
-  - **An der Oberfläche**: Abhängig vom Biom. Extreme Klimazonen wie Wüsten oder Gletscher stoppen die Infektion vollständig und senken den Faktor auf `0.0`.
-  - **Nether & End**: Die extreme Hitze des Nethers und die eisige Leere des Ends sind für Schimmel absolut tödlich. Holz wird in diesen Dimensionen niemals verrotten.
-  - **Unterirdisch (`Y < 64`)**: Unabhängig vom Oberflächenbiom normalisiert sich die Temperatur mit zunehmender Tiefe allmählich und stabilisiert sich unterhalb von `Y=48` bei perfekten `0.5` (mild). Selbst in einer Wüste oder einem eisigen Biom entwickelt sich in tiefen Höhlen Schimmel!
-  - **Große Höhen (`Y > 128`)**: Mit zunehmender Höhe sinkt die Temperatur allmählich und friert auf Höhe `Y=256` bei `-0.5` ein. Der Bau von Hütten im Hochgebirge schützt das Holz fast überall.
-* ☣️ **Ansteckung (Katalysatoren)**: Addiert einen direkten Malus, wenn das Holz in Kontakt mit infektiösen Erregern kommt:
-  - Infiziertes Holz: Befallen (`+0.05`), Schimmelig (`+0.10`), Verrottet (`+0.20`).
-  - Umgebung: Schlamm (`+0.05`), Podsol/Myzel (`+0.15`), Pilze (`+0.25`), Sporenblüte (`+0.80`).
+$$R = \Big( (\text{Feuchtigkeit} \times \text{Licht} \times \text{Anfälligkeit}) + \text{Ansteckung} \Big) \times \text{Temperatur}$$
+
+### 🔬 Genaue Faktoren und Parameter
+
+* 💧 **Feuchtigkeit ($\text{Moisture}$)**:
+  * **Biom-Basiswert**: Abhängig vom Niederschlag des Bioms (Regen/Schnee: `0.8`, Trocken: `0.3`).
+  * **Tiefen-Malus**: Unterhalb des Meeresspiegels ($Y < 64$) steigt die Grundfeuchtigkeit drastisch um `+0.01` pro Block Tiefe an ($Y=48 \rightarrow +0.16$, tiefere Höhlen und Minen erreichen maximale Feuchtigkeit).
+  * **Lokale Nachbarschaft**: Direkter Kontakt mit Wasserblöcken addiert `+0.15`, Kessel addieren `+0.10`.
+* ☀️ **Licht ($\text{Licht / UV}$)**:
+  * Skaliert linear von `0.0` (Lichtlevel 15, blockiert den Zerfall vollständig) bis `1.0` (Vollkommene Dunkelheit / Lichtlevel 0).
+* 🪓 **Material-Anfälligkeit ($\text{Susceptibility}$)**:
+  * Entrindetes Holz ist besonders schutzlos (`x1.4`), rohe Stämme sind der Standard (`x1.0`), während gesägte Bretter dichter und widerstandsfähiger sind (`x0.8`).
+* 🌡️ **Temperatur ($\text{Temperature}$)**:
+  * Dient als biologischer Überlebensfilter: Schimmelsporen vermehren sich **nur** in einem Temperaturfenster zwischen `0.15` und `1.5`.
+  * **Oberfläche**: Extreme Klimazonen wie sengende Wüsten oder vereiste Gletscher stoppen den Schimmelbefall ($0.0$).
+  * **Nether & End**: Die extreme Hitze des Nethers und das eisige Vakuum des Ends sind für Schimmelpilze absolut tödlich. Holz verrottet in diesen Dimensionen niemals spontan.
+  * **Tiefen-Normalisierung ($Y < 64$)**: Tief unter der Erde nähert sich die Temperatur unabhängig vom Oberflächenbiom an und stabilisiert sich ab $Y \le 48$ bei milden `0.5`. Auch unter Wüsten oder Tundren schimmelt Holz im Untergrund!
+  * **Höhen-Vereisung ($Y > 128$)**: Mit zunehmender Höhe kühlt die Luft ab und gefriert ab $Y=256$ bei `-0.5`. Berghütten im Hochgebirge sind von Natur aus hervorragend geschützt.
+* ☣️ **Ansteckung & Katalysatoren ($\text{Contagion}$)**:
+  * Direkter Nachbarschaftskontakt mit Pilzherden beschleunigt die Infektion massiv:
+    * Befallener Block: `+0.05`
+    * Schimmeliger Block: `+0.10`
+    * Verrotteter Block: `+0.20`
+    * Schlamm: `+0.05`
+    * Podsol / Myzel: `+0.15`
+    * Pilze (Braun / Rot): `+0.25`
+    * Sporenblüte (*Spore Blossom*): `+0.80`
 
 ---
 
-## ☠️ Umweltgefahren (Miasma)
+## ☠️ Umweltgefahren (Volumetrisches Miasma)
 
-- ✨ **Sporenpartikel**: Blöcke im Stadium **Schimmelig** oder **Verrottet** geben Sporen an exponierten Flächen ab (unter Wasser deaktiviert).
-- 🤢 **Toxisches Miasma (Volumetrisches System)**: Durch einen fortschrittlichen *Volumetrischen Flood-Fill-Algorithmus* berechnet das Spiel die Luftverschmutzung und die Ausbreitung giftiger Gase in geschlossenen Räumen basierend auf der Raumgröße und der Schimmeldichte. Wenn du dich im Freien oder in riesigen offenen Gebieten befindest, zerstreuen sich die Sporen harmlos. In geschlossenen Räumen oder kleinen Kellern (bis zu 180 Blöcken Volumen) stagniert das Miasma jedoch und sammelt sich gefährlich an.
-  - Jeder ungewachste schimmelige oder verrottete Block infiziert die Raumluft und erhöht die toxische Belastung.
-  - Massive Wände blockieren die Gase, aber angelehnte Türen, Falltüren oder Treppen lassen das Miasma in angrenzende Räume strömen.
-  - **Natürliche Belüftung**: Teilblöcke mit Kontakt zur Außenwelt (wie Zäune, Mauern oder Eisengitter) wirken als Lüftungsöffnungen und reduzieren den Netto-Miasma-Wert drastisch!
-  
-  **Effekte basierend auf der Nettokonzentration**:
-  - Miasma > **8**: **Hunger** (Leichte Sporenkonzentration)
-  - Miasma > **16**: **Übelkeit + Vergiftung** (Dichte Sporenkonzentration)
-  
-  *(💡 Sowohl die Schwellenwerte für Übelkeit und Vergiftung als auch die Effektdauer und Scan-Parameter sind über Cloth Config / ModMenu zu 100% konfigurierbar! Verwende den Admin-Befehl `/miasma`, um die Messwerte und das genaue Volumen deines aktuellen Raums anzuzeigen!)*
+- ✨ **Sporenpartikel**: Ungewachste Blöcke im Stadium **Schimmelig** oder **Verrottet** sondern bei Kontakt mit Luft kontinuierlich sichtbare Sporen ab (unter Wasser inaktiv).
+- 🤢 **Volumetrisches Miasma-System (Flood-Fill BFS)**:
+  Das Miasma-System nutzt einen präzisen 3D-Breitensuche-Algorithmus (*Flood-Fill BFS*), der von den Augen des Spielers ausgeht und geschlossene Räume scannt:
+  * **Freie Natur vs. Geschlossener Raum**: Im Freien oder in weitläufigen Hallen mit direktem Himmelskontakt verflüchtigen sich Sporen augenblicklich ($openAir = true$). In engen Räumen oder feuchten Kellern (bis zu $512\text{ m}^3$ Raumvolumen) staut sich das giftige Gas an.
+  * **Manhattan-Radius-Begrenzung**: Die Erkennung ist auf einen maximalen Manhattan-Radius von $8$ Blöcken begrenzt ($|x| + |y| + |z| \le 8$), wodurch endlose Tunnelketten performance-schonend begrenzt werden.
+  * **Wände und Durchgänge**: Solide Vollblöcke versiegeln den Raum. Offene Türen, Falltüren oder Treppen lassen das Miasma ungehindert in Nebenräume strömen.
+  * **Natürliche Belüftung (*Ventilation*)**: Teilblöcke mit Öffnungen zur Außenwelt (wie Zäune, Eisengitter, Mauern oder Fensterluken) zählen als Belüftungsöffnungen und verringern den Toxizitätswert massiv ($\text{Ventilation Score} += 3.0$ pro Fuge):
+    $$\text{Netto-Miasma} = \text{Toxizitäts-Score} - \text{Belüftungs-Score}$$
+    $$\text{Sporendichte} = \frac{\text{Netto-Miasma}}{\text{Raumvolumen}}$$
+
+### ⚠️ Statuseffekte und Vergiftungsschwellen
+
+| Gefahrenstufe | Kriterien (Netto-Miasma & Dichte) | Symptome & Statuseffekte |
+| :--- | :--- | :--- |
+| 🟢 **Sicher** | $\text{Netto-Miasma} < 3.0$ | Saubere Luft, keine Effekte. |
+| 🟡 **Warnung** | $\text{Netto-Miasma} \ge 3.0$ oder $\text{Dichte} \ge 0.04$ | Feine Myzel-Sporen schweben in der Raumluft. |
+| 🟠 **Mäßig** | $\text{Netto-Miasma} \ge 8.0$ (oder $\text{Dichte} \ge 0.09 \land \text{Netto} \ge 5.0$) | **Hunger** (Sporen greifen die Atemwege an). |
+| 🔴 **Tödlich** | $\text{Netto-Miasma} \ge 35.0$ (oder $\text{Dichte} \ge 0.18 \land \text{Netto} \ge 15.0$) | **Übelkeit + Vergiftung** (Schwere Mykotoxikose). |
+
+*(💡 Alle Schwellenwerte, Dauern und Effektstärken lassen sich im Konfigurationsmenü flexibel justieren).*
 
 ---
 
 ## 🛠️ Interaktionen und Vorbeugung
 
-Der Spieler ist der Natur nicht schutzlos ausgeliefert. Durch Ausrüsten des richtigen Werkzeugs und Agieren im **Schleich-Modus (Sneaking / Shift)** kannst du direkt mit dem Lebenszustand des Holzes interagieren. 
-*(Das Schleichen ist zwingend erforderlich, um ein versehentliches Wachsen oder Abkratzen von interaktiven Blöcken wie Türen, Falltüren oder Knöpfen zu vermeiden).*
+Durch Interaktion im **Schleich-Modus (Sneaking / Shift)** kannst du das Schicksal von Holzblöcken gezielt steuern. Das Schleichen verhindert versehentliche Auslösungen bei interaktiven Blöcken (z. B. Türen, Falltüren oder Knöpfen).
 
-* 🪓 **Verwendung der Axt (Abkratzen)**: Durch *Shift + Rechtsklick* mit einer Axt:
-  - Wenn der Block **Gewachst** ist, entfernt die Axt die Wachsschicht und stellt den normalen Lebenszyklus wieder her.
-  - Wenn der Block **Befallen oder Schimmelig** ist, kratzt die Axt die oberflächliche Pilzschicht ab und reduziert den Zerfall um 1 Stufe. Ein Block auf Stufe 1 wird wieder perfekt sauber (Stufe 0 Vanilla).
-  *(Jedes Abkratzen verbraucht wie gewohnt Haltbarkeit).*
-* 🐝 **Verwendung der Honigwabe (Wachsen)**: Durch *Shift + Rechtsklick* mit einer Honigwabe auf einen Block in *jedem* Stadium wird dieser **Gewachst**. Gewachstes Holz ist versiegelt: Es wird immun gegen Umwelteinflüsse, friert seinen Zerfall auf unbestimmte Zeit ein und verliert die Fähigkeit, benachbarte Blöcke zu infizieren oder zum toxischen Miasma beizutragen. 
+```mermaid
+graph LR
+    A["Gesund (Vanilla)"] -->|Honigwabe| AW["Gewachst Gesund"]
+    A -->|Verfall| B["Befallen (Stufe 1)"]
+    B -->|Axt| A
+    B -->|Honigwabe| BW["Gewachst Befallen"]
+    B -->|Verfall| C["Schimmelig (Stufe 2)"]
+    C -->|Axt| B
+    C -->|Honigwabe| CW["Gewachst Schimmelig"]
+    C -->|Verfall| D["Verrottet (Stufe 3)"]
+    D -->|Honigwabe| DW["Gewachst Verrottet"]
+    AW -->|Axt| A
+    BW -->|Axt| B
+    CW -->|Axt| C
+    DW -->|Axt| D
+```
 
-*Smarte Funktion: Wenn du diese Aktionen an einem mehrteiligen Block (wie der oberen oder unteren Hälfte einer Tür) durchführst, wird die Aktualisierung sofort und völlig synchron auf die gesamte Struktur angewendet!*
+* 🪓 **Axt (Abkratzen & Heilen)** – *Shift + Rechtsklick*:
+  1. **Entwachsen**: Entfernt die Wachsschicht von jedem gewachsten Block und setzt den biologischen Zyklus wieder in Kraft.
+  2. **Schimmel entfernen**: Kratzt die oberflächliche Pilzschicht ab und senkt die Zerfallsstufe um $1$ (*Schimmelig ➔ Befallen ➔ Gesund Vanilla*). Verbraucht Werkzeughaltbarkeit.
+* 🐝 **Honigwabe (Wachsen & Versiegeln)** – *Shift + Rechtsklick*:
+  * Funktioniert auf **allen 4 Stadien**. Gewachstes Holz ist dauerhaft versiegelt: Es verrottet nicht weiter, steckt keine Nachbarblöcke an, emittiert kein Miasma und **droppt beim Abbau immer zu 100%**.
+* 🚪 **Mehrteilige Blöcke**: Aktionen auf Türen, Doppelstufen oder Betten synchronisieren sich sofort über alle Hälften der Struktur.
 
 ---
 
-## ⚖️ Strafen und Crafting
+## ⚖️ Physikalische Eigenschaften, Strafen und Crafting
 
-Die Verwendung von verrottetem Holz zum Crafting ist unklug. Die innere Struktur des Materials ist irreparabel beschädigt, was zu strengen Strafen führt, die Faulheit bestrafen:
+Wenn Holz verrottet, wird seine innere Zellulose- und Ligninstruktur irreversibel zersetzt. Dies spiegelt sich in allen physikalischen und handwerklichen Eigenschaften wider:
 
-* 💥 **Strukturelle Integrität (Drop) und Abbau**:
-  Das bevorzugte Werkzeug zum Abbauen dieser Blöcke bleibt die **Axt** (genau wie in Vanilla), mit der einzigen Ausnahme der Blöcke auf Stufe 3, die so schwach sind, dass ihnen kein Werkzeug zugeordnet ist (sie zerbröckeln selbst mit bloßen Händen in einem Augenblick).
-  - Vanilla-Blöcke und **befallene** Blöcke bleiben solide (droppen immer zu **100%**).
-  - **Schimmelige** Blöcke sind zerbrechlich: Sie haben standardmäßig nur eine **50%ige** Chance, sich selbst zu droppen, andernfalls zerfallen sie zu Nichts.
-  - **Verrottete** Blöcke zerbröckeln bei Berührung sofort (**0%** Drop-Chance).
-  
-  *(💡 **Das Geheimnis des Wachses**: Das Wachsen eines Blocks festigt seine Struktur. Jeder Block der Mod, selbst im Stadium **Verrottet** (Rotten) — wo das Holz normalerweise bei Berührung zu Staub zerfallen würde —, **garantiert im gewachsten Zustand immer einen 100%igen Drop**, selbst ohne Behutsamkeit!)*
-  
-  *(⚙️ Alle Drop-Wahrscheinlichkeiten sind über Cloth Config / ModMenu zu 100% konfigurierbar).*
+### 1. 🧱 Progressive Härte-Skalierung & Abbaugeschwindigkeit
+Die Härte eines Blocks bestimmt, wie lange das Abbauen dauert:
+* **Stufe 0 (Gesund / Vanilla)**: Härte **2.0** ($100\%$) – Standard-Abbauzeit mit Axt.
+* **Stufe 1 (Befallen)**: Härte **1.6** ($80\%$) – Leicht geschwächt.
+* **Stufe 2 (Schimmelig)**: Härte **1.0** ($50\%$) – Spürbar poröser.
+* **Stufe 3 (Verrottet)**: Härte **0.4** ($20\%$) – **Extreme Brüchigkeit / Friabilität**.
 
-* 🛠️ **Crafting-Ertrag (Rückgewinnung) und Hybrides Crafting**:
-  Du kannst infiziertes Holz weiterhin auf der Werkbank verwenden, um grundlegende Gegenstände (wie Bretter, Stufen, Treppen oder Stöcke) herzustellen. Der Endgegenstand wird immer perfekt sauber sein (**Vanilla**), aber da du gezwungen bist, die verrotteten Teile des ursprünglichen Holzes zu verwerfen, sinkt die Menge der erhaltenen Gegenstände drastisch.
-  
-  *(💡 **Hybrides Crafting**: Gewachste Blöcke können beim Crafting völlig frei mit normalen infizierten Blöcken desselben Schimmelstadiums in der Werkbank gemischt werden, um saubere Gegenstände herzustellen!)*
+> [!IMPORTANT]
+> **Neutralisierung der Axt auf Stufe 3**: Durch den völligen Verlust der inneren Festigkeit lässt sich verrottetes Holz auf Stufe 3 mit der **Axt und mit der bloßen Faust exakt gleich schnell** zerschlagen. Kein Werkzeug bietet hier mehr einen Tempovorteil.
 
-  | Materialqualität | 🌳 Bsp: Stamm ➔ Bretter | 🦯 Bsp: Bretter ➔ Stöcke |
-  | :--- | :---: | :---: |
-  | 🌲 **Gesund (Vanilla)** | 1 Stamm ➔ **4** Bretter | 2 Bretter ➔ **4** Stöcke |
-  | 🟢 **Befallen** | 1 Stamm ➔ **2** Bretter | 2 Bretter ➔ **2** Stöcke |
-  | 🦠 **Schimmelig** | 1 Stamm ➔ **1** Brett | 2 Bretter ➔ **1** Stock |
-  | ☠️ **Verrottet** | *Ungültiges Rezept* ❌ | *Ungültiges Rezept* ❌ |
+### 2. 💨 Sporenwolken-Effekt & Sound beim Abbau
+* Wird ein ungewachster Block der Stufe 2 (*Schimmelig*) oder Stufe 3 (*Verrottet*) **ohne Behutsamkeit (Silk Touch)** abgebaut, bricht das morsche Gefüge mit einem feuchten Pilzgeräusch auf und entlässt eine **dichte Sporenwolke** (`SPORE_BLOSSOM_AIR`, `FALLING_SPORE_BLOSSOM`, `MYCELIUM`) in die Umgebung.
+* Mit **Behutsamkeit** oder bei **gewachsten Blöcken** bleibt das Material intakt und es entstehen keine Sporenwolken.
 
-* 🔥 **Brennwert (Ofen-Effizienz)**: 
-  Die Brennstoffeffizienz im Ofen nimmt mit fortschreitendem Schimmelbefall drastisch ab:
-  - **Vanilla (Gesund)**: Brennt mit voller Effizienz (**100%**).
-  - **Befallen**: Brennt mit halber Effizienz (**50%**).
-  - **Schimmelig**: Sinkt auf ein Viertel der Effizienz (**25%**).
-  - **Verrottet**: Verbrennt in wenigen Augenblicken (**12.5%**), was es als Brennstoff nahezu nutzlos macht.
-  
-  *(⚙️ Diese Multiplikatoren (100% ➔ 50% ➔ 25% ➔ 12.5%) sind über Cloth Config / ModMenu zu 100% anpassbar).*
+### 3. 💥 Drops & Strukturelle Integrität
 
-* ♻️ **Komposter (Die positive Seite der Fäulnis)**:
-  Wenn ein Block zu verrottet ist, um damit zu bauen, recycele ihn! Das gesamte Holz der Mod wurde in den Vanilla-Komposter integriert, um Knochenmehl zu erzeugen. Je stärker das Holz zersetzt (und reich an Sporen) ist, desto höher ist die Erfolgschance:
-  - Befallenes Holz: **50%**
-  - Schimmeliges Holz: **65%**
-  - Verrottetes Holz: **85%** (Hervorragender Dünger!)
-* 🔴 **Redstone-Komponenten (Knöpfe und Druckplatten)**:
-  Schimmel beeinträchtigt die inneren Mechanismen der Redstone-Komponenten, sodass diese klemmen und viel länger aktiv bleiben. Ein normaler, gesunder Holzknopf bleibt beispielsweise 1,5 Sekunden (30 Ticks), aber je mehr er verrottet:
-  - Befallen: **3 Sekunden** (60 Ticks).
-  - Schimmelig: **7,5 Sekunden** (150 Ticks).
-  - Verrottet: **22,5 Sekunden** (450 Ticks).
+| Zerfallsstufe | Drop ohne Silk Touch (Ungewachst) | Drop mit Silk Touch ODER Gewachst |
+| :--- | :---: | :---: |
+| 🌲 **Gesund (0)** | **100%** Drop | **100%** Drop |
+| 🟢 **Befallen (1)** | **100%** Drop | **100%** Drop |
+| 🦠 **Schimmelig (2)** | **50%** Drop (50% zerfällt zu Sporenstaub) | **100%** Drop garantiert |
+| ☠️ **Verrottet (3)** | **0%** Drop (Vollständiger Kollaps) | **100%** Drop garantiert |
 
-*(💡 **Hinweis zu gewachsten Blöcken**: Wachs ist ein umweltbedingtes Schutz- und Dichtmittel, beeinträchtigt jedoch weder die Verwendung beim Crafting noch die Verbrennungseigenschaften! Gewachste Blöcke können nahtlos im Crafting-Gitter mit ungewachsten Blöcken kombiniert werden, im Ofen verbrannt werden (wobei sie exakt dieselben Brennwerte wie ihre ungewachsten Pendants besitzen) oder kompostiert werden. Sie behalten dieselben Boni und Mali ihres Schimmelstadiums bei — bieten aber den entscheidenden Vorteil, dass sie beim Abbau **immer zu 100% droppen**, selbst auf der verrotteten Stufe).*
+### 4. 🔥 Skalierte Entflammbarkeit & Feuerausbreitung
+Trockenes, zersetztes Holz brennt explosionsartig schnell, während Bienenwachs als Brandbeschleuniger wirkt:
+* **Stufe 1 (Befallen)**: Entflammbarkeit **+5**, Brandausbreitung **+10**.
+* **Stufe 2 (Schimmelig)**: Entflammbarkeit **+10**, Brandausbreitung **+25**.
+* **Stufe 3 (Verrottet)**: Entflammbarkeit **+20**, Brandausbreitung **+60** (Brennt lichterloh!).
+* **Wachs-Modifikator**: Gewachstes Holz erhält zusätzlich **+5** Entflammbarkeit.
+* **Netherholz-Immunität**: Karmesin- und Wirrholz behalten ihre absolute Feuerimmunität (**0**).
+
+### 5. 💣 Skalierte Explosionsresistenz
+Zersetzte Holzstrukturen bieten Creepern und TNT kaum noch Gegenwehr:
+* **Stufe 0 (Gesund)**: $100\%$ Resistenz (Vanilla: $3.0$).
+* **Stufe 1 (Befallen)**: **80%** Resistenz ($2.4$).
+* **Stufe 2 (Schimmelig)**: **50%** Resistenz ($1.5$).
+* **Stufe 3 (Verrottet)**: **10%** Resistenz ($0.3$ – Zerschellt bei der kleinsten Erschütterung).
+
+### 6. 🛠️ Crafting-Ausbeute & Hybrides Crafting
+Infiziertes Holz kann auf der Werkbank zu sauberen Vanilla-Gegenständen verarbeitet werden, verliert jedoch aufgrund des Materialverschnitts an Ertrag:
+
+| Materialqualität | 🌳 Stamm ➔ Bretter | 🦯 Bretter ➔ Stöcke |
+| :--- | :---: | :---: |
+| 🌲 **Gesund (Vanilla)** | 1 Stamm ➔ **4** Bretter | 2 Bretter ➔ **4** Stöcke |
+| 🟢 **Befallen (1)** | 1 Stamm ➔ **2** Bretter | 2 Bretter ➔ **2** Stöcke |
+| 🦠 **Schimmelig (2)** | 1 Stamm ➔ **1** Brett | 2 Bretter ➔ **1** Stock |
+| ☠️ **Verrottet (3)** | ❌ *Kein Crafting möglich* | ❌ *Kein Crafting möglich* |
+
+> [!TIP]
+> **Hybrides Crafting**: Gewachste und ungewachste Blöcke derselben Zerfallsstufe können im Crafting-Gitter beliebig miteinander kombiniert werden.
+
+### 7. 🪵 Ofen-Effizienz & Holzkohle (*Charcoal*)
+* **Brennwert-Multiplikatoren**:
+  * Stufe 0: **100%** Brenndauer (`1.0x`)
+  * Stufe 1: **50%** Brenndauer (`0.5x`)
+  * Stufe 2: **25%** Brenndauer (`0.25x`)
+  * Stufe 3: **12.5%** Brenndauer (`0.125x`, Mindestbrenndauer: 37 Ticks)
+* **Holzkohle-Herstellung**: Alle Stämme und Hölzer der Mod (sowohl verfallen als auch gewachst) unterstützen die Tags `#minecraft:item/charcoal` sowie `#c:charcoal` und können im Ofen zu Holzkohle geschmolzen werden.
+
+### 8. ♻️ Komposter-Chancen
+Verrottetes Holz ist ein hervorragender organischer Dünger für den Komposter:
+* Befallenes Holz (1): **50%**
+* Schimmeliges Holz (2): **65%**
+* Verrottetes Holz (3): **85%**
+
+### 9. 🔴 Redstone-Verzögerung
+Schimmel dringt in mechanische Schalter ein und lässt diese klemmen:
+* **Holzknopf**: Gesund $1.5\text{s}$ (30 Ticks) ➔ Befallen $3.0\text{s}$ ➔ Schimmelig $7.5\text{s}$ ➔ Verrottet $22.5\text{s}$ (450 Ticks).
+* **Druckplatte**: Bleibt nach dem Verlassen ebenfalls entsprechend verlängert aktiv.
 
 ---
 
 ## 🗺️ Generierung von Strukturen
 
-Der Schimmel beschränkt sich nicht auf vom Spieler platzierte Blöcke. Die Mod greift in die Generierungs-Engine von Minecraft ein, um den Zahn der Zeit auf alle Holzstrukturen anzuwenden, die du in der Welt entdeckst. 
+Die Mod klinkt sich in die Weltgenerierung ein und lässt historische Holzstrukturen authentisch verwittern:
 
-Die Strukturen sind in 4 grundlegende Zerfallsstufen unterteilt:
-1. 🏴‍☠️ **Kritischer Zerfall** (Hoher Anteil an verrottetem Holz): Schiffswracks (`shipwreck`), Sumpfhütten (`swamp_hut`).
-2. 🧟 **Hoher Zerfall** (Mischung aus befallenem und schimmeligem Holz): Verlassene Minenschächte (`mineshaft`), Zombiedörfer (`zombie_village`), Pfadruinen (`trail_ruins`).
-3. 🏹 **Mäßiger Zerfall** (Hauptsächlich befallen): Plünderer-Außenposten (`pillager_outpost`), Zerstörte Portale (`ruined_portal`).
-4. 🏡 **Minimaler Zerfall** (Fast vollständig gesund): Normale Dörfer (`village`), Waldanwesen (`mansion`).
+1. 🏴‍☠️ **Kritischer Zerfall** (Hoher Anteil an Stufe 3): Schiffswracks (`shipwreck`), Sumpfhütten (`swamp_hut`).
+2. 🧟 **Hoher Zerfall** (Mischung aus Stufe 1 und 2): Verlassene Minenschächte (`mineshaft`), Zombiedörfer (`zombie_village`), Pfadruinen (`trail_ruins`).
+3. 🏹 **Mäßiger Zerfall** (Hauptsächlich Stufe 1): Plünderer-Außenposten (`pillager_outpost`), Zerstörte Portale (`ruined_portal`).
+4. 🏡 **Minimaler Zerfall** (Überwiegend intakt): Normale Dörfer (`village`), Waldanwesen (`mansion`).
 
-*(💡 **Dynamische Faktoren**: Während der Generierung analysiert der Code die Umgebung Block für Block! Wenn eine Wand des Wracks Luft und Sonne ausgesetzt ist, bleibt sie intakter, während Bretter, die auf dem Meeresgrund oder unter der Erde versunken sind, drastisch stärker verrottet sein werden).*
+### 🛡️ Schutzmechanismen für die Welt
 
-**🛡️ Die Immunität von Naturholz und Strukturen**:
-Um das Spielerlebnis nicht zu ruinieren (und zu vermeiden, dass Spieler die ganze Welt bereits kollabiert vorfinden, bevor sie sie erkunden können), gibt es zwei Ausnahmen vom automatischen Zerfall:
-* **Heimische Bäume**: Natürlich generierte (oder aus Setzlingen gewachsene) Bäume bilden keinen Schimmel, da das Holz noch "lebendig" ist. Nur vom Spieler gefälltes und bearbeitetes Holz beginnt zu verrotten.
-* **Schwebende Strukturen**: Strukturen generieren sich mit dem oben angegebenen Schimmelprozentsatz, aber dann "frieren" sie ein. Die Blöcke der Strukturen sind von Natur aus immun gegen das Fortschreiten der Fäulnis, es sei denn, der Spieler interagiert mit ihnen (z. B. durch Zerstören, Abkratzen oder Modifizieren). Dieser Schutz bewahrt die Dörfer vor spontaner Zerstörung. Wenn du ein super-hardcore Erlebnis möchtest, kannst du die Immunität der Strukturen im Konfigurationsmenü deaktivieren!
+* **Lebende Bäume**: Natürlich gewachsene Bäume sind lebendig und resistent gegen Schimmel.
+* **Eingefrorene Strukturen**: Generierte Bauten starten im verfallenen Zustand, sind jedoch standardmäßig "eingefroren" (`structures_immune = true`), damit Dörfer nicht ohne Zutun des Spielers kollabieren. Erst wenn ein Spieler einen Block modifiziert, erwacht die Fäulnis in dessen Umgebung.
 
 ---
 
-## 📊 HUD-Integration & Fortschritte
+## 📊 HUD-, JEI- & Mod-Integrationen
 
-* 🔍 **Jade / WTHIT-Integration**: Die Mod ist vollständig in **Jade** integriert. Wenn du einen beliebigen Holzblock ansiehst, zeigt das HUD nativ seine genaue Variante (z. B. "Waxed Tainted Oak Planks") und sein Symbol an, zusammen mit dem aktuellen Infektionsrisiko (%). Das Risiko wird für gewachste Blöcke exakt mit 0% bewertet und bei vollständig verrotteten Blöcken (Rotten) ausgeblendet. Der Risikoprozentsatz ändert seine Farbe dynamisch (**Grau = Sicher**, **Rot = Gefährdet**). Administratoren können auch den Befehl `/moldrisk [verbose]` verwenden, um die genaue mathematische Formel des Blocks zu berechnen, den sie ansehen!
-* 🏆 **Fortschritte (Advancements)**: 5 benutzerdefinierte Fortschritte leiten die Spieler durch die Mechaniken der Mod:
-  - **Spores & Shadows**: Überlebe den Verfall der Natur.
-  - **Natürliche Vorbeugung**: Verwende eine Honigwabe, um einen Holzblock zu wachsen und den Schimmel zu stoppen.
-  - **Muskelschmalz**: Kratze den Schimmel mit einer Axt von einem Holzblock ab.
-  - **Kurzer Atem**: Erleide die Vergiftung durch das Miasma, weil du zu viel Schimmel eingeatmet hast.
-  - **Asche zu Asche**: Versuche, einen verrotteten Holzblock abzubauen, und sieh zu, wie er zu Nichts zerfällt.
+### 🔍 Jade / WTHIT-Integration
+* Zeigt beim Anvisieren eines Holzblocks den genauen Namen, das Vorschausymbol und das aktuelle **Infektionsrisiko in %** an.
+* Dynamische Farbcodierung: **Grau = Sicher (0%)**, **Rot = Gefährdet**. Gewachste Blöcke zeigen dauerhaft $0\%$ an.
+* Nativer Raytracing-Callback sorgt für fehlerfreie Tooltips auf modifizierten Blöcken.
+
+### 📖 Just Enough Items (JEI) Integration
+Vollständige Integration aller Mod-Mechaniken in JEI:
+1. 🐝 **Kategorie Wachsen (*Waxing*)**: Zeigt für alle 130 Holzblöcke das Versiegeln mit Honigwaben (`Block + Honigwabe ➔ Gewachster Block`).
+2. 🪓 **Kategorie Axt-Abschaben (*Axe Scraping*)**:
+   * **Entwachsen**: `Gewachster Block + Axt ➔ Ungewachster Block`.
+   * **Schimmelheilung**: `Schimmelig ➔ Befallen ➔ Gesund Vanilla`.
+3. ℹ️ **Fäulnis-Infokarten (*Info Tabs*)**: Ausführliche JEI-Beschreibungen für alle Gegenstände der Stufe 3 (*Verrottet*), die über Zerbrechlichkeit, Miasma und Kompostierung aufklären.
 
 ---
 
-## ⚙️ Mod-Konfiguration
-Die Mod enthält ein direkt aus dem Spiel zugängliches Konfigurationsmenü (erfordert **Cloth Config** und **ModMenu**), das dir die absolute Kontrolle über jede einzelne Mechanik garantiert. 
-Die Optionen sind in 8 Hauptkategorien unterteilt:
+## 💻 Admin- und Debug-Befehle
 
-* 🛠️ **Allgemein (General)**: Deaktiviere das Schimmelwachstum global, ändere den Infektionsschwellenwert, erweitere den Scanradius oder **deaktiviere die Immunität von Strukturen**, um Dörfer spontan verrotten zu lassen!
-* 🌡️ **Umgebung (Environment)**: Ändere die Basiswerte für Regen/Trockenheit, die Boni für Wasser oder passe an, in welchen Höhen und bei welchen Temperaturen der Schimmel einfrieren oder sich vermehren soll.
-* 🪓 **Anfälligkeit (Susceptibility)**: Stelle ein, wie schnell bearbeitete Blöcke (Bretter) im Vergleich zu rohen oder entrindeten Blöcken verrotten.
-* ☣️ **Katalysatoren (Catalysts)**: Balanciere die Aggressivität von Pilzen, Schlamm, *Sporenblüten* und den infizierten Holzblöcken selbst aus.
-* ☠️ **Toxizität (Toxicity)**: Ermöglicht die vollständige Konfiguration des volumetrischen Miasma-Systems: Passe die Schwellenwerte für Übelkeit und Vergiftung, die Dauer der Statuseffekte sowie Scan-Radien und Raumvolumen nach Belieben an.
-* 🗺️ **Strukturen (Structures)**: Passe detailliert (Prozentsatz für Prozentsatz) an, wie Schiffswracks, Dörfer und Minen generiert werden.
-* 🔥 **Ofen (Furnace Multipliers)**: Modifiziere die Brenneffizienz (100% ➔ 50% ➔ 25% ➔ 12.5%) von Holz für die verschiedenen Zerfallsstadien.
-* 💥 **Drops**: Erhöhe oder senke die Drop-Raten von zerbrechlichem Holz (wie die 50% für schimmeliges oder 0% für verrottetes Holz), wenn du die Mod anpassen möchtest.
+Alle Befehle erfordern standardmäßig Operator-Rechte (Berechtigungsstufe 2):
+
+* 🔎 `/moldrisk` oder `/moldyrisk`:
+  * Berechnet das exakte Infektionsrisiko des aktuell anvisierten Holzblocks.
+  * `/moldrisk verbose`: Gibt eine detaillierte mathematische Aufschlüsselung aller Variablen (Feuchtigkeit, UV-Licht, Anfälligkeit, Temperatur, Katalysatoren) im Chat aus.
+* 🌫️ `/miasma` *(oder `/miasma <spieler>`)*:
+  * Führt einen sofortigen BFS-Scan der Raumluft um die Augenposition des Spielers durch.
+  * **Chat-Ausgabe**:
+    ```text
+    === Miasma Air Analysis ===
+    - Environment: Confined Space (Volume: 84 / 512 m³)
+    - Toxicity Score (from mold): +24.50
+    - Ventilation Score (from openings/gaps): -6.00
+    - Net Miasma: 18.50
+    - Spore Density: 0.220
+    [WARNING] Lethal level! Nausea and Poison imminent!
+    ```
+* 🔄 `/spores reload`:
+  * Lädt die gesamte Konfiguration aus der Datei `config/spores--shadows.json` im laufenden Betrieb neu, ohne dass der Server oder Client neu gestartet werden muss.
+
+---
+
+## ⚙️ Mod-Konfiguration (Cloth Config)
+
+Über das Menü von **ModMenu** und **Cloth Config** lässt sich jedes Detail des Verhaltens feinstufig anpassen. Die Konfiguration ist in folgende Kategorien unterteilt:
+
+1. 🛠️ **Allgemein (`general`)**:
+   * `enable_mold_growth`: Globales Ein-/Ausschalten des Schimmelwachstums.
+   * `infection_threshold`: Schwellenwert für das Fortschreiten der Fäulnis (Standard: `0.40`).
+   * `scan_radius`: Blockradius für den Nachbarschaftsscan (`1` = $3\times3\times3$, `2` = $5\times5\times5$).
+   * `structures_immune`: Schützt generierte Strukturen vor weiterem Verfall (Standard: `true`).
+   * `axe_scrape_damage`: Haltbarkeitsverlust der Axt beim Abkratzen (Standard: `1`).
+2. 🌡️ **Umgebung (`environment`)**:
+   * Basisfeuchtigkeit bei Regen (`0.8`) und Trockenheit (`0.3`), Tiefen-Feuchtigkeitsanstieg (`0.01`/Block), Wasser- und Kesselboni.
+   * Temperaturgrenzen (`0.15` bis `1.5`), Höhlentemperatur (`0.5` ab $Y=48$) und Höhenvereisung (`-0.5` ab $Y=256$).
+3. 🪓 **Anfälligkeit (`susceptibility`)**:
+   * Multiplikatoren für entrindetes Holz (`1.4`), Bretter (`0.8`) und Standard-Holz (`1.0`).
+4. ☣️ **Katalysatoren (`catalysts`)**:
+   * Ansteckungsboni für befallenes (`0.05`), schimmeliges (`0.10`) und verrottetes Holz (`0.20`).
+   * Umgebungsboni für Schlamm (`0.05`), Podsol/Myzel (`0.15`), Pilze (`0.25`) und Sporenblüten (`0.80`).
+5. 🧱 **Härte & Abbau (`hardness`)**:
+   * `enable_hardness_scaling`: Aktiviert die progressive Härteskalierung.
+   * Multiplikatoren für Stufe 1 (`0.80`), Stufe 2 (`0.50`) und Stufe 3 (`0.20`).
+   * `enable_break_spore_cloud`: Erzeugt Sporenpartikel beim Zerstören ohne Behutsamkeit.
+6. 🔥 **Entflammbarkeit (`flammability`)**:
+   * Boni auf Entflammbarkeit und Ausbreitungsgeschwindigkeit für Stufe 1 ($+5/+10$), Stufe 2 ($+10/+25$), Stufe 3 ($+20/+60$) sowie Wachs ($+5$).
+7. 💣 **Explosionsresistenz (`blast_resistance`)**:
+   * Resistenzmultiplikatoren für Stufe 1 (`0.80`), Stufe 2 (`0.50`) und Stufe 3 (`0.10`).
+8. 💥 **Drops (`drops`)**:
+   * Drop-Wahrscheinlichkeiten ohne Silk Touch für Stufe 2 (Standard: `0.50`) und Stufe 3 (Standard: `0.00`).
+9. 🪵 **Ofen-Multiplikatoren (`furnace_multipliers`)**:
+   * Brennwertskalierung: Stufe 0 (`1.0`), Stufe 1 (`0.5`), Stufe 2 (`0.25`), Stufe 3 (`0.125`).
+10. ☠️ **Toxizität & Miasma (`toxicity`)**:
+    * Scan-Intervall (`40` Ticks), Schwellenwerte für Übelkeit (`15`) und Vergiftung (`35`), Effektdauern und Verstärkerstufen.
+11. 🗺️ **Strukturen (`structures`)**:
+    * Prozentuale Verteilung von Fäulnisstufen in Schiffswracks, Minen, Ruinen und Dörfern.
+12. 🖥️ **Client (`client`)**:
+    * `mold_z_offset`: Feinjustierung des Schimmel-Renderings (`0.002f`) für fehlerfreie Darstellung mit Shadern (Iris/Sodium).
+

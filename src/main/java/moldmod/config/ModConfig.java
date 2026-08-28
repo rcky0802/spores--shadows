@@ -36,6 +36,18 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public FurnaceMultipliers furnaceMultipliers = new FurnaceMultipliers();
 
+    @ConfigEntry.Category("flammability")
+    @ConfigEntry.Gui.CollapsibleObject
+    public Flammability flammability = new Flammability();
+
+    @ConfigEntry.Category("blast_resistance")
+    @ConfigEntry.Gui.CollapsibleObject
+    public BlastResistance blastResistance = new BlastResistance();
+
+    @ConfigEntry.Category("hardness")
+    @ConfigEntry.Gui.CollapsibleObject
+    public Hardness hardness = new Hardness();
+
     @ConfigEntry.Category("toxicity")
     @ConfigEntry.Gui.CollapsibleObject
     public Toxicity toxicity = new Toxicity();
@@ -138,13 +150,55 @@ public class ModConfig implements ConfigData {
         public float stage_3 = 0.125f;
     }
 
+    public static class Flammability {
+        public boolean enable_flammability = true;
+        public int stage_1_burn_bonus = 5;
+        public int stage_1_spread_bonus = 10;
+        public int stage_2_burn_bonus = 10;
+        public int stage_2_spread_bonus = 25;
+        public int stage_3_burn_bonus = 20;
+        public int stage_3_spread_bonus = 60;
+        public int waxed_burn_bonus = 5;
+    }
+
+    public static class BlastResistance {
+        public boolean enable_blast_resistance_scaling = true;
+        public float stage_1_multiplier = 0.80f;
+        public float stage_2_multiplier = 0.50f;
+        public float stage_3_multiplier = 0.10f;
+    }
+
+    public static class Hardness {
+        public boolean enable_hardness_scaling = true;
+        public float stage_1_multiplier = 0.80f;
+        public float stage_2_multiplier = 0.50f;
+        public float stage_3_multiplier = 0.20f;
+        public boolean enable_break_spore_cloud = true;
+    }
+
     public static class Toxicity {
+        public boolean enable_toxic_air = true;
         public int check_interval_ticks = 40;
         public int scan_radius = 4;
-        public int threshold_nausea = 15;
-        public int threshold_poison = 35;
+        public int max_air_volume = 180;
+        public int max_manhattan_radius = 8;
+        
+        public float mold_toxicity_multiplier = 0.75f;
+        public float ventilation_gap_bonus = 3.0f;
+        
+        public double threshold_hunger = 8.0;
+        public double threshold_nausea = 10.0;
+        public double threshold_poison = 16.0;
+        
+        public double density_threshold_high = 0.18;
+        public double density_threshold_medium = 0.09;
+        public double density_threshold_low = 0.04;
+        
+        public int duration_hunger_ticks = 80;
         public int duration_nausea_ticks = 140;
         public int duration_poison_ticks = 100;
+        
+        public int hunger_amplifier = 0;
         public int nausea_amplifier = 0;
         public int poison_amplifier = 0;
     }
@@ -163,8 +217,20 @@ public class ModConfig implements ConfigData {
         furnaceMultipliers.stage_2 = MathHelper.clamp(furnaceMultipliers.stage_2, 0.0f, 5.0f);
         furnaceMultipliers.stage_3 = MathHelper.clamp(furnaceMultipliers.stage_3, 0.0f, 5.0f);
         
+        blastResistance.stage_1_multiplier = MathHelper.clamp(blastResistance.stage_1_multiplier, 0.0f, 2.0f);
+        blastResistance.stage_2_multiplier = MathHelper.clamp(blastResistance.stage_2_multiplier, 0.0f, 2.0f);
+        blastResistance.stage_3_multiplier = MathHelper.clamp(blastResistance.stage_3_multiplier, 0.0f, 2.0f);
+
+        hardness.stage_1_multiplier = MathHelper.clamp(hardness.stage_1_multiplier, 0.0f, 2.0f);
+        hardness.stage_2_multiplier = MathHelper.clamp(hardness.stage_2_multiplier, 0.0f, 2.0f);
+        hardness.stage_3_multiplier = MathHelper.clamp(hardness.stage_3_multiplier, 0.0f, 2.0f);
+
         toxicity.check_interval_ticks = MathHelper.clamp(toxicity.check_interval_ticks, 10, 200);
         toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 10);
+        toxicity.max_air_volume = MathHelper.clamp(toxicity.max_air_volume, 10, 2048);
+        toxicity.max_manhattan_radius = MathHelper.clamp(toxicity.max_manhattan_radius, 1, 32);
+        toxicity.mold_toxicity_multiplier = MathHelper.clamp(toxicity.mold_toxicity_multiplier, 0.0f, 10.0f);
+        toxicity.ventilation_gap_bonus = MathHelper.clamp(toxicity.ventilation_gap_bonus, 0.0f, 20.0f);
     }
 }
 
