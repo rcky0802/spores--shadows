@@ -35,15 +35,16 @@ public class MoldyBlockHelper {
         return canBeInfected(state);
     }
 
-    public record MoldRiskResult(double Tmult, double Heff, double baseHum, double depthModifier,
-            double localHumidityBonus, double Luv, double avgLight, double Smat, double catalystBonus, double R,
-            float effectiveTemp, float surfaceTemp) {
+    public record MoldRiskResult(double Tmult, double Heff, double Hraw, double baseHum, double depthModifier,
+            double localHumidityBonus, double aeration, double aerationDryingBonus, double Luv, double avgLight,
+            double Smat, double catalystBonus, double miasmaBonus, double netMiasma, int airVolume, int exposedFaces,
+            double R, float effectiveTemp, float surfaceTemp) {
     }
 
     public static MoldRiskResult calculateDetailedR(net.minecraft.world.WorldAccess world, BlockPos pos,
             boolean isWaxed, BlockState stateToCheck) {
-        if (isWaxed || (stateToCheck.contains(MoldyLogBlock.STAGE) && stateToCheck.get(MoldyLogBlock.STAGE) >= 3))
-            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0f, 0.0f);
+        if (isWaxed || (stateToCheck != null && stateToCheck.contains(MoldyLogBlock.STAGE) && stateToCheck.get(MoldyLogBlock.STAGE) >= 3))
+            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0, 0.0f, 0.0f);
 
         moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
                 .getConfigHolder(moldmod.config.ModConfig.class).getConfig();
@@ -53,12 +54,12 @@ public class MoldyBlockHelper {
         
         if (world.getBiome(pos).isIn(net.minecraft.registry.tag.BiomeTags.IS_NETHER) || 
             (world instanceof net.minecraft.world.World w && w.getRegistryKey() == net.minecraft.world.World.NETHER)) {
-            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 100.0f, 100.0f);
+            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0, 100.0f, 100.0f);
         }
         if (world.getBiome(pos).isIn(net.minecraft.registry.tag.BiomeTags.IS_END) || 
             (world instanceof net.minecraft.world.World w && w.getRegistryKey() == net.minecraft.world.World.END) ||
             world.getBiome(pos).matchesId(net.minecraft.util.Identifier.of("minecraft", "the_end"))) {
-            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -100.0f, -100.0f);
+            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0, -100.0f, -100.0f);
         }
 
         // Depth-based temperature normalization
@@ -90,7 +91,7 @@ public class MoldyBlockHelper {
         double Tmult = (temp >= config.environment.min_temperature_survival
                 && temp <= config.environment.max_temperature_survival) ? 1.0 : 0.0;
         if (Tmult == 0.0)
-            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, temp, surfaceTemp);
+            return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0, temp, surfaceTemp);
 
         boolean isRainingAt = false;
         if (world instanceof net.minecraft.world.World realWorld) {
@@ -190,8 +191,23 @@ public class MoldyBlockHelper {
         // but helps significantly
         localHumidityBonus = Math.min(config.environment.max_local_humidity_bonus, localHumidityBonus);
 
-        // Cap Effective Humidity at 1.0 (100%)
-        double Heff = Math.min(1.0, baseHum + depthModifier + localHumidityBonus);
+        double Hraw = baseHum + depthModifier + localHumidityBonus;
+
+        // BFS Aeration and Miasma calculation averaged over exposed faces
+        moldmod.event.ToxicAirEvent.BlockAirEvaluation airEval = moldmod.event.ToxicAirEvent.calculateBlockAirEvaluation(world, pos, stateToCheck);
+
+        double aeration = 0.0;
+        if (config.environment.enable_ventilation_drying) {
+            aeration = airEval.averageAeration();
+        }
+
+        double aerationDryingBonus = aeration * config.environment.aeration_drying_bonus;
+        double Heff = Math.max(0.0, Math.min(1.0, Hraw - aerationDryingBonus));
+
+        double miasmaBonus = 0.0;
+        if (config.environment.enable_miasma_spore_pressure && airEval.averageExposureIndex() > 0.0) {
+            miasmaBonus = airEval.averageExposureIndex() * config.environment.miasma_spore_multiplier;
+        }
 
         int totalLight = 0;
         for (net.minecraft.util.math.Direction dir : net.minecraft.util.math.Direction.values()) {
@@ -218,9 +234,10 @@ public class MoldyBlockHelper {
                 Smat = config.susceptibility.planks_multiplier;
         }
 
-        double R = ((Heff * Luv * Smat) + catalystBonus) * Tmult;
-        return new MoldRiskResult(Tmult, Heff, baseHum, depthModifier, localHumidityBonus, Luv, avgLight, Smat,
-                catalystBonus, R, temp, surfaceTemp);
+        double R = ((Heff * Luv * Smat) + catalystBonus + miasmaBonus) * Tmult;
+        return new MoldRiskResult(Tmult, Heff, Hraw, baseHum, depthModifier, localHumidityBonus, aeration,
+                aerationDryingBonus, Luv, avgLight, Smat, catalystBonus, miasmaBonus, airEval.averageNetMiasma(),
+                airEval.maxVolume(), airEval.exposedFacesCount(), R, temp, surfaceTemp);
     }
 
     public static double calculateR(net.minecraft.world.WorldAccess world, BlockPos pos, boolean isWaxed,

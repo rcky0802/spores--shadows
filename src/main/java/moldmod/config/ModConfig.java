@@ -83,9 +83,9 @@ public class ModConfig implements ConfigData {
         public float podzol_mycelium_bonus = 0.15f;
         public float fungi_bonus = 0.25f;
         public float spore_blossom_bonus = 0.80f;
-        public float tainted_block_bonus = 0.05f;
-        public float moldy_block_bonus = 0.10f;
-        public float rotten_block_bonus = 0.20f;
+        public float tainted_block_bonus = 0.03f;
+        public float moldy_block_bonus = 0.06f;
+        public float rotten_block_bonus = 0.12f;
     }
 
     public static class Environment {
@@ -97,6 +97,18 @@ public class ModConfig implements ConfigData {
         public double water_adjacent_bonus = 0.15;
         public double cauldron_adjacent_bonus = 0.1;
         public int water_scan_radius = 3;
+        
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean enable_ventilation_drying = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public double aeration_drying_bonus = 0.50;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public double ventilation_threshold_full_aeration = 6.0;
+        
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean enable_miasma_spore_pressure = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public double miasma_spore_multiplier = 0.50;
         
         public float min_temperature_survival = 0.15f;
         public float max_temperature_survival = 1.5f;
@@ -208,6 +220,9 @@ public class ModConfig implements ConfigData {
         general.infection_threshold = MathHelper.clamp(general.infection_threshold, 0.0f, 2.0f);
         general.scan_radius = MathHelper.clamp(general.scan_radius, 1, 5);
         environment.water_scan_radius = MathHelper.clamp(environment.water_scan_radius, 1, 10);
+        environment.aeration_drying_bonus = MathHelper.clamp(environment.aeration_drying_bonus, 0.0, 2.0);
+        environment.ventilation_threshold_full_aeration = MathHelper.clamp(environment.ventilation_threshold_full_aeration, 0.1, 50.0);
+        environment.miasma_spore_multiplier = MathHelper.clamp(environment.miasma_spore_multiplier, 0.0, 5.0);
         
         drops.stage_2_drop_chance = MathHelper.clamp(drops.stage_2_drop_chance, 0.0f, 1.0f);
         drops.stage_3_drop_chance = MathHelper.clamp(drops.stage_3_drop_chance, 0.0f, 1.0f);
