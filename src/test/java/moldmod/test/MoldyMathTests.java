@@ -417,19 +417,12 @@ public class MoldyMathTests {
         // Lato Ovest (X=1): stanza sigillata chiusa (Aer = 0.0)
         // Lato Est (X=3): all'aperto / cielo (Aer = 1.0)
         // Sopra, sotto, nord, sud: pietra solida
-        for (int y = 1; y <= 3; y++) {
-            for (int z = 1; z <= 3; z++) {
-                // Parete divisoria a X=2
-                context.setBlockState(new BlockPos(2, y, z), Blocks.STONE.getDefaultState());
-                // Chiusura stanza ovest
-                context.setBlockState(new BlockPos(0, y, z), Blocks.STONE.getDefaultState());
-            }
-        }
-        // Pavimento e soffitto stanza ovest
+        // Riempiamo la stanza ovest (X=0..2, Y=1..3, Z=1..3) di pietra
         for (int x = 0; x <= 2; x++) {
-            for (int z = 1; z <= 3; z++) {
-                context.setBlockState(new BlockPos(x, 1, z), Blocks.STONE.getDefaultState());
-                context.setBlockState(new BlockPos(x, 3, z), Blocks.STONE.getDefaultState());
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
+                }
             }
         }
         // Interno stanza ovest a (1, 2, 2): aria sigillata

@@ -322,10 +322,10 @@ public class ToxicAirTests {
         }
         context.setBlockState(center, Blocks.AIR.getDefaultState());
 
-        // Scala a NORD (1, 2, 2) con il retro solido rivolto verso l'interno della stanza (a SUD) -> DEVE BLOCCARE ALLA RADICE (ventilationScore = 0)
+        // Scala a OVEST (1, 2, 2) con il retro solido rivolto verso l'interno della stanza (a EST) -> DEVE BLOCCARE ALLA RADICE (ventilationScore = 0)
         BlockPos stairPos = new BlockPos(1, 2, 2);
         BlockState stairsBackFacingRoom = Blocks.OAK_STAIRS.getDefaultState()
-                .with(net.minecraft.block.StairsBlock.FACING, Direction.SOUTH) // retro a SUD (verso il centro stanza)
+                .with(net.minecraft.block.StairsBlock.FACING, Direction.EAST) // retro a EST (verso il centro stanza)
                 .with(net.minecraft.block.StairsBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsBackFacingRoom);
         context.setBlockState(new BlockPos(1, 3, 2), Blocks.AIR.getDefaultState());
@@ -335,9 +335,9 @@ public class ToxicAirTests {
             context.throwPositionedException("Una scala con il retro solido rivolto verso la stanza non deve dare ventilazione!", center);
         }
 
-        // Ora giriamo la scala con il gradino aperto verso la stanza (FACING NORTH, retro all'esterno)
+        // Ora giriamo la scala con il gradino aperto verso la stanza (FACING WEST, retro all'esterno)
         BlockState stairsOpenToRoom = Blocks.OAK_STAIRS.getDefaultState()
-                .with(net.minecraft.block.StairsBlock.FACING, Direction.NORTH)
+                .with(net.minecraft.block.StairsBlock.FACING, Direction.WEST)
                 .with(net.minecraft.block.StairsBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsOpenToRoom);
 
@@ -352,17 +352,11 @@ public class ToxicAirTests {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testDoorOpenVsClosedAirFlow(TestContext context) {
         // Due stanzette adiacenti 3x3x3 in pietra separate da una parete a X=2
-        for (int y = 1; y <= 3; y++) {
-            for (int z = 1; z <= 3; z++) {
-                context.setBlockState(new BlockPos(0, y, z), Blocks.STONE.getDefaultState());
-                context.setBlockState(new BlockPos(2, y, z), Blocks.STONE.getDefaultState());
-                context.setBlockState(new BlockPos(4, y, z), Blocks.STONE.getDefaultState());
-            }
-        }
         for (int x = 0; x <= 4; x++) {
-            for (int z = 1; z <= 3; z++) {
-                context.setBlockState(new BlockPos(x, 1, z), Blocks.STONE.getDefaultState());
-                context.setBlockState(new BlockPos(x, 3, z), Blocks.STONE.getDefaultState());
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
+                }
             }
         }
         // Aria nelle due stanze
@@ -427,6 +421,91 @@ public class ToxicAirTests {
         ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(center));
         if (!resultOpen.openAir) {
             context.throwPositionedException("A botola aperta verso il cielo l'aria deve poter salire (openAir = true)!", center);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testNonSolidBlocksAirPassage(TestContext context) {
+        // Tunnel 1x1x3 di pietra lungo X da x=1 a x=3 (y=2, z=2)
+        // Posizioni interne: (1, 2, 2), (2, 2, 2), (3, 2, 2)
+        for (int x = 0; x <= 4; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
+                }
+            }
+        }
+        context.setBlockState(new BlockPos(1, 2, 2), Blocks.AIR.getDefaultState());
+        context.setBlockState(new BlockPos(2, 2, 2), Blocks.TORCH.getDefaultState()); // Torcia al centro
+        context.setBlockState(new BlockPos(3, 2, 2), Blocks.AIR.getDefaultState());
+
+        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(new BlockPos(1, 2, 2)));
+        if (result.volume != 3) {
+            context.throwPositionedException("L'aria deve attraversare la torcia e contare tutti e 3 i blocchi del tunnel! Trovato: " + result.volume, new BlockPos(1, 2, 2));
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMoldDeduplication(TestContext context) {
+        // Stanza 4x3x3 in pietra (spazio interno 2x1x1 ad aria a (1, 2, 2) e (2, 2, 2))
+        for (int x = 0; x <= 3; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
+                }
+            }
+        }
+        context.setBlockState(new BlockPos(1, 2, 2), Blocks.AIR.getDefaultState());
+        context.setBlockState(new BlockPos(2, 2, 2), Blocks.AIR.getDefaultState());
+
+        // Un solo blocco infetto a (1, 1, 2) (pavimento)
+        BlockState moldy = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 2);
+        context.setBlockState(new BlockPos(1, 1, 2), moldy);
+
+        ToxicAirEvent.MiasmaResult result1 = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(new BlockPos(1, 2, 2)));
+        double expectedTox = 2 * 0.75; // Stage 2 * multiplier (0.75) = 1.50
+        if (Math.abs(result1.toxicScore - expectedTox) > 0.001) {
+            context.throwPositionedException("Il punteggio di tossicità deve essere " + expectedTox + ", trovato: " + result1.toxicScore, new BlockPos(1, 2, 2));
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testVentilationWithRoofOverhang(TestContext context) {
+        // Stanza con finestra affacciata a Nord verso il cortile aperto (Z=0..1)
+        for (int x = 2; x <= 4; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 2; z <= 4; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
+                }
+            }
+        }
+        BlockPos center = new BlockPos(3, 2, 3);
+        context.setBlockState(center, Blocks.AIR.getDefaultState());
+
+        // Finestra con staccionata a Nord a (3, 2, 2)
+        context.setBlockState(new BlockPos(3, 2, 2), Blocks.OAK_FENCE.getDefaultState());
+        // Muro/tetto solido sopra la finestra a (3, 3, 2)
+        context.setBlockState(new BlockPos(3, 3, 2), Blocks.STONE.getDefaultState());
+        // Sporgenza del tetto esterna a (3, 3, 1)
+        context.setBlockState(new BlockPos(3, 3, 1), Blocks.STONE.getDefaultState());
+        // Cortile esterno a Z=0,1 (cielo aperto a Z=0)
+        context.setBlockState(new BlockPos(3, 2, 1), Blocks.AIR.getDefaultState());
+        context.setBlockState(new BlockPos(3, 2, 0), Blocks.AIR.getDefaultState());
+        context.setBlockState(new BlockPos(3, 3, 0), Blocks.AIR.getDefaultState());
+
+        // Blocco infetto su parete Sud
+        BlockState moldy = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 2);
+        context.setBlockState(new BlockPos(3, 2, 4), moldy);
+
+        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(center));
+        if (result.ventilationScore < 3.0) {
+            context.throwPositionedException("La finestra sotto grondaia/tetto deve essere rilevata come ventilata verso l'esterno (+3.0), trovato: " + result.ventilationScore, center);
         }
 
         context.complete();
