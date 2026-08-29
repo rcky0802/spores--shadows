@@ -5,14 +5,20 @@ import moldmod.block.MoldyLogBlock;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.GrateBlock;
+import net.minecraft.block.TrapdoorBlock;
+import net.minecraft.block.WallBlock;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.world.Heightmap;
 
 import java.util.ArrayDeque;
 import java.util.HashSet;
@@ -49,10 +55,23 @@ public class ToxicAirEvent {
         LETHAL_POISON
     }
 
+    public enum RoomVentilationType {
+        CLEAN_OPEN_AIR,
+        VENTILATED,
+        HERMETIC_SEALED
+    }
+
+    public enum BlockAerationType {
+        OPEN_AIR,
+        VENTILATED,
+        HERMETIC
+    }
+
     public static class MiasmaResult {
         public final double toxicScore;
         public final double ventilationScore;
         public final double netMiasma;
+        public final RoomVentilationType ventilationType;
         public final boolean openAir;
         public final int volume;
         public final Set<BlockPos> airBlocks;
@@ -60,23 +79,33 @@ public class ToxicAirEvent {
         public final double exposureIndex;
         public final AirToxicityLevel level;
 
-        public MiasmaResult(double toxicScore, double ventilationScore, double netMiasma, boolean openAir, int volume, Set<BlockPos> airBlocks) {
-            this.toxicScore = toxicScore;
-            this.ventilationScore = ventilationScore;
-            this.netMiasma = Math.max(0.0, netMiasma);
+        public MiasmaResult(double toxicScore, double ventilationScore, boolean openAir, int volume, Set<BlockPos> airBlocks) {
             this.openAir = openAir;
+            this.toxicScore = openAir ? 0.0 : Math.max(0.0, toxicScore);
+            this.ventilationScore = openAir ? 0.0 : Math.max(0.0, ventilationScore);
             this.volume = volume;
             this.airBlocks = airBlocks;
-            this.density = (volume > 0) ? (this.netMiasma / (double) volume) : 0.0;
 
             moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
 
-            if (openAir || volume >= config.toxicity.max_air_volume || volume == 0 || this.netMiasma <= 0.0) {
+            if (openAir || volume >= config.toxicity.max_air_volume) {
+                this.ventilationType = RoomVentilationType.CLEAN_OPEN_AIR;
+                this.netMiasma = 0.0;
+            } else if (this.ventilationScore > 0.0) {
+                this.ventilationType = RoomVentilationType.VENTILATED;
+                this.netMiasma = Math.max(0.0, this.toxicScore - this.ventilationScore);
+            } else {
+                this.ventilationType = RoomVentilationType.HERMETIC_SEALED;
+                this.netMiasma = this.toxicScore;
+            }
+
+            this.density = (volume > 0 && this.ventilationType != RoomVentilationType.CLEAN_OPEN_AIR) ? (this.netMiasma / (double) volume) : 0.0;
+
+            if (this.ventilationType == RoomVentilationType.CLEAN_OPEN_AIR || volume == 0 || this.netMiasma <= 0.0) {
                 this.exposureIndex = 0.0;
                 this.level = AirToxicityLevel.CLEAN;
             } else {
-                // Modello Fisico-Biologico Realistico:
-                // L'esposizione combina la concentrazione locale (densità) con il carico di emissione complessivo (netMiasma).
+                // Modello Fisico-Biologico: concentrazione locale (densità) combinata con il carico di emissione
                 double netFactor = Math.min(2.0, Math.sqrt(this.netMiasma / 8.0));
                 this.exposureIndex = this.density * (0.5 + 0.5 * netFactor);
 
@@ -187,19 +216,10 @@ public class ToxicAirEvent {
             BlockPos currentPos = queue.poll();
             BlockState currentState = world.getBlockState(currentPos);
 
-            // Controllo cielo aperto: se il blocco d'aria corrente non è coperto da alcun soffitto solido
+            // Controllo cielo aperto: se il blocco d'aria corrente comunica direttamente con l'esterno
             if (!isCoveredByCeiling(world, currentPos)) {
                 openAir = true;
                 break;
-            }
-
-            // Se il blocco corrente nello spazio d'aria è un blocco parziale ventilato verso l'esterno
-            if (!currentState.isFullCube(world, currentPos) && !currentState.isAir()) {
-                if (isVentilatedToOutside(world, currentPos, Direction.UP)) {
-                    if (countedVentilation.add(currentPos)) {
-                        ventilationScore += ventBonus;
-                    }
-                }
             }
 
             // Scansione dei vicini nelle 6 direzioni
@@ -218,10 +238,8 @@ public class ToxicAirEvent {
                         }
                     }
                 } else {
-                    // Parete o perimetro solido/ostruzione: processa il blocco di confine
-                    boolean faceOpenToRoom = !neighborState.isSideSolidFullSquare(world, neighborPos, dir.getOpposite());
-                    
-                    // A. Calcolo Tossicità da Muffa (deduplicato per blocco)
+                    // Parete o perimetro solido/ostruzione
+                    // A. Calcolo tossicità da muffa sul confine
                     if (neighborState.contains(MoldyLogBlock.STAGE)) {
                         boolean isWaxed = neighborState.contains(MoldyLogBlock.WAXED) && neighborState.get(MoldyLogBlock.WAXED);
                         if (!isWaxed) {
@@ -232,14 +250,13 @@ public class ToxicAirEvent {
                         }
                     }
 
-                    // B. Ventilazione / Fessure (deduplicato per blocco di fessura)
-                    if (faceOpenToRoom && !neighborState.isFullCube(world, neighborPos)) {
-                        boolean isClosedDoorOrTrapdoor = neighborState.contains(net.minecraft.state.property.Properties.OPEN) && !neighborState.get(net.minecraft.state.property.Properties.OPEN);
-                        if (!isClosedDoorOrTrapdoor) {
-                            if (isVentilatedToOutside(world, neighborPos, dir)) {
-                                if (countedVentilation.add(neighborPos)) {
-                                    ventilationScore += ventBonus;
-                                }
+                    // B. Calcolo Modificatore di Ventilazione / Fessure
+                    BlockAerationType toType = getAerationType(world, neighborPos, neighborState, dir.getOpposite());
+                    if (toType == BlockAerationType.VENTILATED) {
+                        if (isVentilatedToOutside(world, neighborPos, dir)) {
+                            BlockPos canonicalPos = getCanonicalVentilationPos(neighborPos, neighborState);
+                            if (countedVentilation.add(canonicalPos)) {
+                                ventilationScore += ventBonus;
                             }
                         }
                     }
@@ -247,8 +264,7 @@ public class ToxicAirEvent {
             }
         }
 
-        double netMiasma = Math.max(0.0, toxicScore - ventilationScore);
-        return new MiasmaResult(toxicScore, ventilationScore, netMiasma, openAir, visited.size(), visited);
+        return new MiasmaResult(toxicScore, ventilationScore, openAir, visited.size(), visited);
     }
 
     public record BlockAirEvaluation(
@@ -277,7 +293,8 @@ public class ToxicAirEvent {
             BlockState neighborState = world.getBlockState(neighborPos);
 
             // Is this face exposed to an open air/permeable medium?
-            if (!neighborState.isSideSolidFullSquare(world, neighborPos, dir.getOpposite())) {
+            BlockAerationType type = getAerationType(world, neighborPos, neighborState, dir.getOpposite());
+            if (type == BlockAerationType.OPEN_AIR) {
                 exposedFaces++;
 
                 // Check if neighborPos is already in a previously computed air space
@@ -296,9 +313,9 @@ public class ToxicAirEvent {
 
                 double faceAeration = 0.0;
                 if (config.environment.enable_ventilation_drying) {
-                    if (faceResult.openAir || faceResult.volume >= config.toxicity.max_air_volume) {
+                    if (faceResult.ventilationType == RoomVentilationType.CLEAN_OPEN_AIR) {
                         faceAeration = 1.0;
-                    } else if (faceResult.volume > 0 && config.environment.ventilation_threshold_full_aeration > 0.0) {
+                    } else if (faceResult.ventilationType == RoomVentilationType.VENTILATED && config.environment.ventilation_threshold_full_aeration > 0.0) {
                         faceAeration = Math.min(1.0, faceResult.ventilationScore / config.environment.ventilation_threshold_full_aeration);
                     }
                 }
@@ -336,21 +353,14 @@ public class ToxicAirEvent {
         Set<BlockPos> countedMold = new HashSet<>();
         Set<BlockPos> countedVentilation = new HashSet<>();
 
-        // Add initial adjacent positions where the neighbor face facing blockPos is open (not solid full square)
-        for (Direction dir : DIRECTIONS) {
-            BlockPos neighborPos = blockPos.offset(dir);
-            BlockState neighborState = world.getBlockState(neighborPos);
-            if (!neighborState.isSideSolidFullSquare(world, neighborPos, dir.getOpposite())) {
-                if (visited.add(neighborPos)) {
-                    queue.add(neighborPos);
-                }
-            }
+        BlockState startState = world.getBlockState(blockPos);
+        BlockAerationType startType = getAerationType(world, blockPos, startState, Direction.UP);
+        if (startType != BlockAerationType.OPEN_AIR && isFaceSolid(world, blockPos, startState, Direction.UP)) {
+            return new MiasmaResult(0.0, 0.0, false, 0, visited);
         }
 
-        if (queue.isEmpty()) {
-            // Block is completely enclosed in solid blocks on all 6 sides
-            return new MiasmaResult(0.0, 0.0, 0.0, false, 0, visited);
-        }
+        visited.add(blockPos);
+        queue.add(blockPos);
 
         double toxicScore = 0.0;
         double ventilationScore = 0.0;
@@ -360,7 +370,7 @@ public class ToxicAirEvent {
             BlockPos currentPos = queue.poll();
             BlockState currentState = world.getBlockState(currentPos);
 
-            // Controllo cielo aperto: se il blocco d'aria corrente non è coperto da alcun soffitto solido
+            // Controllo cielo aperto: se il blocco d'aria corrente comunica direttamente con l'esterno
             if (!isCoveredByCeiling(world, currentPos)) {
                 openAir = true;
                 break;
@@ -383,28 +393,23 @@ public class ToxicAirEvent {
                     }
                 } else {
                     // Parete o perimetro solido: processa il blocco di confine
-                    boolean faceOpenToRoom = !neighborState.isSideSolidFullSquare(world, neighborPos, dir.getOpposite());
-
-                    if (!neighborPos.equals(blockPos)) {
-                        if (neighborState.contains(MoldyLogBlock.STAGE)) {
-                            boolean isWaxed = neighborState.contains(MoldyLogBlock.WAXED) && neighborState.get(MoldyLogBlock.WAXED);
-                            if (!isWaxed) {
-                                if (countedMold.add(neighborPos)) {
-                                    int stage = neighborState.get(MoldyLogBlock.STAGE);
-                                    toxicScore += (stage * moldToxMult);
-                                }
+                    if (neighborState.contains(MoldyLogBlock.STAGE)) {
+                        boolean isWaxed = neighborState.contains(MoldyLogBlock.WAXED) && neighborState.get(MoldyLogBlock.WAXED);
+                        if (!isWaxed) {
+                            if (countedMold.add(neighborPos)) {
+                                int stage = neighborState.get(MoldyLogBlock.STAGE);
+                                toxicScore += (stage * moldToxMult);
                             }
                         }
                     }
 
-                    // B. Ventilazione / Fessure (deduplicato per blocco di fessura)
-                    if (faceOpenToRoom && !neighborState.isFullCube(world, neighborPos)) {
-                        boolean isClosedDoorOrTrapdoor = neighborState.contains(net.minecraft.state.property.Properties.OPEN) && !neighborState.get(net.minecraft.state.property.Properties.OPEN);
-                        if (!isClosedDoorOrTrapdoor) {
-                            if (isVentilatedToOutside(world, neighborPos, dir)) {
-                                if (countedVentilation.add(neighborPos)) {
-                                    ventilationScore += ventBonus;
-                                }
+                    // Modificatore di ventilazione
+                    BlockAerationType toType = getAerationType(world, neighborPos, neighborState, dir.getOpposite());
+                    if (toType == BlockAerationType.VENTILATED) {
+                        if (isVentilatedToOutside(world, neighborPos, dir)) {
+                            BlockPos canonicalPos = getCanonicalVentilationPos(neighborPos, neighborState);
+                            if (countedVentilation.add(canonicalPos)) {
+                                ventilationScore += ventBonus;
                             }
                         }
                     }
@@ -412,26 +417,245 @@ public class ToxicAirEvent {
             }
         }
 
-        double netMiasma = Math.max(0.0, toxicScore - ventilationScore);
-        return new MiasmaResult(toxicScore, ventilationScore, netMiasma, openAir, visited.size(), visited);
+        return new MiasmaResult(toxicScore, ventilationScore, openAir, visited.size(), visited);
     }
 
-    public static boolean isVentilatedToOutside(net.minecraft.world.WorldAccess world, BlockPos gapPos, Direction outwardDir) {
-        // 1. Se la fessura stessa non ha soffitto solido sopra di sé (comunica col cielo)
-        if (!isCoveredByCeiling(world, gapPos)) {
-            return true;
+    public static BlockPos getCanonicalVentilationPos(BlockPos pos, BlockState state) {
+        if (state != null && state.getBlock() instanceof DoorBlock && state.contains(DoorBlock.HALF)) {
+            if (state.get(DoorBlock.HALF) == net.minecraft.block.enums.DoubleBlockHalf.UPPER) {
+                return pos.down();
+            }
         }
+        return pos;
+    }
 
-        // 2. Aperture verso l'alto (es. canna fumaria, botola superiore, fessura sul tetto)
-        if (outwardDir == Direction.UP) {
-            return !isCoveredByCeiling(world, gapPos.up());
-        }
+    public static boolean isFaceSolid(net.minecraft.world.BlockView world, BlockPos pos, BlockState state, Direction face) {
+        if (state == null || state.isAir()) return false;
 
-        if (outwardDir == Direction.DOWN) {
+        net.minecraft.block.Block block = state.getBlock();
+
+        // Copper grates are completely open like air
+        if (block instanceof GrateBlock) {
             return false;
         }
 
-        // 3. Fessure orizzontali: scansiona verso l'esterno fino a 3 blocchi oltre spessore muro e grondaie/tetti
+        // Fences and Fence Gates are not solid faces (allow airflow / ventilation)
+        if (block instanceof FenceBlock || block instanceof FenceGateBlock) {
+            return false;
+        }
+
+        // Wall blocks (Muretti): open vertically; on horizontal walls solid ONLY if connected to adjacent walls/blocks
+        if (block instanceof WallBlock) {
+            return face.getAxis().isHorizontal() && isWallConnected(state);
+        }
+
+        // Doors, Trapdoors: open = permeable, closed = hermetic along blocking axis
+        if (block instanceof DoorBlock || block instanceof TrapdoorBlock) {
+            return isBlockAirflowBlocked(state, face);
+        }
+
+        if (state.isOf(Blocks.IRON_BARS)) {
+            return false;
+        }
+
+        return state.isSideSolidFullSquare(world, pos, face);
+    }
+
+    public static boolean isWallConnected(BlockState state) {
+        if (!(state.getBlock() instanceof WallBlock)) return false;
+        boolean ns = (state.contains(WallBlock.NORTH_SHAPE) && state.get(WallBlock.NORTH_SHAPE) != net.minecraft.block.enums.WallShape.NONE) &&
+                     (state.contains(WallBlock.SOUTH_SHAPE) && state.get(WallBlock.SOUTH_SHAPE) != net.minecraft.block.enums.WallShape.NONE);
+        boolean ew = (state.contains(WallBlock.EAST_SHAPE) && state.get(WallBlock.EAST_SHAPE) != net.minecraft.block.enums.WallShape.NONE) &&
+                     (state.contains(WallBlock.WEST_SHAPE) && state.get(WallBlock.WEST_SHAPE) != net.minecraft.block.enums.WallShape.NONE);
+        return ns || ew;
+    }
+
+    public static BlockAerationType getAerationType(net.minecraft.world.BlockView world, BlockPos pos, BlockState state, Direction entryFace) {
+        if (state == null || state.isAir()) return BlockAerationType.OPEN_AIR;
+
+        net.minecraft.block.Block block = state.getBlock();
+
+        // 1. Copper Grates: treated like air (total aeration)
+        if (block instanceof GrateBlock) {
+            return BlockAerationType.OPEN_AIR;
+        }
+
+        // 2. Fences (Staccionate) & Fence Gates (Cancelletti):
+        // Fences: sempre VENTILATED.
+        // Fence Gates: aperto = OPEN_AIR (passaggio diretto), chiuso = VENTILATED (agisce come staccionata)
+        if (block instanceof FenceBlock) {
+            return BlockAerationType.VENTILATED;
+        }
+        if (block instanceof FenceGateBlock) {
+            boolean isOpen = state.contains(Properties.OPEN) && state.get(Properties.OPEN);
+            return isOpen ? BlockAerationType.OPEN_AIR : BlockAerationType.VENTILATED;
+        }
+
+        // 3. Wall blocks (Muretti): VENTILATED on floor/ceiling (vertical) and when unconnected; HERMETIC when connected horizontally on walls
+        if (block instanceof WallBlock) {
+            if (entryFace.getAxis().isVertical() || !isWallConnected(state)) {
+                return BlockAerationType.VENTILATED;
+            }
+            return BlockAerationType.HERMETIC;
+        }
+
+        // 4. Doors, Trapdoors: open = OPEN_AIR, closed = HERMETIC along blocking axis
+        if (block instanceof DoorBlock || block instanceof TrapdoorBlock) {
+            Direction flowDir = entryFace.getOpposite();
+            boolean isBlockingFlow = isBlockAirflowBlocked(state, flowDir);
+            return isBlockingFlow ? BlockAerationType.HERMETIC : BlockAerationType.OPEN_AIR;
+        }
+
+        // 5. Grates / Panes (Iron Bars)
+        if (block instanceof net.minecraft.block.PaneBlock) {
+            if (state.isOf(Blocks.IRON_BARS)) return BlockAerationType.VENTILATED;
+            return BlockAerationType.HERMETIC;
+        }
+
+        if (isFaceSolid(world, pos, state, entryFace)) {
+            return BlockAerationType.HERMETIC;
+        }
+
+        boolean hasNonSolidExit = false;
+        for (Direction d : DIRECTIONS) {
+            if (d != entryFace) {
+                if (!isFaceSolid(world, pos, state, d)) {
+                    hasNonSolidExit = true;
+                    break;
+                }
+            }
+        }
+
+        if (!hasNonSolidExit) {
+            return BlockAerationType.HERMETIC;
+        }
+
+        if (block instanceof net.minecraft.block.SlabBlock || block instanceof net.minecraft.block.StairsBlock) {
+            return BlockAerationType.VENTILATED;
+        }
+
+        return BlockAerationType.OPEN_AIR;
+    }
+
+    public static boolean isBlockAirflowBlocked(BlockState state, Direction flowDir) {
+        if (state == null) return false;
+        if (state.getBlock() instanceof TrapdoorBlock) {
+            boolean isOpen = state.contains(Properties.OPEN) && state.get(Properties.OPEN);
+            if (!isOpen) {
+                // Piastra orizzontale: chiude passaggi verticali (soffitto/pavimento)
+                return flowDir.getAxis().isVertical();
+            } else {
+                // Piastra verticale: chiude finestre/botole su parete laterale
+                Direction facing = state.contains(Properties.HORIZONTAL_FACING) ? state.get(Properties.HORIZONTAL_FACING) : Direction.NORTH;
+                return flowDir.getAxis() == facing.getAxis();
+            }
+        }
+        if (state.getBlock() instanceof DoorBlock) {
+            boolean isOpen = state.contains(Properties.OPEN) && state.get(Properties.OPEN);
+            return !isOpen;
+        }
+        return false;
+    }
+
+    public static boolean canAirPass(net.minecraft.world.BlockView world, BlockPos fromPos, BlockState fromState, BlockPos toPos, BlockState toState, Direction dir) {
+        if (fromState == null || toState == null) return false;
+        if (!toState.getFluidState().isEmpty()) return false;
+
+        if (isFaceSolid(world, fromPos, fromState, dir)) {
+            return false;
+        }
+        if (isFaceSolid(world, toPos, toState, dir.getOpposite())) {
+            return false;
+        }
+
+        BlockAerationType fromType = getAerationType(world, fromPos, fromState, dir.getOpposite());
+        if (fromType != BlockAerationType.OPEN_AIR) return false;
+
+        BlockAerationType toType = getAerationType(world, toPos, toState, dir.getOpposite());
+        return toType == BlockAerationType.OPEN_AIR;
+    }
+
+    public static boolean isCoveredByCeiling(net.minecraft.world.WorldAccess world, BlockPos pos) {
+        for (int dy = 0; dy <= 24; dy++) {
+            BlockPos upPos = pos.up(dy);
+            BlockState upState = world.getBlockState(upPos);
+            if (upState.isOf(Blocks.BARRIER) || upState.isOf(Blocks.STRUCTURE_BLOCK) || upState.isOf(Blocks.STRUCTURE_VOID)) {
+                continue;
+            }
+            if (isCeilingBarrier(world, upPos, upState)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isCeilingBarrier(net.minecraft.world.WorldAccess world, BlockPos pos, BlockState state) {
+        if (state == null || state.isAir()) return false;
+        if (state.getBlock() instanceof net.minecraft.block.GrateBlock) return false;
+        BlockAerationType type = getAerationType(world, pos, state, Direction.DOWN);
+        return type == BlockAerationType.HERMETIC || type == BlockAerationType.VENTILATED;
+    }
+
+    public static boolean isVentilatedToOutside(net.minecraft.world.WorldAccess world, BlockPos gapPos, Direction outwardDir) {
+        Direction entryFace = outwardDir.getOpposite();
+        BlockState gapState = world.getBlockState(gapPos);
+
+        if (isFaceSolid(world, gapPos, gapState, entryFace)) {
+            return false;
+        }
+
+        // 1. Se outwardDir è verso l'alto (soffitto, es. staccionata/grata sul soffitto)
+        if (outwardDir == Direction.UP) {
+            if (!isFaceSolid(world, gapPos, gapState, Direction.UP)) {
+                return !isCoveredByCeiling(world, gapPos.up());
+            }
+            return false;
+        }
+
+        // 2. Se outwardDir è verso il basso (pavimento, es. staccionata/grata sul pavimento)
+        if (outwardDir == Direction.DOWN) {
+            if (isFaceSolid(world, gapPos, gapState, Direction.DOWN)) {
+                return false;
+            }
+            for (int step = 1; step <= 3; step++) {
+                BlockPos checkPos = gapPos.down(step);
+                BlockState checkState = world.getBlockState(checkPos);
+                if (checkState.isOf(Blocks.BARRIER) || checkState.isOf(Blocks.STRUCTURE_BLOCK)) {
+                    break;
+                }
+                if (isFaceSolid(world, checkPos, checkState, Direction.UP)) {
+                    break;
+                }
+                if (!isCoveredByCeiling(world, checkPos)) {
+                    return true;
+                }
+                for (Direction side : Direction.Type.HORIZONTAL) {
+                    for (int s = 1; s <= 3; s++) {
+                        BlockPos sidePos = checkPos.offset(side, s);
+                        if (isFaceSolid(world, sidePos, world.getBlockState(sidePos), side.getOpposite())) {
+                            break;
+                        }
+                        if (!isCoveredByCeiling(world, sidePos)) {
+                            return true;
+                        }
+                        if (isFaceSolid(world, sidePos, world.getBlockState(sidePos), side)) {
+                            break;
+                        }
+                    }
+                }
+                if (isFaceSolid(world, checkPos, checkState, Direction.DOWN)) {
+                    break;
+                }
+            }
+            return false;
+        }
+
+        // 3. Uscita orizzontale in direzione outwardDir (parete laterale)
+        // Se la faccia del blocco rivolta verso l'uscita è solida (es. retro scala), blocca l'uscita
+        if (isFaceSolid(world, gapPos, gapState, outwardDir)) {
+            return false;
+        }
+
         for (int step = 1; step <= 3; step++) {
             BlockPos checkPos = gapPos.offset(outwardDir, step);
             BlockState checkState = world.getBlockState(checkPos);
@@ -439,99 +663,17 @@ public class ToxicAirEvent {
             if (checkState.isOf(Blocks.BARRIER) || checkState.isOf(Blocks.STRUCTURE_BLOCK)) {
                 break;
             }
-
-            // Se incontra un blocco solido chiuso sul retro, il flusso verso l'esterno si arresta
-            if (checkState.isSideSolidFullSquare(world, checkPos, outwardDir.getOpposite())) {
+            if (isFaceSolid(world, checkPos, checkState, outwardDir.getOpposite())) {
                 break;
             }
-
-            // Se questa posizione esterna non ha soffitto sopra (es. cortile/esterno oltre la grondaia)
-            if (checkState.isAir() || isPassableAirBlock(checkState)) {
-                if (!isCoveredByCeiling(world, checkPos)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean isCoveredByCeiling(net.minecraft.world.WorldAccess world, BlockPos pos) {
-        for (int dy = 1; dy <= 24; dy++) {
-            BlockPos upPos = pos.up(dy);
-            BlockState upState = world.getBlockState(upPos);
-            if (upState.isOf(Blocks.BARRIER) || upState.isOf(Blocks.STRUCTURE_BLOCK) || upState.isOf(Blocks.STRUCTURE_VOID)) {
-                continue;
-            }
-            if (upState.isSideSolidFullSquare(world, upPos, Direction.DOWN) || upState.isFullCube(world, upPos)) {
+            if (!isCoveredByCeiling(world, checkPos)) {
                 return true;
             }
-        }
-        return false;
-    }
-
-    public static boolean isPassableAirBlock(BlockState state) {
-        if (state.isAir()) {
-            return true;
-        }
-        if (state.contains(net.minecraft.state.property.Properties.OPEN)) {
-            return state.get(net.minecraft.state.property.Properties.OPEN);
-        }
-        net.minecraft.block.Block block = state.getBlock();
-        return block instanceof net.minecraft.block.TorchBlock
-                || block instanceof net.minecraft.block.WallTorchBlock
-                || block instanceof net.minecraft.block.LanternBlock
-                || block instanceof net.minecraft.block.CarpetBlock
-                || block instanceof net.minecraft.block.RedstoneWireBlock
-                || block instanceof net.minecraft.block.AbstractRedstoneGateBlock
-                || block instanceof net.minecraft.block.LeverBlock
-                || block instanceof net.minecraft.block.ButtonBlock
-                || block instanceof net.minecraft.block.PressurePlateBlock
-                || block instanceof net.minecraft.block.PlantBlock
-                || block instanceof net.minecraft.block.FlowerBlock
-                || block instanceof net.minecraft.block.TallPlantBlock
-                || block instanceof net.minecraft.block.MushroomPlantBlock
-                || block instanceof net.minecraft.block.SporeBlossomBlock
-                || block instanceof net.minecraft.block.SaplingBlock
-                || block instanceof net.minecraft.block.AbstractBannerBlock
-                || block instanceof net.minecraft.block.AbstractSignBlock
-                || block instanceof net.minecraft.block.EndRodBlock
-                || block instanceof net.minecraft.block.TripwireBlock
-                || block instanceof net.minecraft.block.TripwireHookBlock
-                || block instanceof net.minecraft.block.CobwebBlock
-                || block instanceof net.minecraft.block.ChainBlock
-                || block instanceof net.minecraft.block.BellBlock
-                || block instanceof net.minecraft.block.BrewingStandBlock
-                || block instanceof net.minecraft.block.FlowerPotBlock
-                || block instanceof net.minecraft.block.SkullBlock
-                || block instanceof net.minecraft.block.WallSkullBlock
-                || block instanceof net.minecraft.block.LadderBlock
-                || block instanceof net.minecraft.block.AbstractRailBlock;
-    }
-
-    public static boolean canAirPass(net.minecraft.world.BlockView world, BlockPos fromPos, BlockState fromState, BlockPos toPos, BlockState toState, Direction dir) {
-        if (fromState != null) {
-            if (fromState.contains(net.minecraft.state.property.Properties.OPEN)) {
-                if (!fromState.get(net.minecraft.state.property.Properties.OPEN)) {
-                    return false;
-                }
-            } else if (fromState.isSideSolidFullSquare(world, fromPos, dir)) {
-                return false;
+            if (isFaceSolid(world, checkPos, checkState, outwardDir)) {
+                break;
             }
         }
-        if (toState == null) {
-            return false;
-        }
-        if (toState.contains(net.minecraft.state.property.Properties.OPEN)) {
-            return toState.get(net.minecraft.state.property.Properties.OPEN);
-        }
-        if (toState.isSideSolidFullSquare(world, toPos, dir.getOpposite())) {
-            return false;
-        }
-        if (!toState.getFluidState().isEmpty()) {
-            return false;
-        }
-        return isPassableAirBlock(toState);
+        return false;
     }
 
     public static boolean hasMoldNearby(net.minecraft.world.BlockView world, BlockPos center, int radius) {

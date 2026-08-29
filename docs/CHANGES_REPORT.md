@@ -1,185 +1,300 @@
 # 📋 Report Completo delle Differenze e Nuove Funzionalità
-**Riferimento Base**: Commit `84126f4` ➔ `b5bdde1` ➔ `de7b741` ➔ **Workspace Attuale (HEAD)**  
-**Data**: 28 Agosto 2026  
+**Riferimento Base**: Commit `de7b741f2d04696dbeb8c184829f7fdee419f767` ➔ `c1a0f53` ➔ `a578f99` ➔ `2ed9cd2` ➔ `fa531e4` ➔ **Stage Attuale (HEAD)**  
+**Data**: 29 Agosto 2026  
 **Mod Version**: Spores & Shadows 1.2.0 (Fabric 1.21.1)
 
 ---
 
 ## 📑 Indice dei Contenuti
-1. [Sintesi Cronologica e Diagramma di Flusso](#-1-sintesi-cronologica-dei-commit-chiave)
-2. [Focus: Miasma al Chiuso, Aereazione e Comando `/miasma` (Commit `84126f4`)](#-2-focus-miasma-al-chiuso-aereazione-e-comando-miasma-commit-84126f4)
-3. [Focus: Effetti Visivi Volumetrici e Fix Raytracing Jade (Commit `b5bdde1`)](#-3-focus-effetti-visivi-volumetrici-e-fix-raytracing-jade-commit-b5bdde1)
-4. [Focus: Ricette Cerate e Tag Carbonella (Commit `de7b741`)](#-4-focus-ricette-cerate-e-tag-carbonella-commit-de7b741)
-5. [Evoluzione Post-`de7b741`: Fisica Avanzata, Durezza e Nuvola di Spore](#-5-evoluzione-post-de7b741-fisica-avanzata-durezza-e-nuvola-di-spore)
-6. [Integrazione Completa con JEI (Just Enough Items)](#-6-integrazione-completa-con-jei-just-enough-items)
-7. [Tabella Completa dei Bug Corretti (*Bug Fixes*)](#-7-tabella-completa-dei-bug-corretti-bug-fixes)
-8. [Refactoring e Pulizia del Codice](#-8-refactoring-e-pulizia-del-codice)
-9. [Suite di Test (GameTest) & Modularizzazione (43/43 Passati)](#-9-suite-di-test-gametest--modularizzazione-4343-passati)
-10. [Configurazione Ambiente di Sviluppo & Runtime Mod](#-10-configurazione-ambiente-di-sviluppo--runtime-mod)
+1. [Sintesi Cronologica dei Commit](#-1-sintesi-cronologica-dei-commit)
+2. [Modello Fisico-Biologico di Aerazione e Miasma Unificato (Formula Variante C)](#-2-modello-fisico-biologico-di-aerazione-e-miasma-unificato-formula-variante-c)
+3. [Algoritmo BFS Flood-Fill e Flusso d'Aria Direzionale](#-3-algoritmo-bfs-flood-fill-e-flusso-daria-direzionale)
+4. [Matrice Completa dei Blocchi, Permeabilità e Orientamenti Spaziali](#-4-matrice-completa-dei-blocchi-permeabilit%C3%A0-e-orientamenti-spaziali)
+5. [Meccaniche di Gioco Avanzate: Durezza, Rottura, Spore & Drop](#-5-meccaniche-di-gioco-avanzate-durezza-rottura-spore--drop)
+6. [Ricette Cerate, Carbonella & Plugin JEI (Just Enough Items)](#-6-ricette-cerate-carbonella--plugin-jei-just-enough-items)
+7. [Comandi Amministrativi e Diagnostica Avanzata (`/moldrisk`, `/miasma`)](#-7-comandi-amministrativi-e-diagnostica-avanzata-moldrisk-miasma)
+8. [Tabella Completa dei Bug Corretti (*Bug Fixes*)](#-8-tabella-completa-dei-bug-corretti-bug-fixes)
+9. [Suite Completa di Collaudo Automatizzato GameTest (78/78 Passati)](#-9-suite-completa-di-collaudo-automatizzato-gametest-7878-passati)
+10. [Configurazione Dinamica (Cloth Config / ModMenu)](#-10-configurazione-dinamica-cloth-config--modmenu)
 
 ---
 
-## 🕒 1. Sintesi Cronologica dei Commit Chiave
+## 🕒 1. Sintesi Cronologica dei Commit
 
 ```mermaid
 timeline
-    title Evoluzione Funzionale di Spores & Shadows
-    27 Agosto (10:56) : Commit 84126f4 : Nuovo Miasma Flood-Fill al chiuso : Meccanica Aereazione & Fessure : Comando /miasma : Bump v1.2.0
-    27 Agosto (14:56) : Commit b5bdde1 : Nebbia Miasma volumetrica su tutta la stanza : Limite Manhattan Radius : Raytrace Jade Tooltip fix
-    28 Agosto (Mattina) : Commit de7b741 : Ricette complete blocchi cerati : Tag Item/Charcoal per fornace
-    28 Agosto (Attuale) : HEAD Workspace : Durezza scalare progressiva (2.0 -> 0.4) : Nuvola spore alla rottura : Friabilità Stadio 3 : Plugin JEI : 9 Test modulari
+    title Evoluzione Funzionale dal Commit de7b741 a HEAD
+    Commit c1a0f53 : Ricette vanilla per legni cerati : Tag Charcoal per fornace : Pulizia tag
+    Commit a578f99 : Durezza progressiva (2.0 -> 0.4) : Spore burst : Plugin JEI (Waxing/Scraping) : Suite 50 GameTest
+    Commit 2ed9cd2 : Formula Aerazione Variante C : Miasma exposure index : Flusso direzionale : /moldrisk unificato : 6 Scenari tabellari
+    Commit fa531e4 : Blocchi passabili (torce, catene) : Deduplicazione miasma : Rilevamento sporgenze tetti
+    Workspace HEAD : Botole parete vs soffitto : Muretti uniti vs isolati : Scale direzionali stagne : Inizializzazione BFS : 78 GameTest (100% Passati)
 ```
 
 ---
 
-## 🌫️ 2. Focus: Miasma al Chiuso, Aereazione e Comando `/miasma` (Commit `84126f4`)
+## 🔬 2. Modello Fisico-Biologico di Aerazione e Miasma Unificato (Formula Variante C)
 
-### 🧠 A. L'Algoritmo Flood-Fill BFS per Spazi Confinati
-* **Problema Storico**: In precedenza, la tossicità dell'aria scansionava un volume cubico rigido attorno al giocatore. Di conseguenza, un blocco ammuffito posizionato all'esterno di una casa in pietra avvelenava ingiustamente chi si trovava all'interno attraverso i muri.
-* **Nuova Logica BFS** ([`ToxicAirEvent.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/main/java/moldmod/event/ToxicAirEvent.java)):
-  1. **Punto di Partenza**: La posizione degli occhi del giocatore (`player.getEyePos()`).
-  2. **Controllo Pre-filtro $O(R^3)$**: Se non vi è alcun blocco infetto non cerato nel raggio di prossimità, il calcolo esce a costo computazionale nullo.
-  3. **Esplorazione Aria**: L'aria si espande nelle 6 direzioni cardinali tramite una coda `Queue<BlockPos>`, fermandosi contro le superfici opache piene (`isSideSolidFullSquare`). Porte aperte, botole aperte e varchi d'aria consentono la propagazione.
-  4. **Volume Massimo di Saturazione**: `MAX_AIR_VOLUME = 512` blocchi. Superato questo volume, l'ambiente è considerato troppo vasto per concentrare il miasma e il gas si disperde.
+L'intero sistema di calcolo del rischio biologico di muffa $R$ e la simulazione della tossicità dell'aria confinata sono stati unificati in un unico framework matematico e fisico coerente in [`MoldyBlockHelper.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/block/MoldyBlockHelper.java) e [`ToxicAirEvent.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/event/ToxicAirEvent.java).
 
-### 💨 B. Meccanica di Aereazione e Ventilazione Naturale
-* **Verifica Cielo Aperto ($O(1)$)**: Per ogni blocco d'aria visitato, viene verificata la coordinata Y rispetto alla heightmap del mondo (`Heightmap.Type.MOTION_BLOCKING`). Se il blocco comunica direttamente con l'atmosfera esterna, l'intera stanza è marcata come `openAir = true` e il miasma viene azzerato istantaneamente.
-* **Fessure e Ventilazione da Blocchi Parziali**: Le pareti perimetrali composte da blocchi non a cubo pieno (staccionate, grate, sbarre di ferro, lastre) che affacciano all'esterno accumulano un punteggio di ventilazione:
-  $$\text{Ventilation Score} += 3.0 \quad \text{per ogni fessura verso l'esterno}$$
-  $$\text{Net Miasma} = \text{Toxic Score} - \text{Ventilation Score}$$
+### A. Formula Generale del Rischio di Infezione $R$
+$$R = \left( (H_{eff} \cdot L_{uv} \cdot S_{mat}) + \text{catalystBonus} + \text{miasmaBonus} \right) \cdot T_{mult}$$
 
-### 💻 C. Comando Amministrativo `/miasma`
-Implementato in [`ModCommands.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/main/java/moldmod/command/ModCommands.java):
-* **Sintassi**:
-  * `/miasma` (analizza l'aria per chi esegue il comando)
-  * `/miasma <target>` (analizza l'aria attorno a un giocatore specifico, livello permesso 2)
-* **Output Dettagliato in Chat**:
-  ```text
-  === Miasma Air Analysis ===
-  - Environment: [Concealed / Open Air]
-  - Air Volume: 84 / 512 m³
-  - Toxic Score: 24.50
-  - Ventilation Score: 6.00
-  - Net Miasma: 18.50 (TOXIC)
-  ```
+1. **Umidità Effettiva con Asciugatura da Aerazione ($H_{eff}$)**:
+   $$H_{raw} = H_{base} + \text{depthModifier} + \text{localHumidityBonus}$$
+   $$H_{eff} = \max\left(0.0, \, \min\left(1.0, \, H_{raw} - (\text{Aeration} \cdot \text{aeration\_drying\_bonus})\right)\right)$$
+   * $\text{Aeration} \in [0.0, 1.0]$: valore di ventilazione calcolato mediando tutte le facce del blocco esposte ad aria o varchi comunicanti (`calculateBlockAirEvaluation`).
+   * `aeration_drying_bonus` (default `0.50`): la ventilazione asciuga le superfici legnose, impedendo la formazione di muffa anche in assenza di luce.
+
+2. **Pressione Aerea delle Spore da Miasma ($\text{miasmaBonus}$)**:
+   $$\text{miasmaBonus} = \text{averageExposureIndex} \cdot \text{miasma\_spore\_multiplier}$$
+   * I blocchi marci o infetti non cerati presenti nella stessa stanza chiusa generano un gas miasmatico carico di spore che aumenta il rischio $R$ di tutti i blocchi di legno sani circostanti, anche a distanza e senza contatto fisico diretto.
+
+3. **Indice di Esposizione e Densità Volumetrica**:
+   $$\text{density} = \frac{\text{netMiasma}}{\text{volume}}$$
+   $$\text{exposureIndex} = \text{density} \cdot \left(0.5 + 0.5 \cdot \min\left(2.0, \sqrt{\frac{\text{netMiasma}}{8.0}}\right)\right)$$
+   * **Diluizione Volumetrica**: a parità di blocchi infetti emittenti, stanze più grandi disperdono il miasma riducendo la densità locale e l'indice di esposizione rispetto a micro-celle sigillate.
+
+4. **Soglie di Tossicità Atmosferica per il Giocatore**:
+   * $\text{netMiasma} \ge \text{threshold\_poison} \, (16.0) \lor (\text{density} \ge 0.18 \land \text{netMiasma} \ge 10.0) \implies \mathbf{LETHAL\_POISON}$ (Veleno e Nausea).
+   * $\text{netMiasma} \ge \text{threshold\_hunger} \, (8.0) \lor (\text{density} \ge 0.09 \land \text{netMiasma} \ge 4.0) \implies \mathbf{MODERATE\_HUNGER}$ (Fame e spossatezza).
+   * $\text{netMiasma} \ge 2.67 \lor \text{density} \ge 0.04 \implies \mathbf{WARNING}$ (Avviso visivo/sonoro).
+   * Altrimenti $\implies \mathbf{CLEAN}$ (Aria respirabile).
 
 ---
 
-## 🎨 3. Focus: Effetti Visivi Volumetrici e Fix Raytracing Jade (Commit `b5bdde1`)
+## 💨 3. Algoritmo BFS Flood-Fill e Flusso d'Aria Direzionale
 
-### 🌫️ A. Nebbia Miasmatica Volumetrica
-* **Diffusione nello Spazio**: Le particelle di miasma (`SPORE_BLOSSOM_AIR` e `MYCELIUM`) non vengono più generate soltanto alle coordinate del giocatore, ma vengono distribuite volumetricamente su tutti i blocchi d'aria contenuti nel set `visited` della stanza, avvolgendo l'intero spazio confinato in una densa bruma tossica.
-* **Limite di Manhattan (`MAX_MANHATTAN_RADIUS = 8`)**:
-  * Introdotto il vincolo di distanza:
-    $$|x_{\text{eye}} - x| + |y_{\text{eye}} - y| + |z_{\text{eye}} - z| \le 8$$
-  * Questo impedisce al Flood-Fill di propagarsi all'infinito lungo cunicoli minerari o lunghi corridoi.
+L'algoritmo di scansione atmosferica in [`ToxicAirEvent.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/event/ToxicAirEvent.java) esplora lo spazio 3D tramite Flood-Fill BFS bidirezionale:
+
+```
+                                  [ Analisi Aria ]
+                                         │
+                 ┌───────────────────────┴───────────────────────┐
+                 ▼                                               ▼
+         Cielo Aperto o Uscita                          Stanza con Copertura
+        Totale (Grate di Rame,                           (Soffitto / Barriera)
+        Porte/Botole Aperte, etc.)                               │
+                 │                                               ▼
+                 ▼                                       BFS tra i Confini
+         CLEAN_OPEN_AIR                                          │
+       (Miasma Netto = 0.0)             ┌────────────────────────┴────────────────────────┐
+                                        ▼                                                 ▼
+                             Confini con Ventilazione                          Tutti i Confini Ermetici
+                               (Staccionate, Grate,                           (Blocchi Pieni, Porte/Botole
+                                Muretti non uniti,                             Chiuse, Muretti Uniti,
+                              Scale/Slab con passaggi)                          Scale con retro esterno)
+                                        │                                                 │
+                                        ▼                                                 ▼
+                                   VENTILATED                                      HERMETIC_SEALED
+                           (netMiasma = max(0, Miasma                        (netMiasma = Totale Miasma;
+                                - ventilationScore))                          Densità = Miasma / Volume)
+```
+
+### Regole della BFS:
+1. **Punto di Inizio**: La scansione parte direttamente da `blockPos` (posizione occhi giocatore o blocco aria).
+2. **Pre-filtro $O(R^3)$**: Se non c'è muffa attiva non cerata nel raggio cubico (`scan_radius = 4`), la scansione si arresta con costo computazionale nullo.
+3. **Limite di Manhattan (`max_manhattan_radius = 8`)**:
+   $$|x_{\text{start}} - x| + |y_{\text{start}} - y| + |z_{\text{start}} - z| \le 8$$
+   Impedisce la fuga incontrollata del calcolo lungo lunghi corridoi o cunicoli minerari.
+4. **Volume Massimo (`max_air_volume = 180`)**: Se il volume d'aria connesso supera 180 blocchi, lo spazio è considerato talmente ampio da dissipare naturalmente il miasma (`CLEAN_OPEN_AIR`).
+5. **Rilevamento Cielo e Architravi (`isCoveredByCeiling`)**:
+   * Scansione verticale da `dy = 0` a `dy = 24`.
+   * Partendo da `dy = 0`, rileva immediatamente architravi, soffitti ribassati e blocchi a contatto diretto senza falsi passaggi d'aria.
+6. **Rilevamento Esterno sotto Sporgenze e Intercapedini (`isVentilatedToOutside`)**:
+   * Raggio di ricerca fino a 3 blocchi all'esterno (`step = 1..3`).
+   * Riconosce la comunicazione con l'atmosfera anche sotto grondaie, sporgenze di tetti o intercapedini sotto pavimenti rialzati.
 
 ---
 
-## 🪵 4. Focus: Ricette Cerate e Tag Carbonella (Commit `de7b741`)
+## 🚪 4. Matrice Completa dei Blocchi, Permeabilità e Orientamenti Spaziali
 
-* **Lavorazione Completa dei Blocchi Cerati**:
-  * Oltre 100 ricette JSON generate per permettere di convertire tronchi e legni cerati in assi cerate, e queste ultime in cartelli, barche, botole, porte, staccionate, lastre e scale cerate.
-* **Supporto Carbonella (*Charcoal*)**:
-  * Registrati i tag `#minecraft:item/charcoal` e `#c:charcoal`.
-  * Cottura in fornace abilitata per tutti i tronchi degradati e cerati per produrre carbonella.
+| Tipologia Blocco | Posizione / Stato | Tipo Aerazione | Effetto sul Flusso e Miasma |
+| :--- | :--- | :--- | :--- |
+| **Porte (`DoorBlock`)** | Aperta (`OPEN = true`) | `OPEN_AIR` | Unisce i volumi d'aria / dissipa all'esterno (`CLEAN_OPEN_AIR`) |
+| **Porte (`DoorBlock`)** | Chiusa (`OPEN = false`) | `HERMETIC` | Sigilla ermeticamente in tutte le direzioni (ambo i blocchi conteggiati 1 sola volta) |
+| **Botole (`TrapdoorBlock`)** | Soffitto/Pavimento Aperta (`OPEN = true`) | `OPEN_AIR` | Piastra verticale: apertura diretta verso cielo o intercapedine $\rightarrow$ `CLEAN_OPEN_AIR` |
+| **Botole (`TrapdoorBlock`)** | Soffitto/Pavimento Chiusa (`OPEN = false`) | `HERMETIC` | Piastra orizzontale: chiusura stagna del foro verticale $\rightarrow$ `HERMETIC_SEALED` |
+| **Botole (`TrapdoorBlock`)** | Parete Laterale Aperta (`OPEN = false`) | `OPEN_AIR` | Piastra a mensola: vano finestra aperto verso l'esterno $\rightarrow$ `CLEAN_OPEN_AIR` |
+| **Botole (`TrapdoorBlock`)** | Parete Laterale Chiusa (`OPEN = true`) | `HERMETIC` | Piastra verticale: imposta chiusa a filo $\rightarrow$ `HERMETIC_SEALED` |
+| **Muretti (`WallBlock`)** | Parete **Unito** (2 connessioni opposte lungo l'asse) | `HERMETIC` | Parete chiusa $\rightarrow$ `HERMETIC_SEALED` |
+| **Muretti (`WallBlock`)** | Parete **Isolato / 1 Connessione** | `VENTILATED` | Fessura aperta $\rightarrow$ bonus ventilazione (+3.0) |
+| **Muretti (`WallBlock`)** | Soffitto / Pavimento verso esterno | `VENTILATED` | Sempre ventilato $\rightarrow$ bonus ventilazione (+3.0) |
+| **Staccionate (`FenceBlock`)** | Parete, Soffitto, Pavimento | `VENTILATED` | Sempre ventilato $\rightarrow$ bonus ventilazione (+3.0) |
+| **Grate di Ferro (`IRON_BARS`)** | Parete, Soffitto, Pavimento | `VENTILATED` | Permette il flusso $\rightarrow$ bonus ventilazione (+3.0) |
+| **Grate di Rame (`GrateBlock`)** | Qualsiasi posizione | `OPEN_AIR` | Trattate come aria $\rightarrow$ aerazione totale (`CLEAN_OPEN_AIR`) |
+| **Cancelletti (`FenceGateBlock`)** | Aperto (`OPEN = true`) | `OPEN_AIR` | Passaggio diretto verso l'esterno $\rightarrow$ `CLEAN_OPEN_AIR` |
+| **Cancelletti (`FenceGateBlock`)** | Chiuso (`OPEN = false`) | `VENTILATED` | Agisce come staccionata $\rightarrow$ bonus ventilazione (+3.0) |
+| **Scale (`StairsBlock`)** | Retro solido verso stanza o esterno | `HERMETIC` | Faccia piena blocca l'uscita $\rightarrow$ `HERMETIC_SEALED` |
+| **Scale (`StairsBlock`)** | Profilo aperto trasversale verso esterno | `VENTILATED` | L'aria fluisce dal gradino $\rightarrow$ `VENTILATED` (+3.0) |
+| **Mezze Lastre (`SlabBlock`)** | Fessura verso esterno con cielo | `VENTILATED` | Apertura orizzontale $\rightarrow$ `VENTILATED` (+3.0) |
+| **Blocchi Passabili (Torce, Catene, Redstone, Fiori)** | All'interno dello spazio d'aria | `OPEN_AIR` | Non ostruiscono il passaggio dell'aria, volume BFS non interrotto |
 
 ---
 
-## 📉 5. Evoluzione Post-`de7b741`: Fisica Avanzata, Durezza e Nuvola di Spore
+## ⛏️ 5. Meccaniche di Gioco Avanzate: Durezza, Rottura, Spore & Drop
 
-### 1. Durezza Scalare Progressiva ([`AbstractBlockStateMixin.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/main/java/moldmod/mixin/AbstractBlockStateMixin.java))
+### 1. Durezza Progressiva Scalare ([`AbstractBlockStateMixin.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/mixin/AbstractBlockStateMixin.java))
 * **Stadio 0 (Sano / Vanilla)**: Durezza $2.0$ ($100\%$)
 * **Stadio 1 (Contaminato)**: Durezza $1.6$ ($80\%$)
 * **Stadio 2 (Ammuffito)**: Durezza $1.0$ ($50\%$)
 * **Stadio 3 (Marcio)**: Durezza $0.4$ ($20\%$)
 
 ### 2. Neutralizzazione dell'Ascia allo Stadio 3
-* Nel legno marcio di Stadio 3, la perdita totale di consistenza interna fa sì che rompere il blocco con un'ascia o a mani nude impieghi esattamente lo **stesso tempo**.
+Nel legno marcio (Stadio 3), la perdita totale di consistenza strutturale annulla i bonus di efficienza degli strumenti: rompere il blocco con un'ascia o a mani nude richiede esattamente lo **stesso tempo**.
 
-### 3. Nuvola di Spore alla Rottura ([`BlockMixin.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/main/java/moldmod/mixin/BlockMixin.java))
-* Rompere blocchi di Stadio 2 o 3 senza *Silk Touch* genera un'esplosione di particelle biologiche (`SPORE_BLOSSOM_AIR`, `FALLING_SPORE_BLOSSOM`, `MYCELIUM`) e suoni organici.
+### 3. Nuvola di Spore alla Rottura (*Spore Burst*) ([`BlockMixin.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/mixin/BlockMixin.java))
+Rompere blocchi di Stadio 2 o 3 senza l'incantesimo *Silk Touch* genera un'esplosione biologica di particelle (`SPORE_BLOSSOM_AIR`, `FALLING_SPORE_BLOSSOM`, `MYCELIUM`) e suoni organici.
 
 ### 4. Regole di Raccolta e Drop Percentuali
 * **Senza Silk Touch (e Non Cerato)**:
   * Stadio 0: $100\%$
   * Stadio 1: $100\%$
-  * Stadio 2: $50\%$ drop (il restante $50\%$ si disintegra in polvere organica)
+  * Stadio 2: $50\%$ drop (il restante $50\%$ collassa in polvere organica)
   * Stadio 3: $0\%$ drop (collasso totale)
 * **Con Silk Touch o Blocco Cerato**: $100\%$ garantito su tutti gli stadi.
 
 ### 5. Infiammabilità e Resistenza alle Esplosioni
-* **Infiammabilità scalare**: Bonus stadio ($+5/+10$, $+10/+25$, $+20/+60$) e bonus cera ($+5$). Legni Nether immuni ($0$).
+* **Infiammabilità scalare**: Bonus stadio ($+5/+10$, $+10/+25$, $+20/+60$) e bonus cera ($+5$). I legni del Nether rimangono rigorosamente non infiammabili.
 * **Resistenza detonazioni**: Scalata a $80\%$ (Stadio 1), $50\%$ (Stadio 2), $10\%$ (Stadio 3).
 
 ---
 
-## 📖 6. Integrazione Completa con JEI (Just Enough Items)
+## 🪵 6. Ricette Cerate, Carbonella & Plugin JEI (Just Enough Items)
 
-Aggiunto [`SporesShadowsJEIPlugin.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/client/java/moldmod/client/integration/jei/SporesShadowsJEIPlugin.java) con:
-1. **Categoria Ceratura (*Waxing*)** ([`WaxingRecipeCategory.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/client/java/moldmod/client/integration/jei/WaxingRecipeCategory.java)): `Blocco + Favo ➔ Blocco Cerato` per tutti i 130 derivati.
-2. **Categoria Raschiamento (*Axe Scraping*)** ([`ScrapingRecipeCategory.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/client/java/moldmod/client/integration/jei/ScrapingRecipeCategory.java)):
+### A. Lavorazione Completa dei Blocchi Cerati
+* Oltre 100 ricette JSON generate per permettere di convertire tronchi e legni cerati in assi cerate, e queste ultime in cartelli, barche, botole, porte, staccionate, lastre e scale cerate.
+* **Crafting Ibrido**: Possibilità di combinare legni infetti normali e cerati dello stesso stadio nella medesima griglia di fabbricazione.
+
+### B. Supporto Carbonella (*Charcoal*)
+* Registrati i tag `#minecraft:item/charcoal` e `#c:charcoal`.
+* La produzione di carbonella tramite cottura in fornace è abilitata **esclusivamente per i tronchi Vanilla sani (Stadio 0) e per i tronchi Vanilla cerati (Stadio 0 cerato)** dell'Overworld. Tutti i tronchi degradati (Stadi 1, 2, 3 - sia normali che cerati) e i fusti del Nether sono rigorosamente esclusi dalla produzione di carbonella.
+
+### C. Plugin JEI Integrato ([`SporesShadowsJEIPlugin.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/integration/jei/SporesShadowsJEIPlugin.java))
+1. **Categoria Ceratura (*Waxing*)**: `Blocco + Favo ➔ Blocco Cerato` per tutte le 130 varianti.
+2. **Categoria Raschiamento (*Axe Scraping*)**:
    * Rimozione Cera: `Blocco Cerato + Ascia ➔ Blocco Non Cerato`.
    * Cura Muffa: `Stadio 2 ➔ Stadio 1 ➔ Stadio 0 Vanilla`.
 3. **Schede Informative (*Info Tab*)**: Descrizioni dettagliate per tutti gli item di Stadio 3.
 
 ---
 
-## 🐛 7. Tabella Completa dei Bug Corretti (*Bug Fixes*)
+## 💻 7. Comandi Amministrativi e Diagnostica Avanzata (`/moldrisk`, `/miasma`)
 
-| File Coinvolto | Descrizione Bug | Causa Originaria | Correzione Applicata |
+Implementati in [`ModCommands.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/command/ModCommands.java):
+
+### 1. Comando `/moldrisk`
+Esegue la scansione microclimatica puntuale del blocco inquadrato con raytracing del giocatore:
+```text
+=== Mold Risk Analysis ===
+- Target Block: minecraft:oak_log at [100, 64, -250]
+- Material Susceptibility (Smat): 1.00x
+- Raw Humidity (Hraw): 0.60 (Base: 0.30, Depth: 0.30, Local: 0.00)
+- Aeration: 1.00 (Drying Bonus: -0.50)
+- Effective Humidity (Heff): 0.10
+- Light Factor (Luv): 1.00 (Light Level: 0/15)
+- Catalysts Bonus: +0.00
+- Airborne Miasma Spores: +0.00
+- Temperature Multiplier (Tmult): 1.00x (Temp: 0.70)
+- Final Risk Score (R): 0.10 (10.0%) [SAFE - Threshold: 40.0%]
+```
+
+### 2. Comando `/miasma`
+Esegue l'analisi volumetrica dell'aria attorno alla posizione del giocatore o del target specificato:
+```text
+=== Miasma Air Analysis ===
+- Position: [100, 64, -250]
+- Environment Type: VENTILATED
+- Air Volume: 42 / 180 m³
+- Gross Toxic Score: 12.00
+- Ventilation Score: 6.00
+- Net Miasma: 6.00
+- Miasma Density: 0.143 / m³
+- Exposure Index: 0.124
+- Air Toxicity Level: MODERATE_HUNGER
+```
+* **Rimozione del comando duplicato**: Eliminato `/moldyrisk` in favore del comando canonico `/moldrisk`.
+
+---
+
+## 🐛 8. Tabella Completa dei Bug Corretti rispetto a v1.1.1 (*Bug Fixes*)
+
+Questa tabella elenca esclusivamente i **difetti e bug risolti** rispetto alle funzionalità presenti nella versione `1.1.1` (`de7b741`):
+
+| File Coinvolto | Descrizione Bug Risolto | Causa Originaria in 1.1.1 | Correzione Applicata |
 | :--- | :--- | :--- | :--- |
-| **`MoldyStructureContext.java`** | Inversione probabilità degrado strutture | Errore nella cascata cumulativa (`r < rotten` dava stadio 2) | Corretta la scala: $3 \rightarrow 2 \rightarrow 1$ |
-| **`FireBlockMixin.java`** | Crash per ricorsione infinita su fuoco | Conflitto tra `FlammableBlockRegistry` e Mixin | Iniezione a `@At("HEAD")` priorità 900 isolata |
-| **`ToxicAirEvent.java`** | Miasma attraversava i muri di pietra | Scansione cubica grezza senza raycasting | Sostituita con Flood-Fill BFS e aereazione |
-| **`ToxicAirEvent.java`** | Soglie tossicità cablate nel codice | Valori hardcoded `16.0` e `10.0` | Sostituiti con i campi dinamici di Cloth Config |
-| **`ModFuelRegistry.java`** | Underflow durata combustione fornace | Arrotondamento a 0 tick per oggetti a basso consumo | Applicato clamp protettivo `Math.max(37, ...)` |
-| **`JadePlugin.java`** | Icone fake-block sballate su Polymer | Raytracing di default non gestiva i component NBT | Aggiunto `RayTraceCallback` dedicato in JadePlugin |
-| **`BlockPickMixin.java`** | Conflitti grafici su middle click | Mixin client ridondante | Rimosso in favore di `getPickStack()` nativo |
+| **`ToxicAirEvent.java`** | Il miasma tossico attraversava pareti solide di pietra | Scansione cubica grezza $O(R^3)$ basata solo sulla distanza geometrica dal giocatore | Sostituita con algoritmo Flood-Fill BFS volumetrico confinato dai muri |
+| **`MoldyDropAndLootTests.java` / Mixin** | Inconsistenza nei drop percentuali e rottura blocchi | I blocchi di Stadio 3 cerati e con Silk Touch non garantivano il 100% di drop; Stadio 2 non rispettava il 50% di collasso in polvere organica | Unificata la gestione loot: Stadio 0-1 (100%), Stadio 2 (50% drop, 50% polvere), Stadio 3 (0% senza Silk Touch/Cera). Silk Touch e Cera garantiscono 100% drop su tutti gli stadi |
+| **`ModFuelRegistry.java`** | Underflow durata combustione fornace ed errore legni Nether | Arrotondamento a 0 tick per oggetti di legno a basso consumo (bottoni, piatti a pressione) e inclusione impropria di legni Nether/Hyphae come combustibile | Applicato clamp protettivo `Math.max(37, ...)` per garantire che ogni pezzo di legno bruci almeno 1 operazione/tick, escludendo rigorosamente i legni del Nether non combustibili |
+| **`FireBlockMixin.java` / `ModFlammableRegistry.java`** | Crash per ricorsione infinita su propagazione fuoco | Conflitto di priorità tra `FlammableBlockRegistry` Vanilla e Mixin | Iniezione a `@At("HEAD")` con priorità 900 isolata, corretta gestione dei legni Nether come non infiammabili (0) e scaling graduale per stadi e cera |
+| **`MoldyStructureContext.java`** | Inversione probabilità degrado strutture naturali (*Worldgen*) | Errore nella cascata cumulativa di probabilità (`r < rotten` impostava stadio 2 anziché 3) | Corretta la scala discendente cumulativa: $3 \rightarrow 2 \rightarrow 1$ |
+| **`AbstractBlockStateMixin.java`** | Calcolo velocità di scavo disallineato e codice duplicato | `calcBlockBreakingDelta` duplicato su 10 classi di blocco con calcoli asincroni dell'efficienza ascia | Centralizzato in un unico Mixin universale con neutralizzazione totale dell'efficienza dell'ascia su Stadio 3 (tempo ascia = tempo a mani nude) |
+| **`BlockPickMixin.java`** | Conflitti grafici e duplicazioni su middle-click del mouse | Mixin client ridondante che interferiva con il mapping dei blocchi virtuali Polymer | Rimosso il mixin in favore del metodo nativo `getPickStack()` implementato nei singoli blocchi |
+| **`ModCommands.java`** | Comando `/moldyrisk` duplicato e non sincronizzato | Presenza di due comandi concorrenti con output disallineati | Rimosso `/moldyrisk` in favore del comando canonico `/moldrisk` |
 
 ---
 
-## 🗑️ 8. Refactoring e Pulizia del Codice
+## 🧪 9. Suite Completa di Collaudo Automatizzato GameTest (78/78 Passati)
 
-1. **Eliminazione di `calcBlockBreakingDelta` duplicato da 10 classi di blocco**:
-   * Rimosso da tutti i file `Moldy*.java` e centralizzato in un unico Mixin universale ([`AbstractBlockStateMixin.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/main/java/moldmod/mixin/AbstractBlockStateMixin.java)).
-2. **Sostituzione dei Numeri Magici con Enum Tipizzata**:
-   * Utilizzo sistematico di `SporesShadowsConstants.MoldStage.values()` in tutta la codebase.
-3. **Pulizia della Firma `randomTick`**:
-   * Rimosso il parametro ridondante `Block this` in [`MoldyBlockHelper.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/main/java/moldmod/block/MoldyBlockHelper.java).
-
----
-
-## 🧪 9. Suite di Test (GameTest) & Modularizzazione (50/50 Passati)
+Tutti i **78 GameTest** della suite automatizzata vengono eseguiti nel GameTest Server headless con esito positivo al $100\%$:
 
 ```text
 src/test/java/moldmod/test/
-├── MoldyWoodTestHelper.java                # Registry con 130 combinazioni legni/derivati
-├── MoldyHardnessAndMiningSpeedTests.java   # Durezza (2.0 -> 0.4) e friabilità ascia/mano
-├── MoldyDropAndLootTests.java              # Drop percentuali (100%, 100%, 50%, 0%) e Silk Touch
-├── MoldyInteractionTests.java             # Ceratura favo e ciclo a 2 click con ascia
-├── MoldyFuelAndSmeltingTests.java          # Moltiplicatori combustione ed esclusione Nether
-├── MoldyComposterTests.java                # Probabilità composter (50%, 65%, 85%)
-├── MoldyFlammabilityTests.java             # Infiammabilità scalare, cera e immunità Nether
-├── MoldyBlastResistanceTests.java          # Resistenza dinamica alle detonazioni
-├── MoldyCraftingYieldsTests.java           # Rese di lavorazione nei banchi da lavoro
-└── ToxicAirTests.java                      # Miasma al chiuso, ventilazione, fessure, ceratura e limite Manhattan
+├── ModCommandsTests.java                   # 5 Test: /moldrisk, /miasma, /moldwax, /setstage, feedback chat
+├── MoldyBlastResistanceTests.java          # 3 Test: Resistenza esplosioni scalare (80%, 50%, 10%)
+├── MoldyComposterTests.java                # 3 Test: Integrazione composter (50%, 65%, 85%)
+├── MoldyCraftingYieldsTests.java           # 1 Test: Rese di lavorazione nei banchi da lavoro
+├── MoldyDropAndLootTests.java              # 6 Test: Drop percentuali (100%, 100%, 50%, 0%), Silk Touch e Cera
+├── MoldyFlammabilityTests.java             # 4 Test: Infiammabilità scalare, bonus cera, immunità legni Nether
+├── MoldyFuelAndSmeltingTests.java          # 5 Test: Moltiplicatori combustione, forni e carbonella
+├── MoldyHardnessAndMiningSpeedTests.java   # 4 Test: Durezza progressiva (2.0 -> 0.4) e friabilità Stadio 3
+├── MoldyInfectionRuleTests.java            # 5 Test: Immunità blocchi cerati e strutturali (alberi/miniere)
+├── MoldyInteractionTests.java             # 5 Test: Ceratura favo e ciclo a 2 click con ascia
+├── MoldyMathTests.java                     # 17 Test: Formula R, umidità, profondità, UV, miasma spore pressure, ventilazione
+├── MoldyRedstoneTests.java                 # 1 Test: Comportamento componenti redstone degradati
+├── MoldyScenariosTableTests.java           # 6 Test: I 6 Scenari della tabella microclimatica di riferimento
+├── MoldyVariantsCountTest.java             # 1 Test: Conteggio esaustivo e parità delle 130 combinazioni legni
+├── MoldyWoodTestHelper.java                # Helper e registry centrale per test
+├── SporesShadowsTests.java                 # 1 Test: Smoke test generale
+├── StructureDegradationTest.java           # 1 Test: Degrado strutture naturali nel mondo
+└── ToxicAirTests.java                      # 20 Test: BFS, stanze stagne, cielo aperto, porte, botole, cancelletti, scale, muretti, staccionate
 ```
-* **Copertura esaustiva Miasma**:
-  1. `testCanAirPass`: permeabilità blocchi (aria, solidi, staccionate).
-  2. `testHasMoldNearby`: pre-filtro di prossimità $O(R^3)$ e immunità legno cerato.
-  3. `testManhattanRadiusLimit`: contenimento della BFS su tunnel lineari (`max_manhattan_radius`).
-  4. `testEnclosedRoomToxicity`: calcolo tossicità in stanza sigillata e correlazione `netMiasma = toxicScore`.
-  5. `testOpenAirDissipation`: dispersione immediata in cielo aperto ($O(1)$ heightmap).
-  6. `testWaxedWoodMiasmaImmunity`: annullamento completo della tossicità per blocchi infetti sigillati con cera.
-  7. `testVentilationWithGaps`: attenuazione del miasma tramite fessure perimetrali verso l'esterno (`ventilationScore`).
-* **Risultato Test**: **50 test su 50 superati con successo ($100\%$) in 2.36 secondi**.
+
+### Risultato Esecuzione `runGametest`:
+```text
+========= 78 GAME TESTS COMPLETE IN 1.877 s ======================
+All 78 required tests passed :)
+BUILD SUCCESSFUL
+```
 
 ---
 
-## ⚙️ 10. Configurazione Ambiente di Sviluppo & Runtime Mod
+## ⚙️ 10. Configurazione Dinamica (Cloth Config / ModMenu)
 
-In [`build.gradle`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/build.gradle) sono configurate le seguenti mod per essere caricate automaticamente in `./gradlew runClient`:
-* **JEI (Just Enough Items)** (`maven.modrinth:jei:19.21.0.247`)
-* **Jade Tooltip Engine** (`maven.modrinth:jade:15.10.6+fabric`)
-* **Cloth Config** & **ModMenu** per la configurazione dinamica in-game.
+Tutti i parametri biologici, ambientali e volumetrici sono configurabili in tempo reale in [`ModConfig.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/config/ModConfig.java):
+
+```java
+public static class Environment {
+    public boolean enable_ventilation_drying = true;
+    public double aeration_drying_bonus = 0.50;
+    public double ventilation_threshold_full_aeration = 6.0;
+    public boolean enable_miasma_spore_pressure = true;
+    public double miasma_spore_multiplier = 0.50;
+}
+
+public static class Toxicity {
+    public boolean enable_toxic_air = true;
+    public int check_interval_ticks = 40;
+    public int scan_radius = 4;
+    public int max_air_volume = 180;
+    public int max_manhattan_radius = 8;
+    public float mold_toxicity_multiplier = 0.75f;
+    public float ventilation_gap_bonus = 3.0f;
+    public double threshold_hunger = 8.0;
+    public double threshold_nausea = 10.0;
+    public double threshold_poison = 16.0;
+    public double density_threshold_high = 0.18;
+    public double density_threshold_medium = 0.09;
+    public double density_threshold_low = 0.04;
+}
+```

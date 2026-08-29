@@ -54,16 +54,17 @@ public class ModCommands {
 
         source.sendMessage(Text.literal("§a[Miasma Scanner] §eScanning environment..."));
         
-        if (result.openAir) {
-            source.sendMessage(Text.literal("§7- Environment: §bOpen Air §7(Miasma dissipates freely into the sky)"));
-        } else if (result.volume >= 180) { // MAX_AIR_VOLUME
-            source.sendMessage(Text.literal(String.format("§7- Environment: §aEnclosed but very large §7(Volume >= %s blocks, air remains clean)", result.volume)));
-        } else {
-            source.sendMessage(Text.literal(String.format("§7- Environment: §cConfined Space §7(Volume: %s blocks analyzed)", result.volume)));
+        switch (result.ventilationType) {
+            case CLEAN_OPEN_AIR -> source.sendMessage(Text.literal("§7- Ventilation State: §bClean Air §7(Open Air / Sky Exposure - miasma dissipated)"));
+            case VENTILATED -> source.sendMessage(Text.literal(String.format("§7- Ventilation State: §eVentilated Environment §7(Ventilation modifier: §a-%.2f§7)", result.ventilationScore)));
+            case HERMETIC_SEALED -> source.sendMessage(Text.literal("§7- Ventilation State: §cHermetically Sealed §7(Isolated airtight room - zero ventilation)"));
         }
 
+        source.sendMessage(Text.literal(String.format("§7- Volume: %s blocks analyzed", result.volume)));
         source.sendMessage(Text.literal(String.format("§7- Toxicity Score (from mold): §c+%.2f", result.toxicScore)));
-        source.sendMessage(Text.literal(String.format("§7- Ventilation Score (from openings/gaps): §a-%.2f", result.ventilationScore)));
+        if (result.ventilationType == moldmod.event.ToxicAirEvent.RoomVentilationType.VENTILATED) {
+            source.sendMessage(Text.literal(String.format("§7- Ventilation Modifier: §a-%.2f", result.ventilationScore)));
+        }
         source.sendMessage(Text.literal(String.format("§7- Net Miasma: §6%.2f", result.netMiasma)));
         source.sendMessage(Text.literal(String.format("§7- Spore Density: §d%.3f §7| Exposure Index: §5%.3f", result.density, result.exposureIndex)));
 
