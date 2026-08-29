@@ -1299,7 +1299,7 @@
   "text.autoconfig.spores--shadows.option.toxicity.enable_toxic_air": "Abilita Aria Tossica / Miasma",
   "text.autoconfig.spores--shadows.option.toxicity.hunger_amplifier": "Potenza Fame (Amplificatore)",
   "text.autoconfig.spores--shadows.option.toxicity.max_air_volume": "Volume Massimo Aria (m³)",
-  "text.autoconfig.spores--shadows.option.toxicity.max_manhattan_radius": "Raggio Manhattan Massimo",
+  "text.autoconfig.spores--shadows.option.toxicity.max_euclidean_radius": "Raggio Sferico Massimo",
   "text.autoconfig.spores--shadows.option.toxicity.mold_toxicity_multiplier": "Moltiplicatore Tossicità Muffa",
   "text.autoconfig.spores--shadows.option.toxicity.nausea_amplifier": "Potenza Nausea (Amplificatore)",
   "text.autoconfig.spores--shadows.option.toxicity.poison_amplifier": "Potenza Veleno (Amplificatore)",

@@ -19,7 +19,8 @@
 			"moldmod.test.MoldyVariantsCountTest",
 			"moldmod.test.MoldyMathTests",
 			"moldmod.test.StructureDegradationTest",
-			"moldmod.test.ToxicAirTests"
+			"moldmod.test.ToxicAirTests",
+			"moldmod.test.DynamicMiasmaSaturationTests"
 		]
 	},
     "depends": {

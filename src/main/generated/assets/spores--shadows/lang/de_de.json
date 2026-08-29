@@ -1298,7 +1298,7 @@
   "text.autoconfig.spores--shadows.option.toxicity.enable_toxic_air": "Toxische Luft / Miasma aktivieren",
   "text.autoconfig.spores--shadows.option.toxicity.hunger_amplifier": "Hunger-Verstärker",
   "text.autoconfig.spores--shadows.option.toxicity.max_air_volume": "Max. Luftvolumen (m³)",
-  "text.autoconfig.spores--shadows.option.toxicity.max_manhattan_radius": "Max. Manhattan-Radius",
+  "text.autoconfig.spores--shadows.option.toxicity.max_euclidean_radius": "Max. Sphärischer Radius",
   "text.autoconfig.spores--shadows.option.toxicity.mold_toxicity_multiplier": "Schimmel-Toxizitätsmultiplikator",
   "text.autoconfig.spores--shadows.option.toxicity.nausea_amplifier": "Übelkeit-Verstärker",
   "text.autoconfig.spores--shadows.option.toxicity.poison_amplifier": "Gift-Verstärker",

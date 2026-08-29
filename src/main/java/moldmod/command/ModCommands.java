@@ -50,22 +50,31 @@ public class ModCommands {
             return 0;
         }
 
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
         moldmod.event.ToxicAirEvent.MiasmaResult result = moldmod.event.ToxicAirEvent.calculateMiasma((net.minecraft.server.world.ServerWorld)player.getWorld(), BlockPos.ofFloored(player.getEyePos()));
 
         source.sendMessage(Text.literal("§a[Miasma Scanner] §eScanning environment..."));
         
         switch (result.ventilationType) {
             case CLEAN_OPEN_AIR -> source.sendMessage(Text.literal("§7- Ventilation State: §bClean Air §7(Open Air / Sky Exposure - miasma dissipated)"));
+            case UNCONFINED_CAVERN -> source.sendMessage(Text.literal("§7- Ventilation State: §aUnconfined Cavern §7(Massive volume ≥ " + config.toxicity.max_air_volume + " - miasma naturally diluted)"));
             case VENTILATED -> source.sendMessage(Text.literal(String.format("§7- Ventilation State: §eVentilated Environment §7(Ventilation modifier: §a-%.2f§7)", result.ventilationScore)));
             case HERMETIC_SEALED -> source.sendMessage(Text.literal("§7- Ventilation State: §cHermetically Sealed §7(Isolated airtight room - zero ventilation)"));
         }
 
         source.sendMessage(Text.literal(String.format("§7- Volume: %s blocks analyzed", result.volume)));
         source.sendMessage(Text.literal(String.format("§7- Toxicity Score (from mold): §c+%.2f", result.toxicScore)));
-        if (result.ventilationType == moldmod.event.ToxicAirEvent.RoomVentilationType.VENTILATED) {
-            source.sendMessage(Text.literal(String.format("§7- Ventilation Modifier: §a-%.2f", result.ventilationScore)));
+        if (result.ventilationScore > 0.0) {
+            source.sendMessage(Text.literal(String.format("§7- Ventilation Flow Capacity: §a-%.2f", result.ventilationScore)));
         }
-        source.sendMessage(Text.literal(String.format("§7- Net Miasma: §6%.2f", result.netMiasma)));
+        
+        String dynamicStatus = "§aSTABLE";
+        if (result.netMiasma > result.targetMiasma + 0.05) {
+            dynamicStatus = String.format("§bPURIFYING / DISSIPATING §7(Target: §f%.2f§7)", result.targetMiasma);
+        } else if (result.netMiasma < result.targetMiasma - 0.05) {
+            dynamicStatus = String.format("§cACCUMULATING / SATURATING §7(Target: §f%.2f§7)", result.targetMiasma);
+        }
+        source.sendMessage(Text.literal(String.format("§7- Current Miasma M(t): §6%.2f §7[%s§7]", result.netMiasma, dynamicStatus)));
         source.sendMessage(Text.literal(String.format("§7- Spore Density: §d%.3f §7| Exposure Index: §5%.3f", result.density, result.exposureIndex)));
 
         switch (result.level) {

@@ -1300,7 +1300,7 @@
   "text.autoconfig.spores--shadows.option.toxicity.enable_toxic_air": "Enable Toxic Air / Miasma",
   "text.autoconfig.spores--shadows.option.toxicity.hunger_amplifier": "Hunger Amplifier",
   "text.autoconfig.spores--shadows.option.toxicity.max_air_volume": "Max Air Volume (m³)",
-  "text.autoconfig.spores--shadows.option.toxicity.max_manhattan_radius": "Max Manhattan Radius",
+  "text.autoconfig.spores--shadows.option.toxicity.max_euclidean_radius": "Max Spherical Scan Radius",
   "text.autoconfig.spores--shadows.option.toxicity.mold_toxicity_multiplier": "Mold Toxicity Multiplier",
   "text.autoconfig.spores--shadows.option.toxicity.nausea_amplifier": "Nausea Amplifier",
   "text.autoconfig.spores--shadows.option.toxicity.poison_amplifier": "Poison Amplifier",

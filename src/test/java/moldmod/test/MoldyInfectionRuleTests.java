@@ -1,8 +1,10 @@
 package moldmod.test;
 
+import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
 import moldmod.block.MoldyBlockHelper;
 import moldmod.block.MoldyLogBlock;
+import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -26,40 +28,48 @@ public class MoldyInfectionRuleTests {
     }
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-    public void testCannotInfectStructuralLog(TestContext context) {
+    public void testDefaultAllowsStructuralInfection(TestContext context) {
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        config.general.structures_immune = false; // Default setting
+
         BlockState structuralLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
                 .with(MoldyLogBlock.WAXED, false)
-                .with(MoldyLogBlock.STRUCTURAL, true); // Natural tree log
+                .with(MoldyLogBlock.STRUCTURAL, true);
+                
+        if (!MoldyBlockHelper.canBeInfected(structuralLog)) {
+            context.throwPositionedException("Structural (generated) Log SHOULD be infectable by default (structures_immune = false)!", new BlockPos(0,0,0));
+        }
+        
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testStructuresImmuneConfigProtectsStructuralBlocks(TestContext context) {
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        config.general.structures_immune = true;
+
+        BlockState structuralLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+                .with(MoldyLogBlock.WAXED, false)
+                .with(MoldyLogBlock.STRUCTURAL, true);
                 
         if (MoldyBlockHelper.canBeInfected(structuralLog)) {
-            context.throwPositionedException("Structural (generated) Log should NOT be infectable!", new BlockPos(0,0,0));
+            context.throwPositionedException("Structural Log should NOT be infectable when structures_immune = true!", new BlockPos(0,0,0));
         }
         
         context.complete();
     }
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-    public void testCannotInfectStructuralWood(TestContext context) {
-        BlockState structuralWood = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_WOOD).getDefaultState()
-                .with(MoldyLogBlock.WAXED, false)
-                .with(MoldyLogBlock.STRUCTURAL, true); // Natural tree wood
-                
-        if (MoldyBlockHelper.canBeInfected(structuralWood)) {
-            context.throwPositionedException("Structural (generated) Wood should NOT be infectable!", new BlockPos(0,0,0));
-        }
-        
-        context.complete();
-    }
+    public void testCannotInfectStructuralPlanksWhenImmune(TestContext context) {
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        config.general.structures_immune = true;
 
-    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-    public void testCannotInfectStructuralPlanks(TestContext context) {
-        // Planks CANNOT be infected if generated in a structure (e.g. mineshaft). They act like waxed.
         BlockState structuralPlanks = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_PLANKS).getDefaultState()
                 .with(MoldyLogBlock.WAXED, false)
                 .with(MoldyLogBlock.STRUCTURAL, true); 
                 
         if (MoldyBlockHelper.canBeInfected(structuralPlanks)) {
-            context.throwPositionedException("Structural (generated) Planks should NOT be infectable!", new BlockPos(0,0,0));
+            context.throwPositionedException("Structural Planks should NOT be infectable when structures_immune = true!", new BlockPos(0,0,0));
         }
         
         context.complete();

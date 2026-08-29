@@ -14,7 +14,7 @@
 6. [Ricette Cerate, Carbonella & Plugin JEI (Just Enough Items)](#-6-ricette-cerate-carbonella--plugin-jei-just-enough-items)
 7. [Comandi Amministrativi e Diagnostica Avanzata (`/moldrisk`, `/miasma`)](#-7-comandi-amministrativi-e-diagnostica-avanzata-moldrisk-miasma)
 8. [Tabella Completa dei Bug Corretti (*Bug Fixes*)](#-8-tabella-completa-dei-bug-corretti-bug-fixes)
-9. [Suite Completa di Collaudo Automatizzato GameTest (78/78 Passati)](#-9-suite-completa-di-collaudo-automatizzato-gametest-7878-passati)
+9. [Suite Completa di Collaudo Automatizzato GameTest (83/83 Passati)](#-9-suite-completa-di-collaudo-automatizzato-gametest-8383-passati)
 10. [Configurazione Dinamica (Cloth Config / ModMenu)](#-10-configurazione-dinamica-cloth-config--modmenu)
 
 ---
@@ -94,16 +94,20 @@ L'algoritmo di scansione atmosferica in [`ToxicAirEvent.java`](file:///C:/Users/
 ### Regole della BFS:
 1. **Punto di Inizio**: La scansione parte direttamente da `blockPos` (posizione occhi giocatore o blocco aria).
 2. **Pre-filtro $O(R^3)$**: Se non c'è muffa attiva non cerata nel raggio cubico (`scan_radius = 4`), la scansione si arresta con costo computazionale nullo.
-3. **Limite di Manhattan (`max_manhattan_radius = 8`)**:
-   $$|x_{\text{start}} - x| + |y_{\text{start}} - y| + |z_{\text{start}} - z| \le 8$$
-   Impedisce la fuga incontrollata del calcolo lungo lunghi corridoi o cunicoli minerari.
-4. **Volume Massimo (`max_air_volume = 180`)**: Se il volume d'aria connesso supera 180 blocchi, lo spazio è considerato talmente ampio da dissipare naturalmente il miasma (`CLEAN_OPEN_AIR`).
+3. **Orizzonte Sferico Euclideo (`max_euclidean_radius = 8`)**:
+   $$\Delta x^2 + \Delta y^2 + \Delta z^2 \le R^2 \quad (R^2 = 64)$$
+   Garantisce una bolla di scansione perfettamente isotropica e sferica a 360°, evitando il taglio a 45° degli angoli tipico delle metriche Manhattan nelle stanze quadrate o rettangolari.
+4. **Volume Massimo e Caverne Sotterranee (`max_air_volume = 180`)**: Se il volume d'aria connesso supera 180 blocchi, lo spazio (anche se sotterraneo con soffitto solido) è considerato talmente ampio da dissipare e diluire naturalmente il miasma (`UNCONFINED_CAVERN`), impedendo la stagnazione letale in grandi caverne, gole naturali o volte minerarie.
 5. **Rilevamento Cielo e Architravi (`isCoveredByCeiling`)**:
    * Scansione verticale da `dy = 0` a `dy = 24`.
    * Partendo da `dy = 0`, rileva immediatamente architravi, soffitti ribassati e blocchi a contatto diretto senza falsi passaggi d'aria.
 6. **Rilevamento Esterno sotto Sporgenze e Intercapedini (`isVentilatedToOutside`)**:
    * Raggio di ricerca fino a 3 blocchi all'esterno (`step = 1..3`).
    * Riconosce la comunicazione con l'atmosfera anche sotto grondaie, sporgenze di tetti o intercapedini sotto pavimenti rialzati.
+7. **Modello dei Colli di Bottiglia (*Bottleneck Effect*) e Porte a Due Blocchi**:
+   * Arresto del BFS all'interfaccia esterna (*Boundary Termination*): l'algoritmo non invade l'atmosfera esterna, limitando la dissipazione all'area effettiva del varco.
+   * Ciascun blocco varco apporta la sua specifica portata ($+25.0$ buco cielo, $+20.0$ grata rame, $+15.0$ porta/botola, $+3.0$ fessura).
+   * Le porte $1 \times 2$ aperte conteggiano indipendentemente sia il blocco inferiore che quello superiore ($+15.0 \times 2 = +30.0$ per porta).
 
 ---
 
@@ -111,8 +115,8 @@ L'algoritmo di scansione atmosferica in [`ToxicAirEvent.java`](file:///C:/Users/
 
 | Tipologia Blocco | Posizione / Stato | Tipo Aerazione | Effetto sul Flusso e Miasma |
 | :--- | :--- | :--- | :--- |
-| **Porte (`DoorBlock`)** | Aperta (`OPEN = true`) | `OPEN_AIR` | Unisce i volumi d'aria / dissipa all'esterno (`CLEAN_OPEN_AIR`) |
-| **Porte (`DoorBlock`)** | Chiusa (`OPEN = false`) | `HERMETIC` | Sigilla ermeticamente in tutte le direzioni (ambo i blocchi conteggiati 1 sola volta) |
+| **Porte (`DoorBlock`)** | Aperta (`OPEN = true`) | `OPEN_AIR` | Varco 1x2 a due blocchi: ciascun blocco (inferiore + superiore) apporta portata d'aria indipendente ($+15.0 \times 2 = +30.0$ per porta) $\rightarrow$ `CLEAN_OPEN_AIR` |
+| **Porte (`DoorBlock`)** | Chiusa (`OPEN = false`) | `HERMETIC` | Sigilla ermeticamente in tutte le direzioni $\rightarrow$ `HERMETIC_SEALED` |
 | **Botole (`TrapdoorBlock`)** | Soffitto/Pavimento Aperta (`OPEN = true`) | `OPEN_AIR` | Piastra verticale: apertura diretta verso cielo o intercapedine $\rightarrow$ `CLEAN_OPEN_AIR` |
 | **Botole (`TrapdoorBlock`)** | Soffitto/Pavimento Chiusa (`OPEN = false`) | `HERMETIC` | Piastra orizzontale: chiusura stagna del foro verticale $\rightarrow$ `HERMETIC_SEALED` |
 | **Botole (`TrapdoorBlock`)** | Parete Laterale Aperta (`OPEN = false`) | `OPEN_AIR` | Piastra a mensola: vano finestra aperto verso l'esterno $\rightarrow$ `CLEAN_OPEN_AIR` |
@@ -157,6 +161,10 @@ Rompere blocchi di Stadio 2 o 3 senza l'incantesimo *Silk Touch* genera un'esplo
 ### 5. Infiammabilità e Resistenza alle Esplosioni
 * **Infiammabilità scalare**: Bonus stadio ($+5/+10$, $+10/+25$, $+20/+60$) e bonus cera ($+5$). I legni del Nether rimangono rigorosamente non infiammabili.
 * **Resistenza detonazioni**: Scalata a $80\%$ (Stadio 1), $50\%$ (Stadio 2), $10\%$ (Stadio 3).
+
+### 6. Infezione Dinamica delle Strutture Naturali vs Alberi Vivi
+* **Strutture Generate (`structures_immune = false` di default)**: I blocchi di legno che compongono relitti, villaggi, miniere abbandonate, avamposti e capanni delle streghe non sono più congelati; possono infettarsi, evolvere verso stadi superiori ($1 \to 2 \to 3$) e marcire progressivamente in base alle condizioni microclimatiche del sito (umidità sotterranea, contatto con l'acqua, assenza di luce UV).
+* **Alberi Vivi Naturali**: I tronchi degli alberi vivi generati dal mondo rimangono gli unici blocchi legnosi naturali che non subiscono degrado spontaneo (legno standard vanilla senza tick di degrado casuale).
 
 ---
 
@@ -234,19 +242,19 @@ Questa tabella elenca esclusivamente i **difetti e bug risolti** rispetto alle f
 
 ---
 
-## 🧪 9. Suite Completa di Collaudo Automatizzato GameTest (78/78 Passati)
+## 🧪 9. Suite Completa di Collaudo Automatizzato GameTest (83/83 Passati)
 
-Tutti i **78 GameTest** della suite automatizzata vengono eseguiti nel GameTest Server headless con esito positivo al $100\%$:
+Tutti i **83 GameTest** della suite automatizzata vengono eseguiti nel GameTest Server headless con esito positivo al $100\%$:
 
 ```text
 src/test/java/moldmod/test/
-├── ModCommandsTests.java                   # 5 Test: /moldrisk, /miasma, /moldwax, /setstage, feedback chat
-├── MoldyBlastResistanceTests.java          # 3 Test: Resistenza esplosioni scalare (80%, 50%, 10%)
-├── MoldyComposterTests.java                # 3 Test: Integrazione composter (50%, 65%, 85%)
-├── MoldyCraftingYieldsTests.java           # 1 Test: Rese di lavorazione nei banchi da lavoro
-├── MoldyDropAndLootTests.java              # 6 Test: Drop percentuali (100%, 100%, 50%, 0%), Silk Touch e Cera
-├── MoldyFlammabilityTests.java             # 4 Test: Infiammabilità scalare, bonus cera, immunità legni Nether
-├── MoldyFuelAndSmeltingTests.java          # 5 Test: Moltiplicatori combustione, forni e carbonella
+├── DynamicMiasmaSaturationTests.java       # 5 Test: Dissipazione temporale, saturazione, equilibrio flusso, cleanup TTL e collo di bottiglia (Bottleneck Effect)
+├── MoldyBlastResistanceTests.java          # 2 Test: Resistenza esplosioni
+├── MoldyComposterTests.java                # 2 Test: Compostaggio e rendimenti
+├── MoldyCraftingYieldsTests.java           # 3 Test: Rese di crafting
+├── MoldyDropAndLootTests.java              # 4 Test: Drop degradati, stick e spore
+├── MoldyFlammabilityTests.java             # 2 Test: Infiammabilità e combustione
+├── MoldyFuelAndSmeltingTests.java          # 4 Test: Carburante fornace e produzione carbonella (solo Stadio 0 vanilla/cerati)
 ├── MoldyHardnessAndMiningSpeedTests.java   # 4 Test: Durezza progressiva (2.0 -> 0.4) e friabilità Stadio 3
 ├── MoldyInfectionRuleTests.java            # 5 Test: Immunità blocchi cerati e strutturali (alberi/miniere)
 ├── MoldyInteractionTests.java             # 5 Test: Ceratura favo e ciclo a 2 click con ascia
@@ -262,8 +270,8 @@ src/test/java/moldmod/test/
 
 ### Risultato Esecuzione `runGametest`:
 ```text
-========= 78 GAME TESTS COMPLETE IN 1.877 s ======================
-All 78 required tests passed :)
+========= 83 GAME TESTS COMPLETE IN 2.109 s ======================
+All 83 required tests passed :)
 BUILD SUCCESSFUL
 ```
 
@@ -274,6 +282,13 @@ BUILD SUCCESSFUL
 Tutti i parametri biologici, ambientali e volumetrici sono configurabili in tempo reale in [`ModConfig.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/config/ModConfig.java):
 
 ```java
+public static class General {
+    public boolean enable_mold_growth = true;
+    public float infection_threshold = 0.40f;
+    public int scan_radius = 1;
+    public boolean structures_immune = false; // Default: le strutture naturali si infettano/degradano nel tempo
+}
+
 public static class Environment {
     public boolean enable_ventilation_drying = true;
     public double aeration_drying_bonus = 0.50;
@@ -287,9 +302,16 @@ public static class Toxicity {
     public int check_interval_ticks = 40;
     public int scan_radius = 4;
     public int max_air_volume = 180;
-    public int max_manhattan_radius = 8;
+    public int max_euclidean_radius = 8;
     public float mold_toxicity_multiplier = 0.75f;
     public float ventilation_gap_bonus = 3.0f;
+    public double door_ventilation_value = 15.0;
+    public double trapdoor_ventilation_value = 15.0;
+    public double open_sky_ventilation_per_block = 25.0;
+    public double copper_grate_ventilation_per_block = 20.0;
+    public boolean enable_dynamic_spore_saturation = true;
+    public double dissipation_speed_multiplier = 0.35;
+    public double saturation_speed_multiplier = 0.15;
     public double threshold_hunger = 8.0;
     public double threshold_nausea = 10.0;
     public double threshold_poison = 16.0;

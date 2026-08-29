@@ -1298,7 +1298,7 @@
   "text.autoconfig.spores--shadows.option.toxicity.enable_toxic_air": "Activer l'Air Toxique / Miasme",
   "text.autoconfig.spores--shadows.option.toxicity.hunger_amplifier": "Amplificateur de Faim",
   "text.autoconfig.spores--shadows.option.toxicity.max_air_volume": "Volume d'Air Maximal (m³)",
-  "text.autoconfig.spores--shadows.option.toxicity.max_manhattan_radius": "Rayon Manhattan Maximal",
+  "text.autoconfig.spores--shadows.option.toxicity.max_euclidean_radius": "Rayon Sphérique Maximal",
   "text.autoconfig.spores--shadows.option.toxicity.mold_toxicity_multiplier": "Multiplicateur de Toxicité de Moisissure",
   "text.autoconfig.spores--shadows.option.toxicity.nausea_amplifier": "Amplificateur de Nausée",
   "text.autoconfig.spores--shadows.option.toxicity.poison_amplifier": "Amplificateur de Poison",

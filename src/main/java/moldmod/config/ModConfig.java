@@ -67,7 +67,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int scan_radius = 1; // 1 = 3x3x3, 2 = 5x5x5
         @ConfigEntry.Gui.Tooltip(count = 1)
-        public boolean structures_immune = true;
+        public boolean structures_immune = false;
         public boolean show_debug_in_chat = false;
         public int axe_scrape_damage = 1;
     }
@@ -193,10 +193,22 @@ public class ModConfig implements ConfigData {
         public int check_interval_ticks = 40;
         public int scan_radius = 4;
         public int max_air_volume = 180;
-        public int max_manhattan_radius = 8;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public int max_euclidean_radius = 8;
         
         public float mold_toxicity_multiplier = 0.75f;
         public float ventilation_gap_bonus = 3.0f;
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean enable_dynamic_spore_saturation = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public double dissipation_speed_multiplier = 0.35;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public double saturation_speed_multiplier = 0.15;
+        public double door_ventilation_value = 15.0;
+        public double trapdoor_ventilation_value = 15.0;
+        public double open_sky_ventilation_per_block = 25.0;
+        public double copper_grate_ventilation_per_block = 15.0;
         
         public double threshold_hunger = 8.0;
         public double threshold_nausea = 10.0;
@@ -243,9 +255,16 @@ public class ModConfig implements ConfigData {
         toxicity.check_interval_ticks = MathHelper.clamp(toxicity.check_interval_ticks, 10, 200);
         toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 10);
         toxicity.max_air_volume = MathHelper.clamp(toxicity.max_air_volume, 10, 2048);
-        toxicity.max_manhattan_radius = MathHelper.clamp(toxicity.max_manhattan_radius, 1, 32);
+        toxicity.max_euclidean_radius = MathHelper.clamp(toxicity.max_euclidean_radius, 1, 32);
         toxicity.mold_toxicity_multiplier = MathHelper.clamp(toxicity.mold_toxicity_multiplier, 0.0f, 10.0f);
         toxicity.ventilation_gap_bonus = MathHelper.clamp(toxicity.ventilation_gap_bonus, 0.0f, 20.0f);
+
+        toxicity.dissipation_speed_multiplier = MathHelper.clamp(toxicity.dissipation_speed_multiplier, 0.01, 1.0);
+        toxicity.saturation_speed_multiplier = MathHelper.clamp(toxicity.saturation_speed_multiplier, 0.01, 1.0);
+        toxicity.door_ventilation_value = MathHelper.clamp(toxicity.door_ventilation_value, 0.0, 100.0);
+        toxicity.trapdoor_ventilation_value = MathHelper.clamp(toxicity.trapdoor_ventilation_value, 0.0, 100.0);
+        toxicity.open_sky_ventilation_per_block = MathHelper.clamp(toxicity.open_sky_ventilation_per_block, 0.0, 100.0);
+        toxicity.copper_grate_ventilation_per_block = MathHelper.clamp(toxicity.copper_grate_ventilation_per_block, 0.0, 100.0);
     }
 }
 
