@@ -47,12 +47,7 @@ public class MoldyInteractionEvents {
                     if (!world.isClient) {
                         net.minecraft.block.Block waxedBlock = moldmod.block.ModBlocks.MOLDY_TO_WAXED.get(state.getBlock());
                         if (waxedBlock != null) {
-                            BlockState newState = waxedBlock.getDefaultState();
-                            for (net.minecraft.state.property.Property<?> property : state.getProperties()) {
-                                if (newState.contains(property)) {
-                                    newState = copyProperty(newState, state, property);
-                                }
-                            }
+                            BlockState newState = moldmod.block.MoldyBlockHelper.copyMatchingProperties(state, waxedBlock.getDefaultState());
                             newState = newState.with(MoldyLogBlock.WAXED, true);
                             if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
                                 newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
@@ -75,12 +70,7 @@ public class MoldyInteractionEvents {
                     if (!world.isClient) {
                         net.minecraft.block.Block moldyBlock = moldmod.block.ModBlocks.WAXED_TO_MOLDY.get(state.getBlock());
                         if (moldyBlock != null) {
-                            BlockState newState = moldyBlock.getDefaultState();
-                            for (net.minecraft.state.property.Property<?> property : state.getProperties()) {
-                                if (newState.contains(property)) {
-                                    newState = copyProperty(newState, state, property);
-                                }
-                            }
+                            BlockState newState = moldmod.block.MoldyBlockHelper.copyMatchingProperties(state, moldyBlock.getDefaultState());
                             newState = newState.with(MoldyLogBlock.WAXED, false);
                             if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
                                 newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
@@ -116,9 +106,5 @@ public class MoldyInteractionEvents {
 
             return ActionResult.PASS;
         });
-    }
-
-    private static <T extends Comparable<T>> BlockState copyProperty(BlockState to, BlockState from, net.minecraft.state.property.Property<T> property) {
-        return to.with(property, from.get(property));
     }
 }

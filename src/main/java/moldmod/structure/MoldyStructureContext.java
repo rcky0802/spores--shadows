@@ -9,6 +9,21 @@ import net.minecraft.world.StructureWorldAccess;
 public class MoldyStructureContext {
 
     private static final ThreadLocal<String> CURRENT_STRUCTURE = new ThreadLocal<>();
+    private static final net.minecraft.util.math.Direction[] DIRECTIONS = net.minecraft.util.math.Direction.values();
+
+    @FunctionalInterface
+    public interface StructureScope extends AutoCloseable {
+        @Override
+        void close();
+    }
+
+    private static final StructureScope NOOP_SCOPE = () -> {};
+
+    public static StructureScope open(String id) {
+        if (id == null) return NOOP_SCOPE;
+        CURRENT_STRUCTURE.set(id);
+        return CURRENT_STRUCTURE::remove;
+    }
 
     public static void setStructure(String id) {
         CURRENT_STRUCTURE.set(id);
@@ -76,7 +91,7 @@ public class MoldyStructureContext {
         boolean isUnderwater = false;
         boolean hasSkyAccess = false;
 
-        for (net.minecraft.util.math.Direction dir : net.minecraft.util.math.Direction.values()) {
+        for (net.minecraft.util.math.Direction dir : DIRECTIONS) {
             if (world.getBlockState(basePos.offset(dir)).isOf(Blocks.WATER)) {
                 isUnderwater = true;
                 break;
@@ -160,14 +175,7 @@ public class MoldyStructureContext {
     private static BlockState getConvertedState(BlockState original, int stage) {
         if (moldmod.block.ModBlocks.VANILLA_TO_MOLDY.containsKey(original.getBlock())) {
             net.minecraft.block.Block moldyBlock = moldmod.block.ModBlocks.VANILLA_TO_MOLDY.get(original.getBlock());
-            BlockState newState = moldyBlock.getDefaultState();
-
-            // Dynamically copy all matching properties from the original vanilla state
-            for (net.minecraft.state.property.Property<?> property : original.getProperties()) {
-                if (newState.contains(property)) {
-                    newState = copyProperty(original, newState, property);
-                }
-            }
+            BlockState newState = moldmod.block.MoldyBlockHelper.copyMatchingProperties(original, moldyBlock.getDefaultState());
 
             if (newState.contains(moldmod.block.MoldyLogBlock.STAGE)) {
                 newState = newState.with(moldmod.block.MoldyLogBlock.STAGE, stage);
@@ -180,12 +188,5 @@ public class MoldyStructureContext {
             return newState;
         }
         return original;
-    }
-
-    // Helper method with bounded wildcard to satisfy Java's type safety when
-    // copying properties
-    private static <T extends Comparable<T>> BlockState copyProperty(BlockState from, BlockState to,
-            net.minecraft.state.property.Property<T> property) {
-        return to.with(property, from.get(property));
     }
 }

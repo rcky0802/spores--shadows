@@ -12,6 +12,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -43,13 +44,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     private void generatePlanksRecipe(RecipeExporter exporter, String sourceBase, String destBase) {
-        Item vanillaDest = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", destBase));
+        Item vanillaDest = Registries.ITEM.get(Identifier.of("minecraft", destBase));
         
         boolean isLogToWood = false;
         Item vanillaWood = null;
         if (sourceBase.endsWith("_log") || sourceBase.endsWith("_stem")) {
             isLogToWood = true;
-            vanillaWood = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", sourceBase.replace("_log", "_wood").replace("_stem", "_hyphae")));
+            vanillaWood = Registries.ITEM.get(Identifier.of("minecraft", sourceBase.replace("_log", "_wood").replace("_stem", "_hyphae")));
         }
 
         Item waxedVanillaSource = Registries.ITEM.get(SporesShadows.id("waxed_" + sourceBase));
@@ -65,7 +66,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     .pattern("##")
                     .input('#', waxedVanillaSource)
                     .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaSource))
-                    .offerTo(exporter, SporesShadows.id(net.minecraft.registry.Registries.ITEM.getId(vanillaWood).getPath() + "_from_waxed_" + sourceBase));
+                    .offerTo(exporter, SporesShadows.id(Registries.ITEM.getId(vanillaWood).getPath() + "_from_waxed_" + sourceBase));
             }
         }
 
@@ -86,7 +87,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     .input('#', taintedIngredient)
                     .criterion("has_tainted", conditionsFromItem(taintedSource))
                     .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedSource))
-                    .offerTo(exporter, SporesShadows.id(net.minecraft.registry.Registries.ITEM.getId(vanillaWood).getPath() + "_from_tainted_" + sourceBase));
+                    .offerTo(exporter, SporesShadows.id(Registries.ITEM.getId(vanillaWood).getPath() + "_from_tainted_" + sourceBase));
             }
         }
 
@@ -103,21 +104,21 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
     
     private void generateProcessedRecipes(RecipeExporter exporter, String prefix) {
-        Item vanillaSlab = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_slab"));
-        Item vanillaStairs = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_stairs"));
-        Item vanillaFence = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_fence"));
-        Item vanillaDoor = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_door"));
-        Item vanillaTrapdoor = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_trapdoor"));
-        Item vanillaFenceGate = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_fence_gate"));
-        Item vanillaButton = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_button"));
-        Item vanillaPressurePlate = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_pressure_plate"));
-        Item vanillaSign = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_sign"));
-        Item vanillaBoat = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_boat"));
-        Item vanillaChestBoat = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_chest_boat"));
+        Item vanillaSlab = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_slab"));
+        Item vanillaStairs = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_stairs"));
+        Item vanillaFence = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_fence"));
+        Item vanillaDoor = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_door"));
+        Item vanillaTrapdoor = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_trapdoor"));
+        Item vanillaFenceGate = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_fence_gate"));
+        Item vanillaButton = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_button"));
+        Item vanillaPressurePlate = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_pressure_plate"));
+        Item vanillaSign = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_sign"));
+        Item vanillaBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_boat"));
+        Item vanillaChestBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_chest_boat"));
         Item sticks = Items.STICK;
         
         Item waxedVanillaPlanks = Registries.ITEM.get(SporesShadows.id("waxed_" + prefix + "_planks"));
-        Item vanillaPlanks = Registries.ITEM.get(net.minecraft.util.Identifier.of("minecraft", prefix + "_planks"));
+        Item vanillaPlanks = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_planks"));
         
         if (waxedVanillaPlanks != Items.AIR && vanillaPlanks != Items.AIR) {
             Ingredient mixedPlanks = Ingredient.ofItems(vanillaPlanks, waxedVanillaPlanks);

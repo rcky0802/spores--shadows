@@ -33,13 +33,13 @@ public class ToxicAirTests {
             context.throwPositionedException("Open Air deve avere ventilationType = CLEAN_OPEN_AIR, trovato: " + openAir.ventilationType, new BlockPos(0, 1, 0));
         }
 
-        // Volume >= MAX_AIR_VOLUME -> CLEAN / UNCONFINED_CAVERN
-        ToxicAirEvent.MiasmaResult hugeRoom = new ToxicAirEvent.MiasmaResult(50.0, 0.0, false, 200, java.util.Collections.emptySet());
+        // Volume >= MAX_AIR_VOLUME -> UNCONFINED_CAVERN (miasma diluted in massive volume -> CLEAN)
+        ToxicAirEvent.MiasmaResult hugeRoom = new ToxicAirEvent.MiasmaResult(5.0, 0.0, false, 800, java.util.Collections.emptySet());
         if (hugeRoom.level != ToxicAirEvent.AirToxicityLevel.CLEAN) {
-            context.throwPositionedException("Stanza >= 180 blocchi deve essere considerata CLEAN, trovato: " + hugeRoom.level, new BlockPos(0, 1, 0));
+            context.throwPositionedException("Stanza >= 800 blocchi con bassa muffa deve essere considerata CLEAN per diluizione, trovato: " + hugeRoom.level, new BlockPos(0, 1, 0));
         }
         if (hugeRoom.ventilationType != ToxicAirEvent.RoomVentilationType.UNCONFINED_CAVERN) {
-            context.throwPositionedException("Stanza >= 180 blocchi deve risultare UNCONFINED_CAVERN, trovato: " + hugeRoom.ventilationType, new BlockPos(0, 1, 0));
+            context.throwPositionedException("Stanza >= 800 blocchi deve risultare UNCONFINED_CAVERN, trovato: " + hugeRoom.ventilationType, new BlockPos(0, 1, 0));
         }
 
         context.complete();

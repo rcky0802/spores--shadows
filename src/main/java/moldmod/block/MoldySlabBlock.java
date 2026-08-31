@@ -8,22 +8,17 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 
+public class MoldySlabBlock extends SlabBlock implements MoldyBlock {
 
-public class MoldySlabBlock extends SlabBlock {
-
-    @SuppressWarnings("this-escape")
     public MoldySlabBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.getDefaultState()
-            .with(MoldyLogBlock.STAGE, 0)
-            .with(MoldyLogBlock.WAXED, false)
-            .with(MoldyLogBlock.STRUCTURAL, false));
+        this.setDefaultState(MoldyBlockHelper.initMoldyDefaultState(this.getDefaultState()));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(MoldyLogBlock.STAGE, MoldyLogBlock.WAXED, MoldyLogBlock.STRUCTURAL);
+        MoldyBlockHelper.appendMoldyProperties(builder);
     }
 
     @Override
@@ -35,7 +30,7 @@ public class MoldySlabBlock extends SlabBlock {
     public boolean canReplace(BlockState state, net.minecraft.item.ItemPlacementContext context) {
         net.minecraft.item.ItemStack itemStack = context.getStack();
         net.minecraft.block.enums.SlabType slabType = state.get(TYPE);
-        
+
         if (slabType != net.minecraft.block.enums.SlabType.DOUBLE) {
             boolean isMatch = false;
             int itemStage = 0;
@@ -45,7 +40,9 @@ public class MoldySlabBlock extends SlabBlock {
                 net.minecraft.block.Block itemBlock = blockItem.getBlock();
                 if (itemBlock == this) {
                     isMatch = true;
-                    net.minecraft.component.type.BlockStateComponent comp = itemStack.getOrDefault(net.minecraft.component.DataComponentTypes.BLOCK_STATE, net.minecraft.component.type.BlockStateComponent.DEFAULT);
+                    net.minecraft.component.type.BlockStateComponent comp = itemStack.getOrDefault(
+                            net.minecraft.component.DataComponentTypes.BLOCK_STATE,
+                            net.minecraft.component.type.BlockStateComponent.DEFAULT);
                     Integer compStage = comp.getValue(MoldyLogBlock.STAGE);
                     itemStage = compStage != null ? compStage : 0;
                     Boolean compWaxed = comp.getValue(MoldyLogBlock.WAXED);
@@ -56,19 +53,21 @@ public class MoldySlabBlock extends SlabBlock {
                     itemWaxed = false;
                 }
             }
-            
+
             if (isMatch) {
                 if (state.get(MoldyLogBlock.STAGE) != itemStage || state.get(MoldyLogBlock.WAXED) != itemWaxed) {
                     return false;
                 }
-                
+
                 if (context.canReplaceExisting()) {
-                    boolean bl = context.getHitPos().y - (double)context.getBlockPos().getY() > 0.5D;
+                    boolean bl = context.getHitPos().y - (double) context.getBlockPos().getY() > 0.5D;
                     net.minecraft.util.math.Direction direction = context.getSide();
                     if (slabType == net.minecraft.block.enums.SlabType.BOTTOM) {
-                        return direction == net.minecraft.util.math.Direction.UP || bl && direction.getAxis().isHorizontal();
+                        return direction == net.minecraft.util.math.Direction.UP
+                                || bl && direction.getAxis().isHorizontal();
                     } else {
-                        return direction == net.minecraft.util.math.Direction.DOWN || !bl && direction.getAxis().isHorizontal();
+                        return direction == net.minecraft.util.math.Direction.DOWN
+                                || !bl && direction.getAxis().isHorizontal();
                     }
                 } else {
                     return true;
@@ -84,10 +83,9 @@ public class MoldySlabBlock extends SlabBlock {
         MoldyBlockHelper.randomTick(state, world, pos, random);
     }
 
-
-
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
+            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
         return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

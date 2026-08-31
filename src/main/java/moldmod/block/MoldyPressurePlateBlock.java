@@ -11,20 +11,17 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.entity.Entity;
 
-public class MoldyPressurePlateBlock extends PressurePlateBlock {
+public class MoldyPressurePlateBlock extends PressurePlateBlock implements MoldyBlock {
 
     public MoldyPressurePlateBlock(BlockSetType type, Settings settings) {
         super(type, settings);
-        this.setDefaultState(this.getDefaultState()
-                .with(MoldyLogBlock.STAGE, 0)
-                .with(MoldyLogBlock.WAXED, false)
-                .with(MoldyLogBlock.STRUCTURAL, false));
+        this.setDefaultState(MoldyBlockHelper.initMoldyDefaultState(this.getDefaultState()));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(MoldyLogBlock.STAGE, MoldyLogBlock.WAXED, MoldyLogBlock.STRUCTURAL);
+        MoldyBlockHelper.appendMoldyProperties(builder);
     }
 
     @Override
@@ -40,18 +37,8 @@ public class MoldyPressurePlateBlock extends PressurePlateBlock {
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (!world.isClient && state.get(POWERED) == false) {
-            int stage = state.get(MoldyLogBlock.STAGE);
-            boolean waxed = state.get(MoldyLogBlock.WAXED);
-            if (stage == 3 && !waxed) {
-                // 10% chance to break when stepped on!
-                if (world.random.nextFloat() < 0.10f) {
-                    world.breakBlock(pos, false);
-                    world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_WOOD_BREAK,
-                            net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 0.8f);
-                    return; // Stop processing, block is destroyed
-                }
-            }
+        if (!state.get(POWERED) && MoldyBlockHelper.tryBreakRottenBlock(world, pos, state, 0.10f)) {
+            return; // Stop processing, block is destroyed
         }
         super.onEntityCollision(state, world, pos, entity);
     }
@@ -68,7 +55,8 @@ public class MoldyPressurePlateBlock extends PressurePlateBlock {
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
+            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
         return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

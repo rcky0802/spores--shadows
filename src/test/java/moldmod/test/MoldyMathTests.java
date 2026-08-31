@@ -16,15 +16,28 @@ public class MoldyMathTests {
     public void testHumidityDepthMalus(TestContext context) {
         // Usa coordinate assolute per testare la matematica della profondità
         BlockPos surfacePos = new BlockPos(0, 70, 0); 
-        BlockPos deepPos = new BlockPos(0, 40, 0); 
+        BlockPos midPos = new BlockPos(0, 32, 0); 
+        BlockPos capPos = new BlockPos(0, 0, 0); 
+        BlockPos deepPos = new BlockPos(0, -50, 0); 
 
         BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
 
         MoldyBlockHelper.MoldRiskResult surfaceR = MoldyBlockHelper.calculateDetailedR(context.getWorld(), surfacePos, false, log);
+        MoldyBlockHelper.MoldRiskResult midR = MoldyBlockHelper.calculateDetailedR(context.getWorld(), midPos, false, log);
+        MoldyBlockHelper.MoldRiskResult capR = MoldyBlockHelper.calculateDetailedR(context.getWorld(), capPos, false, log);
         MoldyBlockHelper.MoldRiskResult deepR = MoldyBlockHelper.calculateDetailedR(context.getWorld(), deepPos, false, log);
 
-        if (deepR.depthModifier() <= surfaceR.depthModifier()) {
-            context.throwPositionedException("Il modificatore di profondità a Y=40 (" + deepR.depthModifier() + ") dovrebbe essere > di Y=70 (" + surfaceR.depthModifier() + ")", deepPos);
+        if (surfaceR.depthModifier() != 0.0) {
+            context.throwPositionedException("In superficie a Y=70 il depthModifier deve essere 0.0, trovato: " + surfaceR.depthModifier(), surfacePos);
+        }
+        if (midR.depthModifier() <= surfaceR.depthModifier()) {
+            context.throwPositionedException("A Y=32 (" + midR.depthModifier() + ") il depthModifier deve essere > di Y=70", midPos);
+        }
+        if (capR.depthModifier() <= midR.depthModifier()) {
+            context.throwPositionedException("A Y=0 (" + capR.depthModifier() + ") il depthModifier deve essere > di Y=32", capPos);
+        }
+        if (deepR.depthModifier() != capR.depthModifier()) {
+            context.throwPositionedException("In Deepslate a Y=-50 (" + deepR.depthModifier() + ") il depthModifier deve essere bloccato al CAP di Y=0 (" + capR.depthModifier() + ")", deepPos);
         }
 
         context.complete();

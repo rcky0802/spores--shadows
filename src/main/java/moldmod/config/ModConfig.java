@@ -91,8 +91,8 @@ public class ModConfig implements ConfigData {
     public static class Environment {
         public double rain_humidity_base = 0.8;
         public double dry_humidity_base = 0.3;
-        public double max_depth_modifier = 1.28;
-        public double depth_modifier_per_level = 0.01;
+        public double max_depth_modifier = 0.40;
+        public double depth_modifier_per_level = 0.00625;
         public double max_local_humidity_bonus = 0.60;
         public double water_adjacent_bonus = 0.15;
         public double cauldron_adjacent_bonus = 0.1;
@@ -191,8 +191,8 @@ public class ModConfig implements ConfigData {
     public static class Toxicity {
         public boolean enable_toxic_air = true;
         public int check_interval_ticks = 40;
-        public int scan_radius = 4;
-        public int max_air_volume = 180;
+        public int scan_radius = 8;
+        public int max_air_volume = 800;
         @ConfigEntry.Gui.Tooltip(count = 2)
         public int max_euclidean_radius = 8;
         
@@ -232,6 +232,8 @@ public class ModConfig implements ConfigData {
         general.infection_threshold = MathHelper.clamp(general.infection_threshold, 0.0f, 2.0f);
         general.scan_radius = MathHelper.clamp(general.scan_radius, 1, 5);
         environment.water_scan_radius = MathHelper.clamp(environment.water_scan_radius, 1, 10);
+        environment.max_depth_modifier = MathHelper.clamp(environment.max_depth_modifier, 0.0, 2.0);
+        environment.depth_modifier_per_level = MathHelper.clamp(environment.depth_modifier_per_level, 0.0, 1.0);
         environment.aeration_drying_bonus = MathHelper.clamp(environment.aeration_drying_bonus, 0.0, 2.0);
         environment.ventilation_threshold_full_aeration = MathHelper.clamp(environment.ventilation_threshold_full_aeration, 0.1, 50.0);
         environment.miasma_spore_multiplier = MathHelper.clamp(environment.miasma_spore_multiplier, 0.0, 5.0);
@@ -253,8 +255,8 @@ public class ModConfig implements ConfigData {
         hardness.stage_3_multiplier = MathHelper.clamp(hardness.stage_3_multiplier, 0.0f, 2.0f);
 
         toxicity.check_interval_ticks = MathHelper.clamp(toxicity.check_interval_ticks, 10, 200);
-        toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 10);
-        toxicity.max_air_volume = MathHelper.clamp(toxicity.max_air_volume, 10, 2048);
+        toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 16);
+        toxicity.max_air_volume = MathHelper.clamp(toxicity.max_air_volume, 10, 4096);
         toxicity.max_euclidean_radius = MathHelper.clamp(toxicity.max_euclidean_radius, 1, 32);
         toxicity.mold_toxicity_multiplier = MathHelper.clamp(toxicity.mold_toxicity_multiplier, 0.0f, 10.0f);
         toxicity.ventilation_gap_bonus = MathHelper.clamp(toxicity.ventilation_gap_bonus, 0.0f, 20.0f);

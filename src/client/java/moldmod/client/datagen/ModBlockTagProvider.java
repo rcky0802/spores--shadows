@@ -47,31 +47,31 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
             boolean isHealthyWaxed = name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten");
             boolean isNether = name.contains("crimson") || name.contains("warped");
 
-            if (name.contains("fence_gate")) {
+            if (block instanceof net.minecraft.block.FenceGateBlock) {
                 fenceGates.add(block);
-            } else if (name.contains("fence")) {
+            } else if (block instanceof net.minecraft.block.FenceBlock) {
                 fences.add(block);
                 if (isHealthyWaxed && !isNether) woodenFences.add(block);
-            } else if (name.contains("stairs")) {
+            } else if (block instanceof net.minecraft.block.StairsBlock) {
                 stairs.add(block);
                 if (isHealthyWaxed && !isNether) woodenStairs.add(block);
-            } else if (name.contains("slab")) {
+            } else if (block instanceof net.minecraft.block.SlabBlock) {
                 slabs.add(block);
                 if (isHealthyWaxed && !isNether) woodenSlabs.add(block);
-            } else if (name.contains("trapdoor")) {
+            } else if (block instanceof net.minecraft.block.TrapdoorBlock) {
                 trapdoors.add(block);
                 if (isHealthyWaxed && !isNether) woodenTrapdoors.add(block);
-            } else if (name.contains("door")) {
+            } else if (block instanceof net.minecraft.block.DoorBlock) {
                 doors.add(block);
                 if (isHealthyWaxed && !isNether) woodenDoors.add(block);
-            } else if (name.contains("button") || name.contains("pressure_plate")) {
+            } else if (block instanceof net.minecraft.block.ButtonBlock || block instanceof net.minecraft.block.PressurePlateBlock) {
                 // Do not tag buttons and pressure plates as logs
-            } else if (name.contains("planks")) {
+            } else if (block instanceof moldmod.block.MoldyPlanksBlock) {
                 // Do not add infected planks to planks tag to prevent usage in recipes like sticks, crafting tables, etc.
                 if (isHealthyWaxed) {
                     getOrCreateTagBuilder(BlockTags.PLANKS).add(block);
                 }
-            } else {
+            } else if (block instanceof moldmod.block.MoldyLogBlock) {
                 if (isHealthyWaxed) {
                     if (name.contains("crimson")) {
                         crimsonStems.add(block);

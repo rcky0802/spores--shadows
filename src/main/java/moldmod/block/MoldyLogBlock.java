@@ -18,38 +18,29 @@ import net.minecraft.world.World;
 
 /**
  * A custom pillar block representing a moldy oak log.
- * It simulates mold growth over time based on environmental factors (humidity, temperature, light).
- * Players can interact with the block to scrape off mold (using an Axe) or wax the block (using Honeycomb) to prevent further growth.
+ * It simulates mold growth over time based on environmental factors (humidity,
+ * temperature, light).
+ * Players can interact with the block to scrape off mold (using an Axe) or wax
+ * the block (using Honeycomb) to prevent further growth.
  */
-public class MoldyLogBlock extends PillarBlock {
-    /**
-     * The STAGE property represents the current state of mold growth (0 = clean, 1-3 = moldy).
-     */
-    public static final IntProperty STAGE = IntProperty.of("stage", 0, 3);
-    
-    /**
-     * The WAXED property indicates whether the block has been waxed by a player to prevent further mold growth.
-     */
-    public static final BooleanProperty WAXED = BooleanProperty.of("waxed");
-
-    /**
-     * The STRUCTURAL property indicates whether the block is a structural support.
-     */
-    public static final BooleanProperty STRUCTURAL = BooleanProperty.of("structural");
+public class MoldyLogBlock extends PillarBlock implements MoldyBlock {
+    public static final IntProperty STAGE = MoldyBlock.STAGE;
+    public static final BooleanProperty WAXED = MoldyBlock.WAXED;
+    public static final BooleanProperty STRUCTURAL = MoldyBlock.STRUCTURAL;
 
     private final Block strippedBlock;
 
-    @SuppressWarnings("this-escape")
     public MoldyLogBlock(Settings settings, Block strippedBlock) {
         super(settings);
         this.strippedBlock = strippedBlock;
-        this.setDefaultState(this.getDefaultState().with(AXIS, net.minecraft.util.math.Direction.Axis.Y).with(STAGE, 0).with(WAXED, false).with(STRUCTURAL, false));
+        this.setDefaultState(MoldyBlockHelper
+                .initMoldyDefaultState(this.getDefaultState().with(AXIS, net.minecraft.util.math.Direction.Axis.Y)));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(STAGE, WAXED, STRUCTURAL);
+        MoldyBlockHelper.appendMoldyProperties(builder);
     }
 
     @Override
@@ -72,9 +63,12 @@ public class MoldyLogBlock extends PillarBlock {
     }
 
     @Override
-    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        // If the player right-clicks with an Axe (without sneaking, since sneaking is caught by UseBlockCallback),
-        // we strip the log. We preserve the STAGE and WAXED, but set STRUCTURAL to false!
+    protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos,
+            PlayerEntity player, Hand hand, BlockHitResult hit) {
+        // If the player right-clicks with an Axe (without sneaking, since sneaking is
+        // caught by UseBlockCallback),
+        // we strip the log. We preserve the STAGE and WAXED, but set STRUCTURAL to
+        // false!
         if (stack.getItem() instanceof net.minecraft.item.AxeItem && strippedBlock != null) {
             BlockState stripped = strippedBlock.getDefaultState();
             if (state.contains(AXIS)) {
@@ -90,9 +84,10 @@ public class MoldyLogBlock extends PillarBlock {
             if (state.contains(STRUCTURAL)) {
                 stripped = stripped.with(STRUCTURAL, false);
             }
-            
+
             world.setBlockState(pos, stripped);
-            world.playSound(player, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_STRIP, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+            world.playSound(player, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_STRIP,
+                    net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
             stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
             return ItemActionResult.SUCCESS;
         }
@@ -100,7 +95,8 @@ public class MoldyLogBlock extends PillarBlock {
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
+            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
         return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

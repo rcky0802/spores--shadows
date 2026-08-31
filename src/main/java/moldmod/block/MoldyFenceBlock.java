@@ -8,22 +8,17 @@ import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 
+public class MoldyFenceBlock extends FenceBlock implements MoldyBlock {
 
-public class MoldyFenceBlock extends FenceBlock {
-
-    @SuppressWarnings("this-escape")
     public MoldyFenceBlock(Settings settings) {
         super(settings);
-        this.setDefaultState(this.getDefaultState()
-            .with(MoldyLogBlock.STAGE, 0)
-            .with(MoldyLogBlock.WAXED, false)
-            .with(MoldyLogBlock.STRUCTURAL, false));
+        this.setDefaultState(MoldyBlockHelper.initMoldyDefaultState(this.getDefaultState()));
     }
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         super.appendProperties(builder);
-        builder.add(MoldyLogBlock.STAGE, MoldyLogBlock.WAXED, MoldyLogBlock.STRUCTURAL);
+        MoldyBlockHelper.appendMoldyProperties(builder);
     }
 
     @Override
@@ -37,10 +32,9 @@ public class MoldyFenceBlock extends FenceBlock {
         MoldyBlockHelper.randomTick(state, world, pos, random);
     }
 
-
-
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
+    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
+            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
         return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

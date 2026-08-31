@@ -36,7 +36,7 @@ public class ToxicAirEvent {
             if (!config.toxicity.enable_toxic_air) return;
 
             int checkInterval = config.toxicity.check_interval_ticks;
-            int radius = config.toxicity.scan_radius;
+            int radius = Math.max(config.toxicity.scan_radius, config.toxicity.max_euclidean_radius);
 
             if (currentTick % 1200 == 0) {
                 RoomSaturationManager.cleanup(currentTick);
@@ -165,7 +165,7 @@ public class ToxicAirEvent {
             this.toxicScore = Math.max(0.0, toxicScore);
             
             double effectiveVent = Math.max(0.0, ventilationScore);
-            if ((openAir || volume >= config.toxicity.max_air_volume) && effectiveVent == 0.0) {
+            if (openAir && effectiveVent == 0.0) {
                 effectiveVent = Math.max(1, volume) * config.toxicity.open_sky_ventilation_per_block;
             }
             this.ventilationScore = effectiveVent;
@@ -193,13 +193,14 @@ public class ToxicAirEvent {
                 double netFactor = Math.min(2.0, Math.sqrt(this.netMiasma / 8.0));
                 this.exposureIndex = this.density * (0.5 + 0.5 * netFactor);
 
-                if (this.netMiasma >= config.toxicity.threshold_poison || 
+                if ((this.netMiasma >= config.toxicity.threshold_poison && this.density >= config.toxicity.density_threshold_medium) || 
                     (this.density >= config.toxicity.density_threshold_high && this.netMiasma >= config.toxicity.threshold_nausea)) {
                     this.level = AirToxicityLevel.LETHAL_POISON;
-                } else if (this.netMiasma >= config.toxicity.threshold_hunger || 
+                } else if ((this.netMiasma >= config.toxicity.threshold_hunger && this.density >= config.toxicity.density_threshold_low) || 
                     (this.density >= config.toxicity.density_threshold_medium && this.netMiasma >= (config.toxicity.threshold_hunger / 2.0))) {
                     this.level = AirToxicityLevel.MODERATE_HUNGER;
-                } else if (this.netMiasma >= (config.toxicity.threshold_hunger / 3.0) || this.density >= config.toxicity.density_threshold_low) {
+                } else if ((this.netMiasma >= (config.toxicity.threshold_hunger / 3.0) && this.density >= (config.toxicity.density_threshold_low / 2.0)) || 
+                    this.density >= config.toxicity.density_threshold_low) {
                     this.level = AirToxicityLevel.WARNING;
                 } else {
                     this.level = AirToxicityLevel.CLEAN;
@@ -432,9 +433,9 @@ public class ToxicAirEvent {
 
                 double faceAeration = 0.0;
                 if (config.environment.enable_ventilation_drying) {
-                    if (faceResult.ventilationType == RoomVentilationType.CLEAN_OPEN_AIR || faceResult.ventilationType == RoomVentilationType.UNCONFINED_CAVERN) {
+                    if (faceResult.ventilationType == RoomVentilationType.CLEAN_OPEN_AIR) {
                         faceAeration = 1.0;
-                    } else if (faceResult.ventilationType == RoomVentilationType.VENTILATED && config.environment.ventilation_threshold_full_aeration > 0.0) {
+                    } else if (config.environment.ventilation_threshold_full_aeration > 0.0 && faceResult.ventilationScore > 0.0) {
                         faceAeration = Math.min(1.0, faceResult.ventilationScore / config.environment.ventilation_threshold_full_aeration);
                     }
                 }
@@ -468,97 +469,12 @@ public class ToxicAirEvent {
     }
 
     public static MiasmaResult calculateBlockAirEnvironment(net.minecraft.world.WorldAccess world, BlockPos blockPos, BlockState blockState) {
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
-        int maxAirVolume = config.toxicity.max_air_volume;
-        int maxEuclideanRadius = config.toxicity.max_euclidean_radius;
-        int maxEuclideanRadiusSq = maxEuclideanRadius * maxEuclideanRadius;
-        float moldToxMult = config.toxicity.mold_toxicity_multiplier;
-        float ventBonus = config.toxicity.ventilation_gap_bonus;
-
-        Queue<BlockPos> queue = new ArrayDeque<>();
-        Set<BlockPos> visited = new HashSet<>();
-        Set<BlockPos> countedMold = new HashSet<>();
-        Set<BlockPos> countedVentilation = new HashSet<>();
-
-        BlockState startState = world.getBlockState(blockPos);
+        BlockState startState = (blockState != null) ? blockState : world.getBlockState(blockPos);
         BlockAerationType startType = getAerationType(world, blockPos, startState, Direction.UP);
         if (startType != BlockAerationType.OPEN_AIR && isFaceSolid(world, blockPos, startState, Direction.UP)) {
-            return new MiasmaResult(world, 0.0, 0.0, false, 0, visited, blockPos);
+            return new MiasmaResult(world, 0.0, 0.0, false, 0, java.util.Collections.emptySet(), blockPos);
         }
-
-        visited.add(blockPos);
-        queue.add(blockPos);
-
-        double toxicScore = 0.0;
-        double ventilationScore = 0.0;
-        boolean openAir = false;
-
-        while (!queue.isEmpty() && visited.size() < maxAirVolume) {
-            BlockPos currentPos = queue.poll();
-            BlockState currentState = world.getBlockState(currentPos);
-
-            // Controllo cielo aperto: se il blocco d'aria corrente comunica direttamente con l'esterno
-            if (!isCoveredByCeiling(world, currentPos)) {
-                openAir = true;
-                ventilationScore += config.toxicity.open_sky_ventilation_per_block;
-            }
-
-            // Scansione dei vicini nelle 6 direzioni
-            for (Direction dir : DIRECTIONS) {
-                BlockPos neighborPos = currentPos.offset(dir);
-                BlockState neighborState = world.getBlockState(neighborPos);
-
-                if (canAirPass(world, currentPos, currentState, neighborPos, neighborState, dir)) {
-                    int dx = blockPos.getX() - neighborPos.getX();
-                    int dy = blockPos.getY() - neighborPos.getY();
-                    int dz = blockPos.getZ() - neighborPos.getZ();
-                    int distSq = dx * dx + dy * dy + dz * dz;
-                    
-                    if (distSq <= maxEuclideanRadiusSq) {
-                        if (visited.add(neighborPos)) {
-                            queue.add(neighborPos);
-
-                            if (neighborState.getBlock() instanceof DoorBlock && isVentilatedToOutside(world, neighborPos, dir)) {
-                                if (countedVentilation.add(neighborPos)) {
-                                    ventilationScore += config.toxicity.door_ventilation_value;
-                                }
-                            } else if (neighborState.getBlock() instanceof TrapdoorBlock && isVentilatedToOutside(world, neighborPos, dir)) {
-                                if (countedVentilation.add(neighborPos)) {
-                                    ventilationScore += config.toxicity.trapdoor_ventilation_value;
-                                }
-                            } else if (neighborState.getBlock() instanceof GrateBlock && isVentilatedToOutside(world, neighborPos, dir)) {
-                                if (countedVentilation.add(neighborPos)) {
-                                    ventilationScore += config.toxicity.copper_grate_ventilation_per_block;
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    // Parete o perimetro solido: processa il blocco di confine
-                    if (neighborState.contains(MoldyLogBlock.STAGE)) {
-                        boolean isWaxed = neighborState.contains(MoldyLogBlock.WAXED) && neighborState.get(MoldyLogBlock.WAXED);
-                        if (!isWaxed) {
-                            if (countedMold.add(neighborPos)) {
-                                int stage = neighborState.get(MoldyLogBlock.STAGE);
-                                toxicScore += (stage * moldToxMult);
-                            }
-                        }
-                    }
-
-                    // Modificatore di ventilazione
-                    BlockAerationType toType = getAerationType(world, neighborPos, neighborState, dir.getOpposite());
-                    if (toType == BlockAerationType.VENTILATED) {
-                        if (isVentilatedToOutside(world, neighborPos, dir)) {
-                            if (countedVentilation.add(neighborPos)) {
-                                ventilationScore += ventBonus;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return new MiasmaResult(world, toxicScore, ventilationScore, openAir, visited.size(), visited, blockPos);
+        return calculateMiasma(world, blockPos);
     }
 
     public static BlockPos getCanonicalVentilationPos(BlockPos pos, BlockState state) {

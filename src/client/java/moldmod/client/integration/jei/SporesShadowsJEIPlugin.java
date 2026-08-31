@@ -8,16 +8,15 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import moldmod.SporesShadows;
 import moldmod.block.ModBlocks;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @JeiPlugin
 public class SporesShadowsJEIPlugin implements IModPlugin {
@@ -44,22 +43,18 @@ public class SporesShadowsJEIPlugin implements IModPlugin {
         List<ScrapingRecipe> scrapingRecipes = new ArrayList<>();
         List<ItemStack> rottenStacks = new ArrayList<>();
 
-        for (Block vanillaBlock : ModBlocks.VANILLA_TO_MOLDY.keySet()) {
-            String baseName = Registries.BLOCK.getId(vanillaBlock).getPath();
+        for (Map.Entry<Item, List<Item>> entry : ModBlocks.MOLDY_ITEMS_BY_VANILLA.entrySet()) {
+            Item itemVanilla = entry.getKey();
+            List<Item> items = entry.getValue();
+            if (items == null || items.size() < 7) continue;
 
-            Item itemVanilla = vanillaBlock.asItem();
-            Item itemTainted = Registries.ITEM.get(SporesShadows.id("tainted_" + baseName));
-            Item itemMoldy = Registries.ITEM.get(SporesShadows.id("moldy_" + baseName));
-            Item itemRotten = Registries.ITEM.get(SporesShadows.id("rotten_" + baseName));
-
-            Item itemWaxed0 = Registries.ITEM.get(SporesShadows.id("waxed_" + baseName));
-            Item itemWaxedTainted = Registries.ITEM.get(SporesShadows.id("waxed_tainted_" + baseName));
-            Item itemWaxedMoldy = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + baseName));
-            Item itemWaxedRotten = Registries.ITEM.get(SporesShadows.id("waxed_rotten_" + baseName));
-
-            if (itemVanilla == Items.AIR || itemTainted == Items.AIR || itemMoldy == Items.AIR || itemRotten == Items.AIR) {
-                continue;
-            }
+            Item itemWaxed0 = items.get(0);
+            Item itemTainted = items.get(1);
+            Item itemWaxedTainted = items.get(2);
+            Item itemMoldy = items.get(3);
+            Item itemWaxedMoldy = items.get(4);
+            Item itemRotten = items.get(5);
+            Item itemWaxedRotten = items.get(6);
 
             // 1. Waxing Recipes (Shift + Right Click with Honeycomb)
             waxingRecipes.add(new WaxingRecipe(new ItemStack(itemVanilla), new ItemStack(itemWaxed0)));
