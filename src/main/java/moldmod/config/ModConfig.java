@@ -227,6 +227,11 @@ public class ModConfig implements ConfigData {
         public int hunger_amplifier = 0;
         public int nausea_amplifier = 0;
         public int poison_amplifier = 0;
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean enable_spore_mask_protection = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public int spore_mask_damage_per_exposure = 1;
     }
 
     @Override

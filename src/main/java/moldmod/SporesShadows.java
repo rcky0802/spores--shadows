@@ -26,6 +26,7 @@ public class SporesShadows implements ModInitializer {
 		
 		moldmod.resource.MoldyResourceGenerator.initialize(); // Register Virtual Resource Pack
 		
+		moldmod.item.ModItems.registerModItems();
 		moldmod.block.ModBlocks.registerModBlocks();
 		moldmod.event.MoldyInteractionEvents.register();
 		moldmod.event.ToxicAirEvent.register();

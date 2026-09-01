@@ -245,5 +245,10 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei.spores--shadows.category.waxing", "Cirage");
         translationBuilder.add("jei.spores--shadows.category.scraping", "Grattage à la Hache");
         translationBuilder.add("jei.spores--shadows.info.rotten_wood", "Le bois pourri est fragile et friable. Il ne peut pas être soigné avec une hache. Il nécessite Toucher de Soie pour être récolté, sinon il se désintégrera dans le néant.");
+        translationBuilder.add("jei.spores--shadows.info.spore_mask", "Le Masque Anti-Spores offre une protection totale contre le miasme toxique (Poison, Nausée et Faim). Il s'use en filtrant l'air toxique. Remplacez le filtre en le réparant sur une enclume avec de la Laine (#minecraft:wool). Compatible avec les enchantements de casque.");
+
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Masque Anti-Spores");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Air Pur");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtrez les spores toxiques en respirant à travers un Masque Anti-Spores dans une pièce contaminée.");
     }
 }

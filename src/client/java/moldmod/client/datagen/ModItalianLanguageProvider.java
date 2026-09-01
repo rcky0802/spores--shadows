@@ -249,5 +249,10 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Ceratura");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Raschiamento con Ascia");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Il legno marcio è friabile e degradato. Non può essere curato con un'ascia. Richiede Tocco di Velluto per essere raccolto, altrimenti si disintegrerà nel nulla quando viene rotto.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Maschera Antispore offre protezione totale dal miasma tossico (Veleno, Nausea e Fame). Consuma durabilità mentre filtra l'aria tossica. Sostituisci il filtro riparandola all'incudine con Lana (#minecraft:wool). Supporta incantesimi da elmo.");
+
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Maschera Antispore");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Aria Pura");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtra le spore tossiche respirando con una Maschera Antispore in una stanza contaminata.");
     }
 }

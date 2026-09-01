@@ -268,5 +268,10 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei.spores--shadows.category.waxing", "Wachsen");
         translationBuilder.add("jei.spores--shadows.category.scraping", "Axt-Schaben");
         translationBuilder.add("jei.spores--shadows.info.rotten_wood", "Morsches Holz ist brüchig und zerfällt. Es kann nicht mit einer Axt geheilt werden. Es erfordert Behutsamkeit zum Abbau, sonst zerfällt es beim Zerstören zu Staub.");
+        translationBuilder.add("jei.spores--shadows.info.spore_mask", "Die Sporenmaske bietet vollständigen Schutz vor giftigem Miasma (Gift, Übelkeit und Hunger). Sie verbraucht Haltbarkeit beim Filtern giftiger Luft. Tausche den Filter aus, indem du sie im Amboss mit Wolle (#minecraft:wool) reparierst. Unterstützt Helm-Verzauberungen.");
+
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Sporenmaske");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Reine Luft");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtere giftige Sporen, indem du in einem kontaminierten Raum durch eine Sporenmaske atmest.");
     }
 }

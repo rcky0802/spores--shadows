@@ -11,8 +11,11 @@ import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.GrateBlock;
 import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.block.WallBlock;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
+import moldmod.item.ModItems;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -225,16 +228,34 @@ public class ToxicAirEvent {
         moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
         MiasmaResult result = calculateMiasma(world, eyePos);
 
+        ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
+        boolean hasSporeMask = config.toxicity.enable_spore_mask_protection && headStack.isOf(ModItems.SPORE_MASK);
+
         switch (result.level) {
             case LETHAL_POISON -> {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, config.toxicity.duration_poison_ticks, config.toxicity.poison_amplifier, false, false, true));
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, config.toxicity.duration_nausea_ticks, config.toxicity.nausea_amplifier, false, false, true));
-                MoldyBlockHelper.grantAdvancement(player, "toxic_air");
-                spawnDenseParticles(world, player, result);
+                if (hasSporeMask) {
+                    headStack.damage(config.toxicity.spore_mask_damage_per_exposure, player, EquipmentSlot.HEAD);
+                    world.spawnParticles(player, ParticleTypes.CLOUD, false, 
+                            player.getX(), player.getEyeY() - 0.1, player.getZ(), 2, 0.1, 0.1, 0.1, 0.01);
+                    MoldyBlockHelper.grantAdvancement(player, "spore_mask_protection");
+                    spawnLightParticles(world, player, result);
+                } else {
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, config.toxicity.duration_poison_ticks, config.toxicity.poison_amplifier, false, false, true));
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, config.toxicity.duration_nausea_ticks, config.toxicity.nausea_amplifier, false, false, true));
+                    MoldyBlockHelper.grantAdvancement(player, "toxic_air");
+                    spawnDenseParticles(world, player, result);
+                }
             }
             case MODERATE_HUNGER -> {
-                player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, config.toxicity.duration_hunger_ticks, config.toxicity.hunger_amplifier, false, false, true));
-                spawnLightParticles(world, player, result);
+                if (hasSporeMask) {
+                    headStack.damage(config.toxicity.spore_mask_damage_per_exposure, player, EquipmentSlot.HEAD);
+                    world.spawnParticles(player, ParticleTypes.CLOUD, false, 
+                            player.getX(), player.getEyeY() - 0.1, player.getZ(), 1, 0.1, 0.1, 0.1, 0.01);
+                    MoldyBlockHelper.grantAdvancement(player, "spore_mask_protection");
+                } else {
+                    player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, config.toxicity.duration_hunger_ticks, config.toxicity.hunger_amplifier, false, false, true));
+                    spawnLightParticles(world, player, result);
+                }
             }
             case WARNING -> {
                 spawnWarningParticles(world, player, result);

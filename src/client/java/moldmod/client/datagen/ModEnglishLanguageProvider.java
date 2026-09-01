@@ -212,6 +212,11 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Waxing");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Axe Scraping");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Rotten wood is brittle and crumbling. It cannot be cured with an axe. It requires Silk Touch to be harvested, otherwise it will disintegrate into nothing when broken.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "The Spore Mask provides complete protection against toxic miasma (Poison, Nausea, and Hunger). It consumes durability while filtering toxic air. Replace the filter by repairing it in an anvil with Wool (#minecraft:wool). Supports helmet enchantments.");
+
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Spore Mask");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Pure Air");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filter toxic spores by breathing through a Spore Mask in a contaminated room.");
     }
     
     private String capitalize(String str) {

@@ -19,6 +19,17 @@ public class MoldyResourceGenerator {
             
             // Generate ALL block JSONs (models, blockstates) in RAM!
             MoldyJsonGenerator.generateAll(builder);
+
+            // Generate Spore Mask item model
+            String sporeMaskModelJson = """
+                {
+                  "parent": "minecraft:item/generated",
+                  "textures": {
+                    "layer0": "spores--shadows:item/spore_mask"
+                  }
+                }
+                """;
+            builder.addData("assets/" + moldmod.SporesShadows.MOD_ID + "/models/item/spore_mask.json", sporeMaskModelJson.getBytes(java.nio.charset.StandardCharsets.UTF_8));
             
             for (moldmod.SporesShadowsConstants.MoldyWoodType moldyWoodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
                 String wood = moldyWoodType.name();

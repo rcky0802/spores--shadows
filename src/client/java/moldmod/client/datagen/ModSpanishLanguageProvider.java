@@ -248,5 +248,10 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei.spores--shadows.category.waxing", "Encerado");
         translationBuilder.add("jei.spores--shadows.category.scraping", "Raspado con Hacha");
         translationBuilder.add("jei.spores--shadows.info.rotten_wood", "La madera podrida es quebradiza y frágil. No se puede curar con un hacha. Requiere Toque de Seda para ser recolectada, de lo contrario se desintegrará en la nada al romperse.");
+        translationBuilder.add("jei.spores--shadows.info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola en un yunque con Lana (#minecraft:wool). Compatible con encantamientos de casco.");
+
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Máscara Antiesporas");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Aire Puro");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtra las esporas tóxicas respirando a través de una Máscara Antiesporas en una sala contaminada.");
     }
 }

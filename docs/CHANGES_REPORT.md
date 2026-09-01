@@ -257,36 +257,79 @@ classDiagram
 8. `flammability`: Toggle e probabilità di innesco e propagazione fiamme.
 9. `blast_resistance`: Toggle e moltiplicatori blast resistance per stadi 1, 2, 3.
 10. `hardness`: Toggle, moltiplicatori durezza e toggle nuvola di spore alla rottura.
-11. `toxicity`: Parametri temporali, volumi massimi, raggio euclideo, moltiplicatori saturazione/dissipazione, punteggi di ventilazione e soglie status effect.
+11. `toxicity`: Parametri temporali, volumi massimi, raggio euclideo, moltiplicatori saturazione/dissipazione, punteggi di ventilazione, soglie status effect, `enable_spore_mask_protection` (default: `true`) e `spore_mask_damage_per_exposure` (default: `1`).
 12. `client`: `mold_z_offset` per prevenire lo Z-fighting grafico con Iris/Sodium.
 
 ---
 
-## 11. Suite Completa di Collaudo Automatizzato GameTest (83/83 Passati)
+## 11. Equipaggiamento Protettivo: Maschera Antispore (*Spore Mask*)
 
-Tutti i comportamenti sono convalidati da **19 classi di test** automatizzati:
+È stato introdotto un nuovo equipaggiamento biologico dedicato alla sopravvivenza in ambienti miasmatici:
+
+### A. Specifiche Tecniche & Meccaniche
+* **Identificativo**: `spores--shadows:spore_mask` (Classe [`SporeMaskItem.java`](file:///C:/Users/r.pirosu/Desktop/spores--shadows-template-1.21.1/src/main/java/moldmod/item/SporeMaskItem.java)).
+* **Slot Equipaggiamento**: `EquipmentSlot.HEAD` (copricapo/elmo).
+* **Protezione Fisica**: $+1$ Punto Armatura ($0.5$ scudo), pari all'elmo di cuoio vanilla.
+* **Durabilità**: $165$ usi base.
+* **Protezione Miasma Attiva**:
+  * Neutralizza al $100\%$ gli effetti nocivi del Miasma ([`POISON`](file:///), [`NAUSEA`](file:///), [`HUNGER`](file:///)) durante il respiro in stanze sature di gas.
+  * Consuma $1$ punto di durabilità (con rispetto dell'incantesimo *Unbreaking*) ad ogni intervallo di esposizione attiva.
+  * Emette uno sbuffo di particelle d'aria purificata (`CLOUD`) attorno alla testa del giocatore.
+
+### B. Manutenzione del Filtro con Lana (`#minecraft:wool`)
+* **Riparazione all'Incudine**: L'ingrediente di riparazione registrato nel tag e in `canRepair` è qualsiasi blocco di **Lana (`#minecraft:wool`)**, simulando la sostituzione e l'aggiornamento della cartuccia filtrante.
+* **Compatibilità Strumenti**: Pienamente compatibile con **Incudine** (unione maschere, riparazione lana, rinomina), **Mola** (disincantamento con recupero XP, riparazione combinata) e **Crafting Grid Repair** ($+5\%$ bonus durabilità).
+
+### C. Incantabilità & Enchanting Table
+* Registrato nei tag ufficiali Minecraft 1.21.1:
+  * `#minecraft:head_armor`
+  * `#minecraft:enchantable/head_armor`
+  * `#minecraft:enchantable/durability`
+  * `#minecraft:enchantable/vanishing`
+* È inseribile direttamente nell'**Enchanting Table** con *Enchantability* $15$, supportando:
+  * *Unbreaking* (riduzione usura filtro), *Mending*, *Protection*, *Fire Protection*, *Blast Protection*, *Projectile Protection*, *Respiration*, *Aqua Affinity*, *Thorns*.
+
+### D. Ricetta Sagomata al Banco da Lavoro
+```text
+[ Cuoio ] [ Pannello di Vetro ] [ Cuoio ]
+[ Rame  ] [       Lana        ] [ Rame  ]
+[   -   ] [    Favo d'Api     ] [   -   ]
+```
+
+### E. Integrazioni con Altre Mod
+* **JEI / EMI / REI**: Scheda informativa `addIngredientInfo` multilingua e visualizzazione ricetta sagomata e riparazione incudine.
+* **Jade / WTHIT**: Riconoscimento della maschera indossata su giocatori o supporti per armature con indicatore di protezione attiva.
+* **Cloth Config & ModMenu**: Voci dedicate in categoria `toxicity` con supporto hot-reload via `/spores reload`.
+* **Polymer Framework**: Generazione procedurale modello `models/item/spore_mask.json` nel Resource Pack virtuale e fallback trasparente su `Items.LEATHER_HELMET` per client vanilla.
+
+---
+
+## 12. Suite Completa di Collaudo Automatizzato GameTest (87/87 Passati)
+
+Tutti i comportamenti sono convalidati da **20 classi di test** automatizzati:
 
 | # | File di Test | Argomento e Meccanica Verificata |
 | :---: | :--- | :--- |
-| 1 | `ToxicAirTests.java` | 32 test su BFS, porte/botole/grate/cielo e calcolo volumetrico. |
-| 2 | `DynamicMiasmaSaturationTests.java` | Inerzia temporale $M(t)$, saturazione e dissipazione differenziata. |
-| 3 | `MoldyMathTests.java` | 14 test su formule matematiche $R$, $H_{eff}$, $M_{bonus}$, temperature e cap $Y \le 0$. |
-| 4 | `MoldyHardnessAndMiningSpeedTests.java` | Durezza progressiva e tempo di rottura pugno vs ascia su rotten. |
-| 5 | `MoldyFuelAndSmeltingTests.java` | Tempi di combustione in fornace scalati per tutti i legni. |
-| 6 | `MoldyFlammabilityTests.java` | Innesco e diffusione fiamme (Overworld e ignifughi Nether). |
-| 7 | `MoldyInteractionTests.java` | Ceratura favo, scraping ascia, usura durabilità e preservazione stati. |
-| 8 | `MoldyDropAndLootTests.java` | Drop condizionali con Silk Touch, sbriciolamento e garanzia ceratura. |
-| 9 | `MoldyComposterTests.java` | Percentuali di compostaggio stadi 1, 2, 3. |
-| 10 | `MoldyCraftingYieldsTests.java` | Rese di crafting decrescenti per assi, stick e derivati. |
-| 11 | `MoldyBlastResistanceTests.java` | Resistenza alle esplosioni scalata per stadio. |
-| 12 | `MoldyRedstoneTests.java` | Ritardo di disattivazione meccanica su pedane e pulsanti marci. |
-| 13 | `MoldyScenariosTableTests.java` | Test parametrici su scenari realistici (cantine, miniere, rive). |
-| 14 | `ModCommandsTests.java` | Esecuzione e parsing comandi (`/spores reload`, `/miasma`). |
-| 15 | `StructureDegradationTest.java` | Generazione e decadimento strutture naturali. |
-| 16 | `MoldyInfectionRuleTests.java` | Regole biologiche di transizione di stadio. |
-| 17 | `MoldyVariantsCountTest.java` | Integrità e conteggio varianti registrate. |
-| 18 | `MoldyWoodTestHelper.java` | Classi di supporto per test automatici. |
-| 19 | `SporesShadowsTests.java` | Suite principale GameTest. |
+| 1 | `SporeMaskTests.java` | Proprietà elmo, +1 armatura, riparazione lana filtro, incantabilità e usura durabilità. |
+| 2 | `ToxicAirTests.java` | 32 test su BFS, porte/botole/grate/cielo e calcolo volumetrico. |
+| 3 | `DynamicMiasmaSaturationTests.java` | Inerzia temporale $M(t)$, saturazione e dissipazione differenziata. |
+| 4 | `MoldyMathTests.java` | 14 test su formule matematiche $R$, $H_{eff}$, $M_{bonus}$, temperature e cap $Y \le 0$. |
+| 5 | `MoldyHardnessAndMiningSpeedTests.java` | Durezza progressiva e tempo di rottura pugno vs ascia su rotten. |
+| 6 | `MoldyFuelAndSmeltingTests.java` | Tempi di combustione in fornace scalati per tutti i legni. |
+| 7 | `MoldyFlammabilityTests.java` | Innesco e diffusione fiamme (Overworld e ignifughi Nether). |
+| 8 | `MoldyInteractionTests.java` | Ceratura favo, scraping ascia, usura durabilità e preservazione stati. |
+| 9 | `MoldyDropAndLootTests.java` | Drop condizionali con Silk Touch, sbriciolamento e garanzia ceratura. |
+| 10 | `MoldyComposterTests.java` | Percentuali di compostaggio stadi 1, 2, 3. |
+| 11 | `MoldyCraftingYieldsTests.java` | Rese di crafting decrescenti per assi, stick e derivati. |
+| 12 | `MoldyBlastResistanceTests.java` | Resistenza alle esplosioni scalata per stadio. |
+| 13 | `MoldyRedstoneTests.java` | Ritardo di disattivazione meccanica su pedane e pulsanti marci. |
+| 14 | `MoldyScenariosTableTests.java` | Test parametrici su scenari realistici (cantine, miniere, rive). |
+| 15 | `ModCommandsTests.java` | Esecuzione e parsing comandi (`/spores reload`, `/miasma`). |
+| 16 | `StructureDegradationTest.java` | Generazione e decadimento strutture naturali. |
+| 17 | `MoldyInfectionRuleTests.java` | Regole biologiche di transizione di stadio. |
+| 18 | `MoldyVariantsCountTest.java` | Integrità e conteggio varianti registrate. |
+| 19 | `MoldyWoodTestHelper.java` | Classi di supporto per test automatici. |
+| 20 | `SporesShadowsTests.java` | Suite principale GameTest. |
 
 ---
-*Stato: **83/83 GameTest superati con successo (`BUILD SUCCESSFUL`)**.*
+*Stato: **87/87 GameTest superati con successo (`BUILD SUCCESSFUL`)**.*
