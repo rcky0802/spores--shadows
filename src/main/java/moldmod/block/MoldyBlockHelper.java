@@ -262,18 +262,22 @@ public class MoldyBlockHelper {
         }
 
         int totalLight = 0;
+        int samplePoints = 6;
         for (net.minecraft.util.math.Direction dir : DIRECTIONS) {
             mutable.set(pos, dir);
             int skyLight = world.getLightLevel(net.minecraft.world.LightType.SKY, mutable);
             int blockLight = world.getLightLevel(net.minecraft.world.LightType.BLOCK, mutable);
             totalLight += Math.max(skyLight, blockLight);
         }
-        // Also check the block itself (for transparent blocks like doors/buttons)
-        int selfSky = world.getLightLevel(net.minecraft.world.LightType.SKY, pos);
-        int selfBlock = world.getLightLevel(net.minecraft.world.LightType.BLOCK, pos);
-        totalLight += Math.max(selfSky, selfBlock);
+        // Also check the block itself for transparent/partial blocks (doors, buttons, trapdoors, slabs)
+        if (stateToCheck == null || !stateToCheck.isOpaqueFullCube(world, pos)) {
+            int selfSky = world.getLightLevel(net.minecraft.world.LightType.SKY, pos);
+            int selfBlock = world.getLightLevel(net.minecraft.world.LightType.BLOCK, pos);
+            totalLight += Math.max(selfSky, selfBlock);
+            samplePoints = 7;
+        }
 
-        double avgLight = totalLight / 7.0; // 6 faces + the center block space
+        double avgLight = totalLight / (double) samplePoints;
 
         double Luv = Math.max(0.0, (15.0 - avgLight) / 15.0);
 

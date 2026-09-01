@@ -66,27 +66,35 @@ public class MoldyMathTests {
     public void testLightUV(TestContext context) {
         BlockPos center = new BlockPos(2, 2, 2);
         BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
-        
-        // A cielo aperto la luce è 15, l'UV deve essere 0.0
-        MoldyBlockHelper.MoldRiskResult rLight15 = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, log);
-        if (rLight15.Luv() > 0.0) {
-            context.throwPositionedException("La luce solare 15 dovrebbe dare 0.0 UV, trovato: " + rLight15.Luv(), center);
-        }
-        
-        // Costruiamo un tetto di pietra per bloccare la luce solare
-        for(int x = 0; x <= 4; x++) {
-            for(int z = 0; z <= 4; z++) {
-                context.setBlockState(new BlockPos(x, 4, z), Blocks.STONE.getDefaultState());
+
+        // Circondiamo di luce (Glowstone) per garantire luce massima 15
+        context.setBlockState(center.up(), Blocks.GLOWSTONE.getDefaultState());
+
+        context.waitAndRun(2, () -> {
+            MoldyBlockHelper.MoldRiskResult rLight15 = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, log);
+            if (rLight15.Luv() > 0.0) {
+                context.throwPositionedException("La luce massima 15 dovrebbe dare 0.0 UV, trovato: " + rLight15.Luv(), center);
             }
-        }
-        
-        // Aspettiamo 5 tick per dare tempo al motore di illuminazione di propagare l'ombra
-        context.waitAndRun(5, () -> {
-            MoldyBlockHelper.MoldRiskResult rDark = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, log);
-            if (rDark.Luv() <= 0.0) {
-                context.throwPositionedException("L'ombra dovrebbe dare > 0.0 UV, trovato: " + rDark.Luv(), center);
+
+            // Rimuoviamo la fonte di luce e creiamo una scatola di pietra per il buio totale
+            context.setBlockState(center.up(), Blocks.AIR.getDefaultState());
+            for (int x = 0; x <= 4; x++) {
+                for (int y = 0; y <= 4; y++) {
+                    for (int z = 0; z <= 4; z++) {
+                        if (x == 0 || x == 4 || y == 0 || y == 4 || z == 0 || z == 4) {
+                            context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
+                        }
+                    }
+                }
             }
-            context.complete();
+
+            context.waitAndRun(5, () -> {
+                MoldyBlockHelper.MoldRiskResult rDark = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, log);
+                if (rDark.Luv() <= 0.0) {
+                    context.throwPositionedException("L'oscurità totale dovrebbe dare > 0.0 UV, trovato: " + rDark.Luv(), center);
+                }
+                context.complete();
+            });
         });
     }
 

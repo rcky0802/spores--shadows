@@ -1,286 +1,288 @@
-# Spores & Shadows 
+# Spores & Shadows
 
-**Spores & Shadows** es un mod para Minecraft (Fabric 1.21.1) que introduce un ecosistema dinámico, realista e implacable de decadencia ambiental para la madera. ¡Ninguna estructura está a salvo del tiempo y los elementos!
-
----
-
-## 🌳 Descripción y Contenido
-
-¿Alguna vez has construido una majestuosa cabaña de madera pensando que permanecería allí intacta, desafiando a los siglos, sin ninguna necesidad de mantenimiento? **Spores & Shadows** revoluciona esta certeza, transformando la madera de un simple bloque inerte a un material vivo, vulnerable y reactivo a su entorno.
-
-El mod reemplaza de manera completamente transparente y silenciosa cada pieza de madera colocada por el jugador (o generada naturalmente en estructuras como naufragios y minas) con una variante "durmiente". Con el paso del tiempo, agentes atmosféricos como la lluvia, la humedad, la oscuridad e incluso el bioma en el que te encuentras decidirán el destino de tus construcciones, obligándote a proteger tus edificios o a presenciar impotente su inexorable decadencia.
-
-### 🔢 Detalles Técnicos y Bloques Añadidos
-
-A nivel técnico, el mod inyecta un ecosistema completo para cada variante individual de madera (incluyendo las maderas carmesí y distorsionadas del Nether).
-
-* **🧱 13 Formatos Arquitectónicos**: *Troncos*, *Troncos Sin Corteza*, *Madera (Wood)*, *Madera Sin Corteza*, *Tablones (Planks)*, *Escaleras*, *Losas*, *Vallas*, *Puertas de Valla*, *Puertas*, *Trampillas*, *Placas de Presión*, *Botones*.
-
-Para cada uno de los 130 formatos base de madera, el mod añade **3 variantes enmohecidas** (Deteriorado, Enmohecido, Podrido). Además, para cada uno de estos bloques — incluido el bloque original Vanilla — se crea la respectiva **variante encerada**.
-
-De esta manera, el juego pone a disposición **910 variantes únicas y obtenibles en Supervivencia**:
-1. Las **130 Variantes Vanilla Enceradas**: La copia protegida y encerada del bloque base Vanilla.
-2. Las **390 Variantes Enmohecidas**: Las tres etapas de decadencia natural.
-3. Las **390 Variantes Enmohecidas Enceradas**: Los bloques decaídos pero detenidos en el tiempo por la cera.
-
-Este sistema te permite obtener en supervivencia bloques parcialmente enmohecidos para luego "sellarlos" con un panal de miel, pudiendo usarlos con total seguridad para fines decorativos sin riesgo de infectar las construcciones cercanas.
+**Spores & Shadows** es un mod para Minecraft (**Fabric 1.21.1**) que introduce un ecosistema dinámico, realista e implacable de deterioro ambiental de la madera. ¡Ninguna estructura de madera está a salvo del paso del tiempo y la dureza de los elementos!
 
 ---
 
-## 🦠 El Ciclo del Moho
-
-La madera atraviesa 4 etapas de decadencia: **Vanilla (0) ➔ Deteriorado (1) ➔ Enmohecido (2) ➔ Podrido (3)**.
-
-El avance ocurre solo si el "Riesgo de Infección" (`R`), recalculado constantemente, supera el umbral fijo de **0.4** (configurable). La fórmula exacta es:
-$$R = ((\text{Humedad} \times \text{Luz} \times \text{Susceptibilidad}) + \text{Contagio}) \times \text{Temperatura}$$
-
-### Factores y Variables Exactas
-* 💧 **Humedad (Clima + Profundidad + Agua)**: 
-  - El valor base depende de las precipitaciones del bioma (Lluvia/Nieve: `0.8`, Seco: `0.3`). 
-  - **Penalización por Profundidad**: Al descender por debajo del nivel del mar (`Y < 64`), la humedad aumenta vertiginosamente en `+0.01` por cada bloque de descenso, haciendo de las minas y cuevas entornos sumamente húmedos.
-  - **Penalización Local**: La adyacencia a bloques de agua (`+0.15`) o calderos (`+0.10`) suma humedad adicional al bloque.
-* ☀️ **Luz (UV)**: Escala linealmente desde `0.0` (Luz 15, bloquea totalmente la infección) a `1.0` (Oscuridad total).
-* 🪓 **Susceptibilidad del Material**: La madera sin corteza es extremadamente vulnerable (`x1.4`), los troncos crudos son estándar (`x1.0`), mientras que la madera procesada en tablones resiste un poco más (`x0.8`).
-* 🌡️ **Temperatura (Bioma + Altitud/Profundidad)**: 
-  - Actúa como un filtro de supervivencia. El moho prolifera **solo** si la temperatura local está entre `0.15` y `1.5`.
-  - **En la Superficie**: Depende del bioma. Climas extremos como desiertos o glaciares detienen por completo la infección, reduciendo el factor a `0.0`.
-  - **Nether & End**: El calor extremo del Nether y el vacío helado del End son totalmente letales para el moho. La madera nunca se pudrirá en estas dimensiones.
-  - **Bajo Tierra (`Y < 64`)**: Independientemente del bioma de la superficie, a medida que desciendes, la temperatura se normaliza gradualmente, estabilizándose en un perfecto `0.5` (templado) por debajo de `Y=48`. ¡Incluso en un desierto o bioma congelado, las cuevas profundas desarrollarán moho!
-  - **Alta Altitud (`Y > 128`)**: Al subir en altitud, la temperatura cae gradualmente, congelándose a `-0.5` en el nivel `Y=256`. Construir cabañas en alta montaña preservará la madera en casi cualquier lugar.
-* ☣️ **Contagio (Catalizadores)**: Suma una penalización directa si la madera está en contacto con agentes infecciosos:
-  - Madera infectada: Deteriorada (`+0.05`), Enmohecida (`+0.10`), Podrida (`+0.20`).
-  - Entorno: Barro (`+0.05`), Podzol/Micelio (`+0.15`), Hongos (`+0.25`), Flor de Esporas (`+0.80`).
+## 📑 Tabla de Contenidos
+1. [Visión General & Ecosistema de la Madera](#-visión-general--ecosistema-de-la-madera)
+2. [El Ciclo del Moho & Modelo Matemático](#-el-ciclo-del-moho--modelo-matemático)
+3. [Peligros Ambientales & Miasma Volumétrico](#-peligros-ambientales--miasma-volumétrico)
+4. [Degradación Física & Física de Herramientas](#-degradación-física--física-de-herramientas)
+5. [Penalizaciones de Crafteo, Horno & Compostaje](#-penalizaciones-de-crafteo-horno--compostaje)
+6. [Interacciones & Prevención (Encerado & Raspado)](#-interacciones--prevención-encerado--raspado)
+7. [Generación de Mundo & Desgaste de Estructuras](#-generación-de-mundo--desgaste-de-estructuras)
+8. [Integración con JEI (Just Enough Items)](#-integración-con-jei-just-enough-items)
+9. [Integración HUD (Jade) & Logros (Advancements)](#-integración-hud-jade--logros-advancements)
+10. [Comandos del Juego](#-comandos-del-juego)
+11. [Configuración Cloth Config & ModMenu](#-configuración-cloth-config--modmenu)
 
 ---
 
-## ☠️ Peligros Ambientales (Miasma Volumétrico)
+## 🌳 Visión General & Ecosistema de la Madera
 
-- ✨ **Partículas de Esporas**: Los bloques en las etapas **Enmohecido** y **Podrido** emiten esporas visibles desde sus caras expuestas (desactivado bajo el agua).
-- 🤢 **Miasma Tóxico (Algoritmo BFS Flood-Fill)**: Mediante un algoritmo volumétrico de *Flood-Fill* en 3D que parte de los ojos del jugador, el juego analiza la concentración de gases tóxicos en espacios cerrados:
-  - **Dispersión al Aire Libre**: Para cada bloque de aire se verifica la altura atmosférica. Si el espacio comunica directamente con el cielo exterior (`openAir`), las esporas se dispersan al instante y el miasma se anula por completo.
-  - **Volumen Confinado y Límite Manhattan**: El miasma se acumula en habitaciones de hasta 512 m³ de volumen de aire y dentro de un radio Manhattan de 8 bloques (`MAX_MANHATTAN_RADIUS = 8`), evitando propagaciones infinitas por galerías subterráneas.
-  - **Ventilación Natural por Fisuras**: Los bloques no sólidos o parciales orientados al exterior (vallas, barrotes de hierro, rejas, losas) actúan como tomas de ventilación natural ($+3.0$ de ventilación por cada apertura), reduciendo drásticamente la toxicidad neta:
-    $$\text{Net Miasma} = \text{Toxic Score} - \text{Ventilation Score}$$
-  - **Efectos de Estado Escalonados**:
-    - **Aviso Ambiental**: Micelio ligero y advertencia si $\text{Miasma Neto} \ge 3.0$ o $\text{Densidad} \ge 0.04$.
-    - **Hambre**: Partículas de esporas leves si $\text{Miasma Neto} \ge 8.0$ (o $\text{Densidad} \ge 0.09$ y $\text{Miasma Neto} \ge 5.0$).
-    - **Náusea + Veneno**: Partículas densas de flor de esporas si $\text{Miasma Neto} \ge 35.0$ (o $\text{Densidad} \ge 0.18$ y $\text{Miasma Neto} \ge 15.0$).
+¿Alguna vez construiste una majestuosa cabaña de madera esperando que durara para siempre sin mantenimiento? **Spores & Shadows** cambia completamente esa suposición, transformando la madera de un bloque estático en un material vivo y vulnerable a la humedad, la oscuridad, la altitud y el clima.
+
+El mod reemplaza de forma transparente la madera colocada y generada con variantes dinámicas. Con el tiempo, la exposición a las condiciones ambientales determina si la madera permanece resistente o se deteriora a través de sucesivas fases fúngicas.
+
+```mermaid
+graph LR
+    A["Fase 0: Sana (Vanilla)"] -->|Riesgo de Infección R > 0.50| B["Fase 1: Manchada (Tainted)"]
+    B -->|Exposición Continua| C["Fase 2: Con Moho (Moldy)"]
+    C -->|Deterioro Total| D["Fase 3: Podrida (Rotten)"]
     
-  *(💡 Todos los umbrales de activación, duraciones y potencias de efectos son 100% personalizables en Cloth Config. Usa el comando `/miasma` para diagnosticar la ventilación y toxicidad de tu habitación).*
+    A -.->|Panal| WA["Sana Encerada"]
+    B -.->|Panal| WB["Manchada Encerada"]
+    C -.->|Panal| WC["Con Moho Encerada"]
+    D -.->|Panal| WD["Podrida Encerada"]
+```
+
+### 🔢 Ecosistema Completo: 910 Variantes Obtenibles
+El mod inyecta un árbol de deterioro completo para cada tipo de bloque de madera a través de **13 formatos arquitectónicos**:
+
+* **🧱 13 Formatos**: *Troncos*, *Troncos Sin Corteza*, *Madera*, *Madera Sin Corteza*, *Tablones*, *Escaleras*, *Losas*, *Vallas*, *Puertas de Valla*, *Puertas*, *Trampillas*, *Placas de Presión*, *Botones*.
+* **🌲 10 Tipos de Madera**: Roble, Abedul, Abeto, Jungla, Acacia, Roble Oscuro, Mangle, Cerezo, Carmesí y Distorsionado.
+
+Sobre los 130 bloques base, el mod introduce:
+1. **130 Variantes Vanilla Enceradas**: Copias selladas y protegidas de los bloques base.
+2. **390 Variantes con Moho**: Las 3 fases orgánicas de deterioro (*Tainted*, *Moldy*, *Rotten*).
+3. **390 Variantes con Moho Enceradas**: Bloques deteriorados congelados en el tiempo con cera para construcción segura.
+
+¡Un total de **910 bloques únicos en supervivencia** con texturas dedicadas, tablas de botín y recetas completas!
 
 ---
 
-## 🛠️ Interacciones y Prevención
+## 🦠 El Ciclo del Moho & Modelo Matemático
 
-El jugador no está indefenso frente a la naturaleza. Equipando la herramienta adecuada y actuando en **modo sigilo (Sneaking / Shift)**, puedes interactuar directamente con el estado vital de la madera.
-*(El sigilo es obligatorio para evitar encerar o raspar por error los bloques interactivos, como puertas, trampillas o botones).*
+La madera transiciona secuencialmente: **Fase 0 (Vanilla) ➔ Fase 1 (Tainted) ➔ Fase 2 (Moldy) ➔ Fase 3 (Rotten)**.
 
-* 🪓 **Uso del Hacha (Raspado / Scrape)**: Haciendo *Shift + Clic Derecho* con un hacha:
-  - Si el bloque está **Encerado**, el hacha removerá la capa de cera restaurando el ciclo de decadencia normal.
-  - Si el bloque está **Deteriorado o Enmohecido**, el hacha raspará la capa superficial de hongos, reduciendo la decadencia en 1 etapa. Un bloque en la Etapa 1 volverá a estar limpio (Etapa 0 Vanilla).
-  *(Cada raspado consume durabilidad normalmente).*
-* 🐝 **Uso del Panal (Encerado / Waxing)**: Haciendo *Shift + Clic Derecho* con un panal de miel en un bloque en *cualquier* etapa, este se convertirá en **Encerado**. La madera encerada está sellada: se vuelve inmune al daño ambiental, congela su decadencia indefinidamente, pierde la capacidad de infectar bloques vecinos y no genera miasma tóxico.
+La progresión ocurre en los random block ticks cuando el **Riesgo de Infección ($R$)** supera el umbral configurable de **0.50**:
 
-*Función Inteligente: ¡Si realizas estas acciones en un bloque múltiple (como la mitad superior o inferior de una Puerta), la actualización se aplicará instantáneamente y en total sincronía a toda la estructura!*
+$$R = \Big( (H_{eff} \cdot L_{uv} \cdot S_{mat}) + C_{bonus} + M_{bonus} \Big) \cdot T_{mult}$$
 
----
+```mermaid
+flowchart TD
+    M["💧 Humedad Efectiva Heff (Base + Límite Profundidad - Secado Aireación)"]
+    L["☀️ Factor Luz UV (0.0 a 15 -> 1.0 a 0)"]
+    S["🪓 Susceptibilidad del Material (Tablones 0.8 / Tronco 1.0 / Sin Corteza 1.4)"]
+    C["☣️ Catalizadores Físicos (Lodo, Micelio, Hongos, Flor de Esporas)"]
+    MB["🌫️ Presión de Esporas de Miasma (Contaminación Aérea Interior)"]
+    T["🌡️ Multiplicador Térmico (Filtro: 0.15 - 1.50)"]
 
-## 🔨 Física, Dureza y Comportamiento Mecánico
+    M & L & S --> MLS["(Heff × Luv × Smat)"]
+    MLS & C & MB --> MLSC["+ Cbonus + Mbonus"]
+    MLSC & T --> CALC["R = (...) × Tmult"]
+    CALC -->|R > 0.50| GROW["Avanzar Fase de Moho"]
+    CALC -->|R <= 0.50| SAFE["Madera Estable y Segura"]
+```
 
-A medida que el moho descompone las fibras de celulosa y lignina, las propiedades físicas del bloque cambian de forma radical:
+### 🔬 Factores y Modificadores Ambientales
 
-### 1. Dureza Progresiva Escalonada
-La resistencia al picado disminuye drásticamente según la etapa de degradación:
-* 🌲 **Etapa 0 (Sano / Vanilla)**: Dureza **2.0** ($100\%$)
-* 🟢 **Etapa 1 (Deteriorado)**: Dureza **1.6** ($80\%$)
-* 🦠 **Etapa 2 (Enmohecido)**: Dureza **1.0** ($50\%$)
-* ☠️ **Etapa 3 (Podrido)**: Dureza **0.4** ($20\%$)
-
-### 2. Fragilidad Extrema y Neutralización de Herramienta (Etapa 3)
-En la madera en **Etapa 3 (Podrido)**, el colapso estructural interno es tan severo que el bloque pierde toda consistencia mecánica y no tiene ninguna herramienta asignada:
-* Romper un bloque de Etapa 3 con un **Hacha de Diamante/Netherite** o con el **puño / manos desnudas** toma exactamente la **misma velocidad**.
-
-### 3. Nube de Esporas y Sonidos Fúngicos al Romper
-* Al romper bloques en **Etapa 2 (Enmohecido)** o **Etapa 3 (Podrido)** sin el encantamiento **Toque de Seda (Silk Touch)**, se libera una explosión reactiva de partículas orgánicas (`SPORE_BLOSSOM_AIR`, `FALLING_SPORE_BLOSSOM`, `MYCELIUM`) acompañada de crujidos y sonidos fúngicos (`BLOCK_FUNGUS_BREAK` / `BLOCK_SPORE_BLOSSOM_BREAK`).
-
-### 4. Inflamabilidad y Propagación de Fuego Escalares
-La madera seca y descompuesta arde mucho más rápido, mientras que la cera y las maderas del Nether poseen propiedades ignífugas especiales:
-* **Bonificación de Inflamabilidad (Burn) y Propagación (Spread)**:
-  - **Etapa 1 (Deteriorado)**: $+5$ Inflamabilidad / $+10$ Velocidad de Propagación
-  - **Etapa 2 (Enmohecido)**: $+10$ Inflamabilidad / $+25$ Velocidad de Propagación
-  - **Etapa 3 (Podrido)**: $+20$ Inflamabilidad / $+60$ Velocidad de Propagación
-* **Bonificación de Cera**: Los bloques encerados obtienen una capa protectora adicional ($+5$ resistencia al fuego).
-* **Inmunidad del Nether**: Los bloques de madera Carmesí (*Crimson*) y Distorsionada (*Warped*) mantienen su inmunidad total Vanilla contra el fuego ($0$ inflamabilidad / $0$ propagación en todas sus etapas).
-
-### 5. Resistencia a Explosiones Escalonada
-La capacidad de absorber ondas expansivas (TNT, Creepers, bolas de fuego de Ghast) se degrada con el avance del moho:
-* **Etapa 0 (Sano)**: Resistencia base normal ($100\%$)
-* **Etapa 1 (Deteriorado)**: $80\%$ de resistencia base (multiplicador $0.80$)
-* **Etapa 2 (Enmohecido)**: $50\%$ de resistencia base (multiplicador $0.50$)
-* **Etapa 3 (Podrido)**: $10\%$ de resistencia base (multiplicador $0.10$, se pulveriza ante cualquier detonación cercana)
+* 💧 **Humedad Efectiva ($H_{eff} = \max(0.0, \min(1.0, H_{raw} - \text{Aireación} \cdot \text{drying\_bonus}))$)**:
+  * **Humedad Base**: Determinada por el clima del bioma (Biomas lluviosos/nevados: `0.80`, Biomas áridos/secos: `0.30`).
+  * **Gradiente de Profundidad & Límite $Y \le 0$**: Por debajo del nivel del mar ($Y < 64$), la humedad aumenta linealmente $\frac{64 - Y}{64} \times 0.40$. En todas las profundidades $Y \le 0$ (hasta $Y = -64$), la humedad de profundidad permanece fija en $+0.40$, evitando bloqueos en cavernas de pizarra profunda.
+  * **Adyacencia de Agua**: Fuentes de agua añaden $+0.15$ de humedad local; calderos $+0.10$ en un radio de 3 bloques.
+  * **Secado por Aireación**: El flujo de aire limpio exterior seca las caras de la madera, reduciendo $H_{raw}$.
+* ☀️ **Luz / UV ($L_{uv}$)**:
+  * Calculado en 7 puntos de muestreo (6 caras + espacio interior). Escala de `0.0` a nivel de luz 15 (esterilización) a `1.0` en oscuridad total.
+* 🪓 **Susceptibilidad del Material ($S_{mat}$)**:
+  * Madera sin corteza: **multiplicador $1.4\times$**.
+  * Troncos y madera estándar: **multiplicador $1.0\times$**.
+  * Tablones y bloques derivados: **multiplicador $0.8\times$**.
+* 🌡️ **Filtro Térmico & Normalización por Altitud ($T_{mult}$)**:
+  * Ventana biológica: **$0.15 \le \text{Temp} \le 1.50$**. Fuera de este rango, $T_{mult} = 0.0$ (crecimiento detenido).
+  * **Normalización en Cavernas ($Y \le 48$)**: La temperatura subterránea se normaliza hacia **$0.50$**, permitiendo pudrición en cuevas.
+  * **Congelación a Gran Altitud ($Y \ge 256$)**: Desciende hacia **$-0.50$**, protegiendo cabañas de alta montaña.
+* ☣️ **Catalizadores Físicos ($C_{bonus}$)**:
+  * Lodo ($+0.05$), Podzol / Micelio ($+0.15$), Hongos ($+0.25$), Flor de Esporas ($+0.80$), Madera Podrida Adyacente ($+0.20$).
+* 🌫️ **Presión de Esporas de Miasma ($M_{bonus}$)**:
+  * La madera expuesta a habitaciones saturadas de miasma sufre una presión fúngica aérea de $\text{ExposureIndex} \times \text{miasma\_multiplier}$.
 
 ---
 
-## ⚖️ Penalizaciones, Drops y Fabricación
+## ☠️ Peligros Ambientales & Miasma Volumétrico
 
-Usar madera podrida para la fabricación no es sabio. La estructura interna del material está irremediablemente comprometida, introduciendo severas penalizaciones:
+### 🌫️ 1. Miasma Volumétrico & Saturación Dinámica
+En espacios cerrados no ventilados, la madera infectada libera esporas tóxicas que saturan el aire interior.
 
-* 💥 **Integridad Estructural y Reglas de Drop**:
-  - **Sin Toque de Seda (y No Encerado)**:
-    - **Etapa 0 (Vanilla)**: Drop garantizado al **100%**.
-    - **Etapa 1 (Deteriorado)**: Drop garantizado al **100%**.
-    - **Etapa 2 (Enmohecido)**: **50%** de probabilidad de dropear el bloque; el otro 50% se desintegra en polvo inerte.
-    - **Etapa 3 (Podrido)**: **0%** de drop (se pulveriza en la nada al romperse).
-  - **Con Toque de Seda (Silk Touch) o Bloque Encerado**:
-    - **100% de drop garantizado** en todas las etapas ($0, 1, 2, 3$).
-    
-  *(💡 **El Secreto de la Cera**: Encerar un bloque consolida su estructura interna. ¡Cualquier bloque encerado, incluso en Etapa 3, garantiza el drop al 100% al romperse sin necesidad de Toque de Seda!).*
+* **Motor BFS 3D Direccional**: Desde los ojos del jugador (`player.getEyePos()`), evalúa el aire hasta un volumen de **$1024\text{ m}^3$** y un **radio euclídeo de $24$ bloques**.
+* **Sellos Hidráulicos & Herméticos**:
+  * **Bloques Anegados (`waterlogged`)**: Actúan como un **sifón hidráulico 100% hermético**, impidiendo el paso de gas entre habitaciones.
+  * **Límites Herméticos**: Bloques sólidos, puertas cerradas, trampillas horizontales cerradas, muros conectados y cristales.
+  * **Portales de Ventilación**: Rejillas de cobre abiertas (`GrateBlock`, $+15.0/\text{bloque}$), puertas abiertas ($+15.0$), trampillas abiertas ($+15.0$), vallas/cancelas ($+3.0$) y cielo abierto ($+25.0/\text{bloque}$).
+* **Saturación Dinámica & Inercia Temporal (`RoomSaturationManager`)**:
+  * El miasma evoluciona de forma continua: $M(t) = M_{prev} + \alpha \cdot (M_{target} - M_{prev})$.
+  * Intoxicación con `saturation_speed_multiplier` (`0.02`), y purificación rápida al abrir ventanas con `dissipation_speed_multiplier` (`0.05`).
+* **Índice de Exposición y Efectos**:
 
-* 🛠️ **Rendimiento de Fabricación (Recuperación) y Crafteo Híbrido**:
-  Puedes usar la madera infectada en la mesa de crafteo para fabricar derivados básicos (Tablones, Losas, Escaleras, Palos). El resultado final siempre será limpio (**Vanilla**), pero el rendimiento se reduce por las partes descartadas:
+$$\text{Densidad} = \frac{\text{Miasma Neto}}{\text{Volumen}}, \quad \text{Exposición} = \text{Densidad} \cdot \left(0.5 + 0.5 \cdot \min\left(2.0, \sqrt{\frac{\text{Miasma Neto}}{8.0}}\right)\right)$$
 
-  | Calidad del Material | 🌳 Ej: Tronco ➔ Tablones | 🦯 Ej: Tablones ➔ Palos |
-  | :--- | :---: | :---: |
-  | 🌲 **Sano (Vanilla / Encerado)** | 1 Tronco ➔ **4** Tablones | 2 Tablones ➔ **4** Palos |
-  | 🟢 **Deteriorado** | 1 Tronco ➔ **2** Tablones | 2 Tablones ➔ **2** Palos |
-  | 🦠 **Enmohecido** | 1 Tronco ➔ **1** Tablón | 2 Tablones ➔ **1** Palo |
-  | ☠️ **Podrido** | *Receta Inválida* ❌ | *Receta Inválida* ❌ |
+```mermaid
+graph TD
+    subgraph "Espectro de Toxicidad del Aire"
+        A["Miasma Neto >= 2.66 o Densidad >= 0.045"] -->|Aviso Visual| P1["Partículas de Micelio & Sonidos Orgánicos"]
+        B["Miasma Neto >= 8.0 o Densidad >= 0.09"] -->|Peligro Moderado| E1["Efecto de Estado Hambre"]
+        C["Miasma Neto >= 16.0 o Densidad >= 0.18"] -->|Peligro Letal| E2["Efectos Náusea + Veneno Letal"]
+    end
+```
 
-  *(💡 **Crafteo Híbrido**: Gracias a las compatibilidades de recetas, puedes mezclar libremente bloques normales y encerados de la misma etapa en la misma cuadrícula de crafteo).*
-
-* 🔥 **Poder Combustible y Soporte de Carbón Vegetal (Charcoal)**: 
-  A medida que avanza la podredumbre, la madera pierde densidad y poder calorífico en el horno:
-  - **Sano (Vanilla / Encerado)**: Eficiencia normal (**100%** / multiplicador `1.0`).
-  - **Deteriorado**: Eficiencia reducida a la mitad (**50%** / multiplicador `0.5`).
-  - **Enmohecido**: Cae a un cuarto de eficiencia (**25%** / multiplicador `0.25`).
-  - **Podrido**: Eficiencia residual mínima (**12.5%** / multiplicador `0.125`).
-  - **Cocción de Carbón Vegetal**: Todos los troncos degradados y encerados son compatibles con los tags `#minecraft:item/charcoal` y `#c:charcoal` para cocinarse en hornos y producir carbón vegetal.
-  
-* ♻️ **Compostador (El Lado Positivo de la Podredumbre)**:
-  Toda la madera del mod puede depositarse en el Compostador Vanilla para producir Polvo de Hueso. Cuanto más descompuesta esté, más rica en materia orgánica y esporas será:
-  - Madera Deteriorada: **50%**
-  - Madera Enmohecida: **65%**
-  - Madera Podrida: **85%** (¡Fertilizante de alta calidad!)
-
-* 🔴 **Componentes de Redstone (Botones y Placas de Presión)**:
-  El moho ralentiza los mecanismos internos de los pulsadores de madera:
-  - Sano: **1,5 segundos** (30 ticks).
-  - Deteriorado: **3 segundos** (60 ticks).
-  - Enmohecido: **7,5 segundos** (150 ticks).
-  - Podrido: **22,5 segundos** (450 ticks).
+### 💥 2. Explosión de Esporas al Romper
+Romper madera deteriorada sin tratar perturba las colonias de hongos:
+* **Activación**: Destruir bloques **Fase 2 (Moldy)** o **Fase 3 (Rotten)** sin **Toque de Seda** (y no encerados).
+* **Efecto**: Emisión instantánea de partículas `MYCELIUM` acompañada de sonido fúngico profundo (`BLOCK_FUNGUS_BREAK`).
 
 ---
 
-## 🗺️ Generación de Estructuras
+## 📉 Degradación Física & Física de Herramientas
 
-El mod intercepta el motor de generación de Minecraft para aplicar el desgaste del tiempo a todas las estructuras de madera que descubrirás en el mundo:
+Conforme la pudrición destruye la matriz de celulosa y lignina, la resistencia física cae drásticamente:
 
-1. 🏴‍☠️ **Degradación Crítica** (Alta proporción de madera Podrida): Naufragios Hundidos (`shipwreck`), Cabañas de Pantano (`swamp_hut`).
-2. 🧟 **Degradación Alta** (Mezcla de Deteriorado y Enmohecido): Minas Abandonadas (`mineshaft`), Aldeas Zombis (`zombie_village`), Ruinas de Sendero (`trail_ruins`).
-3. 🏹 **Degradación Moderada** (Principalmente Deteriorado): Puestos de Saqueadores (`pillager_outpost`), Portales en Ruinas (`ruined_portal`).
-4. 🏡 **Degradación Mínima** (Casi totalmente sana): Aldeas normales (`village`), Mansiones del Bosque (`mansion`).
+| Propiedad | 🌲 Fase 0 (Vanilla) | 🟢 Fase 1 (Tainted) | 🦠 Fase 2 (Moldy) | ☠️ Fase 3 (Rotten) |
+| :--- | :---: | :---: | :---: | :---: |
+| **Dureza del Bloque** | `2.0` ($100\%$) | `1.6` ($80\%$) | `1.0` ($50\%$) | `0.4` ($20\%$) |
+| **Eficacia de Herramientas** | Estándar con Hacha | Estándar con Hacha | Estándar con Hacha | **Anulada (Puño = Hacha)** |
+| **Resistencia a Explosiones**| `100%` | Multiplicador `80%` | Multiplicador `50%` | Multiplicador `10%` |
+| **Bonus Combustión Fuego** | $+0$ | $+5$ | $+10$ | $+20$ |
+| **Bonus Propagación Fuego**| $+0$ | $+10$ | $+25$ | $+60$ |
+| **Drop en Supervivencia** | `100%` | `100%` | `50%` (50% destruido) | `0%` (Desintegración) |
+| **Drop con Toque de Seda / Cera** | `100%` | `100%` | `100%` | `100%` |
 
-*(💡 **Factores Dinámicos**: La generación evalúa el entorno bloque por bloque. Las áreas expuestas al sol y al aire se conservan mejor, mientras que los bloques sumergidos o enterrados sufren mayor descomposición).*
+### 🪓 Extrema Friabilidad de la Fase 3
+En la **Fase 3 (Rotten)**, la madera ha perdido toda coherencia estructural. Los bonus de velocidad del hacha quedan **totalmente anulados**: romper madera podrida con un hacha de Netherite toma exactamente el mismo tiempo que romperla con los puños desnudos.
 
-**🛡️ Inmunidad Natural y de Estructuras Suspendidas**:
-* **Árboles Vivos**: Los árboles generados o crecidos naturalmente nunca se pudren porque su madera está viva.
-* **Estructuras Suspendidas**: Los bloques generados en estructuras permanecen congelados y no avanzan de etapa de moho de forma autónoma hasta que un jugador interactúa con ellos (rompiéndolos, raspándolos o colocándolos). Puedes desactivar esta protección desde la configuración para una experiencia hardcore.
+### 🔥 Inflamabilidad & Propagación del Fuego
+* **Secado y Esporas**: La madera deteriorada arde mucho más rápido y propaga el fuego intensamente a bloques vecinos.
+* **Inflamabilidad de Cera**: Los bloques encerados reciben un bonus de $+5$ de combustión debido a la cera de abeja.
+* **Inmunidad de Madera del Nether**: Los tallos y tablones Carmesí y Distorsionados mantienen **inmunidad total al fuego** ($0$ ignición / $0$ propagación).
+
+---
+
+## ⚖️ Penalizaciones de Crafteo, Horno & Compostaje
+
+Usar madera podrida para carpintería o combustible conlleva penalizaciones realistas:
+
+### 🪵 1. Rendimientos de Crafteo & Crafteo Híbrido
+Puedes procesar madera infectada en la mesa de trabajo para obtener tablones, losas o palos vanilla. Sin embargo, al tener que descartar partes podridas, los rendimientos disminuyen:
+
+| Nivel de Calidad | 🌳 1 Tronco ➔ Tablones | 🦯 2 Tablones ➔ Palos |
+| :--- | :---: | :---: |
+| 🌲 **Sana (Vanilla / Encerada)** | **4** Tablones | **4** Palos |
+| 🟢 **Manchada (Fase 1)** | **2** Tablones | **2** Palos |
+| 🦠 **Con Moho (Fase 2)** | **1** Tablón | **1** Palo |
+| ☠️ **Podrida (Fase 3)** | ❌ *No crafteable* | ❌ *No crafteable* |
+
+> [!TIP]
+> **Crafteo Híbrido**: ¡Puedes mezclar libremente madera encerada y no encerada de la misma fase en la cuadrícula de crafteo!
+
+### 🔥 2. Combustión en Horno & Carbón Vegetal
+* **Multiplicadores de Tiempo de Combustión**: Fase 0 (`1.0x` / 100%) ➔ Fase 1 (`0.5x` / 50%) ➔ Fase 2 (`0.25x` / 25%) ➔ Fase 3 (`0.125x` / 12.5%).
+* **Fundición de Carbón Vegetal**: Todos los troncos infectados y encerados pueden fundirse en hornos para producir carbón vegetal.
+
+### ♻️ 3. Fertilización en Compostador
+La madera infectada es rica en materia orgánica fúngica, ideal para el compostador:
+* **Madera Manchada**: $50\%$ de probabilidad
+* **Madera con Moho**: $65\%$ de probabilidad
+* **Madera Podrida**: $85\%$ de probabilidad (¡Excelente fertilizante!)
+
+### 🔴 4. Inercia Mecánica Redstone
+El moho atasca los mecanismos de botones y placas de presión de madera:
+* **Manchada**: Activa durante **3.0 segundos** ($60\text{ ticks}$).
+* **Con Moho**: Activa durante **7.5 segundos** ($150\text{ ticks}$).
+* **Podrida**: Activa durante **22.5 segundos** ($450\text{ ticks}$).
+
+---
+
+## 🛠️ Interacciones & Prevención (Encerado & Raspado)
+
+Los jugadores interactúan con la madera usando el **Modo Sigilo (Sneak / Shift + Clic Derecho)**:
+
+* 🐝 **Encerado (Panal)**:
+  * Aplicar panal a cualquier bloque de madera lo sella con cera.
+  * **Efectos**: Congela el deterioro, elimina la emisión de miasma, previene el contagio y **garantiza un 100% de drop** ¡incluso en madera Podrida de Fase 3!
+* 🪓 **Raspado con Hacha**:
+  * **Desencerado**: Shift + Clic derecho con un hacha retira la capa de cera, reactivando el ciclo biológico.
+  * **Curación de Moho**: Shift + Clic derecho con un hacha en madera no encerada infectada cura 1 fase ($2 \rightarrow 1 \rightarrow 0$ Vanilla). Consume durabilidad del hacha.
+  * **Incurabilidad de la Fase 3**: La madera Podrida de Fase 3 tiene su estructura colapsada y es **incurable** (el hacha no tiene efecto; solo puede encerarse o compostarse).
+
+---
+
+## 🗺️ Generación de Mundo & Desgaste de Estructuras
+
+Las estructuras naturales muestran signos auténticos del paso del tiempo clasificados en 4 niveles:
+
+1. 🏴‍☠️ **Deterioro Crítico**: Naufragios (`shipwreck`), Cabañas de Bruja (`swamp_hut`) — Alta presencia de madera Podrida Fase 3.
+2. 🧟 **Deterioro Alto**: Minas abandonadas (`mineshaft`), Aldeas Zombie (`zombie_village`), Ruinas (`trail_ruins`) — Fuerte mezcla de Fases 1 y 2.
+3. 🏹 **Deterioro Moderado**: Puestos de Saqueadores (`pillager_outpost`), Portales en Ruinas (`ruined_portal`) — Principalmente Fase 1.
+4. 🏡 **Deterioro Mínimo**: Aldeas (`village`), Mansiones del Bosque (`mansion`) — Madera casi intacta.
+
+### 🛡️ Árboles Vivos & Inmunidad de Estructuras
+* **Árboles Vivos**: Los árboles silvestres y retoños están vivos y son totalmente inmunes al deterioro hasta que se talan.
+* **Inmunidad de Estructuras**: Por defecto, las estructuras se generan pre-envejecidas y congelan su estado hasta que un jugador interactúa con ellas.
 
 ---
 
 ## 📖 Integración con JEI (Just Enough Items)
 
-El mod incluye soporte nativo y completo para **JEI** (`SporesShadowsJEIPlugin`):
+El mod incluye soporte nativo y completo para JEI:
 
-1. 🐝 **Categoría de Encerado (*Waxing*)**:
-   - Muestra todas las recetas de transformación: `Bloque de Madera + Panal de Miel ➔ Bloque Encerado` para los 130 formatos y variantes.
-2. 🪓 **Categoría de Raspado con Hacha (*Axe Scraping*)**:
-   - **Remoción de Cera**: `Bloque Encerado + Hacha ➔ Bloque No Encerado`.
-   - **Curación y Limpieza**: `Etapa 2 (Enmohecido) + Hacha ➔ Etapa 1 (Deteriorado) + Hacha ➔ Etapa 0 (Vanilla)`.
-3. ℹ️ **Pestañas de Información (*Info Tabs*)**:
-   - Fichas explicativas y advertencias contextuales para todos los bloques e ítems en **Etapa 3 (Podrido)**, detallando su fragilidad extrema, la pérdida de recetas de tablones y la necesidad de Toque de Seda o Cera para su obtención.
+```mermaid
+graph LR
+    subgraph "Categorías de Recetas JEI"
+        W["🍯 Categoría Encerado<br>(Shift + Clic Derecho con Panal)"]
+        S1["🪓 Categoría Desencerado<br>(Shift + Clic Derecho con Hacha)"]
+        S2["🪓 Categoría Curación de Moho<br>(Curar Fase 2 -> 1 -> Vanilla)"]
+        I["ℹ️ Fichas Informativas Madera Podrida<br>(Friabilidad, Drops & Compost)"]
+    end
+```
 
----
-
-## 📊 Integración de HUD, Comandos y Logros
-
-* 🔍 **Integración con Jade / WTHIT**:
-  - Al mirar cualquier bloque de madera, el HUD muestra con total precisión su variante (ej. *Waxed Tainted Oak Planks*), su icono y el porcentaje actual de riesgo de infección.
-  - El riesgo evalúa al **0%** para bloques encerados y se oculta para bloques podridos. Cambia de color dinámicamente (**Gris = Seguro**, **Rojo = En Riesgo**).
-
-* 💻 **Comandos de Consola**:
-  - `/moldrisk` (alias `/moldyrisk`): Calcula y muestra en el chat el riesgo de infección del bloque que estás mirando.
-  - `/moldrisk verbose` (alias `/moldyrisk verbose`): Desglose matemático exhaustivo de la fórmula ($H_{\text{eff}}$, $L_{\text{uv}}$, $S_{\text{mat}}$, Catalizadores, Temperatura efectiva y umbral de infección).
-  - `/miasma` (o `/miasma <jugador>`): Escanea y analiza en tiempo real la atmósfera de la habitación: volumen confinado, puntuación de toxicidad por moho, puntuación de ventilación por aperturas, miasma neto y densidad de esporas.
-  - `/spores reload`: Recarga en caliente los archivos de configuración de Cloth Config sin necesidad de reiniciar el cliente o servidor.
-
-* 🏆 **Logros Personalizados**:
-  - **Spores & Shadows**: Sobrevive a la decadencia de la naturaleza.
-  - **Prevención Natural**: Usa un panal de miel para encerar un bloque de madera y detener el moho.
-  - **Mano de Santo**: Raspa el moho de un bloque de madera utilizando un hacha.
-  - **Falta de Aire**: Sufre el veneno del miasma por respirar demasiado moho.
-  - **Polvo al Polvo**: Intenta picar un bloque de madera podrida y observa cómo se desmorona en la nada.
+1. **Categoría Encerado (`WaxingRecipeCategory`)**: Muestra las 130 transformaciones de encerado.
+2. **Categoría Raspado con Hacha (`ScrapingRecipeCategory`)**:
+   * Muestra recetas de desencerado con cualquier hacha vanilla.
+   * Muestra rutas de curación de moho ($2 \rightarrow 1 \rightarrow 0$).
+3. **Fichas Informativas de Madera Podrida**: Descripciones integradas sobre friabilidad, drop cero sin cera y eficiencia en el compostador.
 
 ---
 
-## ⚙️ Configuración del Mod (Cloth Config)
+## 📊 Integración HUD (Jade) & Logros (Advancements)
 
-El mod incluye una interfaz gráfica de configuración completa y modular integrada con **Cloth Config** y **ModMenu**. Las opciones están organizadas en 12 categorías:
+* 🔍 **Tooltips Jade / WTHIT**: Mirar cualquier bloque de madera muestra su nombre, fase de moho, estado de cera y Riesgo de Infección en vivo ($R\%$) con color dinámico (**Gris = Seguro**, **Rojo = En Riesgo**).
+* 🏆 **Logros (Advancements)**:
+  * **Spores & Shadows**: Sobrevive al ciclo natural de deterioro de la madera.
+  * **Natural Prevention**: Encera un bloque de madera con un panal para sellarlo.
+  * **Elbow Grease**: Usa un hacha para retirar el moho de la madera infectada.
+  * **Short Breath**: Sucumbe al envenenamiento por miasma en un sótano sin ventilación.
+  * **Dust to Dust**: Mira cómo un bloque podrido de Fase 3 se desintegra en polvo al picarlo.
 
-1. 🛠️ **General (`general`)**:
-   - Activar o desactivar el crecimiento del moho globalmente (`enable_mold_growth`).
-   - Umbral de riesgo de infección (`infection_threshold`, defecto `0.40`).
-   - Radio de escaneo del entorno (`scan_radius`, $3\times3\times3$ o $5\times5\times5$).
-   - Inmunidad de estructuras generadas (`structures_immune`).
-   - Daño de durabilidad al raspar con hacha (`axe_scrape_damage`).
-   - Depuración de chat (`show_debug_in_chat`).
+---
 
-2. 🪓 **Susceptibilidad (`susceptibility`)**:
-   - Multiplicador para madera sin corteza (`stripped_wood_multiplier`, `1.4x`).
-   - Multiplicador para tablones procesados (`planks_multiplier`, `0.8x`).
-   - Multiplicador base por defecto (`default_multiplier`, `1.0x`).
+## 💻 Comandos del Juego
 
-3. ☣️ **Catalizadores (`catalysts`)**:
-   - Bonificaciones de contagio por proximidad a barro (`0.05`), podzol/micelio (`0.15`), hongos (`0.25`) y flor de esporas (`0.80`).
-   - Bonificaciones de contagio por bloques de madera deteriorados (`0.05`), enmohecidos (`0.10`) y podridos (`0.20`).
+Todos los comandos administrativos requieren nivel de operador 2:
 
-4. 🌡️ **Entorno (`environment`)**:
-   - Humedad base en lluvia (`0.8`) y en seco (`0.3`).
-   - Modificador y escala de profundidad bajo el nivel del mar (`Y < 64`).
-   - Bonificación y radio de escaneo de agua adyacente (`+0.15`) y calderos (`+0.10`).
-   - Rango de supervivencia de temperatura mínima (`0.15`) y máxima (`1.5`).
-   - Normalización de temperatura en cuevas profundas (`0.5`) y congelación en alta montaña (`-0.5`).
+* `/miasma`  
+  Ejecuta un escaneo atmosférico BFS en tiempo real en la posición del jugador, mostrando tipo de ambiente (Abierto / Espacio Confinado), volumen de aire ($m^3$), Puntuación de Toxicidad, Puntuación de Ventilación, Miasma Neto y Densidad de Esporas.
+* `/moldrisk`
+  Inspecciona el bloque apuntado y muestra humedad ($H_{\text{eff}}$), luz ($L_{\text{uv}}$), susceptibilidad ($S_{\text{mat}}$), catalizadores, bonus aéreo de miasma ($M_{\text{bonus}}$), temperatura y valor calculado de $R$.
+* `/moldrisk verbose`  
+  Muestra el desglose matemático intermedio completo (modificadores de profundidad, temperaturas de superficie vs cueva, bonus de agua locales).
+* `/spores reload`  
+  Recarga instantáneamente el archivo de configuración (`config/spores--shadows.json`) sin reiniciar el servidor ni el cliente.
 
-5. 💥 **Obtención (`drops`)**:
-   - Probabilidad de drop base para madera en Etapa 2 / Enmohecido (`stage_2_drop_chance`, defecto `0.50`).
-   - Probabilidad de drop base para madera en Etapa 3 / Podrido (`stage_3_drop_chance`, defecto `0.00`).
+---
 
-6. 🗺️ **Estructuras (`structures`)**:
-   - Configuración porcentual detallada de probabilidad de bloques deteriorados, enmohecidos y podridos para las 4 categorías estructurales (Crítica, Alta, Moderada y Baja).
+## ⚙️ Configuración Cloth Config & ModMenu
 
-7. 🔥 **Horno y Combustión (`furnace_multipliers`)**:
-   - Multiplicador de tiempo de quemado en horno para cada etapa: Etapa 0 (`1.0x`), Etapa 1 (`0.5x`), Etapa 2 (`0.25x`), Etapa 3 (`0.125x`).
+Configurable mediante **ModMenu & Cloth Config** en 12 categorías dedicadas:
 
-8. 🚒 **Inflamabilidad (`flammability`)**:
-   - Habilitar escalado de inflamabilidad (`enable_flammability`).
-   - Bonificaciones escalares de inflamabilidad y propagación para Etapa 1 ($+5 / +10$), Etapa 2 ($+10 / +25$) y Etapa 3 ($+20 / +60$).
-   - Bonificación de resistencia para madera encerada ($+5$).
-
-9. 🛡️ **Resistencia a Explosiones (`blast_resistance`)**:
-   - Habilitar escalado de resistencia (`enable_blast_resistance_scaling`).
-   - Multiplicadores de absorción de detonaciones: Etapa 1 (`0.80x`), Etapa 2 (`0.50x`), Etapa 3 (`0.10x`).
-
-10. ⛏️ **Dureza (`hardness`)**:
-    - Habilitar escalado dinámico de dureza (`enable_hardness_scaling`).
-    - Multiplicadores de dureza de bloque: Etapa 1 (`0.80x` $\rightarrow 1.6$), Etapa 2 (`0.50x` $\rightarrow 1.0$), Etapa 3 (`0.20x` $\rightarrow 0.4$).
-    - Habilitar nube de esporas y efectos al romper sin Silk Touch (`enable_break_spore_cloud`).
-
-11. ☠️ **Toxicidad (`toxicity`)**:
-    - Intervalo de comprobación en ticks (`check_interval_ticks`, defecto `40`).
-    - Radio de escaneo (`scan_radius`, defecto `4`).
-    - Umbrales de activación para Náusea (`threshold_nausea`, `15`) y Veneno (`threshold_poison`, `35`).
-    - Duración y amplificadores de los efectos de estado.
-
-12. 🖥️ **Cliente (`client`)**:
-    - Ajuste de desplazamiento de renderizado Z (`mold_z_offset`, defecto `0.002f`) para compatibilidad perfecta con sombreadores modernos (Sodium / Iris) y evitar z-fighting.
-
+1. 🛠️ **General**: Activar/desactivar crecimiento de moho, umbral de infección (`0.50`), radio de escaneo, inmunidad de estructuras y desgaste del hacha.
+2. 🪓 **Susceptibility**: Multiplicadores para madera sin corteza (`1.4`), tablones (`0.8`) y troncos (`1.0`).
+3. ☣️ **Catalysts**: Ponderaciones para lodo, micelio, hongos, flor de esporas y bloques infectados.
+4. 🌡️ **Environment**: Humedad base, modificadores de profundidad, bonus de agua, secado por aireación, presión de esporas de miasma, temperaturas críticas, normalización en cuevas ($Y=48$) y congelación en cumbres ($Y=256$).
+5. 💥 **Drops**: Probabilidades de drop para Fase 2 (`50%`) y Fase 3 (`0%`).
+6. 🗺️ **Structures**: Porcentajes de deterioro para categorías de estructuras.
+7. 🔥 **Furnace Multipliers**: Multiplicadores de combustible en horno para Fases 0, 1, 2, 3.
+8. 🚒 **Flammability**: Toggle de inflamabilidad, bonus de ignición ($+5/+10/+20$), propagación ($+10/+25/+60$) y cera ($+5$).
+9. 💣 **Blast Resistance**: Toggle de resistencia a explosiones, multiplicadores para Fase 1 (`0.80`), Fase 2 (`0.50`), Fase 3 (`0.10`).
+10. ⛏️ **Hardness**: Toggle de dureza escalada (`0.80`, `0.50`, `0.20`), y toggle de nube de esporas al romper.
+11. ☠️ **Toxicity**: Intervalo de ticks de miasma, volumen máximo, radio euclídeo, velocidades de saturación/disipación, portales de ventilación y umbrales de efectos.
+12. 🖥️ **Client**: Ajustes de Z-Offset para compatibilidad perfecta con shaders Iris y Sodium.

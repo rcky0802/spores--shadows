@@ -1,364 +1,288 @@
-# 🍄 Spores & Shadows — Guida Ufficiale e Documentazione Wiki
+# Spores & Shadows
 
-**Spores & Shadows** è una mod per Minecraft (**Fabric 1.21.1**) che introduce un ecosistema dinamico, realistico e implacabile di decadimento biologico ed usura ambientale per il legno. Con questa mod, nessun edificio in legno è più eterno: il tempo, l'umidità, il buio e gli elementi atmosferici trasformeranno le tue costruzioni, costringendoti a prendertene cura o ad assistere al loro inesorabile degrado!
+**Spores & Shadows** è una mod per Minecraft (**Fabric 1.21.1**) che introduce un ecosistema dinamico, realistico e spietato di decadimento ambientale del legno. Nessuna struttura in legno è al sicuro dal passare del tempo e dalla severità degli elementi!
 
 ---
 
 ## 📑 Indice dei Contenuti
-1. [Panoramica & Ecosistema dei Blocchi](#-1-panoramica--ecosistema-dei-blocchi)
-2. [Il Ciclo della Muffa & Formula di Rischio](#-2-il-ciclo-della-muffa--formula-di-rischio)
-3. [Pericoli Ambientali: Miasma Volumetrico & Aereazione](#-3-pericoli-ambientali-miasma-volumetrico--aereazione)
-4. [Interazioni, Manutenzione e Cura con Cera e Ascia](#-4-interazioni-manutenzione-e-cura-con-cera-e-ascia)
-5. [Fisica dei Blocchi: Durezza, Friabilità & Nuvola di Spore](#-5-fisica-dei-blocchi-durezza-friabilit%C3%A0--nuvola-di-spore)
-6. [Fisica del Fuoco, Fornace & Carbonella](#-6-fisica-del-fuoco-fornace--carbonella)
-7. [Resistenza alle Esplosioni](#-7-resistenza-alle-esplosioni)
-8. [Artigianato, Compostiera & Pietrarossa](#-8-artigianato-compostiera--pietrarossa)
-9. [Generazione nel Mondo & Strutture](#-9-generazione-nel-mondo--strutture)
-10. [Integrazione JEI, HUD Jade & Obiettivi](#-10-integrazione-jei-hud-jade--obiettivi)
-11. [Comandi di Gioco & Amministrazione](#-11-comandi-di-gioco--amministrazione)
-12. [Configurazione della Mod (Cloth Config)](#-12-configurazione-della-mod-cloth-config)
+1. [Panoramica & Ecosistema del Legno](#-panoramica--ecosistema-del-legno)
+2. [Il Ciclo della Muffa & Modello Matematico](#-il-ciclo-della-muffa--modello-matematico)
+3. [Pericoli Ambientali & Miasma Volumetrico](#-pericoli-ambientali--miasma-volumetrico)
+4. [Degrado Fisico & Fisica degli Strumenti](#-degrado-fisico--fisica-degli-strumenti)
+5. [Penalità di Crafting, Fornace & Compostaggio](#-penalità-di-crafting-fornace--compostaggio)
+6. [Interazioni & Prevenzione (Ceratura & Raschiatura)](#-interazioni--prevenzione-ceratura--raschiatura)
+7. [Generazione del Mondo & Usura delle Strutture](#-generazione-del-mondo--usura-delle-strutture)
+8. [Integrazione JEI (Just Enough Items)](#-integrazione-jei-just-enough-items)
+9. [Integrazione HUD (Jade) & Progressi (Advancements)](#-integrazione-hud-jade--progressi-advancements)
+10. [Comandi di Gioco](#-comandi-di-gioco)
+11. [Configurazione Cloth Config & ModMenu](#-configurazione-cloth-config--modmenu)
 
 ---
 
-## 🌳 1. Panoramica & Ecosistema dei Blocchi
+## 🌳 Panoramica & Ecosistema del Legno
 
-Hai mai costruito una baita in legno pensando che sarebbe rimasta lì intatta, sfidando i secoli senza alcun bisogno di manutenzione? **Spores & Shadows** rivoluziona questa certezza, trasformando il legno da un semplice blocco inerte a un materiale vivo, permeabile e reattivo all'ambiente circostante.
+Hai mai costruito una maestosa baita in legno aspettandoti che durasse in eterno senza manutenzione? **Spores & Shadows** ribalta completamente questa certezza, trasformando il legno da blocco statico e inerte a materiale vivo e vulnerabile a umidità, oscurità, altitudine e clima.
 
-La mod sostituisce in modo del tutto trasparente e silenzioso ogni pezzo di legno piazzato dal giocatore (o generato naturalmente nelle strutture come relitti e miniere) con una variante biologica attiva.
-
-### 🔢 I 13 Formati Architettonici & le 910 Varianti
-Il sistema supporta tutte le tipologie di legno vanilla (inclusi i legni cremisi e distorti del Nether, nonché il bambù) attraverso **13 formati architettonici**:
-* *Tronchi (Logs)*, *Tronchi Scortecciati (Stripped Logs)*
-* *Legno (Wood/Bark)*, *Legno Scortecciato (Stripped Wood)*
-* *Assi (Planks)*, *Scale (Stairs)*, *Lastre (Slabs)*
-* *Staccionate (Fences)*, *Cancelletti (Fence Gates)*
-* *Porte (Doors)*, *Botole (Trapdoors)*
-* *Pedane a Pressione (Pressure Plates)*, *Pulsanti (Buttons)*
-
-Per ciascuno dei 130 formati base in legno, la mod aggiunge **3 stadi di decadimento** (*Intaccato*, *Ammuffito*, *Marcio*). Inoltre, per ogni singolo blocco — compreso il blocco Vanilla sano — esiste la corrispettiva **variante Cerata (*Waxed*)**.
-
-In totale, la mod introduce ben **910 varianti uniche e ottenibili in Survival**:
-1. **130 Varianti Vanilla Cerate**: La copia protetta e impermeabilizzata del blocco originale.
-2. **390 Varianti Ammuffite**: I tre stadi di decadimento naturale (Stadio 1, 2 e 3).
-3. **390 Varianti Ammuffite Cerate**: I blocchi degradati ma sigillati nel tempo dalla cera per usi decorativi sicuri.
-
----
-
-## 🦠 2. Il Ciclo della Muffa & Formula di Rischio
-
-Il legno attraversa 4 stadi evolutivi:
-$$\text{Sano / Vanilla (Stadio 0)} \longrightarrow \text{Intaccato (Stadio 1)} \longrightarrow \text{Ammuffito (Stadio 2)} \longrightarrow \text{Marcio (Stadio 3)}$$
-
-Durante ogni ciclo casuale (`randomTick`), il gioco valuta l'indice di **Rischio di Infezione ($R$)**. Se $R$ supera la soglia critica configurata (default: **$0.40$**), il blocco avanza allo stadio successivo.
-
-### 📐 La Formula Matematica
-$$R = \Big(\big(H_{\text{eff}} \times L_{\text{uv}} \times S_{\text{mat}}\big) + \text{Catalizzatori}\Big) \times T_{\text{mult}}$$
-
-### 🔬 Dettaglio dei Fattori:
-* 💧 **Umidità Effettiva ($H_{\text{eff}}$)**:
-  * **Clima Base**: Biomi piovosi o innevati = `0.80`, Biomi aridi/secchi = `0.30`.
-  * **Malus Profondità Sottoterra ($Y < 64$)**: L'umidità aumenta progressivamente di `+0.01` per ogni blocco al di sotto del livello del mare (fino a un massimo di `+1.28`). Le miniere e caverne profonde sono perennemente sature d'umidità.
-  * **Bonus Prossimità Idrica**: Adiacenza ad acqua (`+0.15`) o calderoni pieni (`+0.10`), rilevati in un raggio orizzontale di 3 blocchi (fino a un massimo di `+0.60`).
-* ☀️ **Fattore Luce UV ($L_{\text{uv}}$)**:
-  * La luce naturale o artificiale sterilizza le superfici. Il fattore scala linearmente da `0.0` (Luce 15: blocca completamente l'infezione) fino a `1.0` (Buio totale, Luce 0).
-* 🪓 **Suscettibilità del Materiale ($S_{\text{mat}}$)**:
-  * **Legno Scortecciato**: Estremamente vulnerabile (`x1.40`), privo della corteccia protettiva.
-  * **Tronchi Grezzi & Legno**: Valore standard (`x1.00`).
-  * **Assi Lavorate e Derivati**: Leggermente più resistenti (`x0.80`).
-* 🌡️ **Moltiplicatore Temperatura ($T_{\text{mult}}$)**:
-  * La muffa prolifera solo se la temperatura locale è compresa tra `0.15` e `1.50`. Al di fuori di questo intervallo, $T_{\text{mult}} = 0.0$ e la crescita si arresta.
-  * **Nether ed End**: Il calore infernale o il vuoto astrale sterilizzano completamente l'ambiente; la muffa non cresce mai in queste dimensioni.
-  * **Sottoterra ($Y < 64$)**: Indipendentemente dal bioma di superficie (anche sotto un deserto o una tundra), scendendo in profondità la temperatura si normalizza gradualmente fino a stabilizzarsi a `0.50` (mite) sotto $Y=48$.
-  * **Alta Quota ($Y > 128$)**: Salendo verso le vette montane la temperatura precipita gradualmente, raggiungendo il congelamento (`-0.50`) a quota $Y=256$.
-* ☣️ **Catalizzatori Ambientali & Contagio**:
-  * Presenza nel raggio di scansione di blocchi infetti o spore:
-    * Legno Intaccato (`+0.05`), Legno Ammuffito (`+0.10`), Legno Marcio (`+0.20`).
-    * Fango (`+0.05`), Podzol o Micelio (`+0.15`), Funghi (`+0.25`), Fiore di Spore / *Spore Blossom* (`+0.80`).
-
----
-
-## ☠️ 3. Pericoli Ambientali: Miasma Volumetrico & Aereazione
-
-I blocchi colonizzati dalla muffa non sono solo fragili: rilasciano spore biologiche volatili nell'atmosfera circostante.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   ALGORITMO FLOOD-FILL BFS                  │
-│                                                             │
-│   [Occhi Giocatore] ──> Espansione Aria 3D (Raggio Manhattan ≤ 8)│
-│                               │                             │
-│               ┌───────────────┴───────────────┐             │
-│               ▼                               ▼             │
-│       Comunica col Cielo?              Pareti Sigillate?    │
-│      [AEREAZIONE TOTALE]             [CONCENTRAZIONE GAS]   │
-│         Net Miasma = 0             Net = Tossicità - Vento  │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 🧠 Algoritmo Flood-Fill BFS per Spazi Confinati
-* **Nessun Falso Positivo**: A differenza dei vecchi sistemi a raggio cubico, la mod utilizza una scansione **Flood-Fill BFS** (Breadth-First Search) a partire dagli occhi del giocatore:
-  * Le pareti opache e solide (`isSideSolidFullSquare`) bloccano ermeticamente il passaggio del gas.
-  * Porte aperte, botole, scale e varchi permettono all'aria tossica di fluire realisticamente nelle stanze adiacenti.
-  * **Raggio di Manhattan Massimo (`MAX_MANHATTAN_RADIUS = 8`)**: Evita calcoli infiniti lungo lunghi tunnel sotterranei.
-  * **Volume Massimo di Saturazione (`MAX_AIR_VOLUME = 512`)**: Oltre questo volume d'aria, l'ambiente è considerato troppo vasto per concentrare il miasma e il gas si disperde.
-
-### 💨 Meccanica di Aereazione & Ventilazione Naturale
-* **Verifica Cielo Aperto ($O(1)$)**: Se anche un solo blocco della stanza comunica verticalmente con il cielo aperto (superficie atmosferica non ostruita), la stanza è considerata ventilata all'aperto e il miasma si azzera istantaneamente.
-* **Fessure e Prese d'Aria**: Le pareti perimetrali composte da blocchi non pieni (come staccionate, grate di ferro, muretti o lastre) che affacciano all'esterno accumulano un punteggio di ventilazione:
-  $$\text{Ventilation Score} += 3.0 \quad \text{per ogni fessura verso l'esterno}$$
-  $$\text{Net Miasma} = \text{Toxicity Score} - \text{Ventilation Score}$$
-
-### 🤢 Effetti e Sintomi da Intossicazione
-* **Particelle Nebbiose Volumetriche**: Nelle stanze contaminate, dense nubi di spore (`SPORE_BLOSSOM_AIR` e `MYCELIUM`) avvolgono volumetricamente l'intero volume d'aria della stanza.
-* **Fame (Livello Moderato)**: $\text{Net Miasma} \ge 8.0$ (oppure Densità $\ge 0.09$ con $\text{Net} \ge 5.0$).
-* **Nausea + Veleno (Livello Letale)**: $\text{Net Miasma} \ge 35.0$ (soglia veleno configurabile) oppure Densità $\ge 0.18$ con $\text{Net} \ge 15.0$ (soglia nausea configurabile).
-
----
-
-## 🛠️ 4. Interazioni, Manutenzione e Cura con Cera e Ascia
-
-Il giocatore può intervenire direttamente per salvare le proprie strutture. Tutte le interazioni manuali richiedono la **modalità furtiva (Sneaking / Shift + Tasto Destro)** per evitare conflitti con porte, botole e pulsanti.
+La mod sostituisce in modo trasparente il legno piazzato e generato nel mondo con varianti dinamiche. Con il passare del tempo, l'esposizione alle condizioni ambientali determina se il legname rimarrà sano o decadrà progressivamente attraverso successivi stadi fungini.
 
 ```mermaid
 graph LR
-    Vanilla[Stadio 0: Vanilla] -- Infezione Naturale --> Tainted[Stadio 1: Intaccato]
-    Tainted -- Infezione Naturale --> Moldy[Stadio 2: Ammuffito]
-    Moldy -- Infezione Naturale --> Rotten[Stadio 3: Marcio]
+    A["Stadio 0: Sano (Vanilla)"] -->|Rischio Infezione R > 0.50| B["Stadio 1: Intaccato (Tainted)"]
+    B -->|Esposizione Continua| C["Stadio 2: Ammuffito (Moldy)"]
+    C -->|Decadimento Totale| D["Stadio 3: Marcio (Rotten)"]
     
-    Rotten -- Non Curabile ❌ --> Rotten
-    Moldy -- Raschia con Ascia 🪓 --> Tainted
-    Tainted -- Raschia con Ascia 🪓 --> Vanilla
-    
-    Vanilla -- Favo 🐝 --> Waxed0[Vanilla Cerato]
-    Tainted -- Favo 🐝 --> Waxed1[Intaccato Cerato]
-    Moldy -- Favo 🐝 --> Waxed2[Ammuffito Cerato]
-    Rotten -- Favo 🐝 --> Waxed3[Marcio Cerato]
-    
-    Waxed0 -- Raschia con Ascia 🪓 --> Vanilla
-    Waxed1 -- Raschia con Ascia 🪓 --> Tainted
-    Waxed2 -- Raschia con Ascia 🪓 --> Moldy
-    Waxed3 -- Raschia con Ascia 🪓 --> Rotten
+    A -.->|Favo d'Api| WA["Sano Cerato"]
+    B -.->|Favo d'Api| WB["Intaccato Cerato"]
+    C -.->|Favo d'Api| WC["Ammuffito Cerato"]
+    D -.->|Favo d'Api| WD["Marcio Cerato"]
 ```
 
-### 🪓 Raschiamento con Ascia (*Axe Scraping*)
-* **Rimozione Cera**: Facendo *Shift + Click Destro* su un blocco Cerato, l'ascia rimuove la cera (producendo particelle di cera) e ripristina lo stato biologico attivo.
-* **Cura della Muffa**:
-  * Un blocco **Ammuffito (Stadio 2)** raschiato con l'ascia regredisce a **Intaccato (Stadio 1)**.
-  * Un blocco **Intaccato (Stadio 1)** raschiato con l'ascia torna perfettamente pulito a **Sano (Stadio 0 Vanilla)**.
-  * *I blocchi Marci (Stadio 3) hanno subito un collasso cellulare irreversibile e NON possono essere curati con l'ascia.*
-* Ogni raschiatura consuma normalmente 1 punto di durabilità dell'ascia (configurabile).
+### 🔢 Ecosistema Completo: 910 Varianti Ottenibili
+La mod inietta un albero di decadimento completo per ogni singolo tipo di blocco di legno del gioco attraverso **13 formati architettonici**:
 
-### 🐝 Ceratura con Favo (*Honeycomb Waxing*)
-* Facendo *Shift + Click Destro* con un favo su un blocco di qualsiasi stadio (0, 1, 2 o 3), il blocco viene **Incerato**:
-  * **Immunità Totale**: Congela indefinitamente il blocco al suo stadio attuale.
-  * **Sicurezza Biologica**: Non può più infettare i blocchi vicini e non emette particelle né miasma tossico.
-  * **Preservazione Meccanica**: Garantisce il **100% di probabilità di drop** alla rottura, persino per il legno marcio!
-* **Supporto Strutture Multiple**: Incerare o raschiare una porta aggiorna istantaneamente entrambe le metà superiore e inferiore.
+* **🧱 13 Formati**: *Tronchi*, *Tronchi Scortecciati*, *Legno*, *Legno Scortecciato*, *Assi*, *Scale*, *Lastre*, *Staccionate*, *Cancelletti*, *Porte*, *Botole*, *Pedane a Pressione*, *Pulsanti*.
+* **🌲 10 Tipi di Legno**: Quercia, Betulla, Abete, Giungla, Acacia, Quercia Scura, Mangrovia, Ciliegio, Cremisi e Deformato.
+
+Sui 130 blocchi di legno base, la mod introduce:
+1. **130 Varianti Vanilla Cerate**: Copie sigillate e protette dei blocchi base.
+2. **390 Varianti con Muffa**: I 3 stadi organici di decadimento (*Tainted*, *Moldy*, *Rotten*).
+3. **390 Varianti con Muffa Cerate**: Blocchi degradati congelati nel tempo con la cera d'api per costruzioni sicure.
+
+Un totale di **910 blocchi unici in sopravvivenza** con texture dedicate, tabelle di drop e ricette di crafting!
 
 ---
 
-## ⛏️ 5. Fisica dei Blocchi: Durezza, Friabilità & Nuvola di Spore
+## 🦠 Il Ciclo della Muffa & Modello Matematico
 
-La mod introduce una fisica dei blocchi dinamica che rispecchia la perdita di coesione strutturale delle fibre di legno marcescenti:
+Il legno transiziona in sequenza: **Stadio 0 (Vanilla) ➔ Stadio 1 (Tainted) ➔ Stadio 2 (Moldy) ➔ Stadio 3 (Rotten)**.
 
-| Stadio di Degrado | Durezza Blocco | % Rispetto al Vanilla | Comportamento Attrezzi | Probabilità Drop (Senza Silk Touch) | Drop con Silk Touch / Cera |
-| :--- | :---: | :---: | :--- | :---: | :---: |
-| 🌲 **Stadio 0 (Vanilla)** | **2.0** | $100\%$ | Ascia raccomandata | **100%** | **100%** |
-| 🟢 **Stadio 1 (Intaccato)** | **1.6** | $80\%$ | Ascia raccomandata | **100%** | **100%** |
-| 🦠 **Stadio 2 (Ammuffito)** | **1.0** | $50\%$ | Ascia veloce | **50%** *(50% polvere)* | **100%** |
-| ☠️ **Stadio 3 (Marcio)** | **0.4** | $20\%$ | **Friabile (Ascia = Pugno)** | **0%** *(Sbriciolamento)* | **100%** |
+La progressione avviene sui random block tick ogni volta che il **Rischio di Infezione ($R$)** supera la soglia configurabile di **0.50**:
 
-### 💥 Friabilità & Neutralizzazione dell'Ascia allo Stadio 3
-Allo Stadio 3 (*Marcio*), la polpa interna del legno è talmente decomposta che il blocco perde ogni rigidità:
-* **Velocità di Scavo Uniforme**: Rompere un blocco di Stadio 3 con un'ascia di diamante o a mani nude impiega esattamente la **stessa frazione di secondo**. L'ascia non fornisce alcun moltiplicatore di velocità aggiuntivo.
-* **Collasso Meccanico**: Rompere il blocco senza *Tocco di Velluto (Silk Touch)* o senza averlo prima cerato lo distruggerà all'istante senza rilasciare alcun drop ($0\%$).
+$$R = \Big( (H_{eff} \cdot L_{uv} \cdot S_{mat}) + C_{bonus} + M_{bonus} \Big) \cdot T_{mult}$$
 
-### ☁️ Nuvola di Spore alla Rottura
-Distruggere un blocco di legno di **Stadio 2 (Ammuffito)** o **Stadio 3 (Marcio)** senza l'incantesimo *Tocco di Velluto*:
-* Rilascia un'esplosione violenta di spore fungine nell'aria (`SPORE_BLOSSOM_AIR`, `FALLING_SPORE_BLOSSOM`, particelle di micelio).
-* Emette un suono sordo e viscerale di rottura biologica (`BLOCK_WOOD_BREAK` combinato con suoni fungini del Nether).
+```mermaid
+flowchart TD
+    M["💧 Umidità Effettiva Heff (Base + Cap Profondità - Essiccamento Aerazione)"]
+    L["☀️ Fattore Luce UV (0.0 a 15 -> 1.0 a 0)"]
+    S["🪓 Suscettibilità Materiale (Assi 0.8 / Tronco 1.0 / Scortecciato 1.4)"]
+    C["☣️ Catalizzatori Fisici (Fango, Micelio, Funghi, Spore Blossom)"]
+    MB["🌫️ Pressione Spore Miasma (Contaminazione Aerea Indoor)"]
+    T["🌡️ Moltiplicatore Termico (Filtro: 0.15 - 1.50)"]
 
----
+    M & L & S --> MLS["(Heff × Luv × Smat)"]
+    MLS & C & MB --> MLSC["+ Cbonus + Mbonus"]
+    MLSC & T --> CALC["R = (...) × Tmult"]
+    CALC -->|R > 0.50| GROW["Avanzamento Stadio Muffa"]
+    CALC -->|R <= 0.50| SAFE["Legno Stabile e Sicuro"]
+```
 
-## 🔥 6. Fisica del Fuoco, Fornace & Carbonella
+### 🔬 Fattori e Modificatori Ambientali
 
-Le cavità porose scavate dal micelio rendono il legno degradato estremamente suscettibile alla combustione rapida:
-
-### 🪵 Infiammabilità & Diffusione del Fuoco
-La mod integra un calcolo dinamico dell'infiammabilità registrato nel motore di combustione di Minecraft:
-* **Stadio 1 (Intaccato)**: $+5$ Bruciatura (*Burn/Catch Chance*), $+10$ Diffusione (*Spread*).
-* **Stadio 2 (Ammuffito)**: $+10$ Bruciatura, $+25$ Diffusione.
-* **Stadio 3 (Marcio)**: $+20$ Bruciatura, $+60$ Diffusione (*Brucia con estrema violenza e rapidità*).
-* **Bonus Cera (*Waxed*)**: $+5$ alla facilità di accensione a causa dell'infiammabilità della cera d'api.
-* **🛡️ Immunità Assoluta Legni Nether**: I blocchi ricavati da *Fungo Cremisi* (*Crimson*) e *Fungo Distorto* (*Warped*) mantengono la loro nativa immunità al fuoco ($0$ bruciatura, $0$ diffusione) in tutti gli stadi!
-
-### 🥩 Efficienza Combustibile in Fornace
-Più il legno è marcio, minore è la densità energetica rilasciata nella fornace:
-* **Sano (Vanilla / Cerato)**: Efficienza standard (**100%** / `1.0x` — 300 tick per tronco).
-* **Intaccato (Stadio 1)**: Efficienza dimezzata (**50%** / `0.5x` — 150 tick).
-* **Ammuffito (Stadio 2)**: Efficienza a un quarto (**25%** / `0.25x` — 75 tick).
-* **Marcio (Stadio 3)**: Efficienza minima (**12.5%** / `0.125x` — 37 tick minimi garantiti contro underflow).
-
-### ⬛ Cottura Carbonella (*Charcoal Tag Support*)
-Tutti i tronchi e legni della mod (ammuffiti o cerati) sono registrati nei tag `#minecraft:item/charcoal` e `#c:charcoal`, permettendo di cuocerli normalmente in una fornace per ricavare carbonella!
-
----
-
-## 💥 7. Resistenza alle Esplosioni
-
-La decomposizione della lignina riduce drasticamente la capacità del legno di assorbire l'onda d'urto delle detonazioni (TNT, Creeper, palle di fuoco dei Ghast):
-* **Stadio 0 (Vanilla)**: Resistenza standard $2.0\text{F}$ ($100\%$).
-* **Stadio 1 (Intaccato)**: Resistenza scalata a $1.6\text{F}$ ($80\%$).
-* **Stadio 2 (Ammuffito)**: Resistenza scalata a $1.0\text{F}$ ($50\%$).
-* **Stadio 3 (Marcio)**: Resistenza ridotta a $0.2\text{F}$ ($10\%$). *Una minima detonazione periferica polverizza all'istante intere pareti marce.*
+* 💧 **Umidità Effettiva ($H_{eff} = \max(0.0, \min(1.0, H_{raw} - \text{Aerazione} \cdot \text{drying\_bonus}))$)**:
+  * **Umidità Base**: Determinata dal meteo del bioma (Biomi piovosi/innevati: `0.80`, Biomi aridi/secchi: `0.30`).
+  * **Gradiente Profondità & Cap $Y \le 0$**: Sotto il livello del mare ($Y < 64$), l'umidità aumenta linearmente di $\frac{64 - Y}{64} \times 0.40$. A tutte le quote $Y \le 0$ (fino a $Y = -64$), il bonus profondità rimane fisso a $+0.40$, evitando soft-lock nelle caverne di Deepslate.
+  * **Prossimità Acqua**: Fonti d'acqua aggiungono $+0.15$ umidità locale; i calderoni $+0.10$ entro 3 blocchi.
+  * **Essiccamento da Aerazione**: Il flusso d'aria pulita esterna asciuga le superfici del legno, abbassando $H_{raw}$.
+* ☀️ **Luce / UV ($L_{uv}$)**:
+  * Calcolato su 7 punti di campionamento (6 facce + spazio interno). Scala da `0.0` a luce 15 (sterilizzazione) a `1.0` nel buio totale.
+* 🪓 **Suscettibilità Materiale ($S_{mat}$)**:
+  * Legno scortecciato: **moltiplicatore $1.4\times$**.
+  * Tronchi e legno grezzo: **moltiplicatore $1.0\times$**.
+  * Assi e blocchi lavorati: **moltiplicatore $0.8\times$**.
+* 🌡️ **Filtro Termico & Normalizzazione Altitudine ($T_{mult}$)**:
+  * Finestra biologica: **$0.15 \le \text{Temp} \le 1.50$**. Fuori da questo intervallo, $T_{mult} = 0.0$ (crescita arrestata).
+  * **Normalizzazione Caverne ($Y \le 48$)**: La temperatura sotterranea si stabilizza a **$0.50$**, sostenendo la marcescenza sotterranea.
+  * **Congelamento ad Alta Quota ($Y \ge 256$)**: Scende verso **$-0.50$**, proteggendo naturalmente gli chalet in montagna.
+* ☣️ **Catalizzatori Fisici ($C_{bonus}$)**:
+  * Fango ($+0.05$), Podzol / Micelio ($+0.15$), Funghi ($+0.25$), Spore Blossom ($+0.80$), Legno Marcio Adiacente ($+0.20$).
+* 🌫️ **Pressione Spore Miasma ($M_{bonus}$)**:
+  * Il legno esposto a stanze sature di miasma subisce una spinta infettiva aerea pari a $\text{ExposureIndex} \times \text{miasma\_multiplier}$.
 
 ---
 
-## ⚖️ 8. Artigianato, Compostiera & Pietrarossa
+## ☠️ Pericoli Ambientali & Miasma Volumetrico
 
-### 🛠️ Resa di Crafting Ridotta & Crafting Ibrido
-Puoi trasformare i tronchi infetti in assi pulite e bastoni Vanilla al banco da lavoro. La resa è tuttavia proporzionale all'integrità del materiale:
+### 🌫️ 1. Miasma Volumetrico & Saturazione Dinamica
+In spazi confinati e non ventilati, il legno infetto non cerato rilascia spore tossiche che saturano l'aria interna.
 
-| Qualità del Materiale | 🌳 Tronco ➔ Assi | 🦯 Assi ➔ Bastoni |
+* **Motore BFS 3D Direzionale**: A partire dalla testa del giocatore (`player.getEyePos()`), la BFS analizza fino a **$1024\text{ m}^3$** entro un **raggio euclideo sferico di $24$ blocchi**.
+* **Sigilli Idraulici & Ermetici**:
+  * **Blocchi Allagati (`waterlogged`)**: Agiscono da **sifone idraulico a tenuta stagna al 100%**, bloccando il passaggio del gas tra stanze adiacenti.
+  * **Barriere Ermetiche**: Blocchi pieni, porte chiuse, botole orizzontali chiuse, muretti connessi e vetri.
+  * **Varchi di Ventilazione**: Grate di rame aperte (`GrateBlock`, $+15.0/\text{blocco}$), porte aperte ($+15.0$), botole aperte ($+15.0$), staccionate/cancelletti ($+3.0$) e cielo aperto ($+25.0/\text{blocco}$).
+* **Saturazione Dinamica & Inerzia Temporale (`RoomSaturationManager`)**:
+  * Il miasma evolve con continuità: $M(t) = M_{prec} + \alpha \cdot (M_{target} - M_{prec})$.
+  * L'avvelenamento avviene a velocità `saturation_speed_multiplier` (`0.02`), mentre aprendo varchi la stanza si purifica rapidamente a velocità `dissipation_speed_multiplier` (`0.05`).
+* **Indice di Esposizione ed Effetti**:
+
+$$\text{Densità} = \frac{\text{Miasma Netto}}{\text{Volume}}, \quad \text{Esposizione} = \text{Densità} \cdot \left(0.5 + 0.5 \cdot \min\left(2.0, \sqrt{\frac{\text{Miasma Netto}}{8.0}}\right)\right)$$
+
+```mermaid
+graph TD
+    subgraph "Spettro di Tossicità dell'Aria"
+        A["Miasma Netto >= 2.66 o Densità >= 0.045"] -->|Avviso Visivo| P1["Particelle di Micelio & Suoni Organici"]
+        B["Miasma Netto >= 8.0 o Densità >= 0.09"] -->|Pericolo Moderato| E1["Status Effect Fame"]
+        C["Miasma Netto >= 16.0 o Densità >= 0.18"] -->|Pericolo Letale| E2["Status Effect Nausea + Veleno Letale"]
+    end
+```
+
+### 💥 2. Nuvola di Spore alla Rottura
+Rompere legno degradato non cerato disturba violentemente le colonie fungine:
+* **Innesco**: Distruggere blocchi **Stadio 2 (Moldy)** o **Stadio 3 (Rotten)** senza **Tocco di Seta** (e non cerati).
+* **Effetto**: Rilascio immediato di particelle `MYCELIUM` accompagnato da un suono fungino profondo (`BLOCK_FUNGUS_BREAK`).
+
+---
+
+## 📉 Degrado Fisico & Fisica degli Strumenti
+
+Con la marcescenza che distrugge la struttura di cellulosa e lignina, la resistenza fisica del blocco crolla:
+
+| Proprietà | 🌲 Stadio 0 (Vanilla) | 🟢 Stadio 1 (Tainted) | 🦠 Stadio 2 (Moldy) | ☠️ Stadio 3 (Rotten) |
+| :--- | :---: | :---: | :---: | :---: |
+| **Durezza Blocco** | `2.0` ($100\%$) | `1.6` ($80\%$) | `1.0` ($50\%$) | `0.4` ($20\%$) |
+| **Efficacia Strumenti** | Normale con Ascia | Normale con Ascia | Normale con Ascia | **Annullata (Pugno = Ascia)** |
+| **Resistenza Esplosioni** | `100%` | Moltiplicatore `80%` | Moltiplicatore `50%` | Moltiplicatore `10%` |
+| **Bonus Innesco Fuoco** | $+0$ | $+5$ | $+10$ | $+20$ |
+| **Bonus Diffusione Fuoco** | $+0$ | $+10$ | $+25$ | $+60$ |
+| **Drop in Sopravvivenza** | `100%` | `100%` | `50%` (50% distrutto) | `0%` (Sbriciolamento) |
+| **Drop con Tocco di Seta / Cera** | `100%` | `100%` | `100%` | `100%` |
+
+### 🪓 Estrema Friabilità dello Stadio 3
+Allo **Stadio 3 (Rotten)**, il legno ha perso ogni coesione strutturale. I bonus di velocità dell'ascia sono **totalmente annullati**: rompere legno marcio con un'ascia di Netherite richiede lo stesso tempo che romperlo a mani nude.
+
+### 🔥 Infiammabilità & Propagazione Fuoco
+* **Asciugatura e Spore**: Il legno degradato brucia molto più in fretta e propaga vigorosamente le fiamme ai blocchi vicini.
+* **Infiammabilità Cera**: I blocchi cerati ricevono $+5$ di bonus combustione a causa della cera d'api infiammabile.
+* **Immunità Legno del Nether**: Gli stipiti e le assi di Crimson e Warped mantengono l'**immunità totale al fuoco** ($0$ innesco / $0$ diffusione).
+
+---
+
+## ⚖️ Penalità di Crafting, Fornace & Compostaggio
+
+Utilizzare legno marcio per la falegnameria o come combustibile comporta penalità realistiche:
+
+### 🪵 1. Rese di Crafting & Crafting Ibrido
+Puoi lavorare il legno infetto sul banco da lavoro per ricavare assi, lastre o stick vanilla. Tuttavia, dovendo scartare le parti marce, le rese calano:
+
+| Livello Qualità | 🌳 1 Tronco ➔ Assi | 🦯 2 Assi ➔ Stick |
 | :--- | :---: | :---: |
-| 🌲 **Sano (Vanilla / Cerato)** | 1 Tronco ➔ **4** Assi Vanilla | 2 Assi ➔ **4** Bastoni |
-| 🟢 **Intaccato (Stadio 1)** | 1 Tronco ➔ **2** Assi Vanilla | 2 Assi ➔ **2** Bastoni |
-| 🦠 **Ammuffito (Stadio 2)** | 1 Tronco ➔ **1** Asse Vanilla | 2 Assi ➔ **1** Bastone |
-| ☠️ **Marcio (Stadio 3)** | *Inutilizzabile* ❌ | *Inutilizzabile* ❌ |
+| 🌲 **Sano (Vanilla / Cerato)** | **4** Assi | **4** Stick |
+| 🟢 **Intaccato (Stadio 1)** | **2** Assi | **2** Stick |
+| 🦠 **Ammuffito (Stadio 2)** | **1** Asse | **1** Stick |
+| ☠️ **Marcio (Stadio 3)** | ❌ *Non lavorabile* | ❌ *Non lavorabile* |
 
-* **💡 Crafting Ibrido**: Puoi posizionare nella stessa griglia di fabbricazione blocchi cerati e non cerati appartenenti allo stesso stadio; il banco da lavoro produrrà regolarmente i prodotti puliti.
-* **Lavorazione Completa Blocchi Cerati**: Oltre 100 ricette dedicate consentono di lavorare tronchi cerati in assi cerate, e queste in porte, botole, scale, lastre, cancelletti e cartelli cerati.
+> [!TIP]
+> **Crafting Ibrido**: Puoi mescolare liberamente legname cerato e non cerato dello stesso stadio nella griglia di crafting!
 
-### ♻️ Compostiera (Riciclo Organico)
-Il legno degradato trova una seconda vita nella compostiera Vanilla per produrre farina d'ossa (*Bone Meal*):
-* Legno Intaccato: **50%** di probabilità di riempimento.
-* Legno Ammuffito: **65%** di probabilità di riempimento.
-* Legno Marcio: **85%** di probabilità (*Fertilizzante biologico eccezionale!*).
+### 🔥 2. Combustione in Fornace & Carbonella
+* **Moltiplicatori Durata Combustibile**: Stadio 0 (`1.0x` / 100%) ➔ Stadio 1 (`0.5x` / 50%) ➔ Stadio 2 (`0.25x` / 25%) ➔ Stadio 3 (`0.125x` / 12.5%).
+* **Cottura Carbonella**: Tutti i tronchi infetti e cerati possono essere cotti in fornace per produrre carbonella.
 
-### 🔴 Componenti in Pietrarossa Difettosi
-La muffa che ostruisce molle e perni rallenta il rilascio dei meccanismi in pietrarossa:
-* **Pulsante Sano**: Attivo per 1,5 secondi (30 tick).
-* **Pulsante Intaccato**: Attivo per **3,0 secondi** (60 tick).
-* **Pulsante Ammuffito**: Attivo per **7,5 secondi** (150 tick).
-* **Pulsante Marcio**: Si incastra per ben **22,5 secondi** (450 tick)!
+### ♻️ 3. Fertilizzazione nel Compostatore
+Il legno infetto è ricco di materia organica fungina, ideale per il compostatore:
+* **Legno Intaccato**: probabilità del $50\%$
+* **Legno Ammuffito**: probabilità del $65\%$
+* **Legno Marcio**: probabilità del $85\%$ (Ottimo fertilizzante!)
 
----
-
-## 🗺️ 9. Generazione nel Mondo & Strutture
-
-Durante la generazione dei chunk, la mod applica l'usura del tempo a tutte le strutture storiche del mondo secondo 4 livelli di degrado:
-
-1. 🏴‍☠️ **Degrado Critico** (Prevalenza di legno Marcio): Relitti Sommersi (`shipwreck`), Capanne della Palude (`swamp_hut`).
-2. 🧟 **Degrado Alto** (Misto Intaccato e Ammuffito): Miniere Abbandonate (`mineshaft`), Villaggi Zombie (`zombie_village`), Rovine del Sentiero (`trail_ruins`).
-3. 🏹 **Degrado Moderato** (Principalmente Intaccato): Avamposti dei Saccheggiatori (`pillager_outpost`), Portali del Nether in Rovina (`ruined_portal`).
-4. 🏡 **Degrado Minimo** (Quasi interamente sano): Villaggi abitati (`village`), Magioni della Foresta (`mansion`).
-
-### 🛡️ Protezioni Native
-* **Alberi Vivi Immuni**: Gli alberi generati naturalmente o cresciuti dai virgulti sono vivi e non marciscono spontaneamente. Solo il legno tagliato o posizionato entra nel ciclo vitale.
-* **Strutture Sospese**: I blocchi all'interno delle strutture generate si trovano in uno stato "dormiente" e non marciscono autonomamente a meno che un giocatore non interagisca con essi (attivando la reattività biologica). Questa opzione può essere disattivata nel config per simulare il collasso spontaneo del mondo.
+### 🔴 4. Inerzia Meccanica Redstone
+La muffa intasa gli snodi meccanici di pulsanti e pedane a pressione:
+* **Intaccato**: Attivo per **3.0 secondi** ($60\text{ tick}$).
+* **Ammuffito**: Attivo per **7.5 secondi** ($150\text{ tick}$).
+* **Marcio**: Attivo per **22.5 secondi** ($450\text{ tick}$).
 
 ---
 
-## 📊 10. Integrazione JEI, HUD Jade & Obiettivi
+## 🛠️ Interazioni & Prevenzione (Ceratura & Raschiatura)
 
-### 📖 Plugin Nativo JEI (Just Enough Items)
-La mod include un'integrazione completa con JEI:
-1. **Categoria Ceratura (*Waxing*)**: Mostra la ricetta `Blocco + Favo ➔ Variante Cerata` per tutti i 130 blocchi e varianti.
-2. **Categoria Raschiamento con Ascia (*Axe Scraping*)**:
-   * Rimozione cera: `Blocco Cerato + Ascia ➔ Blocco Non Cerato`.
-   * Cura del legno: `Stadio 2 (Ammuffito) + Ascia ➔ Stadio 1 (Intaccato)` e `Stadio 1 ➔ Stadio 0 (Vanilla)`.
-3. **Schede Informative (*Info Tabs*)**: Schede descrittive integrate su tutti i blocchi di **Stadio 3 (Marcio)** che illustrano l'impossibilità di cura/crafting e guidano all'uso nella compostiera, fornace o all'estrazione con Silk Touch.
+I giocatori interagiscono con gli stati del legno usando la **Modalità Furtiva (Sneak / Shift + Tasto Destro)**:
 
-### 🔍 HUD Jade / WTHIT
-Inquadrando qualsiasi blocco di legno con il mirino:
-* L'interfaccia mostra il nome esatto della variante (es. *Assi di Quercia Intaccate Cerate*).
-* Indica la percentuale esatta di Rischio Infezione ($R$) in tempo reale (**Grigio = Sicuro**, **Rosso = In Pericolo**). Per i blocchi cerati mostra `0.0% (Waxed)`.
-* Supporto nativo con Polymer e correzione automatica del raytracing dei blocchi virtuali.
-
-### 🏆 Nuovi Obiettivi (Advancements)
-* 🍄 **Spores & Shadows**: *Sopravvivi al decadimento della natura.*
-* 🐝 **Prevenzione Naturale**: *Usa un favo di miele per incerare un blocco di legno e fermare la muffa.*
-* 🪓 **Olio di Gomito**: *Raschia via la muffa superficiale da un blocco di legno usando un'ascia.*
-* 🤢 **Respiro Corto**: *Subisci l'avvelenamento da miasma respirando troppe spore in una stanza chiusa.*
-* 💨 **Polvere alla Polvere**: *Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla.*
+* 🐝 **Ceratura (Favo d'Api)**:
+  * Applicare il favo d'api sigilla il blocco con la cera.
+  * **Effetti**: Congela il decadimento, azzera l'emissione di miasma, previene il contagio e **garantisce il 100% di drop** anche sul legno Marcio di Stadio 3!
+* 🪓 **Raschiatura con Ascia**:
+  * **De-ceratura**: Shift + Tasto destro con un'ascia rimuove la cera, riattivando il ciclo biologico.
+  * **Cura Muffa**: Shift + Tasto destro con un'ascia su legno non cerato infetto rimuove uno stadio di muffa ($2 \rightarrow 1 \rightarrow 0$ Vanilla). Consuma durabilità dell'ascia.
+  * **Incurabilità dello Stadio 3**: Il legno di Stadio 3 ha la struttura permanentemente collassata ed è **incurabile** (l'ascia non ha effetto; può solo essere cerato o compostato).
 
 ---
 
-## 💻 11. Comandi di Gioco & Amministrazione
+## 🗺️ Generazione del Mondo & Usura delle Strutture
 
-Tutti i comandi richiedono permessi di livello 2 (amministratore o trucchi abilitati in singleplayer):
+Le strutture naturali mostrano autentici segni del tempo suddivisi in 4 categorie di degrado:
 
-### 1. `/moldrisk` (oppure `/moldyrisk`)
-Analizza il blocco di legno inquadrato dal mirino (fino a 10 blocchi di distanza):
-* **Sintassi**:
-  * `/moldrisk` — Fornisce una sintesi rapida dei punteggi parziali ($H_{\text{eff}}, L_{\text{uv}}, S_{\text{mat}}$, Catalizzatori, Temperatura) e il verdetto finale ($R > \text{Soglia} \implies \text{WILL GROW}$ o $\text{SAFE}$).
-  * `/moldrisk verbose` — Mostra lo spaccato matematico completo (umidità base, quota, sorgenti d'acqua vicine, livello di luce medio, scostamento termico tra superficie e profondità).
+1. 🏴‍☠️ **Degrado Critico**: Relitti (`shipwreck`), Capanne della Strega (`swamp_hut`) — Alta presenza di legno Marcio Stadio 3.
+2. 🧟 **Degrado Alto**: Miniere abbandonate (`mineshaft`), Villaggi Zombie (`zombie_village`), Rovine (`trail_ruins`) — Mix marcato di Stadi 1 e 2.
+3. 🏹 **Degrado Moderato**: Avamposti dei Saccheggiatori (`pillager_outpost`), Portali in Rovina (`ruined_portal`) — Prevalentemente Stadio 1.
+4. 🏡 **Degrado Minimo**: Villaggi (`village`), Magioni della Foresta (`mansion`) — Legno quasi del tutto intatto.
 
-### 2. `/miasma`
-Esegue una scansione diagnostica istantanea dell'aria confinata attorno al giocatore:
-* **Sintassi**: `/miasma`
-* **Output Dettagliato in Chat**:
-  ```text
-  [Miasma Scanner] Scanning environment...
-  - Environment: Confined Space (Volume: 84 blocks analyzed)
-  - Toxicity Score (from mold): +24.50
-  - Ventilation Score (from openings/gaps): -6.00
-  - Net Miasma: 18.50
-  - Spore Density: 0.220
-  [WARNING] Lethal level! Nausea and Poison imminent!
-  ```
-
-### 3. `/spores reload`
-Ricarica a caldo tutti i file di configurazione da disco senza dover riavviare il server o il client:
-* **Sintassi**: `/spores reload`
-* **Output**: `[Spores & Shadows] Configuration reloaded successfully!`
+### 🛡️ Alberi Viventi & Immunità Strutture
+* **Alberi Viventi**: Gli alberi selvatici e i germogli sono vivi e totalmente immuni al decadimento finché non vengono abbattuti.
+* **Immunità Strutture**: Di default, le strutture si generano pre-invecchiate e congelano il proprio stato. Rimangono stabili finché il giocatore non interagisce con esse.
 
 ---
 
-## ⚙️ 12. Configurazione della Mod (Cloth Config)
+## 📖 Integrazione JEI (Just Enough Items)
 
-Accedendo al menu ModMenu / Cloth Config, è possibile personalizzare nel dettaglio ogni parametro della mod suddiviso in **12 categorie**:
+La mod include il supporto completo e nativo a JEI:
 
-1. 🛠️ **Generale (`general`)**:
-   * `enable_mold_growth` (default: `true`): Abilita o disabilita globalmente la diffusione della muffa.
-   * `infection_threshold` (default: `0.40`): Soglia critica oltre la quale il legno si infetta.
-   * `scan_radius` (default: `1`): Raggio di scansione dei blocchi limitrofi ($1 = 3\times 3\times 3$, $2 = 5\times 5\times 5$).
-   * `structures_immune` (default: `true`): Protegge le strutture generate dal decadimento spontaneo.
-   * `axe_scrape_damage` (default: `1`): Durabilità consumata dall'ascia per ogni raschiatura.
-2. 🌡️ **Ambiente (`environment`)**:
-   * `rain_humidity_base` (`0.8`), `dry_humidity_base` (`0.3`): Valori base di umidità per biomi umidi o secchi.
-   * `depth_modifier_per_level` (`0.01`), `max_depth_modifier` (`1.28`): Incremento umidità nelle profondità.
-   * `water_adjacent_bonus` (`0.15`), `cauldron_adjacent_bonus` (`0.10`), `water_scan_radius` (`3`): Parametri idrici locali.
-   * `min_temperature_survival` (`0.15`), `max_temperature_survival` (`1.50`): Finestra termica vitale per la muffa.
-   * `cave_temperature` (`0.50`), `cave_start_y` (`64`), `cave_full_y` (`48`): Gradiente termico sotterraneo.
-   * `high_altitude_freezing_temperature` (`-0.50`), `high_altitude_start_y` (`128`), `high_altitude_full_y` (`256`): Gradiente termico montano.
-3. 🪓 **Suscettibilità (`susceptibility`)**:
-   * `stripped_wood_multiplier` (`1.4`), `planks_multiplier` (`0.8`), `default_multiplier` (`1.0`).
-4. ☣️ **Catalizzatori (`catalysts`)**:
-   * Moltiplicatori additivi per fango (`0.05`), podzol/micelio (`0.15`), funghi (`0.25`), fiore di spore (`0.80`), e blocchi di legno infetti (`0.05`, `0.10`, `0.20`).
-5. ☠️ **Tossicità & Miasma (`toxicity`)**:
-   * `check_interval_ticks` (`40`): Frequenza dei controlli miasma sul giocatore (in tick).
-   * `scan_radius` (`4`): Raggio di ricerca sorgenti di spore.
-   * `threshold_nausea` (`15`), `threshold_poison` (`35`): Soglie di attivazione degli status alterati.
-   * `duration_nausea_ticks` (`140`), `duration_poison_ticks` (`100`): Durata degli effetti.
-   * `nausea_amplifier` (`0`), `poison_amplifier` (`0`): Potenza degli effetti.
-6. 🗺️ **Strutture (`structures`)**:
-   * Probabilità percentuali di comparsa di blocchi intaccati, ammuffiti e marci per le categorie *Critico*, *Alto*, *Moderato* e *Basso*.
-7. 🔥 **Efficienza Fornace (`furnace_multipliers`)**:
-   * Moltiplicatori carburante per Stadio 0 (`1.0`), Stadio 1 (`0.5`), Stadio 2 (`0.25`), Stadio 3 (`0.125`).
-8. 🪵 **Infiammabilità (`flammability`)**:
-   * `enable_flammability` (`true`): Abilita la fisica di propagazione del fuoco scalare.
-   * Bonus bruciatura e diffusione per Stadio 1 (`+5/+10`), Stadio 2 (`+10/+25`), Stadio 3 (`+20/+60`).
-   * `waxed_burn_bonus` (`5`): Bonus all'accensione per blocchi cerati.
-9. 💥 **Resistenza alle Esplosioni (`blast_resistance`)**:
-   * `enable_blast_resistance_scaling` (`true`): Abilita il calo di resistenza alle detonazioni.
-   * Moltiplicatori per Stadio 1 (`0.80`), Stadio 2 (`0.50`), Stadio 3 (`0.10`).
-10. ⛏️ **Durezza & Rottura (`hardness`)**:
-    * `enable_hardness_scaling` (`true`): Abilita la durezza scalare ($2.0 \rightarrow 1.6 \rightarrow 1.0 \rightarrow 0.4$).
-    * `stage_1_multiplier` (`0.80`), `stage_2_multiplier` (`0.50`), `stage_3_multiplier` (`0.20`).
-    * `enable_break_spore_cloud` (`true`): Abilita l'esplosione di spore alla rottura dei blocchi senza Silk Touch.
-11. 📦 **Drop (`drops`)**:
-    * `stage_2_drop_chance` (`0.50`): Probabilità di drop per blocchi Ammuffiti non cerati.
-    * `stage_3_drop_chance` (`0.00`): Probabilità di drop per blocchi Marci non cerati.
-12. 🖥️ **Client (`client`)**:
-    * `mold_z_offset` (`0.002`): Offset di rendering per prevenire Z-fighting con motori grafici come Sodium o Iris Shaders.
+```mermaid
+graph LR
+    subgraph "Categorie Ricette JEI"
+        W["🍯 Categoria Ceratura<br>(Shift + Tasto Destro con Favo d'Api)"]
+        S1["🪓 Categoria Rimozione Cera<br>(Shift + Tasto Destro con Ascia)"]
+        S2["🪓 Categoria Cura Muffa<br>(Cura Stadio 2 -> 1 -> Vanilla)"]
+        I["ℹ️ Schede Informative Legno Marcio<br>(Friabilità, Drop & Compost)"]
+    end
+```
+
+1. **Categoria Ceratura (`WaxingRecipeCategory`)**: Mostra tutte le 130 trasformazioni di ceratura.
+2. **Categoria Raschiatura Ascia (`ScrapingRecipeCategory`)**:
+   * Mostra le ricette di de-ceratura con qualsiasi ascia vanilla.
+   * Mostra i percorsi di cura della muffa ($2 \rightarrow 1 \rightarrow 0$).
+3. **Schede Informative Legno Marcio**: Descrizioni incorporate su friabilità, drop zero senza cera ed efficienza nel compostatore.
+
+---
+
+## 📊 Integrazione HUD (Jade) & Progressi (Advancements)
+
+* 🔍 **Tooltip Jade / WTHIT**: Inquadrando qualsiasi blocco di legno vengono mostrati nome, stadio di muffa, stato di ceratura e Rischio di Infezione in tempo reale ($R\%$) con colore dinamico (**Grigio = Sicuro**, **Rosso = A Rischio**).
+* 🏆 **Progressi (Advancements)**:
+  * **Spores & Shadows**: Sopravvivi al ciclo naturale di decadimento del legno.
+  * **Natural Prevention**: Cera un blocco di legno con un favo per sigillarlo.
+  * **Elbow Grease**: Usa un'ascia per rimuovere la muffa dal legname infetto.
+  * **Short Breath**: Soccombi all'avvelenamento da miasma in una cantina non ventilata.
+  * **Dust to Dust**: Guarda un blocco marcio di Stadio 3 sbriciolarsi in polvere quando distrutto.
+
+---
+
+## 💻 Comandi di Gioco
+
+Tutti i comandi amministrativi richiedono il livello operatore 2:
+
+* `/miasma`  
+  Esegue una scansione atmosferica BFS in tempo reale alla posizione del giocatore, mostrando tipo di ambiente (Aperto / Confinato), volume d'aria ($m^3$), Toxic Score, Portata di Ventilazione, Miasma Netto e Densità delle Spore.
+* `/moldrisk` 
+  Ispeziona il blocco inquadrato e mostra umidità ($H_{\text{eff}}$), luce ($L_{\text{uv}}$), suscettibilità ($S_{\text{mat}}$), catalizzatori, bonus aereo miasma ($M_{\text{bonus}}$), temperatura e valore calcolato di $R$.
+* `/moldrisk verbose`  
+  Mostra la scomposizione matematica intermedia completa (modificatori profondità, temperature superficie vs caverna, bonus acqua locali).
+* `/spores reload`  
+  Ricarica istantaneamente il file di configurazione (`config/spores--shadows.json`) senza riavviare server o client.
+
+---
+
+## ⚙️ Configurazione Cloth Config & ModMenu
+
+Configurabile tramite **ModMenu & Cloth Config** in 12 categorie dedicate:
+
+1. 🛠️ **General**: Abilitazione diffusione muffa, soglia di infezione (`0.50`), raggio scansione, immunità strutture e usura ascia.
+2. 🪓 **Susceptibility**: Moltiplicatori per scortecciato (`1.4`), assi (`0.8`) e tronchi (`1.0`).
+3. ☣️ **Catalysts**: Pesi per fango, micelio, funghi, spore blossom e blocchi infetti.
+4. 🌡️ **Environment**: Umidità base, modificatori profondità, bonus acqua, essiccamento aerazione, pressione spore miasma, temperature critiche, normalizzazione caverne ($Y=48$) e gelo montano ($Y=256$).
+5. 💥 **Drops**: Probabilità drop Stadio 2 (`50%`) e Stadio 3 (`0%`).
+6. 🗺️ **Structures**: Percentuali di decadimento per le categorie di strutture.
+7. 🔥 **Furnace Multipliers**: Moltiplicatori combustibile fornace per Stadi 0, 1, 2, 3.
+8. 🚒 **Flammability**: Toggle infiammabilità, bonus innesco ($+5/+10/+20$), propagazione ($+10/+25/+60$) e cera ($+5$).
+9. 💣 **Blast Resistance**: Toggle blast resistance, moltiplicatori Stadio 1 (`0.80`), Stadio 2 (`0.50`), Stadio 3 (`0.10`).
+10. ⛏️ **Hardness**: Toggle durezza scalata (`0.80`, `0.50`, `0.20`), e toggle nuvola di spore alla rottura.
+11. ☠️ **Toxicity**: Intervallo tick miasma, volume massimo, raggio euclideo, velocità saturazione/dissipazione, punteggi ventilazione e soglie status effect.
+12. 🖥️ **Client**: Offset Z rendering muffa per compatibilità perfetta con shader Iris e Sodium.
