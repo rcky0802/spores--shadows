@@ -19,6 +19,7 @@ Documento di tracciamento per le funzionalità pianificate, miglioramenti archit
   * **Obiettivo**: Introdurre un copricapo speciale equipaggiabile nello slot elmo che protegge completamente chi lo indossa dagli effetti nocivi del Miasma (Fame, Nausea, Veleno).
   * **Incantabilità**: Compatibile con i principali incantesimi da elmo/armatura (*Unbreaking / Indistruttibilità*, *Mending / Ripristino*, *Protezione*, ecc.).
   * **Bilanciamento & Durabilità**: Consuma durabilità progressiva nel tempo mentre filtra attivamente il miasma presente nell'ambiente (165 usi base). Riparabile all'incudine sostituendo il filtro con **Lana (`#minecraft:wool`)**.
+  * **Rendering 3D Realistico**: Modello volumetrico personalizzato con becco frontale sporgente di $4.5$ voxel (bocchettone filtro stile gas mask cinematografica), bombolette cilindriche laterali e visore sagomato con Fabric `ArmorRenderer` e compatibilità Polymer.
   * **Integrazioni**: Compatibile con JEI, Jade, Cloth Config, ModMenu e Polymer.
   * **Stato**: ✅ *Completato*
 

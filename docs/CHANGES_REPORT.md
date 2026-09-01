@@ -304,13 +304,32 @@ classDiagram
 
 ---
 
-## 12. Suite Completa di Collaudo Automatizzato GameTest (87/87 Passati)
+### F. Personalizzazione del Render della Maschera Indossata sul Giocatore (3D Head Armor)
+* **Geometria 3D Personalizzata ([`SporeMaskModel.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/render/SporeMaskModel.java))**:
+  * **Becco Filtrante Frontale (Snout Canister)**: Protrusione volumetrica cubica a due stadi che sporge in avanti di **$4.5$ voxel** dal viso del giocatore, ricreando la sagoma delle maschere antigas militari cinematografiche (GP-5 / S10 / M40).
+  * **Bombolette Cilindriche Laterali**: Protrusioni bilaterali sulle guance ($+1.5$ voxel a destra e sinistra) con alloggiamento per cartucce di filtraggio.
+  * **Cornice Oculari in Rilievo**: Visore con lenti ciano antiriflesso e telaio gommato sagomato in rilievo ($+1.0$ voxel).
+* **Renderer Dedicato ([`SporeMaskArmorRenderer.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/render/SporeMaskArmorRenderer.java))**:
+  * Implementato tramite `ArmorRenderer` di Fabric API e registrato all'avvio client in [`SporesShadowsClient.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/SporesShadowsClient.java).
+  * Sincronizzazione precisa con il pitch, yaw e roll della testa dell'entità sia in prima che in terza persona.
+* **Layer Texture (`layer_1.png` & `layer_2.png`)**:
+  * Percorsi asset: `assets/spores--shadows/textures/models/armor/spore_mask_layer_1.png` e `spore_mask_layer_2.png`.
+  * Risoluzione standard $64\times32$ pixel con canale Alpha e mappatura UV conforme al modello elmo biped vanilla.
+* **Materiale Armatura Dedicato (`ModItems.SPORE_MASK_ARMOR_MATERIAL`)**:
+  * Registrato in `Registries.ARMOR_MATERIAL` tramite `Registry.registerReference`.
+  * Definisce `ArmorMaterial.Layer` collegato all'identificatore `spores--shadows:spore_mask`.
+* **Supporto Polymer Client Vanilla**:
+  * Registrazione automatica del layer tramite `PolymerResourcePackUtils.requestArmor(SporesShadows.id("spore_mask"))` e trasmissione del colore dinamico dell'elmo via `getPolymerArmorColor(...)`.
+
+---
+
+## 12. Suite Completa di Collaudo Automatizzato GameTest (89/89 Passati)
 
 Tutti i comportamenti sono convalidati da **20 classi di test** automatizzati:
 
 | # | File di Test | Argomento e Meccanica Verificata |
 | :---: | :--- | :--- |
-| 1 | `SporeMaskTests.java` | Proprietà elmo, +1 armatura, riparazione lana filtro, incantabilità e usura durabilità. |
+| 1 | `SporeMaskTests.java` | Proprietà elmo, +1 armatura, riparazione lana filtro, incantabilità, usura durabilità e layer armatura 3D. |
 | 2 | `ToxicAirTests.java` | 32 test su BFS, porte/botole/grate/cielo e calcolo volumetrico. |
 | 3 | `DynamicMiasmaSaturationTests.java` | Inerzia temporale $M(t)$, saturazione e dissipazione differenziata. |
 | 4 | `MoldyMathTests.java` | 14 test su formule matematiche $R$, $H_{eff}$, $M_{bonus}$, temperature e cap $Y \le 0$. |
@@ -332,4 +351,4 @@ Tutti i comportamenti sono convalidati da **20 classi di test** automatizzati:
 | 20 | `SporesShadowsTests.java` | Suite principale GameTest. |
 
 ---
-*Stato: **87/87 GameTest superati con successo (`BUILD SUCCESSFUL`)**.*
+*Stato: **89/89 GameTest superati con successo (`BUILD SUCCESSFUL`)**.*

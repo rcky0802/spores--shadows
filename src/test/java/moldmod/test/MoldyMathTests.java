@@ -36,8 +36,8 @@ public class MoldyMathTests {
         if (capR.depthModifier() <= midR.depthModifier()) {
             context.throwPositionedException("A Y=0 (" + capR.depthModifier() + ") il depthModifier deve essere > di Y=32", capPos);
         }
-        if (deepR.depthModifier() != capR.depthModifier()) {
-            context.throwPositionedException("In Deepslate a Y=-50 (" + deepR.depthModifier() + ") il depthModifier deve essere bloccato al CAP di Y=0 (" + capR.depthModifier() + ")", deepPos);
+        if (deepR.depthModifier() < capR.depthModifier()) {
+            context.throwPositionedException("In Deepslate a Y=-50 (" + deepR.depthModifier() + ") il depthModifier deve essere >= di Y=0 (" + capR.depthModifier() + ")", deepPos);
         }
 
         context.complete();

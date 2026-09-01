@@ -102,4 +102,23 @@ public class SporeMaskTests {
 
         context.complete();
     }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMaskArmorMaterialAndLayer(TestContext context) {
+        if (!(ModItems.SPORE_MASK instanceof SporeMaskItem maskItem)) {
+            context.throwPositionedException("SPORE_MASK deve essere SporeMaskItem", BlockPos.ORIGIN);
+            return;
+        }
+
+        if (!maskItem.getMaterial().equals(ModItems.SPORE_MASK_ARMOR_MATERIAL)) {
+            context.throwPositionedException("SPORE_MASK deve utilizzare SPORE_MASK_ARMOR_MATERIAL", BlockPos.ORIGIN);
+        }
+
+        var layers = maskItem.getMaterial().value().layers();
+        if (layers.isEmpty() || !layers.getFirst().getTexture(false).toString().contains("spore_mask_layer_1")) {
+            context.throwPositionedException("Il layer armatura di SPORE_MASK deve puntare a spore_mask_layer_1, trovato: " + (layers.isEmpty() ? "vuoto" : layers.getFirst().getTexture(false)), BlockPos.ORIGIN);
+        }
+
+        context.complete();
+    }
 }
