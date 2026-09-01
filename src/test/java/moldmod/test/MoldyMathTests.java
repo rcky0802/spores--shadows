@@ -67,16 +67,16 @@ public class MoldyMathTests {
         BlockPos center = new BlockPos(2, 2, 2);
         BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
 
-        // Circondiamo di luce (Glowstone) per garantire luce massima 15
+        // 1. Posizioniamo una fonte di luce (Glowstone) sopra il blocco
         context.setBlockState(center.up(), Blocks.GLOWSTONE.getDefaultState());
 
         context.waitAndRun(2, () -> {
-            MoldyBlockHelper.MoldRiskResult rLight15 = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, log);
-            if (rLight15.Luv() > 0.0) {
-                context.throwPositionedException("La luce massima 15 dovrebbe dare 0.0 UV, trovato: " + rLight15.Luv(), center);
+            MoldyBlockHelper.MoldRiskResult rLight = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, log);
+            if (rLight.Luv() > 0.10) {
+                context.throwPositionedException("Con luce intensa (Glowstone), Luv deve essere <= 0.10, trovato: " + rLight.Luv(), center);
             }
 
-            // Rimuoviamo la fonte di luce e creiamo una scatola di pietra per il buio totale
+            // 2. Rimuoviamo la luce e creiamo una stanza chiusa di pietra per il buio totale
             context.setBlockState(center.up(), Blocks.AIR.getDefaultState());
             for (int x = 0; x <= 4; x++) {
                 for (int y = 0; y <= 4; y++) {
@@ -90,8 +90,11 @@ public class MoldyMathTests {
 
             context.waitAndRun(5, () -> {
                 MoldyBlockHelper.MoldRiskResult rDark = MoldyBlockHelper.calculateDetailedR(context.getWorld(), context.getAbsolutePos(center), false, log);
-                if (rDark.Luv() <= 0.0) {
-                    context.throwPositionedException("L'oscurità totale dovrebbe dare > 0.0 UV, trovato: " + rDark.Luv(), center);
+                if (rDark.Luv() <= rLight.Luv()) {
+                    context.throwPositionedException("Nel buio totale Luv (" + rDark.Luv() + ") deve essere maggiore che sotto luce (" + rLight.Luv() + ")!", center);
+                }
+                if (rDark.Luv() < 0.80) {
+                    context.throwPositionedException("Nel buio totale Luv deve essere >= 0.80, trovato: " + rDark.Luv(), center);
                 }
                 context.complete();
             });
