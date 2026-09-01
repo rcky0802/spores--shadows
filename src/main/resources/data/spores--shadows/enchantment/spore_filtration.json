@@ -1,0 +1,21 @@
+{
+  "description": {
+    "translate": "enchantment.spores--shadows.spore_filtration"
+  },
+  "supported_items": "#spores--shadows:enchantable/filtration_helmets",
+  "primary_items": "#spores--shadows:enchantable/filtration_helmets",
+  "weight": 3,
+  "max_level": 3,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 9
+  },
+  "max_cost": {
+    "base": 30,
+    "per_level_above_first": 9
+  },
+  "anvil_cost": 4,
+  "slots": [
+    "head"
+  ]
+}

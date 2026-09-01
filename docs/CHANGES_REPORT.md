@@ -280,14 +280,14 @@ classDiagram
 * **Riparazione all'Incudine**: L'ingrediente di riparazione registrato nel tag e in `canRepair` è qualsiasi blocco di **Lana (`#minecraft:wool`)**, simulando la sostituzione e l'aggiornamento della cartuccia filtrante.
 * **Compatibilità Strumenti**: Pienamente compatibile con **Incudine** (unione maschere, riparazione lana, rinomina), **Mola** (disincantamento con recupero XP, riparazione combinata) e **Crafting Grid Repair** ($+5\%$ bonus durabilità).
 
-### C. Incantabilità & Enchanting Table
-* Registrato nei tag ufficiali Minecraft 1.21.1:
-  * `#minecraft:head_armor`
-  * `#minecraft:enchantable/head_armor`
-  * `#minecraft:enchantable/durability`
-  * `#minecraft:enchantable/vanishing`
-* È inseribile direttamente nell'**Enchanting Table** con *Enchantability* $15$, supportando:
-  * *Unbreaking* (riduzione usura filtro), *Mending*, *Protection*, *Fire Protection*, *Blast Protection*, *Projectile Protection*, *Respiration*, *Aqua Affinity*, *Thorns*.
+### C. Incantabilità Speciale della Maschera Antispore (Simile alle Cesoie Vanilla)
+* **Tavolo degli Incantesimi (`Enchanting Table`)**: ❌ **Disabilitato** (`getEnchantability() == 0`). La maschera non compare negli slot del tavolo per l'incantamento con EXP e lapislazzuli.
+* **Mola (`Grindstone`)**: ✔️ **Abilitato** (rimozione incantesimi e riparazione combinata).
+* **Incudine con Libri Incantati (`Anvil`)**: ✔️ **Abilitato Esclusivo** (garantito a basso livello tramite [`EnchantmentMixin.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/mixin/EnchantmentMixin.java) intercettando `isAcceptableItem`). Supporta unicamente:
+  1. *Unbreaking* (Indistruttibilità I–III per ridurre il consumo del filtro)
+  2. *Mending* (Ripristino con esperienza)
+  3. *Curse of Vanishing* (Maledizione della Scomparsa)
+* **Incantesimi Rifiutati all'Incudine**: Rifiuta categoricamente *Protection* (tutte le 4 varianti), *Aqua Affinity*, *Respiration*, *Thorns*, *Curse of Binding* e *Spore Filtration* (poiché possiede già filtrazione biologica nativa).
 
 ### D. Ricetta Sagomata al Banco da Lavoro
 ```text
@@ -296,59 +296,83 @@ classDiagram
 [   -   ] [    Favo d'Api     ] [   -   ]
 ```
 
-### E. Integrazioni con Altre Mod
-* **JEI / EMI / REI**: Scheda informativa `addIngredientInfo` multilingua e visualizzazione ricetta sagomata e riparazione incudine.
-* **Jade / WTHIT**: Riconoscimento della maschera indossata su giocatori o supporti per armature con indicatore di protezione attiva.
+### E. Integrazioni con Altre Mod (JEI & Jade Aggiornati)
+* **JEI / EMI / REI**:
+  * Scheda informativa `addIngredientInfo` per la Maschera Antispore con spiegazione delle restrizioni di incantabilità e riparazione.
+  * Scheda informativa `addIngredientInfo` per l'incantesimo *Filtrazione Spore* (`spores--shadows:spore_filtration`) su tutti gli elmi convenzionali.
+  * Ricetta visuale all'**Incudine** (`RecipeTypes.ANVIL`) per la sostituzione del filtro con tutte le 16 varianti di colore della Lana (`#minecraft:wool`).
+* **Jade / WTHIT**:
+  * Provider entità dedicato ([`SporeProtectionEntityProvider.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/main/java/moldmod/integration/jade/SporeProtectionEntityProvider.java)): visualizza in tempo reale sul tooltip quando si punta un giocatore o un'entità con protezione attiva:
+    * `Protezione Spore: Attiva (Maschera Antispore)`
+    * `Filtrazione Spore: Livello X` per elmi incantati.
+  * Riconoscimento blocchi marci e rischio di infezione in tempo reale.
 * **Cloth Config & ModMenu**: Voci dedicate in categoria `toxicity` con supporto hot-reload via `/spores reload`.
 * **Polymer Framework**: Generazione procedurale modello `models/item/spore_mask.json` nel Resource Pack virtuale e fallback trasparente su `Items.LEATHER_HELMET` per client vanilla.
 
 ---
 
-### F. Personalizzazione del Render della Maschera Indossata sul Giocatore (3D Head Armor)
-* **Geometria 3D Personalizzata ([`SporeMaskModel.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/render/SporeMaskModel.java))**:
-  * **Becco Filtrante Frontale (Snout Canister)**: Protrusione volumetrica cubica a due stadi che sporge in avanti di **$4.5$ voxel** dal viso del giocatore, ricreando la sagoma delle maschere antigas militari cinematografiche (GP-5 / S10 / M40).
-  * **Bombolette Cilindriche Laterali**: Protrusioni bilaterali sulle guance ($+1.5$ voxel a destra e sinistra) con alloggiamento per cartucce di filtraggio.
-  * **Cornice Oculari in Rilievo**: Visore con lenti ciano antiriflesso e telaio gommato sagomato in rilievo ($+1.0$ voxel).
+### F. Personalizzazione del Render della Maschera Indossata sul Giocatore (Dual-Layer 3D Head Armor)
+* **Architettura Dual-Layer Senza Soluzione di Continuità ([`SporeMaskModel.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/render/SporeMaskModel.java))**:
+  * **Strato Base (`HEAD`, Dilation $0.5$F, UV $0,0 \to 32,16$)**: Passamontagna in cuoio marrone (`#684120`), cinturini di serraggio neri incrociati sul retro con anello centrale in rame, visore gommato e protezione sottomento/collo.
+  * **Strato Rilievo 3D Esterno (`HAT`, Dilation $0.85$F, UV $32,0 \to 64,16$)**: Geometria concentrica a rilievo continuo per lenti antiriflesso ciano con bagliore speculare bianco, ponte nasale in rame, beccuccio di aspirazione frontale con griglia in lana filtrante e bombolette/valvole laterali bilaterali in rame (`#B05624`).
 * **Renderer Dedicato ([`SporeMaskArmorRenderer.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/render/SporeMaskArmorRenderer.java))**:
   * Implementato tramite `ArmorRenderer` di Fabric API e registrato all'avvio client in [`SporesShadowsClient.java`](file:///C:/Users/rcky0/Desktop/spores--shadows/src/client/java/moldmod/client/SporesShadowsClient.java).
-  * Sincronizzazione precisa con il pitch, yaw e roll della testa dell'entità sia in prima che in terza persona.
-* **Layer Texture (`layer_1.png` & `layer_2.png`)**:
-  * Percorsi asset: `assets/spores--shadows/textures/models/armor/spore_mask_layer_1.png` e `spore_mask_layer_2.png`.
-  * Risoluzione standard $64\times32$ pixel con canale Alpha e mappatura UV conforme al modello elmo biped vanilla.
+  * Sincronizzazione precisa con `contextModel.copyBipedStateTo(this.model)` per pitch, yaw, roll, sneaking, nuoto e volo dell'entità sia in prima che in terza persona.
+* **Script di Generazione Texture Dedicato ([`scripts/generate_mask_texture.py`](file:///C:/Users/rcky0/Desktop/spores--shadows/scripts/generate_mask_texture.py))**:
+  * Creato script Python autonomo (pure Python con modulo `zlib`/`struct` standard, senza dipendenze esterne obbligatorie) per generare la texture $64\times32$ RGBA con palette esatta e UV 100% allineati tra i due strati.
 * **Materiale Armatura Dedicato (`ModItems.SPORE_MASK_ARMOR_MATERIAL`)**:
   * Registrato in `Registries.ARMOR_MATERIAL` tramite `Registry.registerReference`.
   * Definisce `ArmorMaterial.Layer` collegato all'identificatore `spores--shadows:spore_mask`.
-* **Supporto Polymer Client Vanilla**:
-  * Registrazione automatica del layer tramite `PolymerResourcePackUtils.requestArmor(SporesShadows.id("spore_mask"))` e trasmissione del colore dinamico dell'elmo via `getPolymerArmorColor(...)`.
 
 ---
 
-## 12. Suite Completa di Collaudo Automatizzato GameTest (89/89 Passati)
+## 12. ✨ Incantesimo per Elmi: Filtrazione Spore (`spores--shadows:spore_filtration`)
 
-Tutti i comportamenti sono convalidati da **20 classi di test** automatizzati:
+Introdotto un **Incantesimo Data-Driven per Elmi** per permettere la purificazione biologica su armature convenzionali di alto livello:
+
+### A. Specifiche dell'Incantesimo
+* **Identificativo**: `spores--shadows:spore_filtration` (Registro: `ModEnchantments.SPORE_FILTRATION`).
+* **Item Supportati**: Tutti gli elmi convenzionali (`#spores--shadows:enchantable/filtration_helmets`: Cuoio, Maglia, Ferro, Oro, Diamante, Netherite, Tartaruga).
+* **Livelli Disponibili**: I, II, III.
+* **Compatibilità**: Pienamente compatibile con *Respiration* (Respirazione subacquea), *Aqua Affinity*, *Protection* e *Unbreaking*.
+* **Ottenimento**: Disponibile all'Enchanting Table (`#minecraft:enchantment/in_enchanting_table`), scambio con villici (`#minecraft:enchantment/on_traded_equipment`), libri del bottino (`#minecraft:enchantment/non_treasure`) e applicazione all'Incudine.
+
+### B. Meccanica di Filtraggio & Scalabilità Durabilità
+* Neutralizza al $100\%$ gli effetti nocivi del Miasma ([`POISON`](file:///), [`NAUSEA`](file:///), [`HUNGER`](file:///)) emettendo particelle `ParticleTypes.CLOUD` e suoni filtrati.
+* **Consumo Durabilità Scalare per Esposizione**:
+  * **Livello I**: Consuma $2$ punti durabilità per esposizione.
+  * **Livello II**: Consuma $1$ punto durabilità per esposizione.
+  * **Livello III**: $50\%$ di probabilità di non consumare durabilità (massima efficienza di filtraggio).
+
+---
+
+## 13. Suite Completa di Collaudo Automatizzato GameTest (96/96 Passati)
+
+Tutti i comportamenti sono convalidati da **21 classi di test** automatizzati:
 
 | # | File di Test | Argomento e Meccanica Verificata |
 | :---: | :--- | :--- |
-| 1 | `SporeMaskTests.java` | Proprietà elmo, +1 armatura, riparazione lana filtro, incantabilità, usura durabilità e layer armatura 3D. |
-| 2 | `ToxicAirTests.java` | 32 test su BFS, porte/botole/grate/cielo e calcolo volumetrico. |
-| 3 | `DynamicMiasmaSaturationTests.java` | Inerzia temporale $M(t)$, saturazione e dissipazione differenziata. |
-| 4 | `MoldyMathTests.java` | 14 test su formule matematiche $R$, $H_{eff}$, $M_{bonus}$, temperature e cap $Y \le 0$. |
-| 5 | `MoldyHardnessAndMiningSpeedTests.java` | Durezza progressiva e tempo di rottura pugno vs ascia su rotten. |
-| 6 | `MoldyFuelAndSmeltingTests.java` | Tempi di combustione in fornace scalati per tutti i legni. |
-| 7 | `MoldyFlammabilityTests.java` | Innesco e diffusione fiamme (Overworld e ignifughi Nether). |
-| 8 | `MoldyInteractionTests.java` | Ceratura favo, scraping ascia, usura durabilità e preservazione stati. |
-| 9 | `MoldyDropAndLootTests.java` | Drop condizionali con Silk Touch, sbriciolamento e garanzia ceratura. |
-| 10 | `MoldyComposterTests.java` | Percentuali di compostaggio stadi 1, 2, 3. |
-| 11 | `MoldyCraftingYieldsTests.java` | Rese di crafting decrescenti per assi, stick e derivati. |
-| 12 | `MoldyBlastResistanceTests.java` | Resistenza alle esplosioni scalata per stadio. |
-| 13 | `MoldyRedstoneTests.java` | Ritardo di disattivazione meccanica su pedane e pulsanti marci. |
-| 14 | `MoldyScenariosTableTests.java` | Test parametrici su scenari realistici (cantine, miniere, rive). |
-| 15 | `ModCommandsTests.java` | Esecuzione e parsing comandi (`/spores reload`, `/miasma`). |
-| 16 | `StructureDegradationTest.java` | Generazione e decadimento strutture naturali. |
-| 17 | `MoldyInfectionRuleTests.java` | Regole biologiche di transizione di stadio. |
-| 18 | `MoldyVariantsCountTest.java` | Integrità e conteggio varianti registrate. |
-| 19 | `MoldyWoodTestHelper.java` | Classi di supporto per test automatici. |
-| 20 | `SporesShadowsTests.java` | Suite principale GameTest. |
+| 1 | `SporeFiltrationEnchantmentTests.java` | 7 test su risoluzione incantesimo, protezione veleno, scalabilità durabilità (Liv I vs II), elmi non incantati, coesistenza con Respiration, restrizioni incantabilità maschera e validazione interazione `AnvilScreenHandler` (rifiuto Protection/Filtration, accettazione Unbreaking/Mending/Vanishing e riparazione lana). |
+| 2 | `SporeMaskTests.java` | Proprietà elmo, +1 armatura, riparazione lana filtro, incantabilità disabilitata al tavolo, usura durabilità e layer armatura 3D. |
+| 3 | `ToxicAirTests.java` | 32 test su BFS, porte/botole/grate/cielo, calcolo volumetrico e caverne non confinate (`UNCONFINED_CAVERN`). |
+| 4 | `DynamicMiasmaSaturationTests.java` | Inerzia temporale $M(t)$, saturazione e dissipazione differenziata con modello colli di bottiglia e porte a due blocchi. |
+| 5 | `MoldyMathTests.java` | 14 test su formule matematiche $R$, $H_{eff}$, $M_{bonus}$, temperature e cap $Y \le 0$. |
+| 6 | `MoldyHardnessAndMiningSpeedTests.java` | Durezza progressiva e tempo di rottura pugno vs ascia su rotten. |
+| 7 | `MoldyFuelAndSmeltingTests.java` | Tempi di combustione in fornace scalati per tutti i legni. |
+| 8 | `MoldyFlammabilityTests.java` | Innesco e diffusione fiamme (Overworld e ignifughi Nether). |
+| 9 | `MoldyInteractionTests.java` | Ceratura favo, scraping ascia, usura durabilità e preservazione stati. |
+| 10 | `MoldyDropAndLootTests.java` | Drop condizionali con Silk Touch, sbriciolamento e garanzia ceratura. |
+| 11 | `MoldyComposterTests.java` | Percentuali di compostaggio stadi 1, 2, 3. |
+| 12 | `MoldyCraftingYieldsTests.java` | Rese di crafting decrescenti per assi, stick e derivati. |
+| 13 | `MoldyBlastResistanceTests.java` | Resistenza alle esplosioni scalata per stadio. |
+| 14 | `MoldyRedstoneTests.java` | Ritardo di disattivazione meccanica su pedane e pulsanti marci. |
+| 15 | `MoldyScenariosTableTests.java` | Test parametrici su scenari realistici (cantine, miniere, rive). |
+| 16 | `ModCommandsTests.java` | Esecuzione e parsing comandi (`/spores reload`, `/miasma`). |
+| 17 | `StructureDegradationTest.java` | Generazione e decadimento strutture naturali. |
+| 18 | `MoldyInfectionRuleTests.java` | Regole biologiche di transizione di stadio e `structures_immune = false`. |
+| 19 | `MoldyVariantsCountTest.java` | Integrità e conteggio varianti registrate. |
+| 20 | `MoldyWoodTestHelper.java` | Classi di supporto per test automatici. |
+| 21 | `SporesShadowsTests.java` | Suite principale GameTest. |
 
 ---
-*Stato: **89/89 GameTest superati con successo (`BUILD SUCCESSFUL`)**.*
+*Stato: **96/96 GameTest superati con successo (`BUILD SUCCESSFUL`)**.*

@@ -21,27 +21,31 @@ public class SporeMaskModel extends BipedEntityModel<LivingEntity> {
     }
 
     public static TexturedModelData getTexturedModelData() {
-        ModelData modelData = BipedEntityModel.getModelData(new Dilation(0.5F), 0.0F);
+        ModelData modelData = new ModelData();
         ModelPartData root = modelData.getRoot();
 
-        // 3D Gas Mask Head piece with protruding snout filter and cheek canisters
+        // 1. Base Head Cowl (HEAD at UV 0,0 with Dilation 0.5F) - wraps the skull and face
         root.addChild(
             EntityModelPartNames.HEAD,
             ModelPartBuilder.create()
-                // 1. Base head cowl & straps (8x8x8)
-                .uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(0.5F))
-                // 2. Goggles 3D frame (pops out over the eyes)
-                .uv(0, 16).cuboid(-4.0F, -6.5F, -5.0F, 8.0F, 3.0F, 1.0F, new Dilation(0.1F))
-                // 3. Protruding Gas Mask Snout / Filter Canister (Sticks straight out from the mouth like a movie gas mask!)
-                .uv(32, 0).cuboid(-2.5F, -3.5F, -7.5F, 5.0F, 4.0F, 3.5F, new Dilation(0.0F))
-                // 4. Front Filter Intake Cap / Valve
-                .uv(49, 0).cuboid(-1.5F, -2.5F, -8.5F, 3.0F, 3.0F, 1.0F, new Dilation(0.0F))
-                // 5. Right Cheek Canister
-                .uv(32, 8).cuboid(-5.5F, -3.0F, -3.5F, 1.5F, 3.0F, 3.0F, new Dilation(0.0F))
-                // 6. Left Cheek Canister
-                .uv(48, 8).cuboid(4.0F, -3.0F, -3.5F, 1.5F, 3.0F, 3.0F, new Dilation(0.0F)),
+                .uv(0, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(0.5F)),
             ModelTransform.NONE
         );
+
+        // 2. 3D Outer Relief (HAT at UV 32,0 with Dilation 0.85F) - seamless depth for goggles, snout & side valves
+        root.addChild(
+            EntityModelPartNames.HAT,
+            ModelPartBuilder.create()
+                .uv(32, 0).cuboid(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(0.85F)),
+            ModelTransform.NONE
+        );
+
+        // Clear remaining body parts
+        root.addChild(EntityModelPartNames.BODY, ModelPartBuilder.create(), ModelTransform.NONE);
+        root.addChild(EntityModelPartNames.RIGHT_ARM, ModelPartBuilder.create(), ModelTransform.NONE);
+        root.addChild(EntityModelPartNames.LEFT_ARM, ModelPartBuilder.create(), ModelTransform.NONE);
+        root.addChild(EntityModelPartNames.RIGHT_LEG, ModelPartBuilder.create(), ModelTransform.NONE);
+        root.addChild(EntityModelPartNames.LEFT_LEG, ModelPartBuilder.create(), ModelTransform.NONE);
 
         return TexturedModelData.of(modelData, 64, 32);
     }

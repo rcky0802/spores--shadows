@@ -34,6 +34,7 @@ public class SporesShadows implements ModInitializer {
 		moldmod.registry.ModFuelRegistry.register();
 		moldmod.registry.ModComposterRegistry.register();
 		moldmod.registry.ModFlammableRegistry.register();
+		moldmod.registry.ModEnchantments.register();
 	}
 
 	public static Identifier id(String path) {

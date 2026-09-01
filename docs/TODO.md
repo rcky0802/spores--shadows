@@ -26,11 +26,11 @@ Documento di tracciamento per le funzionalità pianificate, miglioramenti archit
 ---
 
 ### 3. ✨ Incantesimo per Elmetti: Filtrazione Spore / Respirazione Tossica
-- [ ] **Nuovo Incantesimo per Elmi (*Spore Filtration / Toxic Respiration*)**
-  * **Obiettivo**: Permettere a qualsiasi elmo convenzionale (cuoio, ferro, diamante, netherite) di essere incantato con un'abilità di purificazione dell'aria.
-  * **Compatibilità**: Non in conflitto con *Respiration / Respirazione* o altri incantesimi standard.
-  * **Meccanica**: Neutralizza gli effetti del miasma a costo di un consumo continuo di durabilità dell'elmo per ogni tick di esposizione tossica.
-  * **Stato**: ⏳ *Pianificato*
+- [x] **Nuovo Incantesimo per Elmi (*Spore Filtration / Toxic Respiration*)**
+  * **Obiettivo**: Permettere a qualsiasi elmo convenzionale (cuoio, ferro, diamante, netherite, oro, maglia, tartaruga) di essere incantato con un'abilità di purificazione dell'aria.
+  * **Compatibilità & Regole**: Non in conflitto con *Respiration / Respirazione* o altri incantesimi standard. La Maschera Antispore ha `enchantability = 0` ed è limitata all'incudine a *Unbreaking*, *Mending* e *Curse of Vanishing*.
+  * **Meccanica**: Neutralizza al 100% gli effetti del miasma (Fame, Nausea, Veleno) con consumo continuo scalare di durabilità (Livello I: 2 pt, Livello II: 1 pt, Livello III: 50% risparmio).
+  * **Stato**: ✅ *Completato*
 
 ---
 

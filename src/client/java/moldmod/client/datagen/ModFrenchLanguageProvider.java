@@ -245,10 +245,24 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei.spores--shadows.category.waxing", "Cirage");
         translationBuilder.add("jei.spores--shadows.category.scraping", "Grattage à la Hache");
         translationBuilder.add("jei.spores--shadows.info.rotten_wood", "Le bois pourri est fragile et friable. Il ne peut pas être soigné avec une hache. Il nécessite Toucher de Soie pour être récolté, sinon il se désintégrera dans le néant.");
-        translationBuilder.add("jei.spores--shadows.info.spore_mask", "Le Masque Anti-Spores offre une protection totale contre le miasme toxique (Poison, Nausée et Faim). Il s'use en filtrant l'air toxique. Remplacez le filtre en le réparant sur une enclume avec de la Laine (#minecraft:wool). Compatible avec les enchantements de casque.");
+        translationBuilder.add("jei.spores--shadows.info.spore_mask", "Le Masque Anti-Spores offre une protection totale contre le miasme toxique (Poison, Nausée et Faim). Il s'use en filtrant l'air toxique. Remplacez le filtre en le réparant sur une enclume avec de la Laine (#minecraft:wool). Peut uniquement être enchanté avec Solidité, Raccommodage et Malédiction de Disparition.");
+        translationBuilder.add("jei.spores--shadows.info.spore_filtration", "Filtration de Spores est un enchantement de casque qui neutralise le miasme toxique et l'inhalation de spores. Consomme la durabilité du casque lors de l'exposition au miasme (Niveau I: 2 durabilité, Niveau II: 1 durabilité, Niveau III: 50% de chance d'économiser la durabilité). Compatible avec tous les casques conventionnels.");
+
+        // Jade Tooltips for Spore Protection
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protection contre les Spores : Active (Masque Anti-Spores)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Filtration de Spores : Niveau %d");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows : Info Protection Spores");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Masque Anti-Spores");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Air Pur");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtrez les spores toxiques en respirant à travers un Masque Anti-Spores dans une pièce contaminée.");
+
+        // Enchantments
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration", "Filtration de Spores");
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration.desc", "Neutralise le miasme toxique en consommant la durabilité du casque.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.enable_spore_filtration_enchantment", "Activer l'enchantement Filtration de Spores");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_1_durability_cost", "Coût de durabilité Filtration Niveau I");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost", "Coût de durabilité Filtration Niveau II");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Chances de préserver la durabilité Niveau III");
     }
 }

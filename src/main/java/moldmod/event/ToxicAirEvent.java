@@ -17,6 +17,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import moldmod.item.ModItems;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.property.Properties;
@@ -216,8 +217,10 @@ public class ToxicAirEvent {
         }
     }
 
-    private static void checkRoomMiasma(ServerPlayerEntity player, int radius) {
-        ServerWorld world = (ServerWorld) player.getWorld();
+    public static void checkRoomMiasma(net.minecraft.entity.player.PlayerEntity player, int radius) {
+        if (!(player.getWorld() instanceof ServerWorld world)) {
+            return;
+        }
         BlockPos eyePos = BlockPos.ofFloored(player.getEyePos());
 
         // Pre-filtro rapido: se non c'è muffa nelle vicinanze esci subito O(R^3)
@@ -231,34 +234,73 @@ public class ToxicAirEvent {
         ItemStack headStack = player.getEquippedStack(EquipmentSlot.HEAD);
         boolean hasSporeMask = config.toxicity.enable_spore_mask_protection && headStack.isOf(ModItems.SPORE_MASK);
 
+        int filtrationLevel = 0;
+        if (config.toxicity.enable_spore_filtration_enchantment && !headStack.isEmpty()) {
+            var regOpt = world.getRegistryManager().getOptional(RegistryKeys.ENCHANTMENT);
+            if (regOpt.isPresent()) {
+                var entryOpt = regOpt.get().getEntry(moldmod.registry.ModEnchantments.SPORE_FILTRATION);
+                if (entryOpt.isPresent()) {
+                    filtrationLevel = net.minecraft.enchantment.EnchantmentHelper.getLevel(entryOpt.get(), headStack);
+                }
+            }
+        }
+
+        boolean isProtected = hasSporeMask || (filtrationLevel > 0);
+        int durabilityDamage = 0;
+        if (hasSporeMask) {
+            durabilityDamage = config.toxicity.spore_mask_damage_per_exposure;
+        } else if (filtrationLevel > 0) {
+            if (filtrationLevel == 1) {
+                durabilityDamage = config.toxicity.filtration_level_1_durability_cost;
+            } else if (filtrationLevel == 2) {
+                durabilityDamage = config.toxicity.filtration_level_2_durability_cost;
+            } else {
+                durabilityDamage = (world.random.nextFloat() < config.toxicity.filtration_level_3_save_chance) ? 0 : 1;
+            }
+        }
+
         switch (result.level) {
             case LETHAL_POISON -> {
-                if (hasSporeMask) {
-                    headStack.damage(config.toxicity.spore_mask_damage_per_exposure, player, EquipmentSlot.HEAD);
-                    world.spawnParticles(player, ParticleTypes.CLOUD, false, 
-                            player.getX(), player.getEyeY() - 0.1, player.getZ(), 2, 0.1, 0.1, 0.1, 0.01);
-                    MoldyBlockHelper.grantAdvancement(player, "spore_mask_protection");
-                    spawnLightParticles(world, player, result);
+                if (isProtected) {
+                    if (durabilityDamage > 0) {
+                        headStack.damage(durabilityDamage, player, EquipmentSlot.HEAD);
+                    }
+                    if (player instanceof ServerPlayerEntity serverPlayer) {
+                        world.spawnParticles(serverPlayer, ParticleTypes.CLOUD, false, 
+                                player.getX(), player.getEyeY() - 0.1, player.getZ(), 2, 0.1, 0.1, 0.1, 0.01);
+                        MoldyBlockHelper.grantAdvancement(serverPlayer, "spore_mask_protection");
+                        spawnLightParticles(world, serverPlayer, result);
+                    }
                 } else {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, config.toxicity.duration_poison_ticks, config.toxicity.poison_amplifier, false, false, true));
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, config.toxicity.duration_nausea_ticks, config.toxicity.nausea_amplifier, false, false, true));
-                    MoldyBlockHelper.grantAdvancement(player, "toxic_air");
-                    spawnDenseParticles(world, player, result);
+                    if (player instanceof ServerPlayerEntity serverPlayer) {
+                        MoldyBlockHelper.grantAdvancement(serverPlayer, "toxic_air");
+                        spawnDenseParticles(world, serverPlayer, result);
+                    }
                 }
             }
             case MODERATE_HUNGER -> {
-                if (hasSporeMask) {
-                    headStack.damage(config.toxicity.spore_mask_damage_per_exposure, player, EquipmentSlot.HEAD);
-                    world.spawnParticles(player, ParticleTypes.CLOUD, false, 
-                            player.getX(), player.getEyeY() - 0.1, player.getZ(), 1, 0.1, 0.1, 0.1, 0.01);
-                    MoldyBlockHelper.grantAdvancement(player, "spore_mask_protection");
+                if (isProtected) {
+                    if (durabilityDamage > 0) {
+                        headStack.damage(durabilityDamage, player, EquipmentSlot.HEAD);
+                    }
+                    if (player instanceof ServerPlayerEntity serverPlayer) {
+                        world.spawnParticles(serverPlayer, ParticleTypes.CLOUD, false, 
+                                player.getX(), player.getEyeY() - 0.1, player.getZ(), 1, 0.1, 0.1, 0.1, 0.01);
+                        MoldyBlockHelper.grantAdvancement(serverPlayer, "spore_mask_protection");
+                    }
                 } else {
                     player.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, config.toxicity.duration_hunger_ticks, config.toxicity.hunger_amplifier, false, false, true));
-                    spawnLightParticles(world, player, result);
+                    if (player instanceof ServerPlayerEntity serverPlayer) {
+                        spawnLightParticles(world, serverPlayer, result);
+                    }
                 }
             }
             case WARNING -> {
-                spawnWarningParticles(world, player, result);
+                if (player instanceof ServerPlayerEntity serverPlayer) {
+                    spawnWarningParticles(world, serverPlayer, result);
+                }
             }
             case CLEAN -> {}
         }

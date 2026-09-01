@@ -21,7 +21,8 @@
 			"moldmod.test.StructureDegradationTest",
 			"moldmod.test.ToxicAirTests",
 			"moldmod.test.DynamicMiasmaSaturationTests",
-			"moldmod.test.SporeMaskTests"
+			"moldmod.test.SporeMaskTests",
+			"moldmod.test.SporeFiltrationEnchantmentTests"
 		]
 	},
     "depends": {

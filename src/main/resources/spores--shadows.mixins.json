@@ -11,7 +11,9 @@
 		"FireBlockMixin",
 		"PressurePlateMixin",
 		"ButtonMixin",
-		"BlockMixin"
+		"BlockMixin",
+		"EnchantmentMixin",
+		"AnvilScreenHandlerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

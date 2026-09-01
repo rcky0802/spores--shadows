@@ -232,6 +232,15 @@ public class ModConfig implements ConfigData {
         public boolean enable_spore_mask_protection = true;
         @ConfigEntry.Gui.Tooltip(count = 2)
         public int spore_mask_damage_per_exposure = 1;
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean enable_spore_filtration_enchantment = true;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public int filtration_level_1_durability_cost = 2;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public int filtration_level_2_durability_cost = 1;
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public float filtration_level_3_save_chance = 0.50f;
     }
 
     @Override
@@ -276,5 +285,8 @@ public class ModConfig implements ConfigData {
         toxicity.open_sky_ventilation_per_block = MathHelper.clamp(toxicity.open_sky_ventilation_per_block, 0.0, 100.0);
         toxicity.copper_grate_ventilation_per_block = MathHelper.clamp(toxicity.copper_grate_ventilation_per_block, 0.0,
                 100.0);
+        toxicity.filtration_level_1_durability_cost = MathHelper.clamp(toxicity.filtration_level_1_durability_cost, 1, 20);
+        toxicity.filtration_level_2_durability_cost = MathHelper.clamp(toxicity.filtration_level_2_durability_cost, 1, 20);
+        toxicity.filtration_level_3_save_chance = MathHelper.clamp(toxicity.filtration_level_3_save_chance, 0.0f, 1.0f);
     }
 }

@@ -69,8 +69,8 @@ public class SporeMaskTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testMaskEnchantability(TestContext context) {
-        if (ModItems.SPORE_MASK.getEnchantability() < 10) {
-            context.throwPositionedException("SPORE_MASK deve avere un'incantabilità >= 10, trovato: " + ModItems.SPORE_MASK.getEnchantability(), BlockPos.ORIGIN);
+        if (ModItems.SPORE_MASK.getEnchantability() != 0) {
+            context.throwPositionedException("SPORE_MASK deve avere un'incantabilità == 0 per disabilitare il tavolo degli incantesimi, trovato: " + ModItems.SPORE_MASK.getEnchantability(), BlockPos.ORIGIN);
         }
         context.complete();
     }

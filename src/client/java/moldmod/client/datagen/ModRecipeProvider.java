@@ -41,6 +41,25 @@ public class ModRecipeProvider extends FabricRecipeProvider {
             // Processed Block Recipes
             generateProcessedRecipes(exporter, prefix);
         }
+
+        // Equipment Recipes
+        generateEquipmentRecipes(exporter);
+    }
+
+    private void generateEquipmentRecipes(RecipeExporter exporter) {
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, moldmod.item.ModItems.SPORE_MASK)
+                .pattern("LGL")
+                .pattern("CWC")
+                .pattern(" H ")
+                .input('L', Items.LEATHER)
+                .input('G', Items.GLASS_PANE)
+                .input('C', Items.COPPER_INGOT)
+                .input('W', net.minecraft.registry.tag.ItemTags.WOOL)
+                .input('H', Items.HONEYCOMB)
+                .criterion("has_leather", conditionsFromItem(Items.LEATHER))
+                .criterion("has_honeycomb", conditionsFromItem(Items.HONEYCOMB))
+                .criterion("has_copper", conditionsFromItem(Items.COPPER_INGOT))
+                .offerTo(exporter, SporesShadows.id("spore_mask"));
     }
 
     private void generatePlanksRecipe(RecipeExporter exporter, String sourceBase, String destBase) {

@@ -212,11 +212,25 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Waxing");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Axe Scraping");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Rotten wood is brittle and crumbling. It cannot be cured with an axe. It requires Silk Touch to be harvested, otherwise it will disintegrate into nothing when broken.");
-        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "The Spore Mask provides complete protection against toxic miasma (Poison, Nausea, and Hunger). It consumes durability while filtering toxic air. Replace the filter by repairing it in an anvil with Wool (#minecraft:wool). Supports helmet enchantments.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "The Spore Mask provides complete protection against toxic miasma (Poison, Nausea, and Hunger). It consumes durability while filtering toxic air. Replace the filter by repairing it in an anvil with Wool (#minecraft:wool). Can be enchanted only with Unbreaking, Mending, and Curse of Vanishing.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Spore Filtration is a helmet enchantment that neutralizes toxic miasma and spore inhalation. Consumes helmet durability when exposed to miasma (Level I: 2 durability, Level II: 1 durability, Level III: 50% durability save chance). Compatible with all conventional helmets.");
+
+        // Jade Tooltips for Spore Protection
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Spore Protection: Active (Spore Mask)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Spore Filtration: Level %d");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Spore Protection Info");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Spore Mask");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Pure Air");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filter toxic spores by breathing through a Spore Mask in a contaminated room.");
+
+        // Enchantments
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration", "Spore Filtration");
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration.desc", "Neutralizes toxic miasma by consuming helmet durability.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.enable_spore_filtration_enchantment", "Enable Spore Filtration Enchantment");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_1_durability_cost", "Filtration Level I Durability Cost");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost", "Filtration Level II Durability Cost");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Filtration Level III Durability Save Chance");
     }
     
     private String capitalize(String str) {

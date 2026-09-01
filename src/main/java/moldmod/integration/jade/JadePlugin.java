@@ -10,6 +10,7 @@ public class JadePlugin implements IWailaPlugin {
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(MoldyBlockProvider.INSTANCE, Block.class);
+        registration.registerEntityComponent(SporeProtectionEntityProvider.INSTANCE, net.minecraft.entity.LivingEntity.class);
         
         registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {
             if (accessor instanceof snownee.jade.api.BlockAccessor blockAccessor) {

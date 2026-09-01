@@ -23,11 +23,10 @@ public class SporeMaskArmorRenderer implements ArmorRenderer {
             this.model = new SporeMaskModel(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(SporeMaskModel.LAYER_LOCATION));
         }
 
+        contextModel.copyBipedStateTo(this.model);
         this.model.setVisible(false);
         this.model.head.visible = true;
         this.model.hat.visible = true;
-        this.model.head.copyTransform(contextModel.head);
-        this.model.hat.copyTransform(contextModel.hat);
 
         ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, this.model, TEXTURE);
     }

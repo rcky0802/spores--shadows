@@ -268,10 +268,24 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei.spores--shadows.category.waxing", "Wachsen");
         translationBuilder.add("jei.spores--shadows.category.scraping", "Axt-Schaben");
         translationBuilder.add("jei.spores--shadows.info.rotten_wood", "Morsches Holz ist brüchig und zerfällt. Es kann nicht mit einer Axt geheilt werden. Es erfordert Behutsamkeit zum Abbau, sonst zerfällt es beim Zerstören zu Staub.");
-        translationBuilder.add("jei.spores--shadows.info.spore_mask", "Die Sporenmaske bietet vollständigen Schutz vor giftigem Miasma (Gift, Übelkeit und Hunger). Sie verbraucht Haltbarkeit beim Filtern giftiger Luft. Tausche den Filter aus, indem du sie im Amboss mit Wolle (#minecraft:wool) reparierst. Unterstützt Helm-Verzauberungen.");
+        translationBuilder.add("jei.spores--shadows.info.spore_mask", "Die Sporenmaske bietet vollständigen Schutz vor giftigem Miasma (Gift, Übelkeit und Hunger). Sie verbraucht Haltbarkeit beim Filtern giftiger Luft. Tausche den Filter aus, indem du sie im Amboss mit Wolle (#minecraft:wool) reparierst. Kann nur mit Haltbarkeit, Reparatur und Fluch des Verschwindens verzaubert werden.");
+        translationBuilder.add("jei.spores--shadows.info.spore_filtration", "Sporenfiltration ist eine Helm-Verzauberung, die giftiges Miasma und das Einatmen von Sporen neutralisiert. Verbraucht Helm-Haltbarkeit bei Miasma-Exposition (Stufe I: 2 Haltbarkeit, Stufe II: 1 Haltbarkeit, Stufe III: 50% Haltbarkeits-Ersparnis). Kompatibel mit allen konventionellen Helmen.");
+
+        // Jade Tooltips for Spore Protection
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Sporenschutz: Aktiv (Sporenmaske)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Sporenfiltration: Stufe %d");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Sporenschutz Info");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Sporenmaske");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Reine Luft");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtere giftige Sporen, indem du in einem kontaminierten Raum durch eine Sporenmaske atmest.");
+
+        // Enchantments
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration", "Sporenfiltration");
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration.desc", "Neutralisiert giftiges Miasma auf Kosten der Helm-Haltbarkeit.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.enable_spore_filtration_enchantment", "Sporenfiltration-Verzauberung aktivieren");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_1_durability_cost", "Filtration Stufe I Haltbarkeitskosten");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost", "Filtration Stufe II Haltbarkeitskosten");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Filtration Stufe III Haltbarkeit-Ersparnischance");
     }
 }

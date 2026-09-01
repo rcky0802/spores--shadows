@@ -248,10 +248,24 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei.spores--shadows.category.waxing", "Encerado");
         translationBuilder.add("jei.spores--shadows.category.scraping", "Raspado con Hacha");
         translationBuilder.add("jei.spores--shadows.info.rotten_wood", "La madera podrida es quebradiza y frágil. No se puede curar con un hacha. Requiere Toque de Seda para ser recolectada, de lo contrario se desintegrará en la nada al romperse.");
-        translationBuilder.add("jei.spores--shadows.info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola en un yunque con Lana (#minecraft:wool). Compatible con encantamientos de casco.");
+        translationBuilder.add("jei.spores--shadows.info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola en un yunque con Lana (#minecraft:wool). Solo se puede encantar con Irrompibilidad, Reparación y Maldición de Desaparición.");
+        translationBuilder.add("jei.spores--shadows.info.spore_filtration", "Filtración de Esporas es un encantamiento de casco que neutraliza el miasma tóxico y la inhalación de esporas. Consume durabilidad del casco al exponerse al miasma (Nivel I: 2 durabilidad, Nivel II: 1 durabilidad, Nivel III: 50% de ahorro). Compatible con todos los cascos convencionales.");
+
+        // Jade Tooltips for Spore Protection
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protección contra Esporas: Activa (Máscara Antiesporas)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Filtración de Esporas: Nivel %d");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Info de Protección de Esporas");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Máscara Antiesporas");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Aire Puro");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtra las esporas tóxicas respirando a través de una Máscara Antiesporas en una sala contaminada.");
+
+        // Enchantments
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration", "Filtración de Esporas");
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration.desc", "Neutraliza el miasma tóxico consumiendo durabilidad del casco.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.enable_spore_filtration_enchantment", "Habilitar Encantamiento Filtración de Esporas");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_1_durability_cost", "Coste de Durabilidad Filtración Nivel I");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost", "Coste de Durabilidad Filtración Nivel II");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Probabilidad de Ahorro de Durabilidad Nivel III");
     }
 }

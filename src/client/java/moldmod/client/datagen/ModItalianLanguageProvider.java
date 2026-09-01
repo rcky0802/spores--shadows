@@ -249,10 +249,24 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Ceratura");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Raschiamento con Ascia");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Il legno marcio è friabile e degradato. Non può essere curato con un'ascia. Richiede Tocco di Velluto per essere raccolto, altrimenti si disintegrerà nel nulla quando viene rotto.");
-        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Maschera Antispore offre protezione totale dal miasma tossico (Veleno, Nausea e Fame). Consuma durabilità mentre filtra l'aria tossica. Sostituisci il filtro riparandola all'incudine con Lana (#minecraft:wool). Supporta incantesimi da elmo.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Maschera Antispore offre protezione totale dal miasma tossico (Veleno, Nausea e Fame). Consuma durabilità mentre filtra l'aria tossica. Sostituisci il filtro riparandola all'incudine con Lana (#minecraft:wool). Può essere incantata solo con Indistruttibilità, Ripristino e Maledizione della Scomparsa.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtrazione Spore è un incantesimo per elmi che neutralizza il miasma tossico e l'inalazione di spore. Consuma durabilità dell'elmo quando esposto al miasma (Livello I: 2 durabilità, Livello II: 1 durabilità, Livello III: 50% probabilità di risparmio). Compatibile con tutti gli elmi convenzionali.");
+
+        // Jade Tooltips for Spore Protection
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protezione Spore: Attiva (Maschera Antispore)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Filtrazione Spore: Livello %d");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Info Protezione Spore");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Maschera Antispore");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Aria Pura");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtra le spore tossiche respirando con una Maschera Antispore in una stanza contaminata.");
+
+        // Enchantments
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration", "Filtrazione Spore");
+        translationBuilder.add("enchantment." + moldmod.SporesShadows.MOD_ID + ".spore_filtration.desc", "Neutralizza il miasma tossico consumando durabilità dell'elmo.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.enable_spore_filtration_enchantment", "Abilita Incantesimo Filtrazione Spore");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_1_durability_cost", "Costo Durabilità Filtrazione Livello I");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost", "Costo Durabilità Filtrazione Livello II");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Probabilità Risparmio Durabilità Livello III");
     }
 }
