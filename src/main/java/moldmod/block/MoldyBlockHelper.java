@@ -1,12 +1,35 @@
 package moldmod.block;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.SporesShadows;
+import moldmod.config.ModConfig;
 import moldmod.registry.ModCatalystRegistry;
+import net.minecraft.advancement.AdvancementEntry;
+import net.minecraft.advancement.AdvancementProgress;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.Property;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.WorldView;
+
+import java.util.List;
 
 public class MoldyBlockHelper {
 
@@ -19,8 +42,7 @@ public class MoldyBlockHelper {
                 .with(MoldyBlock.STRUCTURAL, false);
     }
 
-    public static void appendMoldyProperties(
-            net.minecraft.state.StateManager.Builder<net.minecraft.block.Block, BlockState> builder) {
+    public static void appendMoldyProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(MoldyBlock.STAGE, MoldyBlock.WAXED, MoldyBlock.STRUCTURAL);
     }
 
@@ -31,8 +53,8 @@ public class MoldyBlockHelper {
             if (stage == 3 && !waxed) {
                 if (world.random.nextFloat() < chance) {
                     world.breakBlock(pos, false);
-                    world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_WOOD_BREAK,
-                            net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 0.8f);
+                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK,
+                            SoundCategory.BLOCKS, 1.0f, 0.8f);
                     return true;
                 }
             }
@@ -42,7 +64,7 @@ public class MoldyBlockHelper {
 
     public static BlockState copyMatchingProperties(BlockState from, BlockState to) {
         BlockState result = to;
-        for (net.minecraft.state.property.Property<?> property : from.getProperties()) {
+        for (Property<?> property : from.getProperties()) {
             if (result.contains(property)) {
                 result = copyProperty(from, result, property);
             }
@@ -51,22 +73,21 @@ public class MoldyBlockHelper {
     }
 
     private static <T extends Comparable<T>> BlockState copyProperty(BlockState from, BlockState to,
-            net.minecraft.state.property.Property<T> property) {
+            Property<T> property) {
         return to.with(property, from.get(property));
     }
 
     public static boolean canBeInfected(BlockState state) {
         // Return false if WAXED == true
-        if (state.contains(MoldyLogBlock.WAXED) && state.get(MoldyLogBlock.WAXED)) {
+        if (state.contains(MoldyBlock.WAXED) && state.get(MoldyBlock.WAXED)) {
             return false;
         }
 
         // Return false if STRUCTURAL == true AND structures are immune.
         // ALL generated structures (villages, shipwrecks) are passive until interacted
         // with (unless disabled in config).
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
-                .getConfigHolder(moldmod.config.ModConfig.class).getConfig();
-        if (state.contains(MoldyLogBlock.STRUCTURAL) && state.get(MoldyLogBlock.STRUCTURAL)) {
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        if (state.contains(MoldyBlock.STRUCTURAL) && state.get(MoldyBlock.STRUCTURAL)) {
             if (config.general.structures_immune) {
                 return false;
             }
@@ -76,7 +97,7 @@ public class MoldyBlockHelper {
     }
 
     public static boolean hasRandomTicks(BlockState state) {
-        if (net.minecraft.registry.Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("waxed_")) {
+        if (Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("waxed_")) {
             return false;
         }
         return canBeInfected(state);
@@ -88,26 +109,25 @@ public class MoldyBlockHelper {
             double R, float effectiveTemp, float surfaceTemp) {
     }
 
-    public static MoldRiskResult calculateDetailedR(net.minecraft.world.WorldAccess world, BlockPos pos,
+    public static MoldRiskResult calculateDetailedR(WorldAccess world, BlockPos pos,
             boolean isWaxed, BlockState stateToCheck) {
-        if (isWaxed || (stateToCheck != null && stateToCheck.contains(MoldyLogBlock.STAGE)
-                && stateToCheck.get(MoldyLogBlock.STAGE) >= 3))
+        if (isWaxed || (stateToCheck != null && stateToCheck.contains(MoldyBlock.STAGE)
+                && stateToCheck.get(MoldyBlock.STAGE) >= 3))
             return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0,
                     0.0f, 0.0f);
 
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
-                .getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
         float surfaceTemp = world.getBiome(pos).value().getTemperature();
         float temp = surfaceTemp;
 
-        if (world.getBiome(pos).isIn(net.minecraft.registry.tag.BiomeTags.IS_NETHER) ||
-                (world instanceof net.minecraft.world.World w
-                        && w.getRegistryKey() == net.minecraft.world.World.NETHER)) {
+        if (world.getBiome(pos).isIn(BiomeTags.IS_NETHER) ||
+                (world instanceof World w
+                        && w.getRegistryKey() == World.NETHER)) {
             return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0,
                     100.0f, 100.0f);
         }
-        if (world.getBiome(pos).isIn(net.minecraft.registry.tag.BiomeTags.IS_END) ||
+        if (world.getBiome(pos).isIn(BiomeTags.IS_END) ||
                 (world instanceof net.minecraft.world.World w && w.getRegistryKey() == net.minecraft.world.World.END) ||
                 world.getBiome(pos).matchesId(net.minecraft.util.Identifier.of("minecraft", "the_end"))) {
             return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0,
@@ -302,29 +322,28 @@ public class MoldyBlockHelper {
     }
 
     public static void setStage(World world, BlockPos pos, BlockState state, int newStage) {
-        world.setBlockState(pos, state.with(MoldyLogBlock.STAGE, newStage));
-        syncDoorHalf(world, pos, state, MoldyLogBlock.STAGE, newStage);
+        world.setBlockState(pos, state.with(MoldyBlock.STAGE, newStage));
+        syncDoorHalf(world, pos, state, MoldyBlock.STAGE, newStage);
     }
 
     public static void setWaxed(World world, BlockPos pos, BlockState state, boolean isWaxed) {
-        world.setBlockState(pos, state.with(MoldyLogBlock.WAXED, isWaxed));
-        syncDoorHalf(world, pos, state, MoldyLogBlock.WAXED, isWaxed);
+        world.setBlockState(pos, state.with(MoldyBlock.WAXED, isWaxed));
+        syncDoorHalf(world, pos, state, MoldyBlock.WAXED, isWaxed);
     }
 
     private static <T extends Comparable<T>> void syncDoorHalf(World world, BlockPos pos, BlockState state,
-            net.minecraft.state.property.Property<T> property, T value) {
-        if (state.getBlock() instanceof net.minecraft.block.DoorBlock) {
-            net.minecraft.block.enums.DoubleBlockHalf half = state.get(net.minecraft.block.DoorBlock.HALF);
-            BlockPos otherPos = half == net.minecraft.block.enums.DoubleBlockHalf.LOWER ? pos.up() : pos.down();
+            Property<T> property, T value) {
+        if (state.getBlock() instanceof DoorBlock) {
+            DoubleBlockHalf half = state.get(DoorBlock.HALF);
+            BlockPos otherPos = half == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
             BlockState otherState = world.getBlockState(otherPos);
-            if (otherState.isOf(state.getBlock()) && otherState.get(net.minecraft.block.DoorBlock.HALF) != half) {
+            if (otherState.isOf(state.getBlock()) && otherState.get(DoorBlock.HALF) != half) {
                 BlockState newState = otherState.with(property, value);
 
-                // Ensure we also sync the structural tag removal if the original block had it
-                // removed
-                if (state.contains(MoldyLogBlock.STRUCTURAL) && !state.get(MoldyLogBlock.STRUCTURAL) &&
-                        otherState.contains(MoldyLogBlock.STRUCTURAL) && otherState.get(MoldyLogBlock.STRUCTURAL)) {
-                    newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
+                // Ensure we also sync the structural tag removal if the original block had it removed
+                if (state.contains(MoldyBlock.STRUCTURAL) && !state.get(MoldyBlock.STRUCTURAL) &&
+                        otherState.contains(MoldyBlock.STRUCTURAL) && otherState.get(MoldyBlock.STRUCTURAL)) {
+                    newState = newState.with(MoldyBlock.STRUCTURAL, false);
                 }
 
                 world.setBlockState(otherPos, newState);
@@ -333,12 +352,11 @@ public class MoldyBlockHelper {
     }
 
     public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
-                .getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         if (!config.general.enable_mold_growth)
             return;
 
-        int currentStage = state.get(MoldyLogBlock.STAGE);
+        int currentStage = state.get(MoldyBlock.STAGE);
 
         // CRITICAL OPTIMIZATION: If the block is already at max stage (3),
         // it makes no sense to calculate R.
@@ -358,12 +376,12 @@ public class MoldyBlockHelper {
         }
     }
 
-    public static void grantAdvancement(net.minecraft.entity.player.PlayerEntity player, String advancementName) {
-        if (player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer) {
-            net.minecraft.advancement.AdvancementEntry entry = serverPlayer.getServer().getAdvancementLoader()
-                    .get(net.minecraft.util.Identifier.of(moldmod.SporesShadows.MOD_ID, advancementName));
+    public static void grantAdvancement(PlayerEntity player, String advancementName) {
+        if (player instanceof ServerPlayerEntity serverPlayer) {
+            AdvancementEntry entry = serverPlayer.getServer().getAdvancementLoader()
+                    .get(Identifier.of(SporesShadows.MOD_ID, advancementName));
             if (entry != null) {
-                net.minecraft.advancement.AdvancementProgress progress = serverPlayer.getAdvancementTracker()
+                AdvancementProgress progress = serverPlayer.getAdvancementTracker()
                         .getProgress(entry);
                 if (!progress.isDone()) {
                     for (String criterion : progress.getUnobtainedCriteria()) {
@@ -374,26 +392,25 @@ public class MoldyBlockHelper {
         }
     }
 
-    public static net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world, BlockPos pos,
-            BlockState state) {
-        net.minecraft.block.Block block = state.getBlock();
+    public static ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        Block block = state.getBlock();
         int stage = state.contains(MoldyBlock.STAGE) ? state.get(MoldyBlock.STAGE) : 0;
         boolean waxed = state.contains(MoldyBlock.WAXED) && state.get(MoldyBlock.WAXED);
 
-        java.util.List<net.minecraft.item.Item> items = ModBlocks.MOLDY_ITEMS_BY_BLOCK.get(block);
+        List<Item> items = ModBlocks.MOLDY_ITEMS_BY_BLOCK.get(block);
         if (items != null && items.size() == 7) {
             if (stage == 0 && !waxed) {
-                net.minecraft.block.Block moldyBlock = ModBlocks.WAXED_TO_MOLDY.getOrDefault(block, block);
-                net.minecraft.block.Block vanillaBlock = ModBlocks.MOLDY_TO_VANILLA.get(moldyBlock);
+                Block moldyBlock = ModBlocks.WAXED_TO_MOLDY.getOrDefault(block, block);
+                Block vanillaBlock = ModBlocks.MOLDY_TO_VANILLA.get(moldyBlock);
                 if (vanillaBlock != null) {
-                    return new net.minecraft.item.ItemStack(vanillaBlock.asItem());
+                    return new ItemStack(vanillaBlock.asItem());
                 }
             }
             int index = (stage == 0) ? 0 : (stage * 2 - (waxed ? 0 : 1));
             if (index >= 0 && index < items.size()) {
-                return new net.minecraft.item.ItemStack(items.get(index));
+                return new ItemStack(items.get(index));
             }
         }
-        return new net.minecraft.item.ItemStack(block.asItem());
+        return new ItemStack(block.asItem());
     }
 }

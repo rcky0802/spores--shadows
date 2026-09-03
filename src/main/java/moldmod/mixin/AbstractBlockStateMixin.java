@@ -1,6 +1,8 @@
 package moldmod.mixin;
 
-import moldmod.block.MoldyLogBlock;
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.block.MoldyBlock;
+import moldmod.config.ModConfig;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -18,11 +20,11 @@ public class AbstractBlockStateMixin {
     @Inject(method = "getHardness", at = @At("RETURN"), cancellable = true)
     private void scaleHardness(BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         BlockState state = (BlockState) (Object) this;
-        if (state.contains(MoldyLogBlock.STAGE)) {
-            int stage = state.get(MoldyLogBlock.STAGE);
+        if (state.contains(MoldyBlock.STAGE)) {
+            int stage = state.get(MoldyBlock.STAGE);
             if (stage == 0) return;
 
-            moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
             if (config == null || config.hardness == null || !config.hardness.enable_hardness_scaling) return;
 
             float original = cir.getReturnValue();
@@ -39,7 +41,7 @@ public class AbstractBlockStateMixin {
     @Inject(method = "calcBlockBreakingDelta", at = @At("HEAD"), cancellable = true)
     private void ignoreToolEfficiencyOnStage3(PlayerEntity player, BlockView world, BlockPos pos, CallbackInfoReturnable<Float> cir) {
         BlockState state = (BlockState) (Object) this;
-        if (state.contains(MoldyLogBlock.STAGE) && state.get(MoldyLogBlock.STAGE) == 3) {
+        if (state.contains(MoldyBlock.STAGE) && state.get(MoldyBlock.STAGE) == 3) {
             float hardness = state.getHardness(world, pos);
             if (hardness == -1.0f) {
                 cir.setReturnValue(0.0f);

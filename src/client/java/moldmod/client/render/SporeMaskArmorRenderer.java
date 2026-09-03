@@ -1,6 +1,8 @@
 package moldmod.client.render;
 
 import moldmod.SporesShadows;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -11,6 +13,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 public class SporeMaskArmorRenderer implements ArmorRenderer {
     private static final Identifier TEXTURE = SporesShadows.id("textures/models/armor/spore_mask_layer_1.png");
     private SporeMaskModel model;

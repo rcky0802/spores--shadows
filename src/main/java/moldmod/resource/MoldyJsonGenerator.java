@@ -3,15 +3,17 @@ package moldmod.resource;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import eu.pb4.polymer.resourcepack.api.ResourcePackBuilder;
+import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants;
+import moldmod.SporesShadowsConstants.MoldStage;
+import moldmod.SporesShadowsConstants.MoldyWoodType;
 
+import java.nio.charset.StandardCharsets;
 
 public class MoldyJsonGenerator {
 
-    
-    
-
     public static void generateAll(ResourcePackBuilder builder) {
-        for (moldmod.SporesShadowsConstants.MoldyWoodType moldyWoodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+        for (MoldyWoodType moldyWoodType : SporesShadowsConstants.WOOD_TYPES) {
             String wood = moldyWoodType.name();
             String logName = moldyWoodType.getLogName();
             String woodName = moldyWoodType.getWoodName();
@@ -33,12 +35,12 @@ public class MoldyJsonGenerator {
     }
 
     private static void write(ResourcePackBuilder builder, String path, JsonObject json) {
-        builder.addData("assets/" + moldmod.SporesShadows.MOD_ID + "/" + path + ".json", json.toString().getBytes());
+        builder.addData("assets/" + SporesShadows.MOD_ID + "/" + path + ".json", json.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private static void genItemModel(ResourcePackBuilder builder, String baseName, String parentModelName, int stage, boolean is2d, String idPrefix) {
         String stageName = "";
-        for (moldmod.SporesShadowsConstants.MoldStage ms : moldmod.SporesShadowsConstants.MoldStage.values()) {
+        for (MoldStage ms : MoldStage.values()) {
             if (ms.getId() == stage) stageName = ms.getName();
         }
         String itemName;

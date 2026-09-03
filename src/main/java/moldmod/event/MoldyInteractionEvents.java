@@ -1,7 +1,13 @@
 package moldmod.event;
 
-import moldmod.block.MoldyLogBlock;
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.block.ModBlocks;
+import moldmod.block.MoldyBlock;
+import moldmod.block.MoldyBlockHelper;
+import moldmod.config.ModConfig;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.AxeItem;
@@ -17,9 +23,9 @@ import net.minecraft.world.World;
 public class MoldyInteractionEvents {
 
     public static void register() {
-        net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
-            if (!world.isClient() && state.contains(MoldyLogBlock.STAGE) && state.get(MoldyLogBlock.STAGE) == 3 && (!state.contains(MoldyLogBlock.WAXED) || !state.get(MoldyLogBlock.WAXED))) {
-                moldmod.block.MoldyBlockHelper.grantAdvancement(player, "crumble");
+        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {
+            if (!world.isClient() && state.contains(MoldyBlock.STAGE) && state.get(MoldyBlock.STAGE) == 3 && (!state.contains(MoldyBlock.WAXED) || !state.get(MoldyBlock.WAXED))) {
+                MoldyBlockHelper.grantAdvancement(player, "crumble");
             }
             return true;
         });
@@ -34,27 +40,27 @@ public class MoldyInteractionEvents {
             BlockState state = world.getBlockState(hitResult.getBlockPos());
 
             // Check if it's a moldy block (it has STAGE and WAXED)
-            if (!state.contains(MoldyLogBlock.STAGE) || !state.contains(MoldyLogBlock.WAXED)) {
+            if (!state.contains(MoldyBlock.STAGE) || !state.contains(MoldyBlock.WAXED)) {
                 return ActionResult.PASS;
             }
 
-            boolean isWaxed = state.get(MoldyLogBlock.WAXED);
-            int stage = state.get(MoldyLogBlock.STAGE);
+            boolean isWaxed = state.get(MoldyBlock.WAXED);
+            int stage = state.get(MoldyBlock.STAGE);
 
             // Honeycomb: Waxing
             if (stack.isOf(Items.HONEYCOMB)) {
                 if (!isWaxed) {
                     if (!world.isClient) {
-                        net.minecraft.block.Block waxedBlock = moldmod.block.ModBlocks.MOLDY_TO_WAXED.get(state.getBlock());
+                        Block waxedBlock = ModBlocks.MOLDY_TO_WAXED.get(state.getBlock());
                         if (waxedBlock != null) {
-                            BlockState newState = moldmod.block.MoldyBlockHelper.copyMatchingProperties(state, waxedBlock.getDefaultState());
-                            newState = newState.with(MoldyLogBlock.WAXED, true);
-                            if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
-                                newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
+                            BlockState newState = MoldyBlockHelper.copyMatchingProperties(state, waxedBlock.getDefaultState());
+                            newState = newState.with(MoldyBlock.WAXED, true);
+                            if (newState.contains(MoldyBlock.STRUCTURAL)) {
+                                newState = newState.with(MoldyBlock.STRUCTURAL, false);
                             }
-                            moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, true);
+                            MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, true);
                             world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_HONEYCOMB_WAX_ON, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                            moldmod.block.MoldyBlockHelper.grantAdvancement(player, "wax_block");
+                            MoldyBlockHelper.grantAdvancement(player, "wax_block");
                             if (!player.isCreative()) {
                                 stack.decrement(1);
                             }
@@ -66,18 +72,19 @@ public class MoldyInteractionEvents {
             
             // Axe: Scrape wax or mold
             if (stack.getItem() instanceof AxeItem) {
+                int scrapeDamage = AutoConfig.getConfigHolder(ModConfig.class).getConfig().general.axe_scrape_damage;
                 if (isWaxed) {
                     if (!world.isClient) {
-                        net.minecraft.block.Block moldyBlock = moldmod.block.ModBlocks.WAXED_TO_MOLDY.get(state.getBlock());
+                        Block moldyBlock = ModBlocks.WAXED_TO_MOLDY.get(state.getBlock());
                         if (moldyBlock != null) {
-                            BlockState newState = moldmod.block.MoldyBlockHelper.copyMatchingProperties(state, moldyBlock.getDefaultState());
-                            newState = newState.with(MoldyLogBlock.WAXED, false);
-                            if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
-                                newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
+                            BlockState newState = MoldyBlockHelper.copyMatchingProperties(state, moldyBlock.getDefaultState());
+                            newState = newState.with(MoldyBlock.WAXED, false);
+                            if (newState.contains(MoldyBlock.STRUCTURAL)) {
+                                newState = newState.with(MoldyBlock.STRUCTURAL, false);
                             }
-                            moldmod.block.MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, false);
+                            MoldyBlockHelper.setWaxed(world, hitResult.getBlockPos(), newState, false);
                             world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_AXE_WAX_OFF, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                            stack.damage(me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().general.axe_scrape_damage, player, PlayerEntity.getSlotForHand(hand));
+                            stack.damage(scrapeDamage, player, PlayerEntity.getSlotForHand(hand));
                         }
                     }
                     return ActionResult.SUCCESS;
@@ -85,14 +92,14 @@ public class MoldyInteractionEvents {
                     // Not waxed: try to scrape mold
                     if (stage > 0 && stage < 3) {
                         if (!world.isClient) {
-                            BlockState newState = state.with(MoldyLogBlock.STAGE, stage - 1);
-                            if (newState.contains(MoldyLogBlock.STRUCTURAL)) {
-                                newState = newState.with(MoldyLogBlock.STRUCTURAL, false);
+                            BlockState newState = state.with(MoldyBlock.STAGE, stage - 1);
+                            if (newState.contains(MoldyBlock.STRUCTURAL)) {
+                                newState = newState.with(MoldyBlock.STRUCTURAL, false);
                             }
-                            moldmod.block.MoldyBlockHelper.setStage(world, hitResult.getBlockPos(), newState, stage - 1);
+                            MoldyBlockHelper.setStage(world, hitResult.getBlockPos(), newState, stage - 1);
                             world.playSound(null, hitResult.getBlockPos(), SoundEvents.ITEM_AXE_SCRAPE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                            stack.damage(me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig().general.axe_scrape_damage, player, PlayerEntity.getSlotForHand(hand));
-                            moldmod.block.MoldyBlockHelper.grantAdvancement(player, "scrape_mold");
+                            stack.damage(scrapeDamage, player, PlayerEntity.getSlotForHand(hand));
+                            MoldyBlockHelper.grantAdvancement(player, "scrape_mold");
                         }
                         return ActionResult.SUCCESS;
                     }

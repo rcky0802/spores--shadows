@@ -1,27 +1,38 @@
 package moldmod.client;
 
+import moldmod.SporesShadows;
+import moldmod.client.render.SporeMaskArmorRenderer;
+import moldmod.client.render.SporeMaskModel;
+import moldmod.item.ModItems;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.registry.Registries;
 
+@Environment(EnvType.CLIENT)
 public class SporesShadowsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		for (net.minecraft.block.Block block : net.minecraft.registry.Registries.BLOCK) {
-			if (net.minecraft.registry.Registries.BLOCK.getId(block).getNamespace().equals(moldmod.SporesShadows.MOD_ID)) {
+		for (Block block : Registries.BLOCK) {
+			if (Registries.BLOCK.getId(block).getNamespace().equals(SporesShadows.MOD_ID)) {
 				BlockRenderLayerMap.INSTANCE.putBlock(block, RenderLayer.getCutout());
 			}
 		}
 
 		// Register custom 3D Gas Mask entity model and ArmorRenderer
-		net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry.registerModelLayer(
-			moldmod.client.render.SporeMaskModel.LAYER_LOCATION,
-			moldmod.client.render.SporeMaskModel::getTexturedModelData
+		EntityModelLayerRegistry.registerModelLayer(
+			SporeMaskModel.LAYER_LOCATION,
+			SporeMaskModel::getTexturedModelData
 		);
 
-		net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer.register(
-			new moldmod.client.render.SporeMaskArmorRenderer(),
-			moldmod.item.ModItems.SPORE_MASK
+		ArmorRenderer.register(
+			new SporeMaskArmorRenderer(),
+			ModItems.SPORE_MASK
 		);
 	}
 }

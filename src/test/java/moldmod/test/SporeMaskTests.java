@@ -1,14 +1,11 @@
 package moldmod.test;
 
-import moldmod.block.ModBlocks;
-import moldmod.event.ToxicAirEvent;
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.config.ModConfig;
 import moldmod.item.ModItems;
 import moldmod.item.SporeMaskItem;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.test.GameTest;
@@ -95,7 +92,7 @@ public class SporeMaskTests {
             context.throwPositionedException("L'item creato non è riconosciuto come SPORE_MASK", BlockPos.ORIGIN);
         }
 
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         if (!config.toxicity.enable_spore_mask_protection) {
             context.throwPositionedException("enable_spore_mask_protection deve essere abilitato di default", BlockPos.ORIGIN);
         }

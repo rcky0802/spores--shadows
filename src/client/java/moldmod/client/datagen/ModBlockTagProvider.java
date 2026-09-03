@@ -1,11 +1,23 @@
 package moldmod.client.datagen;
 
+import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants.MoldStage;
+import moldmod.block.MoldyLogBlock;
+import moldmod.block.MoldyPlanksBlock;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.block.Block;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.FenceBlock;
+import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.Identifier;
+
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
@@ -34,44 +46,42 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
         FabricTagBuilder trapdoors = getOrCreateTagBuilder(BlockTags.TRAPDOORS);
         FabricTagBuilder woodenTrapdoors = getOrCreateTagBuilder(BlockTags.WOODEN_TRAPDOORS);
 
-        for (net.minecraft.block.Block block : Registries.BLOCK) {
+        for (Block block : Registries.BLOCK) {
             Identifier id = Registries.BLOCK.getId(block);
-            if (!id.getNamespace().equals(moldmod.SporesShadows.MOD_ID)) continue;
+            if (!id.getNamespace().equals(SporesShadows.MOD_ID)) continue;
             
             String name = id.getPath();
             
-            if (!name.contains(moldmod.SporesShadowsConstants.MoldStage.ROTTEN.getName() + "_")) {
+            if (!name.contains(MoldStage.ROTTEN.getName() + "_")) {
                 axeBuilder.add(block);
             }
             
-            boolean isHealthyWaxed = name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten");
+            boolean isHealthyWaxed = isHealthyWaxed(name);
             boolean isNether = name.contains("crimson") || name.contains("warped");
 
-            if (block instanceof net.minecraft.block.FenceGateBlock) {
+            if (block instanceof FenceGateBlock) {
                 fenceGates.add(block);
-            } else if (block instanceof net.minecraft.block.FenceBlock) {
+            } else if (block instanceof FenceBlock) {
                 fences.add(block);
                 if (isHealthyWaxed && !isNether) woodenFences.add(block);
-            } else if (block instanceof net.minecraft.block.StairsBlock) {
+            } else if (block instanceof StairsBlock) {
                 stairs.add(block);
                 if (isHealthyWaxed && !isNether) woodenStairs.add(block);
-            } else if (block instanceof net.minecraft.block.SlabBlock) {
+            } else if (block instanceof SlabBlock) {
                 slabs.add(block);
                 if (isHealthyWaxed && !isNether) woodenSlabs.add(block);
-            } else if (block instanceof net.minecraft.block.TrapdoorBlock) {
+            } else if (block instanceof TrapdoorBlock) {
                 trapdoors.add(block);
                 if (isHealthyWaxed && !isNether) woodenTrapdoors.add(block);
-            } else if (block instanceof net.minecraft.block.DoorBlock) {
+            } else if (block instanceof DoorBlock) {
                 doors.add(block);
                 if (isHealthyWaxed && !isNether) woodenDoors.add(block);
-            } else if (block instanceof net.minecraft.block.ButtonBlock || block instanceof net.minecraft.block.PressurePlateBlock) {
-                // Do not tag buttons and pressure plates as logs
-            } else if (block instanceof moldmod.block.MoldyPlanksBlock) {
+            } else if (block instanceof MoldyPlanksBlock) {
                 // Do not add infected planks to planks tag to prevent usage in recipes like sticks, crafting tables, etc.
                 if (isHealthyWaxed) {
                     getOrCreateTagBuilder(BlockTags.PLANKS).add(block);
                 }
-            } else if (block instanceof moldmod.block.MoldyLogBlock) {
+            } else if (block instanceof MoldyLogBlock) {
                 if (isHealthyWaxed) {
                     if (name.contains("crimson")) {
                         crimsonStems.add(block);
@@ -84,6 +94,10 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 }
             }
         }
+    }
+
+    public static boolean isHealthyWaxed(String name) {
+        return name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten");
     }
 }
 

@@ -3,14 +3,20 @@ package moldmod.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import me.shedaniel.autoconfig.AutoConfig;
-
+import moldmod.block.MoldyBlock;
+import moldmod.block.MoldyBlockHelper;
+import moldmod.block.MoldyBlockHelper.MoldRiskResult;
 import moldmod.config.ModConfig;
+import moldmod.event.ToxicAirEvent;
+import moldmod.event.ToxicAirEvent.MiasmaResult;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.registry.Registries;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -50,8 +56,8 @@ public class ModCommands {
             return 0;
         }
 
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
-        moldmod.event.ToxicAirEvent.MiasmaResult result = moldmod.event.ToxicAirEvent.calculateMiasma((net.minecraft.server.world.ServerWorld)player.getWorld(), BlockPos.ofFloored(player.getEyePos()));
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        MiasmaResult result = ToxicAirEvent.calculateMiasma((ServerWorld) player.getWorld(), BlockPos.ofFloored(player.getEyePos()));
 
         source.sendMessage(Text.literal("§a[Miasma Scanner] §eScanning environment..."));
         
@@ -98,15 +104,15 @@ public class ModCommands {
             BlockPos pos = ((BlockHitResult) hit).getBlockPos();
             BlockState state = player.getServerWorld().getBlockState(pos);
             
-            boolean isWaxed = state.contains(moldmod.block.MoldyLogBlock.WAXED) && state.get(moldmod.block.MoldyLogBlock.WAXED);
+            boolean isWaxed = state.contains(MoldyBlock.WAXED) && state.get(MoldyBlock.WAXED);
             
             ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
             
-            moldmod.block.MoldyBlockHelper.MoldRiskResult result = moldmod.block.MoldyBlockHelper.calculateDetailedR(player.getServerWorld(), pos, isWaxed, state);
+            MoldRiskResult result = MoldyBlockHelper.calculateDetailedR(player.getServerWorld(), pos, isWaxed, state);
             double R = result.R();
 
-            String blockName = net.minecraft.registry.Registries.BLOCK.getId(state.getBlock()).toString();
-            int stage = state.contains(moldmod.block.MoldyLogBlock.STAGE) ? state.get(moldmod.block.MoldyLogBlock.STAGE) : 0;
+            String blockName = Registries.BLOCK.getId(state.getBlock()).toString();
+            int stage = state.contains(MoldyBlock.STAGE) ? state.get(MoldyBlock.STAGE) : 0;
             String stageText = stage == 0 ? "Normal" : stage == 1 ? "Tainted" : stage == 2 ? "Moldy" : "Rotten";
             String waxedText = isWaxed ? "§eYes" : "§cNo";
 

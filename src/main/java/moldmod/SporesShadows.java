@@ -1,40 +1,43 @@
 package moldmod;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import moldmod.block.ModBlocks;
+import moldmod.command.ModCommands;
+import moldmod.config.ModConfig;
+import moldmod.event.MoldyInteractionEvents;
+import moldmod.event.ToxicAirEvent;
+import moldmod.item.ModItems;
+import moldmod.registry.ModComposterRegistry;
+import moldmod.registry.ModEnchantments;
+import moldmod.registry.ModFlammableRegistry;
+import moldmod.registry.ModFuelRegistry;
+import moldmod.resource.MoldyResourceGenerator;
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraft.util.Identifier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SporesShadows implements ModInitializer {
 	public static final String MOD_ID = "spores--shadows";
-
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
-		LOGGER.info("Hello Fabric world!");
-		me.shedaniel.autoconfig.AutoConfig.register(moldmod.config.ModConfig.class, me.shedaniel.autoconfig.serializer.JanksonConfigSerializer::new);
+		LOGGER.info("Initializing {}", MOD_ID);
+		AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
 		
-		moldmod.resource.MoldyResourceGenerator.initialize(); // Register Virtual Resource Pack
+		MoldyResourceGenerator.initialize(); // Register Virtual Resource Pack
 		
-		moldmod.item.ModItems.registerModItems();
-		moldmod.block.ModBlocks.registerModBlocks();
-		moldmod.event.MoldyInteractionEvents.register();
-		moldmod.event.ToxicAirEvent.register();
-		moldmod.command.ModCommands.registerCommands();
-		moldmod.registry.ModFuelRegistry.register();
-		moldmod.registry.ModComposterRegistry.register();
-		moldmod.registry.ModFlammableRegistry.register();
-		moldmod.registry.ModEnchantments.register();
+		ModItems.registerModItems();
+		ModBlocks.registerModBlocks();
+		MoldyInteractionEvents.register();
+		ToxicAirEvent.register();
+		ModCommands.registerCommands();
+		ModFuelRegistry.register();
+		ModComposterRegistry.register();
+		ModFlammableRegistry.register();
+		ModEnchantments.register();
 	}
 
 	public static Identifier id(String path) {

@@ -1,10 +1,14 @@
 package moldmod.client.datagen;
 
+import moldmod.SporesShadows;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -34,11 +38,11 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.TRAPDOORS, ItemTags.TRAPDOORS);
 
         FabricTagBuilder nonFlammable = getOrCreateTagBuilder(ItemTags.NON_FLAMMABLE_WOOD);
-        for (net.minecraft.item.Item item : net.minecraft.registry.Registries.ITEM) {
-            net.minecraft.util.Identifier id = net.minecraft.registry.Registries.ITEM.getId(item);
-            if (!id.getNamespace().equals(moldmod.SporesShadows.MOD_ID)) continue;
+        for (Item item : Registries.ITEM) {
+            Identifier id = Registries.ITEM.getId(item);
+            if (!id.getNamespace().equals(SporesShadows.MOD_ID)) continue;
             String name = id.getPath();
-            if ((name.contains("crimson") || name.contains("warped")) && name.startsWith("waxed_") && !name.contains("moldy") && !name.contains("tainted") && !name.contains("rotten")) {
+            if ((name.contains("crimson") || name.contains("warped")) && ModBlockTagProvider.isHealthyWaxed(name)) {
                 nonFlammable.add(item);
             }
         }

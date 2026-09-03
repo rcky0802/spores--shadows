@@ -125,9 +125,6 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.planks_multiplier", "Sensibilité des planches");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.default_multiplier", "Sensibilité du bois par défaut");
         
-        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.stage_2_drop_chance", "Stage 2 Drop Chance (Obsolète)");
-        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.stage_3_drop_chance", "Stage 3 Drop Chance (Obsolète)");
-
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.mud_bonus", "Malus de Boue (Mud)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.fungi_bonus", "Malus de Champignons");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.spore_blossom_bonus", "Malus de Fleur sporifère (Spore Blossom)");
@@ -227,26 +224,26 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.1", "Contaminé");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.2", "Moisi");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.stage.3", "Pourri");
-        translationBuilder.add("config.jade.plugin_spores--shadows.moldy_info", "Spores & Shadows : Info Moisissure");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_info", "Spores & Shadows : Info Moisissure");
 
         // Advancements
-        translationBuilder.add("advancement..spores--shadows.root.title", "Spores & Shadows");
-        translationBuilder.add("advancement..spores--shadows.root.description", "Survivez à la décadence de la nature.");
-        translationBuilder.add("advancement..spores--shadows.wax_block.title", "Prévention Naturelle");
-        translationBuilder.add("advancement..spores--shadows.wax_block.description", "Utilisez un rayon de miel pour cirer un bloc de bois et arrêter la moisissure.");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.title", "Huile de Coude");
-        translationBuilder.add("advancement..spores--shadows.scrape_mold.description", "Grattez la moisissure d'un bloc de bois avec une hache.");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.title", "Souffle Court");
-        translationBuilder.add("advancement..spores--shadows.toxic_air.description", "Subissez le poison du miasme en respirant trop de moisissure.");
-        translationBuilder.add("advancement..spores--shadows.crumble.title", "Poussière à Poussière");
-        translationBuilder.add("advancement..spores--shadows.crumble.description", "Tentez de briser un bloc de bois pourri et regardez-le s'effriter dans le néant.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.description", "Survivez à la décadence de la nature.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Prévention Naturelle");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Utilisez un rayon de miel pour cirer un bloc de bois et arrêter la moisissure.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Huile de Coude");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Grattez la moisissure d'un bloc de bois avec une hache.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Souffle Court");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Subissez le poison du miasme en respirant trop de moisissure.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Poussière à Poussière");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Tentez de briser un bloc de bois pourri et regardez-le s'effriter dans le néant.");
 
         // JEI
-        translationBuilder.add("jei.spores--shadows.category.waxing", "Cirage");
-        translationBuilder.add("jei.spores--shadows.category.scraping", "Grattage à la Hache");
-        translationBuilder.add("jei.spores--shadows.info.rotten_wood", "Le bois pourri est fragile et friable. Il ne peut pas être soigné avec une hache. Il nécessite Toucher de Soie pour être récolté, sinon il se désintégrera dans le néant.");
-        translationBuilder.add("jei.spores--shadows.info.spore_mask", "Le Masque Anti-Spores offre une protection totale contre le miasme toxique (Poison, Nausée et Faim). Il s'use en filtrant l'air toxique. Remplacez le filtre en le réparant sur une enclume avec de la Laine (#minecraft:wool). Peut uniquement être enchanté avec Solidité, Raccommodage et Malédiction de Disparition.");
-        translationBuilder.add("jei.spores--shadows.info.spore_filtration", "Filtration de Spores est un enchantement de casque qui neutralise le miasme toxique et l'inhalation de spores. Consomme la durabilité du casque lors de l'exposition au miasme (Niveau I: 2 durabilité, Niveau II: 1 durabilité, Niveau III: 50% de chance d'économiser la durabilité). Compatible avec tous les casques conventionnels.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Cirage");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Grattage à la Hache");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Le bois pourri est fragile et friable. Il ne peut pas être soigné avec une hache. Il nécessite Toucher de Soie pour être récolté, sinon il se désintégrera dans le néant.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "Le Masque Anti-Spores offre une protection totale contre le miasme toxique (Poison, Nausée et Faim). Il s'use en filtrant l'air toxique. Remplacez le filtre en le réparant sur une enclume avec de la Laine (#minecraft:wool). Peut uniquement être enchanté avec Solidité, Raccommodage et Malédiction de Disparition.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtration de Spores est un enchantement de casque qui neutralise le miasme toxique et l'inhalation de spores. Consomme la durabilité du casque lors de l'exposition au miasme (Niveau I: 2 durabilité, Niveau II: 1 durabilité, Niveau III: 50% de chance d'économiser la durabilité). Compatible avec tous les casques conventionnels.");
 
         // Jade Tooltips for Spore Protection
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protection contre les Spores : Active (Masque Anti-Spores)");

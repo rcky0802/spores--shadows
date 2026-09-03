@@ -2,10 +2,12 @@ package moldmod.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.WorldView;
 
 public class MoldyPlanksBlock extends Block implements MoldyBlock {
 
@@ -32,8 +34,7 @@ public class MoldyPlanksBlock extends Block implements MoldyBlock {
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
-            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
-        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        return MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

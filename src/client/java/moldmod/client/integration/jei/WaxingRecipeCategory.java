@@ -6,15 +6,18 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import moldmod.SporesShadows;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
+@Environment(EnvType.CLIENT)
 public class WaxingRecipeCategory extends AbstractTwoInputRecipeCategory<WaxingRecipe> {
 
     public static final RecipeType<WaxingRecipe> RECIPE_TYPE = RecipeType.create(SporesShadows.MOD_ID, "waxing", WaxingRecipe.class);
 
     public WaxingRecipeCategory(IGuiHelper guiHelper) {
-        super(guiHelper, new ItemStack(Items.HONEYCOMB), "jei.spores--shadows.category.waxing");
+        super(guiHelper, new ItemStack(Items.HONEYCOMB), "jei." + SporesShadows.MOD_ID + ".category.waxing");
     }
 
     @Override

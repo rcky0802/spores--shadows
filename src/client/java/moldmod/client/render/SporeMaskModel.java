@@ -1,6 +1,8 @@
 package moldmod.client.render;
 
 import moldmod.SporesShadows;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.Dilation;
 import net.minecraft.client.model.ModelData;
 import net.minecraft.client.model.ModelPart;
@@ -13,6 +15,7 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelPartNames;
 import net.minecraft.entity.LivingEntity;
 
+@Environment(EnvType.CLIENT)
 public class SporeMaskModel extends BipedEntityModel<LivingEntity> {
     public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(SporesShadows.id("spore_mask"), "main");
 

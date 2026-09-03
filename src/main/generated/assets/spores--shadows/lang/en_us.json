@@ -1216,8 +1216,6 @@
   "text.autoconfig.spores--shadows.option.catalysts.podzol_mycelium_bonus": "Podzol/Mycelium Bonus",
   "text.autoconfig.spores--shadows.option.catalysts.rotten_block_bonus": "Rotten Block Proximity Bonus",
   "text.autoconfig.spores--shadows.option.catalysts.spore_blossom_bonus": "Spore Blossom Bonus",
-  "text.autoconfig.spores--shadows.option.catalysts.stage_2_drop_chance": "Stage 2 Drop Chance (Deprecated)",
-  "text.autoconfig.spores--shadows.option.catalysts.stage_3_drop_chance": "Stage 3 Drop Chance (Deprecated)",
   "text.autoconfig.spores--shadows.option.catalysts.tainted_block_bonus": "Tainted Block Proximity Bonus",
   "text.autoconfig.spores--shadows.option.client": "Client & Shaders",
   "text.autoconfig.spores--shadows.option.client.mold_z_offset": "Mold Z-Offset (Shader Fix)",

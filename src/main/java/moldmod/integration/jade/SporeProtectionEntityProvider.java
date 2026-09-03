@@ -1,5 +1,6 @@
 package moldmod.integration.jade;
 
+import moldmod.SporesShadows;
 import moldmod.item.ModItems;
 import moldmod.registry.ModEnchantments;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -24,7 +25,7 @@ public enum SporeProtectionEntityProvider implements IEntityComponentProvider {
             ItemStack headStack = living.getEquippedStack(EquipmentSlot.HEAD);
             if (!headStack.isEmpty()) {
                 if (headStack.isOf(ModItems.SPORE_MASK)) {
-                    tooltip.add(Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask").formatted(Formatting.AQUA));
+                    tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".jade.spore_protection_mask").formatted(Formatting.AQUA));
                 } else {
                     var regOpt = accessor.getLevel().getRegistryManager().getOptional(RegistryKeys.ENCHANTMENT);
                     if (regOpt.isPresent()) {
@@ -32,7 +33,7 @@ public enum SporeProtectionEntityProvider implements IEntityComponentProvider {
                         if (entryOpt.isPresent()) {
                             int level = EnchantmentHelper.getLevel(entryOpt.get(), headStack);
                             if (level > 0) {
-                                tooltip.add(Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", level).formatted(Formatting.AQUA));
+                                tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".jade.spore_protection_enchant", level).formatted(Formatting.AQUA));
                             }
                         }
                     }
@@ -43,6 +44,6 @@ public enum SporeProtectionEntityProvider implements IEntityComponentProvider {
 
     @Override
     public Identifier getUid() {
-        return Identifier.of(moldmod.SporesShadows.MOD_ID, "spore_protection_info");
+        return Identifier.of(SporesShadows.MOD_ID, "spore_protection_info");
     }
 }

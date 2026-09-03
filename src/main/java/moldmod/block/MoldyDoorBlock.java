@@ -1,14 +1,22 @@
 package moldmod.block;
 
-import net.minecraft.block.DoorBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.block.BlockSetType;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 
 public class MoldyDoorBlock extends DoorBlock implements MoldyBlock {
 
@@ -32,32 +40,30 @@ public class MoldyDoorBlock extends DoorBlock implements MoldyBlock {
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.randomTick(state, world, pos, random);
         // Only tick the LOWER half so the door doesn't age twice as fast.
-        // The lower half will sync changes to the upper half automatically via
-        // MoldyBlockHelper.
-        if (state.get(net.minecraft.block.DoorBlock.HALF) == net.minecraft.block.enums.DoubleBlockHalf.LOWER) {
+        // The lower half will sync changes to the upper half automatically via MoldyBlockHelper.
+        if (state.get(HALF) == DoubleBlockHalf.LOWER) {
             MoldyBlockHelper.randomTick(state, world, pos, random);
         }
     }
 
     @Override
-    protected net.minecraft.util.ActionResult onUse(BlockState state, net.minecraft.world.World world, BlockPos pos,
-            PlayerEntity player, net.minecraft.util.hit.BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos,
+            PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
-            int stage = state.get(MoldyLogBlock.STAGE);
-            boolean waxed = state.get(MoldyLogBlock.WAXED);
+            int stage = state.get(MoldyBlock.STAGE);
+            boolean waxed = state.get(MoldyBlock.WAXED);
             if (stage == 3 && !waxed) {
                 if (world.random.nextFloat() < 0.10f) {
-                    BlockPos otherPos = state
-                            .get(net.minecraft.block.DoorBlock.HALF) == net.minecraft.block.enums.DoubleBlockHalf.LOWER
-                                    ? pos.up()
-                                    : pos.down();
+                    BlockPos otherPos = state.get(HALF) == DoubleBlockHalf.LOWER
+                            ? pos.up()
+                            : pos.down();
                     if (world.getBlockState(otherPos).isOf(this)) {
                         world.breakBlock(otherPos, false);
                     }
                     world.breakBlock(pos, false);
-                    world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_WOOD_BREAK,
-                            net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 0.8f);
-                    return net.minecraft.util.ActionResult.SUCCESS;
+                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK,
+                            SoundCategory.BLOCKS, 1.0f, 0.8f);
+                    return ActionResult.SUCCESS;
                 }
             }
         }
@@ -65,8 +71,7 @@ public class MoldyDoorBlock extends DoorBlock implements MoldyBlock {
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
-            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
-        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        return MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

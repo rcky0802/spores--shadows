@@ -7,11 +7,14 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import moldmod.SporesShadows;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 import java.util.List;
 
+@Environment(EnvType.CLIENT)
 public class ScrapingRecipeCategory extends AbstractTwoInputRecipeCategory<ScrapingRecipe> {
 
     public static final RecipeType<ScrapingRecipe> RECIPE_TYPE = RecipeType.create(SporesShadows.MOD_ID, "scraping", ScrapingRecipe.class);
@@ -26,7 +29,7 @@ public class ScrapingRecipeCategory extends AbstractTwoInputRecipeCategory<Scrap
     );
 
     public ScrapingRecipeCategory(IGuiHelper guiHelper) {
-        super(guiHelper, new ItemStack(Items.IRON_AXE), "jei.spores--shadows.category.scraping");
+        super(guiHelper, new ItemStack(Items.IRON_AXE), "jei." + SporesShadows.MOD_ID + ".category.scraping");
     }
 
     @Override

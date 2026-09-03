@@ -1,14 +1,19 @@
 package moldmod.block;
 
-import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.TrapdoorBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.block.BlockSetType;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 
 public class MoldyTrapdoorBlock extends TrapdoorBlock implements MoldyBlock {
 
@@ -35,17 +40,16 @@ public class MoldyTrapdoorBlock extends TrapdoorBlock implements MoldyBlock {
     }
 
     @Override
-    protected net.minecraft.util.ActionResult onUse(BlockState state, net.minecraft.world.World world, BlockPos pos,
-            PlayerEntity player, net.minecraft.util.hit.BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos,
+            PlayerEntity player, BlockHitResult hit) {
         if (MoldyBlockHelper.tryBreakRottenBlock(world, pos, state, 0.10f)) {
-            return net.minecraft.util.ActionResult.SUCCESS;
+            return ActionResult.SUCCESS;
         }
         return super.onUse(state, world, pos, player, hit);
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
-            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
-        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        return MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

@@ -1,6 +1,8 @@
 package moldmod.mixin;
 
-import moldmod.block.MoldyLogBlock;
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.block.MoldyBlock;
+import moldmod.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.util.math.BlockPos;
@@ -19,12 +21,12 @@ public class ExplosionBehaviorMixin {
 
     @Inject(method = "getBlastResistance", at = @At("RETURN"), cancellable = true)
     private void modifyMoldyBlastResistance(Explosion explosion, BlockView world, BlockPos pos, BlockState blockState, FluidState fluidState, CallbackInfoReturnable<Optional<Float>> cir) {
-        if (blockState.contains(MoldyLogBlock.STAGE)) {
-            moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+        if (blockState.contains(MoldyBlock.STAGE)) {
+            ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
             if (!config.blastResistance.enable_blast_resistance_scaling) {
                 return;
             }
-            int stage = blockState.get(MoldyLogBlock.STAGE);
+            int stage = blockState.get(MoldyBlock.STAGE);
             Optional<Float> original = cir.getReturnValue();
             if (original.isPresent()) {
                 float res = original.get();

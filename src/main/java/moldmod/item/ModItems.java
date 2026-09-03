@@ -1,6 +1,5 @@
 package moldmod.item;
 
-import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import moldmod.SporesShadows;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ArmorItem;

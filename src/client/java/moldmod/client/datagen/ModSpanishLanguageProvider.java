@@ -125,9 +125,6 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.planks_multiplier", "Susceptibilidad de Tablones de Madera");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.default_multiplier", "Susceptibilidad de Madera por Defecto");
         
-        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.stage_2_drop_chance", "Probabilidad Drop Stage 2 (Obsoleto)");
-        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.stage_3_drop_chance", "Probabilidad Drop Stage 3 (Obsoleto)");
-
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.mud_bonus", "Malus de Barro (Mud)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.fungi_bonus", "Malus de Adyacencia a Hongos");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.spore_blossom_bonus", "Malus de Flor de Esporas (Spore Blossom)");
@@ -233,23 +230,23 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_info", "Spores & Shadows: Info de Moho");
 
         // Advancements
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.description", "Sobrevive a la decadencia de la naturaleza.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Prevención Natural");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Usa un panal de miel para encerar un bloque de madera y detener el moho.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Grasa de Codo");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Raspa el moho de un bloque de madera con un hacha.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Respiración Corta");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Sufre el veneno del miasma al respirar demasiado moho.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Polvo al Polvo");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Intenta romper un bloque de madera podrido y mira cómo se desmorona en la nada.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.description", "Sobrevive a la decadencia de la naturaleza.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Prevención Natural");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Usa un panal de miel para encerar un bloque de madera y detener el moho.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Grasa de Codo");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Raspa el moho de un bloque de madera con un hacha.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Respiración Corta");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Sufre el veneno del miasma al respirar demasiado moho.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Polvo al Polvo");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Intenta romper un bloque de madera podrido y mira cómo se desmorona en la nada.");
 
         // JEI
-        translationBuilder.add("jei.spores--shadows.category.waxing", "Encerado");
-        translationBuilder.add("jei.spores--shadows.category.scraping", "Raspado con Hacha");
-        translationBuilder.add("jei.spores--shadows.info.rotten_wood", "La madera podrida es quebradiza y frágil. No se puede curar con un hacha. Requiere Toque de Seda para ser recolectada, de lo contrario se desintegrará en la nada al romperse.");
-        translationBuilder.add("jei.spores--shadows.info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola en un yunque con Lana (#minecraft:wool). Solo se puede encantar con Irrompibilidad, Reparación y Maldición de Desaparición.");
-        translationBuilder.add("jei.spores--shadows.info.spore_filtration", "Filtración de Esporas es un encantamiento de casco que neutraliza el miasma tóxico y la inhalación de esporas. Consume durabilidad del casco al exponerse al miasma (Nivel I: 2 durabilidad, Nivel II: 1 durabilidad, Nivel III: 50% de ahorro). Compatible con todos los cascos convencionales.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Encerado");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Raspado con Hacha");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "La madera podrida es quebradiza y frágil. No se puede curar con un hacha. Requiere Toque de Seda para ser recolectada, de lo contrario se desintegrará en la nada al romperse.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola en un yunque con Lana (#minecraft:wool). Solo se puede encantar con Irrompibilidad, Reparación y Maldición de Desaparición.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtración de Esporas es un encantamiento de casco que neutraliza el miasma tóxico y la inhalación de esporas. Consume durabilidad del casco al exponerse al miasma (Nivel I: 2 durabilidad, Nivel II: 1 durabilidad, Nivel III: 50% de ahorro). Compatible con todos los cascos convencionales.");
 
         // Jade Tooltips for Spore Protection
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protección contra Esporas: Activa (Máscara Antiesporas)");

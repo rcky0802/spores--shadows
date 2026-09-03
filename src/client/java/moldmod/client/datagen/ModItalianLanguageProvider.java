@@ -56,10 +56,10 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         if (state.equals("moldy")) stateStr = isFeminine ? (isPlural ? "Ammuffite" : "Ammuffita") : (isPlural ? "Ammuffiti" : "Ammuffito");
         else if (state.equals("waxed")) stateStr = isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato");
         else if (state.equals("tainted")) stateStr = isFeminine ? (isPlural ? "Intaccate" : "Intaccata") : (isPlural ? "Intaccati" : "Intaccato");
-        else if (state.equals("rotten")) stateStr = isFeminine ? (isPlural ? "Marcie" : "Marcia") : (isPlural ? "Marci" : "Marcio");
+        else if (state.equals("rotten")) stateStr = isFeminine ? (isPlural ? "Marce" : "Marcia") : (isPlural ? "Marci" : "Marcio");
         else if (state.equals("waxed_tainted")) stateStr = (isFeminine ? (isPlural ? "Intaccate" : "Intaccata") : (isPlural ? "Intaccati" : "Intaccato")) + " " + (isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato"));
         else if (state.equals("waxed_moldy")) stateStr = (isFeminine ? (isPlural ? "Ammuffite" : "Ammuffita") : (isPlural ? "Ammuffiti" : "Ammuffito")) + " " + (isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato"));
-        else if (state.equals("waxed_rotten")) stateStr = (isFeminine ? (isPlural ? "Marcie" : "Marcia") : (isPlural ? "Marci" : "Marcio")) + " " + (isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato"));
+        else if (state.equals("waxed_rotten")) stateStr = (isFeminine ? (isPlural ? "Marce" : "Marcia") : (isPlural ? "Marci" : "Marcio")) + " " + (isFeminine ? (isPlural ? "Cerate" : "Cerata") : (isPlural ? "Cerati" : "Cerato"));
 
         return blockName + " " + wName + " " + stateStr;
     }
@@ -126,9 +126,6 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.planks_multiplier", "Suscettibilità Assi di Legno");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.susceptibility.default_multiplier", "Suscettibilità Legno Predefinita");
         
-        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.stage_2_drop_chance", "Stage 2 Drop Chance (Deprecato)");
-        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.stage_3_drop_chance", "Stage 3 Drop Chance (Deprecato)");
-
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.mud_bonus", "Malus Fango (Mud)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.fungi_bonus", "Malus Vicinanza Funghi");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.catalysts.spore_blossom_bonus", "Malus Fiore di Spora (Spore Blossom)");
@@ -234,16 +231,16 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_info", "Spores & Shadows: Info Muffa");
 
         // Advancements
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".root.description", "Sopravvivi al decadimento della natura.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Prevenzione Naturale");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Usa un favo di miele per cerare un blocco e fermare la muffa.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Olio di Gomito");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Raschia via la muffa da un blocco di legno con un ascia.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Respiro Corto");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Subisci il veleno del miasma respirando troppa muffa.");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Polvere alla Polvere");
-        translationBuilder.add("advancement.." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.title", "Spores & Shadows");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".root.description", "Sopravvivi al decadimento della natura.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.title", "Prevenzione Naturale");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".wax_block.description", "Usa un favo di miele per cerare un blocco e fermare la muffa.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.title", "Olio di Gomito");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".scrape_mold.description", "Raschia via la muffa da un blocco di legno con un'ascia.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.title", "Respiro Corto");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".toxic_air.description", "Subisci il veleno del miasma respirando troppa muffa.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.title", "Polvere alla Polvere");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".crumble.description", "Tenta di rompere un blocco di legno marcio e guardalo sgretolarsi nel nulla.");
 
         // JEI Integration
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Ceratura");

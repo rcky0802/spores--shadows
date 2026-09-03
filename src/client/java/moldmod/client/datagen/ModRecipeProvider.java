@@ -1,6 +1,9 @@
 package moldmod.client.datagen;
 
 import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants;
+import moldmod.SporesShadowsConstants.MoldyWoodType;
+import moldmod.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.recipe.RecipeExporter;
@@ -12,6 +15,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.book.RecipeCategory;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,7 +27,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(RecipeExporter exporter) {
-        for (moldmod.SporesShadowsConstants.MoldyWoodType woodTypeObj : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+        for (MoldyWoodType woodTypeObj : SporesShadowsConstants.WOOD_TYPES) {
             String wood = woodTypeObj.name();
             String logName = woodTypeObj.getLogName();
             String woodName = woodTypeObj.getWoodName();
@@ -47,14 +51,14 @@ public class ModRecipeProvider extends FabricRecipeProvider {
     }
 
     private void generateEquipmentRecipes(RecipeExporter exporter) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, moldmod.item.ModItems.SPORE_MASK)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.SPORE_MASK)
                 .pattern("LGL")
                 .pattern("CWC")
                 .pattern(" H ")
                 .input('L', Items.LEATHER)
                 .input('G', Items.GLASS_PANE)
                 .input('C', Items.COPPER_INGOT)
-                .input('W', net.minecraft.registry.tag.ItemTags.WOOL)
+                .input('W', ItemTags.WOOL)
                 .input('H', Items.HONEYCOMB)
                 .criterion("has_leather", conditionsFromItem(Items.LEATHER))
                 .criterion("has_honeycomb", conditionsFromItem(Items.HONEYCOMB))

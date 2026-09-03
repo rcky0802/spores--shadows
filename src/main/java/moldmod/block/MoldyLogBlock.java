@@ -4,8 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PillarBlock;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.AxeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
@@ -13,8 +17,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction.Axis;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 
 /**
  * A custom pillar block representing a moldy oak log.
@@ -34,7 +40,7 @@ public class MoldyLogBlock extends PillarBlock implements MoldyBlock {
         super(settings);
         this.strippedBlock = strippedBlock;
         this.setDefaultState(MoldyBlockHelper
-                .initMoldyDefaultState(this.getDefaultState().with(AXIS, net.minecraft.util.math.Direction.Axis.Y)));
+                .initMoldyDefaultState(this.getDefaultState().with(AXIS, Axis.Y)));
     }
 
     @Override
@@ -55,9 +61,9 @@ public class MoldyLogBlock extends PillarBlock implements MoldyBlock {
     }
 
     @Override
-    public net.minecraft.sound.BlockSoundGroup getSoundGroup(BlockState state) {
+    public BlockSoundGroup getSoundGroup(BlockState state) {
         if (state.contains(STAGE) && state.get(STAGE) == 3) {
-            return net.minecraft.sound.BlockSoundGroup.SLIME;
+            return BlockSoundGroup.SLIME;
         }
         return super.getSoundGroup(state);
     }
@@ -65,11 +71,9 @@ public class MoldyLogBlock extends PillarBlock implements MoldyBlock {
     @Override
     protected ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos,
             PlayerEntity player, Hand hand, BlockHitResult hit) {
-        // If the player right-clicks with an Axe (without sneaking, since sneaking is
-        // caught by UseBlockCallback),
-        // we strip the log. We preserve the STAGE and WAXED, but set STRUCTURAL to
-        // false!
-        if (stack.getItem() instanceof net.minecraft.item.AxeItem && strippedBlock != null) {
+        // If the player right-clicks with an Axe (without sneaking, since sneaking is caught by UseBlockCallback),
+        // we strip the log. We preserve the STAGE and WAXED, but set STRUCTURAL to false!
+        if (stack.getItem() instanceof AxeItem && strippedBlock != null) {
             BlockState stripped = strippedBlock.getDefaultState();
             if (state.contains(AXIS)) {
                 stripped = stripped.with(AXIS, state.get(AXIS));
@@ -86,8 +90,8 @@ public class MoldyLogBlock extends PillarBlock implements MoldyBlock {
             }
 
             world.setBlockState(pos, stripped);
-            world.playSound(player, pos, net.minecraft.sound.SoundEvents.ITEM_AXE_STRIP,
-                    net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 1.0f);
+            world.playSound(player, pos, SoundEvents.ITEM_AXE_STRIP,
+                    SoundCategory.BLOCKS, 1.0f, 1.0f);
             stack.damage(1, player, PlayerEntity.getSlotForHand(hand));
             return ItemActionResult.SUCCESS;
         }
@@ -95,8 +99,7 @@ public class MoldyLogBlock extends PillarBlock implements MoldyBlock {
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
-            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
-        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        return MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

@@ -1216,8 +1216,6 @@
   "text.autoconfig.spores--shadows.option.catalysts.podzol_mycelium_bonus": "Podsol-/Myzel-Malus",
   "text.autoconfig.spores--shadows.option.catalysts.rotten_block_bonus": "Verrotteter Block-Malus",
   "text.autoconfig.spores--shadows.option.catalysts.spore_blossom_bonus": "Sporenblüten-Malus",
-  "text.autoconfig.spores--shadows.option.catalysts.stage_2_drop_chance": "Stage 2 Drop Chance (Veraltet)",
-  "text.autoconfig.spores--shadows.option.catalysts.stage_3_drop_chance": "Stage 3 Drop Chance (Veraltet)",
   "text.autoconfig.spores--shadows.option.catalysts.tainted_block_bonus": "Befallener Block-Malus",
   "text.autoconfig.spores--shadows.option.client": "Client & Shader",
   "text.autoconfig.spores--shadows.option.client.mold_z_offset": "Schimmel Z-Versatz (Shader-Fix)",

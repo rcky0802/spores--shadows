@@ -4,12 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockSetType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PressurePlateBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.WorldView;
 
 public class MoldyPressurePlateBlock extends PressurePlateBlock implements MoldyBlock {
 
@@ -44,7 +46,7 @@ public class MoldyPressurePlateBlock extends PressurePlateBlock implements Moldy
     }
 
     public int getMoldyPressTicks(BlockState state) {
-        int stage = state.get(MoldyLogBlock.STAGE);
+        int stage = state.get(MoldyBlock.STAGE);
         return switch (stage) {
             case 0 -> 20;
             case 1 -> 40;
@@ -55,8 +57,7 @@ public class MoldyPressurePlateBlock extends PressurePlateBlock implements Moldy
     }
 
     @Override
-    public net.minecraft.item.ItemStack getPickStack(net.minecraft.world.WorldView world,
-            net.minecraft.util.math.BlockPos pos, net.minecraft.block.BlockState state) {
-        return moldmod.block.MoldyBlockHelper.getPickStack(world, pos, state);
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        return MoldyBlockHelper.getPickStack(world, pos, state);
     }
 }

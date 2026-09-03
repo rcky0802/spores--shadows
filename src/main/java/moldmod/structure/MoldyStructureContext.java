@@ -1,15 +1,25 @@
 package moldmod.structure;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.block.ModBlocks;
+import moldmod.block.MoldyBlock;
+import moldmod.block.MoldyBlockHelper;
+import moldmod.config.ModConfig;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
+
+import java.util.Random;
 
 public class MoldyStructureContext {
 
     private static final ThreadLocal<String> CURRENT_STRUCTURE = new ThreadLocal<>();
-    private static final net.minecraft.util.math.Direction[] DIRECTIONS = net.minecraft.util.math.Direction.values();
+    private static final Direction[] DIRECTIONS = Direction.values();
 
     @FunctionalInterface
     public interface StructureScope extends AutoCloseable {
@@ -42,24 +52,21 @@ public class MoldyStructureContext {
             return state;
 
         // For doors, ensure both halves use the exact same position and random seed for
-        // calculations
-        // to prevent them from getting different states and breaking instantly.
+        // calculations to prevent them from getting different states and breaking instantly.
         BlockPos basePos = pos;
-        if (state.contains(net.minecraft.block.DoorBlock.HALF)
-                && state.get(net.minecraft.block.DoorBlock.HALF) == net.minecraft.block.enums.DoubleBlockHalf.UPPER) {
+        if (state.contains(DoorBlock.HALF) && state.get(DoorBlock.HALF) == DoubleBlockHalf.UPPER) {
             basePos = pos.down();
         }
 
         // Use a deterministic random based on the base position and world seed
-        java.util.Random random = new java.util.Random(basePos.asLong() ^ world.getSeed());
+        Random random = new Random(basePos.asLong() ^ world.getSeed());
         double r = random.nextDouble() * 100.0;
 
         int moldy = 0;
         int tainted = 0;
         int rotten = 0;
 
-        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig
-                .getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
         // Category 1: Degrado Critico
         if (structureId.contains("shipwreck") || structureId.contains("swamp_hut")) {
@@ -91,15 +98,14 @@ public class MoldyStructureContext {
         boolean isUnderwater = false;
         boolean hasSkyAccess = false;
 
-        for (net.minecraft.util.math.Direction dir : DIRECTIONS) {
+        for (Direction dir : DIRECTIONS) {
             if (world.getBlockState(basePos.offset(dir)).isOf(Blocks.WATER)) {
                 isUnderwater = true;
                 break;
             }
         }
 
-        // Approximate sky access check (if above Y=60 and relatively high up in the
-        // local terrain)
+        // Approximate sky access check (if above Y=60 and relatively high up in the local terrain)
         if (basePos.getY() > 60 && world.isSkyVisible(basePos.up())) {
             hasSkyAccess = true;
         }
@@ -132,8 +138,7 @@ public class MoldyStructureContext {
 
         // Rule: If exposed to air/rain (sky access), shift towards Moldy
         if (hasSkyAccess && !isUnderwater) {
-            // Convert some Rotten/Tainted back to Moldy since fresh air preserves it
-            // slightly from rotting completely
+            // Convert some Rotten/Tainted back to Moldy since fresh air preserves it slightly from rotting completely
             int recovered = Math.min(rotten, 15);
             rotten -= recovered;
             moldy += recovered;
@@ -143,7 +148,7 @@ public class MoldyStructureContext {
         }
 
         // --- INFLUENCE BY PLAYER RISK FORMULA (R) ---
-        double R = moldmod.block.MoldyBlockHelper.calculateR(world, basePos, false, state);
+        double R = MoldyBlockHelper.calculateR(world, basePos, false, state);
         if (R > 0.8) {
             rotten = Math.min(100, rotten + (int) (R * 15));
             tainted = Math.min(100 - rotten, tainted + 15);
@@ -169,20 +174,20 @@ public class MoldyStructureContext {
     }
 
     private static boolean isConvertible(BlockState state) {
-        return moldmod.block.ModBlocks.VANILLA_TO_MOLDY.containsKey(state.getBlock());
+        return ModBlocks.VANILLA_TO_MOLDY.containsKey(state.getBlock());
     }
 
     private static BlockState getConvertedState(BlockState original, int stage) {
-        if (moldmod.block.ModBlocks.VANILLA_TO_MOLDY.containsKey(original.getBlock())) {
-            net.minecraft.block.Block moldyBlock = moldmod.block.ModBlocks.VANILLA_TO_MOLDY.get(original.getBlock());
-            BlockState newState = moldmod.block.MoldyBlockHelper.copyMatchingProperties(original, moldyBlock.getDefaultState());
+        if (ModBlocks.VANILLA_TO_MOLDY.containsKey(original.getBlock())) {
+            Block moldyBlock = ModBlocks.VANILLA_TO_MOLDY.get(original.getBlock());
+            BlockState newState = MoldyBlockHelper.copyMatchingProperties(original, moldyBlock.getDefaultState());
 
-            if (newState.contains(moldmod.block.MoldyLogBlock.STAGE)) {
-                newState = newState.with(moldmod.block.MoldyLogBlock.STAGE, stage);
+            if (newState.contains(MoldyBlock.STAGE)) {
+                newState = newState.with(MoldyBlock.STAGE, stage);
             }
 
-            if (newState.contains(moldmod.block.MoldyLogBlock.STRUCTURAL)) {
-                newState = newState.with(moldmod.block.MoldyLogBlock.STRUCTURAL, true);
+            if (newState.contains(MoldyBlock.STRUCTURAL)) {
+                newState = newState.with(MoldyBlock.STRUCTURAL, true);
             }
 
             return newState;

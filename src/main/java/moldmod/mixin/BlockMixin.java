@@ -1,26 +1,38 @@
 package moldmod.mixin;
 
-import moldmod.block.MoldyLogBlock;
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.block.MoldyBlock;
+import moldmod.config.ModConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
-import net.minecraft.particle.ParticleTypes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Block.class)
 public class BlockMixin {
     @Inject(method = "randomDisplayTick", at = @At("HEAD"))
     private void spawnMoldParticles(BlockState state, World world, BlockPos pos, Random random, CallbackInfo ci) {
-        if (state.contains(MoldyLogBlock.STAGE)) {
-            int stage = state.get(MoldyLogBlock.STAGE);
+        if (state.contains(MoldyBlock.STAGE)) {
+            int stage = state.get(MoldyBlock.STAGE);
             if (stage > 0) {
-                if (state.contains(MoldyLogBlock.WAXED) && state.get(MoldyLogBlock.WAXED)) {
+                if (state.contains(MoldyBlock.WAXED) && state.get(MoldyBlock.WAXED)) {
                     return;
                 }
 
@@ -61,29 +73,29 @@ public class BlockMixin {
     }
 
     @Inject(method = "onBreak", at = @At("HEAD"))
-    private void spawnSporeCloudOnBreak(World world, BlockPos pos, BlockState state, net.minecraft.entity.player.PlayerEntity player, org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable<BlockState> cir) {
-        if (state.contains(MoldyLogBlock.STAGE)) {
-            int stage = state.get(MoldyLogBlock.STAGE);
+    private void spawnSporeCloudOnBreak(World world, BlockPos pos, BlockState state, PlayerEntity player, CallbackInfoReturnable<BlockState> cir) {
+        if (state.contains(MoldyBlock.STAGE)) {
+            int stage = state.get(MoldyBlock.STAGE);
             if (stage < 2) return;
 
-            moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
             if (config == null || config.hardness == null || !config.hardness.enable_break_spore_cloud) return;
 
-            boolean isWaxed = (state.contains(MoldyLogBlock.WAXED) && state.get(MoldyLogBlock.WAXED))
-                    || net.minecraft.registry.Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("waxed_");
+            boolean isWaxed = (state.contains(MoldyBlock.WAXED) && state.get(MoldyBlock.WAXED))
+                    || Registries.BLOCK.getId(state.getBlock()).getPath().startsWith("waxed_");
             if (isWaxed) return;
 
             boolean hasSilkTouch = false;
             if (player != null) {
-                net.minecraft.item.ItemStack tool = player.getMainHandStack();
-                var silkTouchEntry = world.getRegistryManager().get(net.minecraft.registry.RegistryKeys.ENCHANTMENT).getEntry(net.minecraft.enchantment.Enchantments.SILK_TOUCH);
-                if (silkTouchEntry.isPresent()) {
-                    hasSilkTouch = net.minecraft.enchantment.EnchantmentHelper.getLevel(silkTouchEntry.get(), tool) > 0;
-                }
+                ItemStack tool = player.getMainHandStack();
+                hasSilkTouch = world.getRegistryManager().getOptional(RegistryKeys.ENCHANTMENT)
+                        .flatMap(reg -> reg.getEntry(Enchantments.SILK_TOUCH))
+                        .map(entry -> EnchantmentHelper.getLevel(entry, tool) > 0)
+                        .orElse(false);
             }
 
             if (!hasSilkTouch) {
-                if (world instanceof net.minecraft.server.world.ServerWorld serverWorld) {
+                if (world instanceof ServerWorld serverWorld) {
                     double cx = pos.getX() + 0.5;
                     double cy = pos.getY() + 0.5;
                     double cz = pos.getZ() + 0.5;
@@ -96,7 +108,7 @@ public class BlockMixin {
                     serverWorld.spawnParticles(ParticleTypes.FALLING_SPORE_BLOSSOM, cx, cy, cz, countFalling, 0.3, 0.3, 0.3, 0.02);
                     serverWorld.spawnParticles(ParticleTypes.MYCELIUM, cx, cy, cz, countMycelium, 0.35, 0.35, 0.35, 0.02);
 
-                    world.playSound(null, pos, net.minecraft.sound.SoundEvents.BLOCK_FUNGUS_BREAK, net.minecraft.sound.SoundCategory.BLOCKS, 1.0f, 0.8f);
+                    world.playSound(null, pos, SoundEvents.BLOCK_FUNGUS_BREAK, SoundCategory.BLOCKS, 1.0f, 0.8f);
                 }
             }
         }
