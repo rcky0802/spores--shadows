@@ -245,12 +245,16 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "Le Masque Anti-Spores offre une protection totale contre le miasme toxique (Poison, Nausée et Faim). Il s'use en filtrant l'air toxique. Remplacez le filtre en le réparant sur une enclume avec de la Laine (#minecraft:wool). Peut uniquement être enchanté avec Solidité, Raccommodage et Malédiction de Disparition.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtration de Spores est un enchantement de casque qui neutralise le miasme toxique et l'inhalation de spores. Consomme la durabilité du casque lors de l'exposition au miasme (Niveau I: 2 durabilité, Niveau II: 1 durabilité, Niveau III: 50% de chance d'économiser la durabilité). Compatible avec tous les casques conventionnels.");
 
-        // Jade Tooltips for Spore Protection
+        // Jade Tooltips for Spore Protection & Spore Detector
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protection contre les Spores : Active (Masque Anti-Spores)");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Filtration de Spores : Niveau %d");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows : Info Protection Spores");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows : Info Détecteur de Miasme");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Masque Anti-Spores");
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Détecteur de Miasme");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Détecteur de Miasme");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "Le Détecteur de Miasme mesure la toxicité de l'air et la ventilation de la pièce. Clic Droit dans l'air pour analyser. Peut être placé sur les murs ou sols pour émettre un signal de Redstone proportionnel à la densité de spores.");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Air Pur");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtrez les spores toxiques en respirant à travers un Masque Anti-Spores dans une pièce contaminée.");
 

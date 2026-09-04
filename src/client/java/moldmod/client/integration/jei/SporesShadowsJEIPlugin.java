@@ -98,8 +98,9 @@ public class SporesShadowsJEIPlugin implements IModPlugin {
             registration.addIngredientInfo(rottenStacks, VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.rotten_wood"));
         }
 
-        // 4. Spore Mask Info & Spore Filtration Info on Enchanted Books
+        // 4. Spore Mask Info, Spore Detector Info & Spore Filtration Info on Enchanted Books
         registration.addIngredientInfo(new ItemStack(ModItems.SPORE_MASK), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.spore_mask"));
+        registration.addIngredientInfo(new ItemStack(ModItems.SPORE_DETECTOR), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.spore_detector"));
 
         var client = MinecraftClient.getInstance();
         var registryManager = (client != null && client.world != null) ? client.world.getRegistryManager() : null;

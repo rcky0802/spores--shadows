@@ -212,12 +212,16 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "The Spore Mask provides complete protection against toxic miasma (Poison, Nausea, and Hunger). It consumes durability while filtering toxic air. Replace the filter by repairing it in an anvil with Wool (#minecraft:wool). Can be enchanted only with Unbreaking, Mending, and Curse of Vanishing.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Spore Filtration is a helmet enchantment that neutralizes toxic miasma and spore inhalation. Consumes helmet durability when exposed to miasma (Level I: 2 durability, Level II: 1 durability, Level III: 50% durability save chance). Compatible with all conventional helmets.");
 
-        // Jade Tooltips for Spore Protection
+        // Jade Tooltips for Spore Protection & Spore Detector
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Spore Protection: Active (Spore Mask)");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Spore Filtration: Level %d");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Spore Protection Info");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Spore Detector Info");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Spore Mask");
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Spore Detector");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Spore Detector");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "The Spore Detector measures air toxicity and room ventilation. Right-Click in the air to scan. Can be mounted on walls or floors to emit a Redstone signal proportional to spore density.");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Pure Air");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filter toxic spores by breathing through a Spore Mask in a contaminated room.");
 

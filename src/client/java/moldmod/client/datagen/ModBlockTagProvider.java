@@ -2,6 +2,7 @@ package moldmod.client.datagen;
 
 import moldmod.SporesShadows;
 import moldmod.SporesShadowsConstants.MoldStage;
+import moldmod.block.ModBlocks;
 import moldmod.block.MoldyLogBlock;
 import moldmod.block.MoldyPlanksBlock;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -28,6 +29,9 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
     @Override
     protected void configure(RegistryWrapper.WrapperLookup arg) {
         FabricTagBuilder axeBuilder = getOrCreateTagBuilder(BlockTags.AXE_MINEABLE);
+        FabricTagBuilder pickaxeBuilder = getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE);
+        pickaxeBuilder.add(ModBlocks.SPORE_DETECTOR);
+
         FabricTagBuilder logsThatBurn = getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN);
         FabricTagBuilder logs = getOrCreateTagBuilder(BlockTags.LOGS);
         FabricTagBuilder crimsonStems = getOrCreateTagBuilder(BlockTags.CRIMSON_STEMS);

@@ -268,12 +268,16 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "Die Sporenmaske bietet vollständigen Schutz vor giftigem Miasma (Gift, Übelkeit und Hunger). Sie verbraucht Haltbarkeit beim Filtern giftiger Luft. Tausche den Filter aus, indem du sie im Amboss mit Wolle (#minecraft:wool) reparierst. Kann nur mit Haltbarkeit, Reparatur und Fluch des Verschwindens verzaubert werden.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Sporenfiltration ist eine Helm-Verzauberung, die giftiges Miasma und das Einatmen von Sporen neutralisiert. Verbraucht Helm-Haltbarkeit bei Miasma-Exposition (Stufe I: 2 Haltbarkeit, Stufe II: 1 Haltbarkeit, Stufe III: 50% Haltbarkeits-Ersparnis). Kompatibel mit allen konventionellen Helmen.");
 
-        // Jade Tooltips for Spore Protection
+        // Jade Tooltips for Spore Protection & Spore Detector
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Sporenschutz: Aktiv (Sporenmaske)");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Sporenfiltration: Stufe %d");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Sporenschutz Info");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Sporendetektor Info");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Sporenmaske");
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Sporendetektor");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Sporendetektor");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "Der Sporendetektor misst Lufttoxizität und Raumbelüftung. Rechtsklick in die Luft zum Scannen. Kann an Wänden oder Böden platziert werden und gibt ein Redstone-Signal proportional zur Sporendichte ab.");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Reine Luft");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtere giftige Sporen, indem du in einem kontaminierten Raum durch eine Sporenmaske atmest.");
 

@@ -38,14 +38,25 @@ public class ModItems {
     );
 
     public static final Item SPORE_MASK = new SporeMaskItem(SPORE_MASK_ARMOR_MATERIAL, new Item.Settings().maxDamage(165));
+    public static final Item SPORE_DETECTOR = new SporeDetectorItem(moldmod.block.ModBlocks.SPORE_DETECTOR, new Item.Settings().maxCount(16));
 
     public static void registerModItems() {
         SporesShadows.LOGGER.info("Registering ModItems for " + SporesShadows.MOD_ID);
 
         Registry.register(Registries.ITEM, SporesShadows.id("spore_mask"), SPORE_MASK);
+        Registry.register(Registries.ITEM, SporesShadows.id("spore_detector"), SPORE_DETECTOR);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(SPORE_MASK);
+            entries.add(SPORE_DETECTOR);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
+            entries.add(SPORE_DETECTOR);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+            entries.add(SPORE_DETECTOR);
         });
     }
 }

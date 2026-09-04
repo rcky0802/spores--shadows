@@ -48,6 +48,8 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
                 generateWaxedLoot(waxedBlock, items.get(0), items.get(2), items.get(4), items.get(6));
             }
         }
+
+        addDrop(ModBlocks.SPORE_DETECTOR);
     }
     
     private void generateMoldyLoot(Block baseBlock, Item stage1, Item stage2, Item stage3, Block vanillaBlock) {

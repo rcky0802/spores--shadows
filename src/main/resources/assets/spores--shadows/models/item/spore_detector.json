@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "spores--shadows:item/spore_detector_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "spores--shadows:toxicity": 0.0
+      },
+      "model": "spores--shadows:item/spore_detector_0"
+    },
+    {
+      "predicate": {
+        "spores--shadows:toxicity": 0.33
+      },
+      "model": "spores--shadows:item/spore_detector_1"
+    },
+    {
+      "predicate": {
+        "spores--shadows:toxicity": 0.66
+      },
+      "model": "spores--shadows:item/spore_detector_2"
+    },
+    {
+      "predicate": {
+        "spores--shadows:toxicity": 1.0
+      },
+      "model": "spores--shadows:item/spore_detector_3"
+    }
+  ]
+}

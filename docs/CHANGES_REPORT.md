@@ -16,7 +16,12 @@
 8. [Integrazione JEI (Just Enough Items) & Data Generation Client](#8-integrazione-jei-just-enough-items--data-generation-client)
 9. [Comandi Amministrativi e Diagnostica Avanzata (`/spores`, `/miasma`, `/moldrisk`)](#9-comandi-amministrativi-e-diagnostica-avanzata-spores-miasma-moldrisk)
 10. [Configurazione Dinamica `ModConfig` (12 Categorie)](#10-configurazione-dinamica-modconfig-12-categorie)
-11. [Suite Completa di Collaudo Automatizzato GameTest (83/83 Passati)](#11-suite-completa-di-collaudo-automatizzato-gametest-8383-passati)
+11. [Equipaggiamento Protettivo: Maschera Antispore 3D (`spores--shadows:spore_mask`)](#11-equipaggiamento-protettivo-maschera-antispore-3d-sporesshadowsspore_mask)
+12. [Incantesimo per Elmi: Filtrazione Spore (`spores--shadows:spore_filtration`)](#12--incantesimo-per-elmi-filtrazione-spore-sporesshadowsspore_filtration)
+13. [Suite Completa di Collaudo Automatizzato GameTest](#13-suite-completa-di-collaudo-automatizzato-gametest-9696-passati)
+14. [Strumentazione: Rilevatore di Spore (*Spore Detector*)](#14-strumentazione-rilevatore-di-spore-spore-detector)
+15. [Algoritmo di Ventilazione Miasma: Rete a Zone, Colli di Bottiglia & Occlusione Geometrica](#15-algoritmo-di-ventilazione-miasma-rete-a-zone-colli-di-bottiglia--occlusione-geometrica)
+16. [Suite di Collaudo Automatizzato](#16-suite-completa-di-collaudo-automatizzato-gametest-9696-passati)
 
 ---
 
@@ -337,7 +342,7 @@ Introdotto un **Incantesimo Data-Driven per Elmi** per permettere la purificazio
 * **Compatibilità**: Pienamente compatibile con *Respiration* (Respirazione subacquea), *Aqua Affinity*, *Protection* e *Unbreaking*.
 * **Ottenimento**: Disponibile all'Enchanting Table (`#minecraft:enchantment/in_enchanting_table`), scambio con villici (`#minecraft:enchantment/on_traded_equipment`), libri del bottino (`#minecraft:enchantment/non_treasure`) e applicazione all'Incudine.
 
-### B. Meccanica di Filtraggio & Scalabilità Durabilità
+#### B. Meccanica di Filtraggio & Scalabilità Durabilità
 * Neutralizza al $100\%$ gli effetti nocivi del Miasma ([`POISON`](file:///), [`NAUSEA`](file:///), [`HUNGER`](file:///)) emettendo particelle `ParticleTypes.CLOUD` e suoni filtrati.
 * **Consumo Durabilità Scalare per Esposizione**:
   * **Livello I**: Consuma $2$ punti durabilità per esposizione.
@@ -346,12 +351,75 @@ Introdotto un **Incantesimo Data-Driven per Elmi** per permettere la purificazio
 
 ---
 
-## 13. Suite Completa di Collaudo Automatizzato GameTest (96/96 Passati)
+## 14. Strumentazione: Rilevatore di Spore (*Spore Detector*)
+
+Introdotto il nuovo blocco e item tecnologico in stile steampunk/vintage (rame, ottone e fiala di vetro graduata):
+
+1. **Modelli 3D & Texture Simmetriche**:
+   * Blocco `WallMountedBlock` orientabile a pavimento (`floor`), parete (`wall`) e soffitto (`ceiling`).
+   * 4 stadi visivi dinamici per livello di tossicità (0 = Spento/Verde, 1 = Giallo, 2 = Arancione, 3 = Rosso/Lethal).
+   * Modello item dinamico in mano con `ModelPredicateProviderRegistry` (aggiornamento in tempo reale del livello del liquido nella fiala).
+   * Feedback sonoro a impulsi stile contatore Geiger (`spore_detector_click`) quando tenuto in mano.
+2. **Interattività e Diagnostica Privata in Chat**:
+   * Facendo clic destro in aria con l'item o sul blocco piazzato nel mondo, il giocatore riceve un resoconto diagnostico completo (volume analizzato, punteggio di ventilazione, miasma attuale, densità di spore e stato di saturazione/dissipazione) stampato privatamente nella chat (`sendMessage(..., false)`).
+3. **Emissione Redstone Proporzionale**:
+   * Emette un segnale di Pietrarossa direttamente proporzionale allo stadio di tossicità rilevato:
+     * **Stadio 0 (Clean)**: Segnale `0` (Spento)
+     * **Stadio 1 (Warning)**: Segnale `5` (5 blocchi di cavo)
+     * **Stadio 2 (Moderate Hunger)**: Segnale `10` (10 blocchi di cavo)
+     * **Stadio 3 (Lethal Poison)**: Segnale `15` (Massima potenza)
+4. **Integrazioni Ecosistema**:
+   * Ricetta di crafting a forma di fiala e barometro in rame.
+   * Plugin dedicato per **Jade** (visualizzazione HUD di livello e stato).
+   * Scheda informativa per **JEI** (Just Enough Items).
+   * Inserito nei tab della Modalità Creativa (*Strumenti*, *Pietrarossa*, *Blocchi Funzionali*).
+   * Localizzazione completa in 5 lingue (IT, EN, FR, DE, ES).
+
+---
+
+## 15. Algoritmo di Ventilazione Miasma: Rete a Zone, Colli di Bottiglia & Occlusione Geometrica
+
+> [!WARNING]
+> **Nota di Sviluppo (In Lavorazione / Da Rifinire)**: L'architettura dell'algoritmo di calcolo del miasma, delle aperture a colli di bottiglia e della rete a zone è stata implementata e integrata nel motore BFS. Il sistema richiede tuttavia un ciclo finale di rifinitura, collaudo approfondito in-game e ottimizzazione su scenari di costruzione complessi prima della chiusura definitiva.
+
+### A. Modello a Zone e Colli di Bottiglia Inter-Stanza
+* **Suddivisione Topologica**: L'ambiente non viene più trattato come una massa uniforme indifferenziata. Lo spazio esplorato viene segmentato in **Zone (Stanze)** collegate da **Portali / Varchi**.
+* **Capacità di Portale ($C_{\text{portale}}$)**:
+  * Ogni varco di transizione possiede una capacità massima di flusso d'aria proporzionale alla sua area geometrica effettiva:
+    * Buco $1\times 1 \implies C = 25.0$
+    * Porta / Varco $2\times 1 \implies C = 50.0$
+    * Arco $2\times 2 \implies C = 100.0$
+    * Mezza Lastra ($1/2$ Slab) $\implies C = 12.5$
+    * Quarto di Scala ($1/4$ Stair) $\implies C = 6.25$
+    * Grata di Rame $\implies C = 15.0$
+    * Staccionata / Sbarre di Ferro $\implies C = 15.0$
+* **Regola del Minimo di Flusso Inter-Stanza**:
+  $$V_{\text{trasferita}} = \min(C_{\text{portale}}, V_{\text{stanza\_adiacente}})$$
+  $$V_{\text{totale\_stanza}} = V_{\text{diretta\_esterno}} + \sum \min(C_{\text{portale}}, V_{\text{figlia}})$$
+  * Se la Stanza B ha un'ampia finestra esterna ($100$) ma comunica con la Stanza A tramite un buco $1\times 1$ ($25$), la Stanza A riceve solo $25$ di ventilazione.
+  * Se la Stanza B ha una piccola finestra ($25$) e l'apertura verso la Stanza A è un grande arco $2\times 2$ ($100$), la Stanza A riceve la ventilazione ridotta di B ($25$).
+  * Tutti i varchi diretti verso l'esterno all'interno della stessa stanza si sommano linearmente.
+
+### B. Risoluzione dei Colli di Bottiglia su Tettoie e Porticati
+* Le aperture nei muri esterni non espandono più la BFS all'esterno sotto le tettoie aggettanti: l'apertura viene sigillata come confine di ventilazione e conteggiata una sola volta.
+* Il raycast esterno [`isVentilatedToOutside`](file:///src/main/java/moldmod/event/ToxicAirEvent.java) analizza fino a 5 blocchi di profondità e i lati perpendicolari per rilevare lo sbocco a cielo aperto.
+
+### C. Occlusione Geometrica a 4 Quadranti (Lastre & Scale)
+* Ogni faccia di contatto è mappata su 4 quadranti ($0.5 \times 0.5$ voxel) nello spazio 3D reale:
+  * **Slab Bassa adiacente a Slab Alta**: L'intersezione delle aree aperte è `0b0011 & 0b1100 = 0`, bloccando ermeticamente il passaggio d'aria.
+  * **Scale ad Angolo e Profili a $1/4$**: Calcolo basato sugli 8 ottanti per risolvere con precisione geometrica qualsiasi accostamento di gradini, lastre o blocchi pieni.
+
+### D. Terminazione Immediata a Cielo Aperto
+* Quando un ramo della BFS raggiunge un blocco comunicante direttamente con il cielo aperto (`!isCoveredByCeiling`), accredita la ventilazione e **interrompe immediatamente il ramo** (`continue`), prevenendo la dispersione dell'algoritmo nell'atmosfera esterna.
+
+---
+
+## 16. Suite Completa di Collaudo Automatizzato GameTest (96/96 Passati)
 
 Tutti i comportamenti sono convalidati da **21 classi di test** automatizzati:
 
 | # | File di Test | Argomento e Meccanica Verificata |
-| :---: | :--- | :--- |
+| :--- | :--- | :--- |
 | 1 | `SporeFiltrationEnchantmentTests.java` | 7 test su risoluzione incantesimo, protezione veleno, scalabilità durabilità (Liv I vs II), elmi non incantati, coesistenza con Respiration, restrizioni incantabilità maschera e validazione interazione `AnvilScreenHandler` (rifiuto Protection/Filtration, accettazione Unbreaking/Mending/Vanishing e riparazione lana). |
 | 2 | `SporeMaskTests.java` | Proprietà elmo, +1 armatura, riparazione lana filtro, incantabilità disabilitata al tavolo, usura durabilità e layer armatura 3D. |
 | 3 | `ToxicAirTests.java` | 32 test su BFS, porte/botole/grate/cielo, calcolo volumetrico e caverne non confinate (`UNCONFINED_CAVERN`). |

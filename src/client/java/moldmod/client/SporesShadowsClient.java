@@ -34,5 +34,12 @@ public class SporesShadowsClient implements ClientModInitializer {
 			new SporeMaskArmorRenderer(),
 			ModItems.SPORE_MASK
 		);
+
+		// Dynamic Model Predicate for Spore Detector
+		net.minecraft.client.item.ModelPredicateProviderRegistry.register(
+			ModItems.SPORE_DETECTOR,
+			SporesShadows.id("toxicity"),
+			(stack, world, entity, seed) -> ClientToxicityCache.getToxicity(entity)
+		);
 	}
 }

@@ -248,12 +248,16 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola en un yunque con Lana (#minecraft:wool). Solo se puede encantar con Irrompibilidad, Reparación y Maldición de Desaparición.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtración de Esporas es un encantamiento de casco que neutraliza el miasma tóxico y la inhalación de esporas. Consume durabilidad del casco al exponerse al miasma (Nivel I: 2 durabilidad, Nivel II: 1 durabilidad, Nivel III: 50% de ahorro). Compatible con todos los cascos convencionales.");
 
-        // Jade Tooltips for Spore Protection
+        // Jade Tooltips for Spore Protection & Spore Detector
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protección contra Esporas: Activa (Máscara Antiesporas)");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Filtración de Esporas: Nivel %d");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Info de Protección de Esporas");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Info del Detector de Miasma");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Máscara Antiesporas");
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Detector de Miasma");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Detector de Miasma");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "El Detector de Miasma mide la toxicidad del aire y la ventilación de la habitación. Clic Derecho en el aire para escanear. Se puede colocar en paredes o suelos y emite una señal de Redstone proporcional a la densidad de esporas.");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Aire Puro");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtra las esporas tóxicas respirando a través de una Máscara Antiesporas en una sala contaminada.");
 

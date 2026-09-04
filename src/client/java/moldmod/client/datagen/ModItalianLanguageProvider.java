@@ -249,12 +249,16 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Maschera Antispore offre protezione totale dal miasma tossico (Veleno, Nausea e Fame). Consuma durabilità mentre filtra l'aria tossica. Sostituisci il filtro riparandola all'incudine con Lana (#minecraft:wool). Può essere incantata solo con Indistruttibilità, Ripristino e Maledizione della Scomparsa.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtrazione Spore è un incantesimo per elmi che neutralizza il miasma tossico e l'inalazione di spore. Consuma durabilità dell'elmo quando esposto al miasma (Livello I: 2 durabilità, Livello II: 1 durabilità, Livello III: 50% probabilità di risparmio). Compatibile con tutti gli elmi convenzionali.");
 
-        // Jade Tooltips for Spore Protection
+        // Jade Tooltips for Spore Protection & Spore Detector
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protezione Spore: Attiva (Maschera Antispore)");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Filtrazione Spore: Livello %d");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows: Info Protezione Spore");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Info Rilevatore di Miasma");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Maschera Antispore");
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Rilevatore di Miasma");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Rilevatore di Miasma");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "Il Rilevatore di Miasma misura la tossicità dell'aria e la ventilazione della stanza. Usa Tasto Destro nel vuoto per scansionare l'ambiente. Può essere posizionato su pareti o pavimenti ed emette un segnale di Pietrarossa proporzionale alla densità di spore.");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Aria Pura");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtra le spore tossiche respirando con una Maschera Antispore in una stanza contaminata.");
 

@@ -64,6 +64,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .criterion("has_honeycomb", conditionsFromItem(Items.HONEYCOMB))
                 .criterion("has_copper", conditionsFromItem(Items.COPPER_INGOT))
                 .offerTo(exporter, SporesShadows.id("spore_mask"));
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.TOOLS, ModItems.SPORE_DETECTOR)
+                .pattern(" C ")
+                .pattern("RGR")
+                .pattern(" C ")
+                .input('C', Items.COPPER_INGOT)
+                .input('G', Items.GLASS_BOTTLE)
+                .input('R', Items.REDSTONE)
+                .criterion("has_copper", conditionsFromItem(Items.COPPER_INGOT))
+                .criterion("has_redstone", conditionsFromItem(Items.REDSTONE))
+                .offerTo(exporter, SporesShadows.id("spore_detector"));
     }
 
     private void generatePlanksRecipe(RecipeExporter exporter, String sourceBase, String destBase) {

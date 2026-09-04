@@ -37,6 +37,15 @@ public class ModBlocks {
     public static final Map<Item, List<Item>> MOLDY_ITEMS_BY_VANILLA = new LinkedHashMap<>();
     public static final Map<Block, List<Item>> MOLDY_ITEMS_BY_BLOCK = new HashMap<>();
 
+    public static final Block SPORE_DETECTOR = Registry.register(
+            Registries.BLOCK,
+            SporesShadows.id("spore_detector"),
+            new SporeDetectorBlock(AbstractBlock.Settings.copy(net.minecraft.block.Blocks.COPPER_BLOCK)
+                    .nonOpaque()
+                    .strength(1.5f)
+                    .sounds(net.minecraft.sound.BlockSoundGroup.COPPER))
+    );
+
     public static void registerModBlocks() {
         SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 

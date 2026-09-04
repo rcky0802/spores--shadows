@@ -35,10 +35,15 @@ Documento di tracciamento per le funzionalità pianificate, miglioramenti archit
 ---
 
 ### 4. 🧭 Strumentazione: Rilevatore di Miasma (*Miasma Detector / Spore Analyzer*)
-- [ ] **Item / Gadget: Rilevatore di Miasma e Qualità dell'Aria**
-  * **Obiettivo**: Uno strumento portatile (o posizionabile) in grado di misurare la qualità dell'aria circostante, il volume della stanza, la densità di spore e il punteggio di ventilazione.
-  * **Feedback Giocatore**: Fornisce un display HUD o un segnale acustico/visivo (es. led a colori o lancetta) che avvisa quando ci si avvicina a soglie pericolose di saturazione del gas prima di subire danni.
-  * **Stato**: ⏳ *Pianificato*
+- [x] **Item / Blocco: Rilevatore di Miasma & Termometro a Spore (*Spore Detector / Miasmometer*)**
+  * **Obiettivo**: Uno strumento portatile e posizionabile in stile termometro/igrometro vintage in rame e vetro in grado di misurare la qualità dell'aria circostante, il volume della stanza, la densità di spore e il punteggio di ventilazione.
+  * **Modalità d'Uso**:
+    * **In Mano (Passivo)**: Texture dinamica con colonnina graduata che sale in base al miasma (Verde, Giallo, Arancione, Rosso) e ticchettio audio stile contatore Geiger.
+    * **Shift + Tasto Destro**: Scansione diagnostica istantanea con report chiaro e dettagliato nell'Action Bar.
+    * **Tasto Destro su Blocco**: Posizionabile a parete o a pavimento (stile termometro a muro / piedistallo).
+    * **Emissione Redstone**: Emette un segnale analogico (0–15) proporzionale alla concentrazione di spore per pilotare circuiti e ventole di aspirazione.
+  * **Integrazioni**: Compatibilità completa con JEI, Jade, Polymer (client vanilla), Datagen in 5 lingue e inserito nei tab creativi (Strumenti, Pietrarossa, Blocchi Funzionali).
+  * **Stato**: ✅ *Completato*
 
 ---
 
