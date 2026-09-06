@@ -1,11 +1,13 @@
 package moldmod.block;
 
 import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants;
 import moldmod.SporesShadowsConstants.MoldyWoodType;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSetType;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.WoodType;
 import net.minecraft.component.DataComponentTypes;
@@ -18,6 +20,7 @@ import net.minecraft.item.TallBlockItem;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -40,16 +43,16 @@ public class ModBlocks {
     public static final Block SPORE_DETECTOR = Registry.register(
             Registries.BLOCK,
             SporesShadows.id("spore_detector"),
-            new SporeDetectorBlock(AbstractBlock.Settings.copy(net.minecraft.block.Blocks.COPPER_BLOCK)
+            new SporeDetectorBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)
                     .nonOpaque()
                     .strength(1.5f)
-                    .sounds(net.minecraft.sound.BlockSoundGroup.COPPER))
+                    .sounds(BlockSoundGroup.COPPER))
     );
 
     public static void registerModBlocks() {
         SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 
-        for (MoldyWoodType wood : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+        for (MoldyWoodType wood : SporesShadowsConstants.WOOD_TYPES) {
             registerWoodSet(wood);
         }
 

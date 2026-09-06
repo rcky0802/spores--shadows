@@ -1,14 +1,17 @@
 package moldmod.registry;
 
 import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants;
+import moldmod.SporesShadowsConstants.MoldyWoodType;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
 
 public class ModFlammableRegistry {
 
     public static void register() {
-        for (moldmod.SporesShadowsConstants.MoldyWoodType woodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+        for (MoldyWoodType woodType : SporesShadowsConstants.WOOD_TYPES) {
             if (woodType.isNether()) {
                 continue;
             }
@@ -51,7 +54,7 @@ public class ModFlammableRegistry {
 
     private static void registerForBlock(String name, int burnChance, int spreadChance) {
         Block block = Registries.BLOCK.get(SporesShadows.id(name));
-        if (block != net.minecraft.block.Blocks.AIR) {
+        if (block != Blocks.AIR) {
             FlammableBlockRegistry.getDefaultInstance().add(block, burnChance, spreadChance);
         }
     }

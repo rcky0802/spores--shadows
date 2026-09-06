@@ -6,10 +6,24 @@ import moldmod.event.ToxicAirEvent;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.ChainBlock;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.FenceGateBlock;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
+import net.minecraft.block.TrapdoorBlock;
+import net.minecraft.block.WallBlock;
+import net.minecraft.block.enums.BlockHalf;
+import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.block.enums.SlabType;
+import net.minecraft.block.enums.WallShape;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.Heightmap;
+
+import java.util.Collections;
 
 public class ToxicAirTests {
 
@@ -17,7 +31,7 @@ public class ToxicAirTests {
     public void testCleanAirThresholds(TestContext context) {
         // Nessun blocco marcio -> CLEAN
         ToxicAirEvent.MiasmaResult clean = new ToxicAirEvent.MiasmaResult(0.0, 0.0, false, 10,
-                java.util.Collections.emptySet());
+                Collections.emptySet());
         if (clean.level != ToxicAirEvent.AirToxicityLevel.CLEAN) {
             context.throwPositionedException("Miasma a 0 deve essere CLEAN, trovato: " + clean.level,
                     new BlockPos(0, 1, 0));
@@ -25,7 +39,7 @@ public class ToxicAirTests {
 
         // Open Air -> sempre CLEAN
         ToxicAirEvent.MiasmaResult openAir = new ToxicAirEvent.MiasmaResult(50.0, 0.0, true, 10,
-                java.util.Collections.emptySet());
+                Collections.emptySet());
         if (openAir.level != ToxicAirEvent.AirToxicityLevel.CLEAN) {
             context.throwPositionedException("Open Air deve essere sempre CLEAN, trovato: " + openAir.level,
                     new BlockPos(0, 1, 0));
@@ -165,7 +179,7 @@ public class ToxicAirTests {
     public void testOpenAirDissipation(TestContext context) {
         BlockPos center = new BlockPos(2, 2, 2);
         BlockPos absCenter = context.getAbsolutePos(center);
-        int topY = context.getWorld().getTopY(net.minecraft.world.Heightmap.Type.MOTION_BLOCKING, absCenter.getX(),
+        int topY = context.getWorld().getTopY(Heightmap.Type.MOTION_BLOCKING, absCenter.getX(),
                 absCenter.getZ());
         BlockPos skyPos = new BlockPos(absCenter.getX(), Math.max(topY, absCenter.getY()), absCenter.getZ());
 
@@ -233,8 +247,8 @@ public class ToxicAirTests {
         // Parete con bottom slab che affaccia l'apertura laterale verso il centro (1,
         // 2, 2) ed esterno a Ovest (0, 2, 2) con cielo aperto sopra (0, 3, 2)
         BlockPos slabPos = new BlockPos(1, 2, 2);
-        BlockState bottomSlab = Blocks.OAK_SLAB.getDefaultState().with(net.minecraft.block.SlabBlock.TYPE,
-                net.minecraft.block.enums.SlabType.BOTTOM);
+        BlockState bottomSlab = Blocks.OAK_SLAB.getDefaultState().with(SlabBlock.TYPE,
+                SlabType.BOTTOM);
         context.setBlockState(slabPos, bottomSlab);
         context.setBlockState(new BlockPos(0, 2, 2), Blocks.AIR.getDefaultState());
         context.setBlockState(new BlockPos(0, 3, 2), Blocks.AIR.getDefaultState());
@@ -286,8 +300,8 @@ public class ToxicAirTests {
         // 1. Scala con retro solido rivolto verso l'interno (FACING = WEST -> retro a
         // EST verso la stanza) -> BLOCCA (HERMETIC_SEALED)
         BlockState stairsBackFacingRoom = Blocks.OAK_STAIRS.getDefaultState()
-                .with(net.minecraft.block.StairsBlock.FACING, Direction.WEST)
-                .with(net.minecraft.block.StairsBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM);
+                .with(StairsBlock.FACING, Direction.WEST)
+                .with(StairsBlock.HALF, BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsBackFacingRoom);
 
         ToxicAirEvent.MiasmaResult resultBackToRoom = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -302,8 +316,8 @@ public class ToxicAirTests {
         // 2. Scala con gradino verso la stanza e retro solido verso l'esterno (FACING =
         // EAST -> retro a OVEST verso l'esterno) -> BLOCCA (HERMETIC_SEALED)
         BlockState stairsBackFacingOutside = Blocks.OAK_STAIRS.getDefaultState()
-                .with(net.minecraft.block.StairsBlock.FACING, Direction.EAST)
-                .with(net.minecraft.block.StairsBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM);
+                .with(StairsBlock.FACING, Direction.EAST)
+                .with(StairsBlock.HALF, BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsBackFacingOutside);
 
         ToxicAirEvent.MiasmaResult resultBackToOutside = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -318,8 +332,8 @@ public class ToxicAirTests {
         // 3. Scala orientata lateralmente (FACING = SOUTH) -> il profilo aperto
         // permette il passaggio trasversale verso l'esterno a OVEST -> VENTILATED
         BlockState stairsSideways = Blocks.OAK_STAIRS.getDefaultState()
-                .with(net.minecraft.block.StairsBlock.FACING, Direction.SOUTH)
-                .with(net.minecraft.block.StairsBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM);
+                .with(StairsBlock.FACING, Direction.SOUTH)
+                .with(StairsBlock.HALF, BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsSideways);
 
         ToxicAirEvent.MiasmaResult resultSideways = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -354,8 +368,8 @@ public class ToxicAirTests {
         // Porta a (2, 2, 2)
         BlockPos doorPos = new BlockPos(2, 2, 2);
         BlockState closedDoor = Blocks.OAK_DOOR.getDefaultState()
-                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
-                .with(net.minecraft.block.DoorBlock.OPEN, false);
+                .with(DoorBlock.HALF, DoubleBlockHalf.LOWER)
+                .with(DoorBlock.OPEN, false);
         context.setBlockState(doorPos, closedDoor);
 
         // 1. A porta CHIUSA: le stanze sono isolate ermeticamente (volume = 1)
@@ -368,7 +382,7 @@ public class ToxicAirTests {
         }
 
         // 2. A porta APERTA: l'aria fluisce unendo le stanze (volume > 1)
-        BlockState openDoor = closedDoor.with(net.minecraft.block.DoorBlock.OPEN, true);
+        BlockState openDoor = closedDoor.with(DoorBlock.OPEN, true);
         context.setBlockState(doorPos, openDoor);
 
         ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -399,8 +413,8 @@ public class ToxicAirTests {
         // Botola sul soffitto a (2, 3, 2)
         BlockPos trapdoorPos = new BlockPos(2, 3, 2);
         BlockState closedTrapdoor = Blocks.OAK_TRAPDOOR.getDefaultState()
-                .with(net.minecraft.block.TrapdoorBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM)
-                .with(net.minecraft.block.TrapdoorBlock.OPEN, false);
+                .with(TrapdoorBlock.HALF, BlockHalf.BOTTOM)
+                .with(TrapdoorBlock.OPEN, false);
         context.setBlockState(trapdoorPos, closedTrapdoor);
 
         // 1. A botola CHIUSA: camera stagna, non comunica con il cielo
@@ -411,7 +425,7 @@ public class ToxicAirTests {
         }
 
         // 2. A botola APERTA: comunica direttamente con il cielo (openAir = true)
-        BlockState openTrapdoor = closedTrapdoor.with(net.minecraft.block.TrapdoorBlock.OPEN, true);
+        BlockState openTrapdoor = closedTrapdoor.with(TrapdoorBlock.OPEN, true);
         context.setBlockState(trapdoorPos, openTrapdoor);
 
         ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -446,11 +460,11 @@ public class ToxicAirTests {
         BlockPos doorLowerPos = new BlockPos(2, 2, 2);
         BlockPos doorUpperPos = new BlockPos(2, 3, 2);
         BlockState lowerClosed = Blocks.OAK_DOOR.getDefaultState()
-                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
-                .with(net.minecraft.block.DoorBlock.OPEN, false);
+                .with(DoorBlock.HALF, DoubleBlockHalf.LOWER)
+                .with(DoorBlock.OPEN, false);
         BlockState upperClosed = Blocks.OAK_DOOR.getDefaultState()
-                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.UPPER)
-                .with(net.minecraft.block.DoorBlock.OPEN, false);
+                .with(DoorBlock.HALF, DoubleBlockHalf.UPPER)
+                .with(DoorBlock.OPEN, false);
 
         context.setBlockState(doorLowerPos, lowerClosed);
         context.setBlockState(doorUpperPos, upperClosed);
@@ -468,8 +482,8 @@ public class ToxicAirTests {
 
         // 2. A porta APERTA (entrambi i blocchi): l'aria fluisce liberamente attraverso
         // entrambi i blocchi della porta (volume >= 4)
-        BlockState lowerOpen = lowerClosed.with(net.minecraft.block.DoorBlock.OPEN, true);
-        BlockState upperOpen = upperClosed.with(net.minecraft.block.DoorBlock.OPEN, true);
+        BlockState lowerOpen = lowerClosed.with(DoorBlock.OPEN, true);
+        BlockState upperOpen = upperClosed.with(DoorBlock.OPEN, true);
         context.setBlockState(doorLowerPos, lowerOpen);
         context.setBlockState(doorUpperPos, upperOpen);
 
@@ -510,8 +524,8 @@ public class ToxicAirTests {
         // Porta in Abete (Spruce) Chiusa: fa camera stagna (HERMETIC_SEALED)
         BlockPos doorPos = new BlockPos(1, 2, 2);
         BlockState spruceDoorClosed = Blocks.SPRUCE_DOOR.getDefaultState()
-                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
-                .with(net.minecraft.block.DoorBlock.OPEN, false);
+                .with(DoorBlock.HALF, DoubleBlockHalf.LOWER)
+                .with(DoorBlock.OPEN, false);
         context.setBlockState(doorPos, spruceDoorClosed);
 
         ToxicAirEvent.MiasmaResult resultSpruce = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -554,9 +568,9 @@ public class ToxicAirTests {
         // fa camera stagna (HERMETIC_SEALED)
         BlockPos trapdoorPos = new BlockPos(1, 2, 2);
         BlockState spruceTrapdoorClosed = Blocks.SPRUCE_TRAPDOOR.getDefaultState()
-                .with(net.minecraft.block.TrapdoorBlock.FACING, Direction.WEST)
-                .with(net.minecraft.block.TrapdoorBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM)
-                .with(net.minecraft.block.TrapdoorBlock.OPEN, true);
+                .with(TrapdoorBlock.FACING, Direction.WEST)
+                .with(TrapdoorBlock.HALF, BlockHalf.BOTTOM)
+                .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(trapdoorPos, spruceTrapdoorClosed);
 
         ToxicAirEvent.MiasmaResult resultSpruce = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -600,9 +614,9 @@ public class ToxicAirTests {
         // 1. Chiusa su parete (piastra verticale a coprire il foro: in-game OPEN =
         // true) -> Camera Stagna
         BlockState lateralShutterClosed = Blocks.SPRUCE_TRAPDOOR.getDefaultState()
-                .with(net.minecraft.block.TrapdoorBlock.FACING, Direction.WEST)
-                .with(net.minecraft.block.TrapdoorBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM)
-                .with(net.minecraft.block.TrapdoorBlock.OPEN, true);
+                .with(TrapdoorBlock.FACING, Direction.WEST)
+                .with(TrapdoorBlock.HALF, BlockHalf.BOTTOM)
+                .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(trapdoorPos, lateralShutterClosed);
 
         ToxicAirEvent.MiasmaResult resultClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -614,7 +628,7 @@ public class ToxicAirTests {
 
         // 2. Aperta su parete (piastra orizzontale a mensola: in-game OPEN = false) ->
         // Areazione verso l'esterno
-        BlockState lateralShutterOpen = lateralShutterClosed.with(net.minecraft.block.TrapdoorBlock.OPEN, false);
+        BlockState lateralShutterOpen = lateralShutterClosed.with(TrapdoorBlock.OPEN, false);
         context.setBlockState(trapdoorPos, lateralShutterOpen);
 
         ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -654,11 +668,11 @@ public class ToxicAirTests {
 
         // 1. Porta in Quercia Chiusa: sempre HERMETIC_SEALED
         BlockState oakDoorLower = Blocks.OAK_DOOR.getDefaultState()
-                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
-                .with(net.minecraft.block.DoorBlock.OPEN, false);
+                .with(DoorBlock.HALF, DoubleBlockHalf.LOWER)
+                .with(DoorBlock.OPEN, false);
         BlockState oakDoorUpper = Blocks.OAK_DOOR.getDefaultState()
-                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.UPPER)
-                .with(net.minecraft.block.DoorBlock.OPEN, false);
+                .with(DoorBlock.HALF, DoubleBlockHalf.UPPER)
+                .with(DoorBlock.OPEN, false);
         context.setBlockState(doorLower, oakDoorLower);
         context.setBlockState(doorUpper, oakDoorUpper);
 
@@ -670,8 +684,8 @@ public class ToxicAirTests {
         }
 
         // 2. Porta in Quercia Aperta: sempre CLEAN_OPEN_AIR
-        context.setBlockState(doorLower, oakDoorLower.with(net.minecraft.block.DoorBlock.OPEN, true));
-        context.setBlockState(doorUpper, oakDoorUpper.with(net.minecraft.block.DoorBlock.OPEN, true));
+        context.setBlockState(doorLower, oakDoorLower.with(DoorBlock.OPEN, true));
+        context.setBlockState(doorUpper, oakDoorUpper.with(DoorBlock.OPEN, true));
         ToxicAirEvent.MiasmaResult resultOakDoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
         if (resultOakDoorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
@@ -687,9 +701,9 @@ public class ToxicAirTests {
         // 3. Botola in Quercia su parete Chiusa (OPEN = true, piastra verticale):
         // sempre HERMETIC_SEALED
         BlockState oakTrapdoorClosed = Blocks.OAK_TRAPDOOR.getDefaultState()
-                .with(net.minecraft.block.TrapdoorBlock.FACING, Direction.WEST)
-                .with(net.minecraft.block.TrapdoorBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM)
-                .with(net.minecraft.block.TrapdoorBlock.OPEN, true);
+                .with(TrapdoorBlock.FACING, Direction.WEST)
+                .with(TrapdoorBlock.HALF, BlockHalf.BOTTOM)
+                .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(doorLower, oakTrapdoorClosed);
 
         ToxicAirEvent.MiasmaResult resultOakTrapdoor = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -703,7 +717,7 @@ public class ToxicAirTests {
 
         // 4. Botola in Quercia su parete Aperta (OPEN = false, piastra orizzontale):
         // sempre CLEAN_OPEN_AIR
-        context.setBlockState(doorLower, oakTrapdoorClosed.with(net.minecraft.block.TrapdoorBlock.OPEN, false));
+        context.setBlockState(doorLower, oakTrapdoorClosed.with(TrapdoorBlock.OPEN, false));
         ToxicAirEvent.MiasmaResult resultOakTrapdoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
         if (resultOakTrapdoorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
@@ -767,8 +781,8 @@ public class ToxicAirTests {
 
         // 3. Porta di rame chiusa -> HERMETIC_SEALED
         BlockState copperDoorClosed = Blocks.COPPER_DOOR.getDefaultState()
-                .with(net.minecraft.block.DoorBlock.HALF, net.minecraft.block.enums.DoubleBlockHalf.LOWER)
-                .with(net.minecraft.block.DoorBlock.OPEN, false);
+                .with(DoorBlock.HALF, DoubleBlockHalf.LOWER)
+                .with(DoorBlock.OPEN, false);
         context.setBlockState(wallPos, copperDoorClosed);
         ToxicAirEvent.MiasmaResult resultCopperDoorClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
@@ -778,7 +792,7 @@ public class ToxicAirTests {
         }
 
         // 4. Porta di rame aperta -> CLEAN_OPEN_AIR
-        BlockState copperDoorOpen = copperDoorClosed.with(net.minecraft.block.DoorBlock.OPEN, true);
+        BlockState copperDoorOpen = copperDoorClosed.with(DoorBlock.OPEN, true);
         context.setBlockState(wallPos, copperDoorOpen);
         ToxicAirEvent.MiasmaResult resultCopperDoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
@@ -792,9 +806,9 @@ public class ToxicAirTests {
         // 5. Botola di rame su parete chiusa (OPEN = true, piastra verticale):
         // HERMETIC_SEALED
         BlockState copperTrapdoorClosed = Blocks.COPPER_TRAPDOOR.getDefaultState()
-                .with(net.minecraft.block.TrapdoorBlock.FACING, Direction.WEST)
-                .with(net.minecraft.block.TrapdoorBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM)
-                .with(net.minecraft.block.TrapdoorBlock.OPEN, true);
+                .with(TrapdoorBlock.FACING, Direction.WEST)
+                .with(TrapdoorBlock.HALF, BlockHalf.BOTTOM)
+                .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(wallPos, copperTrapdoorClosed);
         ToxicAirEvent.MiasmaResult resultCopperTrapdoorClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
@@ -805,7 +819,7 @@ public class ToxicAirTests {
 
         // 6. Botola di rame su parete aperta (OPEN = false, piastra orizzontale):
         // CLEAN_OPEN_AIR
-        BlockState copperTrapdoorOpen = copperTrapdoorClosed.with(net.minecraft.block.TrapdoorBlock.OPEN, false);
+        BlockState copperTrapdoorOpen = copperTrapdoorClosed.with(TrapdoorBlock.OPEN, false);
         context.setBlockState(wallPos, copperTrapdoorOpen);
         ToxicAirEvent.MiasmaResult resultCopperTrapdoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
@@ -878,8 +892,8 @@ public class ToxicAirTests {
         // (HERMETIC_SEALED)
         BlockPos wallPos = new BlockPos(1, 2, 2);
         BlockState connectedWall = Blocks.COBBLESTONE_WALL.getDefaultState()
-                .with(net.minecraft.block.WallBlock.NORTH_SHAPE, net.minecraft.block.enums.WallShape.LOW)
-                .with(net.minecraft.block.WallBlock.SOUTH_SHAPE, net.minecraft.block.enums.WallShape.LOW);
+                .with(WallBlock.NORTH_SHAPE, WallShape.LOW)
+                .with(WallBlock.SOUTH_SHAPE, WallShape.LOW);
         context.setBlockState(wallPos, connectedWall);
         ToxicAirEvent.MiasmaResult resultWallConnected = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
@@ -893,7 +907,7 @@ public class ToxicAirTests {
         // 2. Muretto su parete laterale con SOLO 1 CONNESSIONE (1, 2, 2) -> dà bonus di
         // ventilazione (VENTILATED)
         BlockState singleConnectedWall = Blocks.COBBLESTONE_WALL.getDefaultState()
-                .with(net.minecraft.block.WallBlock.NORTH_SHAPE, net.minecraft.block.enums.WallShape.LOW);
+                .with(WallBlock.NORTH_SHAPE, WallShape.LOW);
         context.setBlockState(wallPos, singleConnectedWall);
         ToxicAirEvent.MiasmaResult resultWallSingle = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
@@ -981,7 +995,7 @@ public class ToxicAirTests {
 
         // Catena decorativa nel secondo blocco d'aria
         context.setBlockState(new BlockPos(2, 2, 1),
-                Blocks.CHAIN.getDefaultState().with(net.minecraft.block.ChainBlock.AXIS, Direction.Axis.Y));
+                Blocks.CHAIN.getDefaultState().with(ChainBlock.AXIS, Direction.Axis.Y));
 
         // Focolare marcio su parete (3, 2, 2)
         BlockState moldy = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE,
@@ -1069,8 +1083,8 @@ public class ToxicAirTests {
         // 1. Cancelletto Chiuso (OPEN = false) -> deve dare bonus VENTILATED (+3.0)
         // come le staccionate
         BlockState gateClosed = Blocks.OAK_FENCE_GATE.getDefaultState()
-                .with(net.minecraft.block.FenceGateBlock.FACING, Direction.WEST)
-                .with(net.minecraft.block.FenceGateBlock.OPEN, false);
+                .with(FenceGateBlock.FACING, Direction.WEST)
+                .with(FenceGateBlock.OPEN, false);
         context.setBlockState(gatePos, gateClosed);
 
         ToxicAirEvent.MiasmaResult resultClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -1080,14 +1094,14 @@ public class ToxicAirTests {
                     "Il cancelletto chiuso deve risultare VENTILATED, trovato: " + resultClosed.ventilationType,
                     center);
         }
-        if (resultClosed.ventilationScore != 3.0) {
+        if (resultClosed.ventilationScore != 8.0) {
             context.throwPositionedException(
-                    "Il cancelletto chiuso deve dare ventilationScore = 3.0, trovato: " + resultClosed.ventilationScore,
+                    "Il cancelletto chiuso deve dare ventilationScore = 8.0, trovato: " + resultClosed.ventilationScore,
                     center);
         }
 
         // 2. Cancelletto Aperto -> CLEAN_OPEN_AIR
-        BlockState gateOpen = gateClosed.with(net.minecraft.block.FenceGateBlock.OPEN, true);
+        BlockState gateOpen = gateClosed.with(FenceGateBlock.OPEN, true);
         context.setBlockState(gatePos, gateOpen);
 
         ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -1123,8 +1137,8 @@ public class ToxicAirTests {
         // 1. Botola su soffitto Chiusa (OPEN = false) -> HERMETIC_SEALED
         BlockPos ceilingPos = new BlockPos(2, 3, 2);
         BlockState trapdoorCeilingClosed = Blocks.OAK_TRAPDOOR.getDefaultState()
-                .with(net.minecraft.block.TrapdoorBlock.HALF, net.minecraft.block.enums.BlockHalf.BOTTOM)
-                .with(net.minecraft.block.TrapdoorBlock.OPEN, false);
+                .with(TrapdoorBlock.HALF, BlockHalf.BOTTOM)
+                .with(TrapdoorBlock.OPEN, false);
         context.setBlockState(ceilingPos, trapdoorCeilingClosed);
 
         ToxicAirEvent.MiasmaResult resultCeilingClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -1135,7 +1149,7 @@ public class ToxicAirTests {
         }
 
         // 2. Botola su soffitto Aperta (OPEN = true) -> CLEAN_OPEN_AIR
-        context.setBlockState(ceilingPos, trapdoorCeilingClosed.with(net.minecraft.block.TrapdoorBlock.OPEN, true));
+        context.setBlockState(ceilingPos, trapdoorCeilingClosed.with(TrapdoorBlock.OPEN, true));
         ToxicAirEvent.MiasmaResult resultCeilingOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
         if (resultCeilingOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
@@ -1153,8 +1167,8 @@ public class ToxicAirTests {
         context.setBlockState(new BlockPos(0, 2, 2), Blocks.AIR.getDefaultState());
         context.setBlockState(new BlockPos(0, 3, 2), Blocks.AIR.getDefaultState());
         BlockState trapdoorFloorClosed = Blocks.OAK_TRAPDOOR.getDefaultState()
-                .with(net.minecraft.block.TrapdoorBlock.HALF, net.minecraft.block.enums.BlockHalf.TOP)
-                .with(net.minecraft.block.TrapdoorBlock.OPEN, false);
+                .with(TrapdoorBlock.HALF, BlockHalf.TOP)
+                .with(TrapdoorBlock.OPEN, false);
         context.setBlockState(floorPos, trapdoorFloorClosed);
 
         ToxicAirEvent.MiasmaResult resultFloorClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
@@ -1165,7 +1179,7 @@ public class ToxicAirTests {
         }
 
         // 4. Botola su pavimento Aperta (OPEN = true) -> CLEAN_OPEN_AIR
-        context.setBlockState(floorPos, trapdoorFloorClosed.with(net.minecraft.block.TrapdoorBlock.OPEN, true));
+        context.setBlockState(floorPos, trapdoorFloorClosed.with(TrapdoorBlock.OPEN, true));
         ToxicAirEvent.MiasmaResult resultFloorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
         if (resultFloorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
@@ -1173,6 +1187,77 @@ public class ToxicAirTests {
                     "Botola aperta sul pavimento verso l'esterno deve risultare CLEAN_OPEN_AIR, trovato: "
                             + resultFloorOpen.ventilationType,
                     center);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testCeilingHoleColumnVentilationOnlyAtAperture(TestContext context) {
+        // Costruiamo una stanza 5x4x5 in pietra (X: 1..5, Y: 1..4, Z: 1..5)
+        for (int x = 1; x <= 5; x++) {
+            for (int y = 1; y <= 4; y++) {
+                for (int z = 1; z <= 5; z++) {
+                    boolean isWall = (x == 1 || x == 5 || z == 1 || z == 5 || y == 1 || y == 4);
+                    context.setBlockState(new BlockPos(x, y, z), isWall ? Blocks.STONE.getDefaultState() : Blocks.AIR.getDefaultState());
+                }
+            }
+        }
+
+        // Foro 1x1 nel soffitto a (3, 4, 3)
+        BlockPos holePos = new BlockPos(3, 4, 3);
+        context.setBlockState(holePos, Blocks.AIR.getDefaultState());
+        context.setBlockState(new BlockPos(3, 5, 3), Blocks.AIR.getDefaultState()); // cielo aperto sopra
+
+        BlockPos floorUnderHole = new BlockPos(3, 2, 3);
+        BlockPos midUnderHole = new BlockPos(3, 3, 3);
+        BlockPos skyAboveHole = new BlockPos(3, 5, 3);
+
+        // 1. Verifica che la colonna sotto il foro risulti coperta da soffitto,
+        // mentre SOLO il blocco del foro (o sopra) risulti a cielo aperto
+        if (!ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(floorUnderHole))) {
+            context.throwPositionedException("Il pavimento sotto il foro deve risultare coperto da soffitto!", floorUnderHole);
+        }
+        if (!ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(midUnderHole))) {
+            context.throwPositionedException("La colonna d'aria sotto il foro deve risultare coperta da soffitto!", midUnderHole);
+        }
+        if (ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(holePos))) {
+            context.throwPositionedException("Il foro nel soffitto NON deve risultare coperto da soffitto!", holePos);
+        }
+        if (ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(skyAboveHole))) {
+            context.throwPositionedException("L'aria sopra il tetto NON deve risultare coperta da soffitto!", skyAboveHole);
+        }
+
+        // 2. Verifica calcolo areazione blocco bersaglio a pavimento vs soffitto
+        BlockPos floorTargetPos = new BlockPos(2, 2, 3);
+        BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
+        context.setBlockState(floorTargetPos, log);
+
+        ToxicAirEvent.BlockAirEvaluation floorEval = ToxicAirEvent.calculateBlockAirEvaluation(
+                context.getWorld(), context.getAbsolutePos(floorTargetPos), log);
+        if (floorEval.distanceToVentilation() == 0) {
+            context.throwPositionedException("Il blocco a pavimento non deve avere distanza 0 verso il cielo!", floorTargetPos);
+        }
+
+        BlockPos roofTargetPos = new BlockPos(2, 4, 3);
+        context.setBlockState(roofTargetPos, log);
+        ToxicAirEvent.BlockAirEvaluation roofEval = ToxicAirEvent.calculateBlockAirEvaluation(
+                context.getWorld(), context.getAbsolutePos(roofTargetPos), log);
+        if (roofEval.distanceToVentilation() != 0 || roofEval.averageAeration() < 0.75) {
+            context.throwPositionedException("Il blocco al livello del foro deve affacciare direttamente al cielo (dist 0, aer elevata)!", roofTargetPos);
+        }
+
+        // 3. Verifica miasma all'interno della stanza ventilata dal foro a soffitto
+        ToxicAirEvent.MiasmaResult roomResult = ToxicAirEvent.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(new BlockPos(2, 2, 2)));
+        if (roomResult.openAir) {
+            context.throwPositionedException("La stanza con foro a soffitto non deve essere considerata openAir!", new BlockPos(2, 2, 2));
+        }
+        if (roomResult.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+            context.throwPositionedException("La stanza con foro a soffitto deve risultare VENTILATED, trovato: " + roomResult.ventilationType, new BlockPos(2, 2, 2));
+        }
+        if (roomResult.roomVentilationScore <= 0.0) {
+            context.throwPositionedException("La stanza con foro a soffitto deve ricevere un flusso di ventilazione > 0!", new BlockPos(2, 2, 2));
         }
 
         context.complete();

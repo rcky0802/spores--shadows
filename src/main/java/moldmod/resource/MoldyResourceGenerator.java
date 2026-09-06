@@ -2,6 +2,7 @@ package moldmod.resource;
 
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants;
 import moldmod.SporesShadowsConstants.MoldStage;
 import moldmod.SporesShadowsConstants.MoldyWoodType;
 
@@ -34,7 +35,7 @@ public class MoldyResourceGenerator {
                 """;
             builder.addData("assets/" + SporesShadows.MOD_ID + "/models/item/spore_mask.json", sporeMaskModelJson.getBytes(StandardCharsets.UTF_8));
             
-            for (MoldyWoodType moldyWoodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+            for (MoldyWoodType moldyWoodType : SporesShadowsConstants.WOOD_TYPES) {
                 String wood = moldyWoodType.name();
                 for (MoldStage stageEnum : MoldStage.values()) {
                     int i = stageEnum.getId();

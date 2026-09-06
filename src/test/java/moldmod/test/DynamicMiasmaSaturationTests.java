@@ -155,10 +155,10 @@ public class DynamicMiasmaSaturationTests {
         BlockPos centerAir = new BlockPos(2, 1, 2);
         ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(centerAir));
 
-        // Equilibrium: Target = 13.5 - 3.0 = 10.5
+        // Equilibrium: Target = 13.5 - 8.0 = 5.5
         context.assertTrue(result.toxicScore == 13.5, "Expected gross toxic score 13.5, got: " + result.toxicScore);
-        context.assertTrue(result.ventilationScore == 3.0, "Expected ventilation score 3.0, got: " + result.ventilationScore);
-        context.assertTrue(result.netMiasma == 10.5, "Expected net miasma equilibrium 10.5, got: " + result.netMiasma);
+        context.assertTrue(result.ventilationScore == config.toxicity.ventilation_gap_bonus, "Expected ventilation score " + config.toxicity.ventilation_gap_bonus + ", got: " + result.ventilationScore);
+        context.assertTrue(result.netMiasma == (13.5 - config.toxicity.ventilation_gap_bonus), "Expected net miasma equilibrium " + (13.5 - config.toxicity.ventilation_gap_bonus) + ", got: " + result.netMiasma);
         context.assertTrue(result.ventilationType == ToxicAirEvent.RoomVentilationType.VENTILATED, "Expected VENTILATED environment");
 
         context.complete();
@@ -218,12 +218,12 @@ public class DynamicMiasmaSaturationTests {
         BlockPos centerAir = new BlockPos(3, 1, 3);
         ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), context.getAbsolutePos(centerAir));
 
-        // Bottleneck: 1 single opening gives exactly 25.0 throughput
-        // Target = 45.0 - 25.0 = 20.0
+        // Bottleneck: 1 single opening gives exactly 24.0 throughput
+        // Target = 45.0 - 24.0 = 21.0
         context.assertTrue(result.toxicScore == 45.0, "Expected gross toxic score 45.0, got: " + result.toxicScore);
-        context.assertTrue(result.ventilationScore == 25.0, "Expected bottleneck throughput 25.0 for 1x1 hole, got: " + result.ventilationScore);
-        context.assertTrue(result.targetMiasma == 20.0, "Expected target equilibrium 20.0 due to bottleneck, got: " + result.targetMiasma);
-        context.assertTrue(result.ventilationType == ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR, "Expected room communicating with outside to be CLEAN_OPEN_AIR");
+        context.assertTrue(result.ventilationScore == config.toxicity.open_sky_ventilation_per_block, "Expected bottleneck throughput 24.0 for 1x1 hole, got: " + result.ventilationScore);
+        context.assertTrue(result.targetMiasma == (45.0 - config.toxicity.open_sky_ventilation_per_block), "Expected target equilibrium 21.0 due to bottleneck, got: " + result.targetMiasma);
+        context.assertTrue(result.ventilationType == ToxicAirEvent.RoomVentilationType.VENTILATED, "Expected room communicating with outside under ceiling to be VENTILATED");
 
         context.complete();
     }

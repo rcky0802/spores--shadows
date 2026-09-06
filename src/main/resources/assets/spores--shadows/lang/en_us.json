@@ -132,5 +132,10 @@
   "advancements.spores--shadows.toxic_air.title": "Short Breath",
   "advancements.spores--shadows.toxic_air.description": "Suffer the poison of the miasma by breathing too much mold.",
   "advancements.spores--shadows.crumble.title": "Dust to Dust",
-  "advancements.spores--shadows.crumble.description": "Attempt to break a rotten wood block and watch it crumble into nothing."
+  "advancements.spores--shadows.crumble.description": "Attempt to break a rotten wood block and watch it crumble into nothing.",
+  "item.spores--shadows.spore_mask": "Spore Mask",
+  "block.spores--shadows.spore_detector": "Spore Detector",
+  "item.spores--shadows.spore_detector": "Spore Detector",
+  "enchantment.spores--shadows.spore_filtration": "Spore Filtration",
+  "enchantment.spores--shadows.spore_filtration.desc": "Neutralizes toxic miasma by consuming helmet durability."
 }

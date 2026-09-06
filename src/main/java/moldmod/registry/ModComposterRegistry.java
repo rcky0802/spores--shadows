@@ -1,6 +1,7 @@
 package moldmod.registry;
 
 import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants;
 import moldmod.SporesShadowsConstants.MoldyWoodType;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.minecraft.item.Item;
@@ -10,7 +11,7 @@ import net.minecraft.registry.Registries;
 public class ModComposterRegistry {
 
     public static void register() {
-        for (MoldyWoodType woodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+        for (MoldyWoodType woodType : SporesShadowsConstants.WOOD_TYPES) {
             String logName = woodType.getLogName();
             String woodName = woodType.getWoodName();
             String prefix = woodType.name();

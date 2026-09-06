@@ -1,4 +1,4 @@
-﻿# gradle
+# gradle
 
 .gradle/
 build/
@@ -55,3 +55,9 @@ banned-players.json
 
 # agents
 .agents/
+
+# python
+__pycache__/
+*.py[cod]
+*$py.class
+

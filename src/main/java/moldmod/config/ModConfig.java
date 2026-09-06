@@ -3,9 +3,10 @@ package moldmod.config;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
+import moldmod.SporesShadows;
 import net.minecraft.util.math.MathHelper;
 
-@Config(name = moldmod.SporesShadows.MOD_ID)
+@Config(name = SporesShadows.MOD_ID)
 public class ModConfig implements ConfigData {
 
     @ConfigEntry.Category("general")
@@ -98,16 +99,16 @@ public class ModConfig implements ConfigData {
         public double cauldron_adjacent_bonus = 0.1;
         public int water_scan_radius = 3;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_ventilation_drying = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public double aeration_drying_bonus = 0.50;
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        public double ventilation_threshold_full_aeration = 6.0;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double ventilation_threshold_full_aeration = 32.0;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_miasma_spore_pressure = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public double miasma_spore_multiplier = 0.50;
 
         public float min_temperature_survival = 0.15f;
@@ -195,22 +196,30 @@ public class ModConfig implements ConfigData {
         public int check_interval_ticks = 40;
         public int scan_radius = 8;
         public int max_air_volume = 1024;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public int max_euclidean_radius = 8;
 
         public float mold_toxicity_multiplier = 0.75f;
-        public float ventilation_gap_bonus = 3.0f;
+        
+        // Valori di Banda Passante Interna del Voxel (Node Capacity) - Base 24.0 (1:1 constants.py)
+        public double open_sky_ventilation_per_block = 24.0;
+        public double slab_ventilation_value = 12.0;
+        public double stairs_ventilation_value = 6.0;
+        public float ventilation_gap_bonus = 8.0f;
+        public double copper_grate_ventilation_per_block = 18.0;
+        public double leaves_ventilation_value = 18.0;
+        public double door_ventilation_value = 18.0;
+        public double trapdoor_ventilation_value = 18.0;
+        public double fence_gate_open_ventilation_value = 18.0;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double ventilation_distance_alpha = 0.25;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_dynamic_spore_saturation = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public double dissipation_speed_multiplier = 0.35;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public double saturation_speed_multiplier = 0.15;
-        public double door_ventilation_value = 15.0;
-        public double trapdoor_ventilation_value = 15.0;
-        public double open_sky_ventilation_per_block = 25.0;
-        public double copper_grate_ventilation_per_block = 15.0;
 
         public double threshold_hunger = 8.0;
         public double threshold_nausea = 10.0;
@@ -228,18 +237,18 @@ public class ModConfig implements ConfigData {
         public int nausea_amplifier = 0;
         public int poison_amplifier = 0;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_spore_mask_protection = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public int spore_mask_damage_per_exposure = 1;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_spore_filtration_enchantment = true;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public int filtration_level_1_durability_cost = 2;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public int filtration_level_2_durability_cost = 1;
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public float filtration_level_3_save_chance = 0.50f;
     }
 
@@ -247,12 +256,22 @@ public class ModConfig implements ConfigData {
     public void validatePostLoad() throws ValidationException {
         general.infection_threshold = MathHelper.clamp(general.infection_threshold, 0.0f, 2.0f);
         general.scan_radius = MathHelper.clamp(general.scan_radius, 1, 5);
+        general.axe_scrape_damage = Math.max(0, general.axe_scrape_damage);
+
         environment.water_scan_radius = MathHelper.clamp(environment.water_scan_radius, 1, 10);
         environment.max_depth_modifier = MathHelper.clamp(environment.max_depth_modifier, 0.0, 2.0);
         environment.depth_modifier_per_level = MathHelper.clamp(environment.depth_modifier_per_level, 0.0, 1.0);
+        environment.rain_humidity_base = MathHelper.clamp(environment.rain_humidity_base, 0.0, 2.0);
+        environment.dry_humidity_base = MathHelper.clamp(environment.dry_humidity_base, 0.0, 2.0);
+        environment.max_local_humidity_bonus = MathHelper.clamp(environment.max_local_humidity_bonus, 0.0, 2.0);
+        environment.water_adjacent_bonus = MathHelper.clamp(environment.water_adjacent_bonus, 0.0, 1.0);
+        environment.cauldron_adjacent_bonus = MathHelper.clamp(environment.cauldron_adjacent_bonus, 0.0, 1.0);
         environment.aeration_drying_bonus = MathHelper.clamp(environment.aeration_drying_bonus, 0.0, 2.0);
+        if (Math.abs(environment.ventilation_threshold_full_aeration - 6.0) < 1e-4) {
+            environment.ventilation_threshold_full_aeration = 32.0;
+        }
         environment.ventilation_threshold_full_aeration = MathHelper
-                .clamp(environment.ventilation_threshold_full_aeration, 0.1, 50.0);
+                .clamp(environment.ventilation_threshold_full_aeration, 0.1, 100.0);
         environment.miasma_spore_multiplier = MathHelper.clamp(environment.miasma_spore_multiplier, 0.0, 5.0);
 
         drops.stage_2_drop_chance = MathHelper.clamp(drops.stage_2_drop_chance, 0.0f, 1.0f);
@@ -278,15 +297,36 @@ public class ModConfig implements ConfigData {
         toxicity.mold_toxicity_multiplier = MathHelper.clamp(toxicity.mold_toxicity_multiplier, 0.0f, 10.0f);
         toxicity.ventilation_gap_bonus = MathHelper.clamp(toxicity.ventilation_gap_bonus, 0.0f, 20.0f);
 
-        toxicity.dissipation_speed_multiplier = MathHelper.clamp(toxicity.dissipation_speed_multiplier, 0.01, 1.0);
-        toxicity.saturation_speed_multiplier = MathHelper.clamp(toxicity.saturation_speed_multiplier, 0.01, 1.0);
+        toxicity.open_sky_ventilation_per_block = MathHelper.clamp(toxicity.open_sky_ventilation_per_block, 0.0, 100.0);
+        toxicity.slab_ventilation_value = MathHelper.clamp(toxicity.slab_ventilation_value, 0.0, 100.0);
+        toxicity.stairs_ventilation_value = MathHelper.clamp(toxicity.stairs_ventilation_value, 0.0, 100.0);
+        toxicity.copper_grate_ventilation_per_block = MathHelper.clamp(toxicity.copper_grate_ventilation_per_block, 0.0, 100.0);
+        toxicity.leaves_ventilation_value = MathHelper.clamp(toxicity.leaves_ventilation_value, 0.0, 100.0);
         toxicity.door_ventilation_value = MathHelper.clamp(toxicity.door_ventilation_value, 0.0, 100.0);
         toxicity.trapdoor_ventilation_value = MathHelper.clamp(toxicity.trapdoor_ventilation_value, 0.0, 100.0);
-        toxicity.open_sky_ventilation_per_block = MathHelper.clamp(toxicity.open_sky_ventilation_per_block, 0.0, 100.0);
-        toxicity.copper_grate_ventilation_per_block = MathHelper.clamp(toxicity.copper_grate_ventilation_per_block, 0.0,
-                100.0);
+        toxicity.fence_gate_open_ventilation_value = MathHelper.clamp(toxicity.fence_gate_open_ventilation_value, 0.0, 100.0);
+        toxicity.ventilation_distance_alpha = MathHelper.clamp(toxicity.ventilation_distance_alpha, 0.01, 2.0);
+
+        toxicity.dissipation_speed_multiplier = MathHelper.clamp(toxicity.dissipation_speed_multiplier, 0.01, 1.0);
+        toxicity.saturation_speed_multiplier = MathHelper.clamp(toxicity.saturation_speed_multiplier, 0.01, 1.0);
+
+        toxicity.threshold_hunger = Math.max(0.0, toxicity.threshold_hunger);
+        toxicity.threshold_nausea = Math.max(0.0, toxicity.threshold_nausea);
+        toxicity.threshold_poison = Math.max(0.0, toxicity.threshold_poison);
+        toxicity.density_threshold_high = MathHelper.clamp(toxicity.density_threshold_high, 0.0, 1.0);
+        toxicity.density_threshold_medium = MathHelper.clamp(toxicity.density_threshold_medium, 0.0, 1.0);
+        toxicity.density_threshold_low = MathHelper.clamp(toxicity.density_threshold_low, 0.0, 1.0);
+        toxicity.duration_hunger_ticks = Math.max(1, toxicity.duration_hunger_ticks);
+        toxicity.duration_nausea_ticks = Math.max(1, toxicity.duration_nausea_ticks);
+        toxicity.duration_poison_ticks = Math.max(1, toxicity.duration_poison_ticks);
+        toxicity.hunger_amplifier = MathHelper.clamp(toxicity.hunger_amplifier, 0, 5);
+        toxicity.nausea_amplifier = MathHelper.clamp(toxicity.nausea_amplifier, 0, 5);
+        toxicity.poison_amplifier = MathHelper.clamp(toxicity.poison_amplifier, 0, 5);
+
+        toxicity.spore_mask_damage_per_exposure = MathHelper.clamp(toxicity.spore_mask_damage_per_exposure, 1, 20);
         toxicity.filtration_level_1_durability_cost = MathHelper.clamp(toxicity.filtration_level_1_durability_cost, 1, 20);
         toxicity.filtration_level_2_durability_cost = MathHelper.clamp(toxicity.filtration_level_2_durability_cost, 1, 20);
         toxicity.filtration_level_3_save_chance = MathHelper.clamp(toxicity.filtration_level_3_save_chance, 0.0f, 1.0f);
+        client.mold_z_offset = MathHelper.clamp(client.mold_z_offset, 0.0f, 0.1f);
     }
 }

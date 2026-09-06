@@ -62,17 +62,17 @@ public class ModCommands {
         source.sendMessage(Text.literal("§a[Miasma Scanner] §eScanning environment..."));
         
         switch (result.ventilationType) {
-            case CLEAN_OPEN_AIR -> source.sendMessage(Text.literal("§7- Ventilation State: §bClean Air §7(Open Air / Sky Exposure - miasma dissipated)"));
-            case UNCONFINED_CAVERN -> source.sendMessage(Text.literal("§7- Ventilation State: §aUnconfined Cavern §7(Massive volume ≥ " + config.toxicity.max_air_volume + " - miasma naturally diluted)"));
-            case VENTILATED -> source.sendMessage(Text.literal(String.format("§7- Ventilation State: §eVentilated Environment §7(Ventilation modifier: §a-%.2f§7)", result.ventilationScore)));
-            case HERMETIC_SEALED -> source.sendMessage(Text.literal("§7- Ventilation State: §cHermetically Sealed §7(Isolated airtight room - zero ventilation)"));
+            case CLEAN_OPEN_AIR -> source.sendMessage(Text.literal("§7- Ventilation State: §bClean Air / Open Sky §7(miasma fully dissipated)"));
+            case UNCONFINED_CAVERN -> source.sendMessage(Text.literal("§7- Ventilation State: §aUnconfined Cavern §7(Massive volume ≥ " + config.toxicity.max_air_volume + " - naturally diluted)"));
+            case VENTILATED -> {
+                String distStr = (result.distanceToVentilation < 900) ? String.format(" | Dist to Vent: §b%d blocks§7", result.distanceToVentilation) : "";
+                source.sendMessage(Text.literal(String.format("§7- Ventilation State: §eVentilated Environment §7(Ventilation: §a%.1f§7%s | Purge modifier: §a-%.2f§7)", result.ventilationScore, distStr, result.ventilationScore)));
+            }
+            case HERMETIC_SEALED -> source.sendMessage(Text.literal("§7- Ventilation State: §cHermetically Sealed §7(Isolated room, zero ventilation)"));
         }
 
-        source.sendMessage(Text.literal(String.format("§7- Volume: %s blocks analyzed", result.volume)));
-        source.sendMessage(Text.literal(String.format("§7- Toxicity Score (from mold): §c+%.2f", result.toxicScore)));
-        if (result.ventilationScore > 0.0) {
-            source.sendMessage(Text.literal(String.format("§7- Ventilation Flow Capacity: §a-%.2f", result.ventilationScore)));
-        }
+        source.sendMessage(Text.literal(String.format("§7- Explored Air Volume: §f%d blocks", result.volume)));
+        source.sendMessage(Text.literal(String.format("§7- Mold Toxicity: §c+%.2f §7| Ventilation Purge: §a-%.2f", result.toxicScore, result.ventilationScore)));
         
         String dynamicStatus = "§aSTABLE";
         if (result.netMiasma > result.targetMiasma + 0.05) {
@@ -81,13 +81,13 @@ public class ModCommands {
             dynamicStatus = String.format("§cACCUMULATING / SATURATING §7(Target: §f%.2f§7)", result.targetMiasma);
         }
         source.sendMessage(Text.literal(String.format("§7- Current Miasma M(t): §6%.2f §7[%s§7]", result.netMiasma, dynamicStatus)));
-        source.sendMessage(Text.literal(String.format("§7- Spore Density: §d%.3f §7| Exposure Index: §5%.3f", result.density, result.exposureIndex)));
+        source.sendMessage(Text.literal(String.format("§7- Spore Density: §d%.3f/block §7| Exposure Index: §5%.3f", result.density, result.exposureIndex)));
 
         switch (result.level) {
-            case LETHAL_POISON -> source.sendMessage(Text.literal("§4[WARNING] Lethal level! Nausea and Poison imminent!"));
-            case MODERATE_HUNGER -> source.sendMessage(Text.literal("§e[WARNING] Moderate level! Hunger imminent."));
-            case WARNING -> source.sendMessage(Text.literal("§6[WARNING] Low miasma level. Spores floating in the air."));
-            case CLEAN -> source.sendMessage(Text.literal("§a[SAFE] Harmless miasma level."));
+            case LETHAL_POISON -> source.sendMessage(Text.literal("§4[HAZARD] Lethal Level! Nausea & Poison imminent!"));
+            case MODERATE_HUNGER -> source.sendMessage(Text.literal("§e[WARNING] Moderate Level! Hunger imminent."));
+            case WARNING -> source.sendMessage(Text.literal("§6[NOTICE] Low Level. Airborne spores detected."));
+            case CLEAN -> source.sendMessage(Text.literal("§a[SAFE] Clean air quality."));
         }
 
         return 1;
@@ -117,37 +117,43 @@ public class ModCommands {
             String waxedText = isWaxed ? "§eYes" : "§cNo";
 
             if (verbose) {
-                source.sendMessage(Text.literal(String.format("§a[Mold Risk Verbose] §eBlock at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ())));
+                source.sendMessage(Text.literal(String.format("§a[Mold Risk Verbose] §eBlock at (%d, %d, %d)", pos.getX(), pos.getY(), pos.getZ())));
                 source.sendMessage(Text.literal(String.format("§7- Block: §f%s §7(Stage: §f%s§7, Waxed: %s§7)", blockName, stageText, waxedText)));
-                source.sendMessage(Text.literal(String.format("§7- Formula: §f((Heff * Luv * Smat) + DirectCatalysts + MiasmaAir) * Tmult")));
-                source.sendMessage(Text.literal(String.format("§7- Raw Humidity: §b%.2f §7[Base: %.2f | Depth: +%.2f | Water: +%.2f]", 
+                source.sendMessage(Text.literal("§7- Formula: §f((Heff * Luv * Smat) + Catalysts + MiasmaAir) * Tmult"));
+                source.sendMessage(Text.literal(String.format("§7- Raw Humidity (Hraw): §b%.2f §7[Base: %.2f | Depth: +%.2f | Water: +%.2f]", 
                         result.Hraw(), result.baseHum(), result.depthModifier(), result.localHumidityBonus())));
-                source.sendMessage(Text.literal(String.format("§7- Aeration (Airflow): §b%.2f §7[Drying Bonus: §3-%.2f §7| Exposed Faces: §f%d/6 §7| Air Vol: §b%d§7]", 
-                        result.aeration(), result.aerationDryingBonus(), result.exposedFaces(), result.airVolume())));
-                source.sendMessage(Text.literal(String.format("§7- Effective Humidity (Heff): §b%.2f", result.Heff())));
+                String distStr = (result.distanceToVentilation() < 900) 
+                        ? String.format("Dist to Vent: §b%d blocks§7 | ", result.distanceToVentilation()) 
+                        : (result.aerationFlow() > 0 ? "Dist to Vent: §b0 blocks (Sky)§7 | " : "Dist to Vent: §cSealed§7 | ");
+                source.sendMessage(Text.literal(String.format("§7- Aeration: §a%.1f flow §7(§b%.1f%%§7) [%sDrying Bonus: §3-%.2f §7| Exposed Faces: §f%d/6 §7| Air Domain: §b%d blocks§7]", 
+                        result.aerationFlow(), result.aeration() * 100.0, distStr, result.aerationDryingBonus(), result.exposedFaces(), result.airVolume())));
+                source.sendMessage(Text.literal(String.format("§7- Effective Humidity (Heff): §b%.2f §7(Hraw - AerationBonus)", result.Heff())));
                 source.sendMessage(Text.literal(String.format("§7- Luv (Darkness): §8%.2f §7[Avg Light: %.1f / 15.0]", 
                         result.Luv(), result.avgLight())));
-                source.sendMessage(Text.literal(String.format("§7- Smat (Material): §e%.2f §7[Based on block type]", result.Smat())));
-                source.sendMessage(Text.literal(String.format("§7- Direct Catalysts: §d%.2f §7[Nearby blocks & mold]", result.catalystBonus())));
-                source.sendMessage(Text.literal(String.format("§7- Miasma Air Pressure: §5+%.2f §7[Net Miasma: %.2f]", result.miasmaBonus(), result.netMiasma())));
+                source.sendMessage(Text.literal(String.format("§7- Smat (Susceptibility): §e%.2f §7[Based on block material]", result.Smat())));
+                source.sendMessage(Text.literal(String.format("§7- Catalysts: §d%.2f §7[Nearby blocks & mold]", result.catalystBonus())));
+                source.sendMessage(Text.literal(String.format("§7- Miasma Pressure: §5+%.2f §7[Net Miasma: %.2f]", result.miasmaBonus(), result.netMiasma())));
                 
                 String tempMod = "";
                 if (Math.abs(result.effectiveTemp() - result.surfaceTemp()) > 0.01) {
                     tempMod = result.effectiveTemp() < result.surfaceTemp() ? " (Cooled)" : " (Warmed)";
                 }
-                source.sendMessage(Text.literal(String.format("§7- Effective Temp: §6%.2f §7[Surface: %.2f%s] => Tmult: §c%.2f", 
+                source.sendMessage(Text.literal(String.format("§7- Temperature: §6%.2f §7[Surface: %.2f%s] => Tmult: §c%.2f", 
                         result.effectiveTemp(), result.surfaceTemp(), tempMod, result.Tmult())));
             } else {
-                source.sendMessage(Text.literal(String.format("§a[Mold Risk] §eBlock at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ())));
-                source.sendMessage(Text.literal(String.format("§7- Heff (Humidity): §b%.2f §7(Aeration: %.2f)", result.Heff(), result.aeration())));
-                source.sendMessage(Text.literal(String.format("§7- Luv (Darkness): §8%.2f", result.Luv())));
-                source.sendMessage(Text.literal(String.format("§7- Smat (Material): §e%.2f", result.Smat())));
+                source.sendMessage(Text.literal(String.format("§a[Mold Risk] §eBlock at (%d, %d, %d)", pos.getX(), pos.getY(), pos.getZ())));
+                String distStr = (result.distanceToVentilation() < 900) 
+                        ? String.format(" | Dist: §b%d§7", result.distanceToVentilation()) 
+                        : (result.aerationFlow() > 0 ? " | Dist: §b0 (Sky)§7" : " | Dist: §cSealed§7");
+                source.sendMessage(Text.literal(String.format("§7- Heff (Humidity): §b%.2f §7(Aeration: §a%.1f flow §7| §b%.1f%%%s§7)", 
+                        result.Heff(), result.aerationFlow(), result.aeration() * 100.0, distStr)));
+                source.sendMessage(Text.literal(String.format("§7- Luv (Darkness): §8%.2f §7| Smat (Material): §e%.2f", result.Luv(), result.Smat())));
                 source.sendMessage(Text.literal(String.format("§7- Catalysts: §d%.2f §7| Miasma: §5+%.2f", result.catalystBonus(), result.miasmaBonus())));
                 source.sendMessage(Text.literal(String.format("§7- Effective Temp: §6%.2f §7(Tmult: §c%.2f§7)", result.effectiveTemp(), result.Tmult())));
             }
             
             source.sendMessage(Text.literal(String.format("§7- Infection Threshold: §f%.2f", config.general.infection_threshold)));
-            source.sendMessage(Text.literal(String.format("§c=> R = %.4f %s", R, (R > config.general.infection_threshold ? "§4(WILL GROW)" : "§a(SAFE)"))));
+            source.sendMessage(Text.literal(String.format("§c=> R = %.4f %s", R, (R > config.general.infection_threshold ? "§4(WILL GROW / INFECT)" : "§a(SAFE / IMMUNE)"))));
             
         } else {
             source.sendMessage(Text.literal("§cYou must look at a block to check its mold risk."));

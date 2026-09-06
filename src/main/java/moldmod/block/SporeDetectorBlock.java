@@ -9,6 +9,7 @@ import net.minecraft.block.ShapeContext;
 import net.minecraft.block.WallMountedBlock;
 import net.minecraft.block.enums.BlockFace;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -21,6 +22,8 @@ import net.minecraft.state.property.Properties;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -142,14 +145,14 @@ public class SporeDetectorBlock extends WallMountedBlock {
     }
 
     @Override
-    public net.minecraft.util.ItemActionResult onUseWithItem(net.minecraft.item.ItemStack stack, BlockState state,
-            World world, BlockPos pos, PlayerEntity player, net.minecraft.util.Hand hand, BlockHitResult hit) {
+    public ItemActionResult onUseWithItem(ItemStack stack, BlockState state,
+            World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient && world instanceof ServerWorld serverWorld) {
             MiasmaResult result = ToxicAirEvent.calculateMiasma(serverWorld, pos);
             sendDiagnosticMessage((ServerPlayerEntity) player, result, state.get(POWER));
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_BULB_TURN_ON, SoundCategory.BLOCKS, 0.8f, 1.2f);
         }
-        return net.minecraft.util.ItemActionResult.SUCCESS;
+        return ItemActionResult.SUCCESS;
     }
 
     public static void sendDiagnosticMessage(ServerPlayerEntity player, MiasmaResult result, int redstonePower) {
@@ -171,12 +174,12 @@ public class SporeDetectorBlock extends WallMountedBlock {
 
         // Invio diagnostica privata in CHAT solo al giocatore che ha usato lo strumento
         player.sendMessage(header.append(statusText), false);
-        player.sendMessage(Text.literal(String.format("§7- Volume: §f%d blocks §7| Ventilation Flow: §a%.2f",
+        player.sendMessage(Text.literal(String.format("§7- Volume: §f%d blocks §7| Ventilation: §a%.1f",
                 result.volume, result.ventilationScore)), false);
         player.sendMessage(
-                Text.literal(String.format("§7- Current Miasma: §6%.2f §7| Density: §d%.3f/b §7| Redstone: §c%d",
+                Text.literal(String.format("§7- Current Miasma: §6%.2f §7| Spore Density: §d%.3f/b §7| Redstone: §c%d",
                         result.netMiasma, result.density, redstonePower)),
                 false);
-        player.sendMessage(Text.literal(String.format("§7- Status: %s", trend)), false);
+        player.sendMessage(Text.literal(String.format("§7- Trend: %s", trend)), false);
     }
 }

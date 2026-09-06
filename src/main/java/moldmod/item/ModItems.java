@@ -1,6 +1,7 @@
 package moldmod.item;
 
 import moldmod.SporesShadows;
+import moldmod.block.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
@@ -38,7 +39,7 @@ public class ModItems {
     );
 
     public static final Item SPORE_MASK = new SporeMaskItem(SPORE_MASK_ARMOR_MATERIAL, new Item.Settings().maxDamage(165));
-    public static final Item SPORE_DETECTOR = new SporeDetectorItem(moldmod.block.ModBlocks.SPORE_DETECTOR, new Item.Settings().maxCount(16));
+    public static final Item SPORE_DETECTOR = new SporeDetectorItem(ModBlocks.SPORE_DETECTOR, new Item.Settings().maxCount(16));
 
     public static void registerModItems() {
         SporesShadows.LOGGER.info("Registering ModItems for " + SporesShadows.MOD_ID);

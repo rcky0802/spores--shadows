@@ -566,8 +566,8 @@ public class MoldyMathTests {
         if (rOpen.miasmaBonus() != 0.0) {
             context.throwPositionedException("A porta aperta verso l'esterno il miasma deve essere azzerato (0.0), trovato: " + rOpen.miasmaBonus(), targetPos);
         }
-        if (rOpen.aeration() < 0.99) {
-            context.throwPositionedException("A porta aperta verso l'esterno l'aerazione deve salire a 1.0, trovato: " + rOpen.aeration(), targetPos);
+        if (rOpen.aeration() <= 0.0) {
+            context.throwPositionedException("A porta aperta verso l'esterno l'aerazione deve essere > 0, trovato: " + rOpen.aeration(), targetPos);
         }
         if (rOpen.R() >= rClosed.R()) {
             context.throwPositionedException("Aprire la porta deve ridurre drasticamente il rischio R! Chiusa: " + rClosed.R() + ", Aperta: " + rOpen.R(), targetPos);

@@ -2,6 +2,7 @@ package moldmod.registry;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.SporesShadows;
+import moldmod.SporesShadowsConstants;
 import moldmod.SporesShadowsConstants.MoldyWoodType;
 import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
@@ -12,7 +13,7 @@ import net.minecraft.registry.Registries;
 public class ModFuelRegistry {
 
     public static void register() {
-        for (MoldyWoodType woodType : moldmod.SporesShadowsConstants.WOOD_TYPES) {
+        for (MoldyWoodType woodType : SporesShadowsConstants.WOOD_TYPES) {
             if (woodType.isNether()) {
                 continue;
             }
