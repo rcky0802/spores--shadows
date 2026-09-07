@@ -262,11 +262,7 @@ Tutti i comandi amministrativi richiedono il livello operatore 2:
 * `/miasma`  
   Esegue una scansione atmosferica BFS in tempo reale alla posizione del giocatore, mostrando tipo di ambiente (Aperto / Confinato), volume d'aria ($m^3$), Toxic Score, Portata di Ventilazione, Miasma Netto e Densità delle Spore.
 * `/moldrisk` 
-  Ispeziona il blocco inquadrato e mostra umidità ($H_{\text{eff}}$), luce ($L_{\text{uv}}$), suscettibilità ($S_{\text{mat}}$), catalizzatori, bonus aereo miasma ($M_{\text{bonus}}$), temperatura e valore calcolato di $R$.
-* `/moldrisk verbose`  
-  Mostra la scomposizione matematica intermedia completa (modificatori profondità, temperature superficie vs caverna, bonus acqua locali).
-* `/spores reload`  
-  Ricarica istantaneamente il file di configurazione (`config/spores--shadows.json`) senza riavviare server o client.
+  Ispeziona il blocco inquadrato e mostra la scomposizione matematica completa di umidità ($H_{\text{eff}}$), luce ($L_{\text{uv}}$), suscettibilità ($S_{\text{mat}}$), catalizzatori, bonus aereo miasma ($M_{\text{bonus}}$), temperatura e valore calcolato di $R$.
 
 ---
 

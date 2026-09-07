@@ -262,11 +262,7 @@ Alle Administratorbefehle erfordern Berechtigungsstufe 2:
 * `/miasma`  
   Führt einen Echtzeit-BFS-Luftscan an der Spielerposition durch und gibt Umgebungstyp (Offene Luft / Geschlossener Raum), Luftvolumen ($m^3$), Toxizitätswert, Belüftungswert, Netto-Miasma und Sporendichte aus.
 * `/moldrisk` 
-  Inspiziert den anvisierten Block und zeigt Feuchtigkeit ($H_{\text{eff}}$), Licht ($L_{\text{uv}}$), Anfälligkeit ($S_{\text{mat}}$), Katalysatoren, Miasma-Luftbonus ($M_{\text{bonus}}$), Temperatur und berechneten $R$-Wert an.
-* `/moldrisk verbose`  
-  Zeigt die vollständige mathematische Zwischenrechnung an (Tiefenmodifikatoren, Oberflächen- vs. Höhlentemperatur, lokale Wasserboni).
-* `/spores reload`  
-  Lädt die Konfigurationsdatei (`config/spores--shadows.json`) im laufenden Betrieb ohne Neustart von Server oder Client neu.
+  Inspiziert den anvisierten Block und zeigt die vollständige mathematische Aufschlüsselung von Feuchtigkeit ($H_{\text{eff}}$), Licht ($L_{\text{uv}}$), Materialanfälligkeit ($S_{\text{mat}}$), Katalysatoren, Miasma-Luftbonus ($M_{\text{bonus}}$), Temperatur und berechnetem $R$-Risiko an.
 
 ---
 

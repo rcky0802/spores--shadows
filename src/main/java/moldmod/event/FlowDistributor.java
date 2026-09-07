@@ -23,6 +23,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -53,18 +54,35 @@ public class FlowDistributor {
             Map<BlockPos, Double> startBlockCaps,
             Map<BlockPos, Double> startBlockScores,
             Map<BlockPos, Integer> startBlockDistances,
-            Map<BlockPos, Integer> distToGoal
+            Map<BlockPos, Integer> distToGoal,
+            Map<BlockPos, Double> nodeFlows
     ) {
         public MaxFlowResult(double totalMaxFlow, double totalRequested, double normalizedAeration,
                              Map<BlockPos, Double> startBlockFlows, Map<BlockPos, Double> startBlockCaps,
+                             Map<BlockPos, Double> startBlockScores, Map<BlockPos, Integer> startBlockDistances,
+                             Map<BlockPos, Integer> distToGoal) {
+            this(totalMaxFlow, totalRequested, normalizedAeration, startBlockFlows, startBlockCaps, startBlockScores, startBlockDistances, distToGoal, Collections.emptyMap());
+        }
+
+        public MaxFlowResult(double totalMaxFlow, double totalRequested, double normalizedAeration,
+                             Map<BlockPos, Double> startBlockFlows, Map<BlockPos, Double> startBlockCaps,
                              Map<BlockPos, Double> startBlockScores, Map<BlockPos, Integer> startBlockDistances) {
-            this(totalMaxFlow, totalRequested, normalizedAeration, startBlockFlows, startBlockCaps, startBlockScores, startBlockDistances, Collections.emptyMap());
+            this(totalMaxFlow, totalRequested, normalizedAeration, startBlockFlows, startBlockCaps, startBlockScores, startBlockDistances, Collections.emptyMap(), Collections.emptyMap());
         }
 
         public MaxFlowResult(double totalMaxFlow, double totalRequested, double normalizedAeration,
                              Map<BlockPos, Double> startBlockFlows, Map<BlockPos, Double> startBlockCaps,
                              Map<BlockPos, Double> startBlockScores) {
-            this(totalMaxFlow, totalRequested, normalizedAeration, startBlockFlows, startBlockCaps, startBlockScores, Collections.emptyMap(), Collections.emptyMap());
+            this(totalMaxFlow, totalRequested, normalizedAeration, startBlockFlows, startBlockCaps, startBlockScores, Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap());
+        }
+
+        public double getFlowAt(BlockPos pos) {
+            return (nodeFlows != null) ? nodeFlows.getOrDefault(pos, 0.0) : 0.0;
+        }
+
+        public double getAerationAt(BlockPos pos, double threshold) {
+            double flow = getFlowAt(pos);
+            return (threshold > 0.0) ? Math.min(1.0, flow / threshold) : 0.0;
         }
     }
 
@@ -109,6 +127,8 @@ public class FlowDistributor {
 
     public final FastDinicSolver dinic;
     public final List<SourceFaceChannel> sourceFaceChannels;
+    private final int[] nodeInternalEdgeIndices;
+    private final int[] nodeGoalEdgeIndices;
 
     public FlowDistributor(WorldAccess world, ModConfig config, List<BlockPos> indexedPositions,
                            Map<BlockPos, Integer> posToIdx, Set<BlockPos> starts, Set<BlockPos> goals,
@@ -132,6 +152,10 @@ public class FlowDistributor {
         int estimatedEdges = 6 * N + N + goals.size() + 2 * M + 16;
         this.dinic = new FastDinicSolver(2 * N + M + 2, estimatedEdges);
         this.sourceFaceChannels = new ArrayList<>(M);
+        this.nodeInternalEdgeIndices = new int[N];
+        Arrays.fill(this.nodeInternalEdgeIndices, -1);
+        this.nodeGoalEdgeIndices = new int[N];
+        Arrays.fill(this.nodeGoalEdgeIndices, -1);
     }
 
     public static MaxFlowResult solve(WorldAccess world, BlockPos startPos, int maxAirVolume, int maxEuclideanRadius) {
@@ -183,13 +207,13 @@ public class FlowDistributor {
             BlockState uState = world.getBlockState(u);
 
             double nodeCap = starts.contains(u) ? 0.0 : getNodeInternalCapacity(world, u, uState, config);
-            dinic.addEdge(uIn, uOut, nodeCap);
+            nodeInternalEdgeIndices[i] = dinic.addEdge(uIn, uOut, nodeCap);
 
             if (goals.contains(u)) {
                 if (uState.isAir()) {
-                    dinic.addEdge(uIn, sinkIdx, baseUnitCapacity);
+                    nodeGoalEdgeIndices[i] = dinic.addEdge(uIn, sinkIdx, baseUnitCapacity);
                 } else {
-                    dinic.addEdge(uOut, sinkIdx, baseUnitCapacity);
+                    nodeGoalEdgeIndices[i] = dinic.addEdge(uOut, sinkIdx, baseUnitCapacity);
                 }
             }
 
@@ -333,10 +357,29 @@ public class FlowDistributor {
             normalizedAeration = 1.0;
         }
 
+        Map<BlockPos, Double> nodeFlows = new HashMap<>(N);
+        for (int i = 0; i < N; i++) {
+            BlockPos u = indexedPositions.get(i);
+            int internalIdx = nodeInternalEdgeIndices[i];
+            int goalIdx = nodeGoalEdgeIndices[i];
+            double fInternal = (internalIdx >= 0) ? dinic.getEdgeFlow(internalIdx) : 0.0;
+            double fGoal = (goalIdx >= 0) ? dinic.getEdgeFlow(goalIdx) : 0.0;
+            double fTotal = Math.max(fInternal, fGoal);
+            if (starts.contains(u)) {
+                fTotal = Math.max(fTotal, startBlockFlows.getOrDefault(u, 0.0));
+            }
+            if (Math.abs(fTotal - Math.round(fTotal)) < 1e-5) {
+                fTotal = Math.round(fTotal);
+            } else if (Math.abs(fTotal - Math.round(fTotal * 2.0) / 2.0) < 1e-5) {
+                fTotal = Math.round(fTotal * 2.0) / 2.0;
+            }
+            nodeFlows.put(u, fTotal);
+        }
+
         return new MaxFlowResult(
                 totalMaxFlow, totalRequested, normalizedAeration,
                 startBlockFlows, startBlockCaps, startBlockScores,
-                startBlockDistances, distToGoal);
+                startBlockDistances, distToGoal, nodeFlows);
     }
 
     public static double getNodeInternalCapacity(WorldAccess world, BlockPos pos, BlockState state, ModConfig config) {
@@ -361,8 +404,7 @@ public class FlowDistributor {
             return isOpen ? config.toxicity.door_ventilation_value : 0.0;
         }
         if (block instanceof TrapdoorBlock) {
-            boolean isOpen = state.contains(Properties.OPEN) && state.get(Properties.OPEN);
-            return isOpen ? config.toxicity.trapdoor_ventilation_value : 0.0;
+            return config.toxicity.trapdoor_ventilation_value;
         }
 
         if (block instanceof FenceGateBlock) {

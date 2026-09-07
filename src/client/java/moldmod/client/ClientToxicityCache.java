@@ -1,7 +1,7 @@
 package moldmod.client;
 
-import moldmod.event.ToxicAirEvent;
-import moldmod.event.ToxicAirEvent.MiasmaResult;
+import moldmod.event.MiasmaCalculator;
+import moldmod.event.MiasmaCalculator.MiasmaResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.LivingEntity;
@@ -27,12 +27,12 @@ public class ClientToxicityCache {
         lastCheckTick = currentTick;
         BlockPos eyePos = BlockPos.ofFloored(entity.getEyePos());
 
-        if (!ToxicAirEvent.hasMoldNearby(world, eyePos, 8)) {
+        if (!MiasmaCalculator.hasMoldNearby(world, eyePos, 8)) {
             cachedToxicity = 0.0f;
             return 0.0f;
         }
 
-        MiasmaResult result = ToxicAirEvent.calculateMiasma(world, eyePos);
+        MiasmaResult result = MiasmaCalculator.calculateMiasma(world, eyePos);
         cachedToxicity = switch (result.level) {
             case CLEAN -> 0.0f;
             case WARNING -> 0.33f;

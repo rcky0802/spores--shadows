@@ -1,8 +1,8 @@
 package moldmod.block;
 
 import com.mojang.serialization.MapCodec;
-import moldmod.event.ToxicAirEvent;
-import moldmod.event.ToxicAirEvent.MiasmaResult;
+import moldmod.event.MiasmaCalculator;
+import moldmod.event.MiasmaCalculator.MiasmaResult;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -95,7 +95,7 @@ public class SporeDetectorBlock extends WallMountedBlock {
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        MiasmaResult result = ToxicAirEvent.calculateMiasma(world, pos);
+        MiasmaResult result = MiasmaCalculator.calculateMiasma(world, pos);
 
         int toxLevel = switch (result.level) {
             case CLEAN -> 0;
@@ -137,7 +137,7 @@ public class SporeDetectorBlock extends WallMountedBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient && world instanceof ServerWorld serverWorld) {
-            MiasmaResult result = ToxicAirEvent.calculateMiasma(serverWorld, pos);
+            MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, pos);
             sendDiagnosticMessage((ServerPlayerEntity) player, result, state.get(POWER));
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_BULB_TURN_ON, SoundCategory.BLOCKS, 0.8f, 1.2f);
         }
@@ -148,7 +148,7 @@ public class SporeDetectorBlock extends WallMountedBlock {
     public ItemActionResult onUseWithItem(ItemStack stack, BlockState state,
             World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient && world instanceof ServerWorld serverWorld) {
-            MiasmaResult result = ToxicAirEvent.calculateMiasma(serverWorld, pos);
+            MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, pos);
             sendDiagnosticMessage((ServerPlayerEntity) player, result, state.get(POWER));
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_BULB_TURN_ON, SoundCategory.BLOCKS, 0.8f, 1.2f);
         }
@@ -174,11 +174,17 @@ public class SporeDetectorBlock extends WallMountedBlock {
 
         // Invio diagnostica privata in CHAT solo al giocatore che ha usato lo strumento
         player.sendMessage(header.append(statusText), false);
-        player.sendMessage(Text.literal(String.format("§7- Volume: §f%d blocks §7| Ventilation: §a%.1f",
-                result.volume, result.ventilationScore)), false);
+        String distStr = (result.distanceToVentilation < 900)
+                ? String.format(" | Dist to Vent: §b%d blocks§7", result.distanceToVentilation)
+                : "";
+        player.sendMessage(Text.literal(String.format("§7- Volume: §f%d blocks §7| Room Ventilation: §a%.1f%s",
+                result.volume, result.roomVentilationScore, distStr)), false);
+        player.sendMessage(Text.literal(String.format(
+                "§7- Local Aeration: §a%.1f flow §7(§b%.1f%%§7) | Local Spores: §d%.3f/b §7| Redstone: §c%d",
+                result.localFlow, result.localAeration * 100.0, result.localDensity, redstonePower)), false);
         player.sendMessage(
-                Text.literal(String.format("§7- Current Miasma: §6%.2f §7| Spore Density: §d%.3f/b §7| Redstone: §c%d",
-                        result.netMiasma, result.density, redstonePower)),
+                Text.literal(String.format("§7- Room Miasma: §6%.2f §7| Room Density: §d%.3f/b",
+                        result.netMiasma, result.density)),
                 false);
         player.sendMessage(Text.literal(String.format("§7- Trend: %s", trend)), false);
     }

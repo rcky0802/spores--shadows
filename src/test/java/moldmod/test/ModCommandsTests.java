@@ -14,13 +14,6 @@ import net.minecraft.util.math.BlockPos;
 public class ModCommandsTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-    public void testSporesReloadCommand(TestContext context) {
-        ServerCommandSource source = context.getWorld().getServer().getCommandSource().withWorld(context.getWorld());
-        context.getWorld().getServer().getCommandManager().executeWithPrefix(source, "spores reload");
-        context.complete();
-    }
-
-    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testMiasmaCommandOpenAir(TestContext context) {
         PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
         BlockPos center = new BlockPos(2, 2, 2);
@@ -84,7 +77,6 @@ public class ModCommandsTests {
         ServerCommandSource source = context.getWorld().getServer().getCommandSource().withEntity(player).withPosition(player.getPos());
         
         context.getWorld().getServer().getCommandManager().executeWithPrefix(source, "moldrisk");
-        context.getWorld().getServer().getCommandManager().executeWithPrefix(source, "moldrisk verbose");
 
         context.complete();
     }

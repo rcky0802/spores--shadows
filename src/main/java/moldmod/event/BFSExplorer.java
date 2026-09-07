@@ -2,6 +2,7 @@ package moldmod.event;
 
 import moldmod.block.MoldyBlock;
 import moldmod.config.ModConfig;
+import moldmod.event.MiasmaCalculator.BlockAerationType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -238,52 +239,52 @@ public final class BFSExplorer {
         return ns || ew;
     }
 
-    public static ToxicAirEvent.BlockAerationType getAerationType(BlockView world, BlockPos pos, BlockState state, Direction entryFace) {
+    public static BlockAerationType getAerationType(BlockView world, BlockPos pos, BlockState state, Direction entryFace) {
         if (state == null || state.isAir()) {
-            return ToxicAirEvent.BlockAerationType.OPEN_AIR;
+            return BlockAerationType.OPEN_AIR;
         }
 
         Block block = state.getBlock();
 
         // 1. Copper Grates: treated like air
         if (block instanceof GrateBlock) {
-            return ToxicAirEvent.BlockAerationType.OPEN_AIR;
+            return BlockAerationType.OPEN_AIR;
         }
 
         // 2. Fences & Fence Gates:
         if (block instanceof FenceBlock) {
-            return ToxicAirEvent.BlockAerationType.VENTILATED;
+            return BlockAerationType.VENTILATED;
         }
         if (block instanceof FenceGateBlock) {
             boolean isOpen = state.contains(Properties.OPEN) && state.get(Properties.OPEN);
-            return isOpen ? ToxicAirEvent.BlockAerationType.OPEN_AIR : ToxicAirEvent.BlockAerationType.VENTILATED;
+            return isOpen ? BlockAerationType.OPEN_AIR : BlockAerationType.VENTILATED;
         }
 
         // 3. Wall blocks:
         if (block instanceof WallBlock) {
             if (entryFace.getAxis().isVertical() || !isWallConnected(state)) {
-                return ToxicAirEvent.BlockAerationType.VENTILATED;
+                return BlockAerationType.VENTILATED;
             }
-            return ToxicAirEvent.BlockAerationType.HERMETIC;
+            return BlockAerationType.HERMETIC;
         }
 
         // 4. Doors, Trapdoors:
         if (block instanceof DoorBlock || block instanceof TrapdoorBlock) {
             Direction flowDir = entryFace.getOpposite();
             boolean isBlockingFlow = isBlockAirflowBlocked(state, flowDir);
-            return isBlockingFlow ? ToxicAirEvent.BlockAerationType.HERMETIC : ToxicAirEvent.BlockAerationType.OPEN_AIR;
+            return isBlockingFlow ? BlockAerationType.HERMETIC : BlockAerationType.OPEN_AIR;
         }
 
         // 5. Grates / Panes (Iron Bars)
         if (block instanceof PaneBlock) {
             if (state.isOf(Blocks.IRON_BARS)) {
-                return ToxicAirEvent.BlockAerationType.VENTILATED;
+                return BlockAerationType.VENTILATED;
             }
-            return ToxicAirEvent.BlockAerationType.HERMETIC;
+            return BlockAerationType.HERMETIC;
         }
 
         if (isFaceSolid(world, pos, state, entryFace)) {
-            return ToxicAirEvent.BlockAerationType.HERMETIC;
+            return BlockAerationType.HERMETIC;
         }
 
         boolean hasNonSolidExit = false;
@@ -297,14 +298,14 @@ public final class BFSExplorer {
         }
 
         if (!hasNonSolidExit) {
-            return ToxicAirEvent.BlockAerationType.HERMETIC;
+            return BlockAerationType.HERMETIC;
         }
 
         if (block instanceof SlabBlock || block instanceof StairsBlock) {
-            return ToxicAirEvent.BlockAerationType.VENTILATED;
+            return BlockAerationType.VENTILATED;
         }
 
-        return ToxicAirEvent.BlockAerationType.OPEN_AIR;
+        return BlockAerationType.OPEN_AIR;
     }
 
     public static boolean isBlockAirflowBlocked(BlockState state, Direction flowDir) {
@@ -344,13 +345,13 @@ public final class BFSExplorer {
             return false;
         }
 
-        ToxicAirEvent.BlockAerationType fromType = getAerationType(world, fromPos, fromState, dir.getOpposite());
-        if (fromType != ToxicAirEvent.BlockAerationType.OPEN_AIR) {
+        BlockAerationType fromType = getAerationType(world, fromPos, fromState, dir.getOpposite());
+        if (fromType != BlockAerationType.OPEN_AIR) {
             return false;
         }
 
-        ToxicAirEvent.BlockAerationType toType = getAerationType(world, toPos, toState, dir.getOpposite());
-        return toType == ToxicAirEvent.BlockAerationType.OPEN_AIR;
+        BlockAerationType toType = getAerationType(world, toPos, toState, dir.getOpposite());
+        return toType == BlockAerationType.OPEN_AIR;
     }
 
     public static boolean isCoveredByCeiling(WorldAccess world, BlockPos pos) {
@@ -412,8 +413,8 @@ public final class BFSExplorer {
         if (state.getBlock() instanceof GrateBlock) {
             return false;
         }
-        ToxicAirEvent.BlockAerationType type = getAerationType(world, pos, state, Direction.DOWN);
-        return type == ToxicAirEvent.BlockAerationType.HERMETIC || type == ToxicAirEvent.BlockAerationType.VENTILATED;
+        BlockAerationType type = getAerationType(world, pos, state, Direction.DOWN);
+        return type == BlockAerationType.HERMETIC || type == BlockAerationType.VENTILATED;
     }
 
     public static boolean isVentilatedToOutside(WorldAccess world, BlockPos gapPos, Direction outwardDir) {
@@ -620,10 +621,6 @@ public final class BFSExplorer {
             BlockPos currentPos = queue.poll();
             BlockState currentState = world.getBlockState(currentPos);
 
-            if (!isCoveredByCeiling(world, currentPos)) {
-                openAir = true;
-            }
-
             for (Direction dir : DIRECTIONS) {
                 BlockPos neighborPos = currentPos.offset(dir);
                 BlockState neighborState = world.getBlockState(neighborPos);
@@ -631,15 +628,6 @@ public final class BFSExplorer {
                 if (canAirPass(world, currentPos, currentState, neighborPos, neighborState, dir)) {
                     if (isVentilatedToOutside(world, neighborPos, dir)) {
                         visited.add(neighborPos);
-                        Block block = neighborState.getBlock();
-                        if (block instanceof FenceGateBlock) {
-                            boolean isOpen = neighborState.contains(Properties.OPEN) && neighborState.get(Properties.OPEN);
-                            if (isOpen) {
-                                openAir = true;
-                            }
-                        } else if (block instanceof DoorBlock || block instanceof TrapdoorBlock || block instanceof GrateBlock) {
-                            openAir = true;
-                        }
                     } else {
                         int dx = startPos.getX() - neighborPos.getX();
                         int dy = startPos.getY() - neighborPos.getY();

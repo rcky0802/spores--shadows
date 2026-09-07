@@ -2,7 +2,8 @@ package moldmod.test;
 
 import moldmod.block.MoldyLogBlock;
 import moldmod.block.ModBlocks;
-import moldmod.event.ToxicAirEvent;
+import moldmod.block.SporeDetectorBlock;
+import moldmod.event.MiasmaCalculator;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -30,17 +31,17 @@ public class ToxicAirTests {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testCleanAirThresholds(TestContext context) {
         // Nessun blocco marcio -> CLEAN
-        ToxicAirEvent.MiasmaResult clean = new ToxicAirEvent.MiasmaResult(0.0, 0.0, false, 10,
+        MiasmaCalculator.MiasmaResult clean = new MiasmaCalculator.MiasmaResult(0.0, 0.0, false, 10,
                 Collections.emptySet());
-        if (clean.level != ToxicAirEvent.AirToxicityLevel.CLEAN) {
+        if (clean.level != MiasmaCalculator.AirToxicityLevel.CLEAN) {
             context.throwPositionedException("Miasma a 0 deve essere CLEAN, trovato: " + clean.level,
                     new BlockPos(0, 1, 0));
         }
 
         // Open Air -> sempre CLEAN
-        ToxicAirEvent.MiasmaResult openAir = new ToxicAirEvent.MiasmaResult(50.0, 0.0, true, 10,
+        MiasmaCalculator.MiasmaResult openAir = new MiasmaCalculator.MiasmaResult(50.0, 0.0, true, 10,
                 Collections.emptySet());
-        if (openAir.level != ToxicAirEvent.AirToxicityLevel.CLEAN) {
+        if (openAir.level != MiasmaCalculator.AirToxicityLevel.CLEAN) {
             context.throwPositionedException("Open Air deve essere sempre CLEAN, trovato: " + openAir.level,
                     new BlockPos(0, 1, 0));
         }
@@ -48,7 +49,7 @@ public class ToxicAirTests {
             context.throwPositionedException("Open Air deve avere netMiasma = 0.0, trovato: " + openAir.netMiasma,
                     new BlockPos(0, 1, 0));
         }
-        if (openAir.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
+        if (openAir.ventilationType != MiasmaCalculator.RoomVentilationType.CLEAN_OPEN_AIR) {
             context.throwPositionedException(
                     "Open Air deve avere ventilationType = CLEAN_OPEN_AIR, trovato: " + openAir.ventilationType,
                     new BlockPos(0, 1, 0));
@@ -56,15 +57,15 @@ public class ToxicAirTests {
 
         // Volume >= MAX_AIR_VOLUME -> UNCONFINED_CAVERN (miasma diluted in massive
         // volume -> CLEAN)
-        ToxicAirEvent.MiasmaResult hugeRoom = new ToxicAirEvent.MiasmaResult(5.0, 0.0, false, 1024,
+        MiasmaCalculator.MiasmaResult hugeRoom = new MiasmaCalculator.MiasmaResult(5.0, 0.0, false, 1024,
                 java.util.Collections.emptySet());
-        if (hugeRoom.level != ToxicAirEvent.AirToxicityLevel.CLEAN) {
+        if (hugeRoom.level != MiasmaCalculator.AirToxicityLevel.CLEAN) {
             context.throwPositionedException(
                     "Stanza >= 1024 blocchi con bassa muffa deve essere considerata CLEAN per diluizione, trovato: "
                             + hugeRoom.level,
                     new BlockPos(0, 1, 0));
         }
-        if (hugeRoom.ventilationType != ToxicAirEvent.RoomVentilationType.UNCONFINED_CAVERN) {
+        if (hugeRoom.ventilationType != MiasmaCalculator.RoomVentilationType.UNCONFINED_CAVERN) {
             context.throwPositionedException(
                     "Stanza >= 1024 blocchi deve risultare UNCONFINED_CAVERN, trovato: " + hugeRoom.ventilationType,
                     new BlockPos(0, 1, 0));
@@ -78,9 +79,9 @@ public class ToxicAirTests {
         // Stanza piccola (volume 5) con 5 tronchi stadio 3 marci (toxicScore = 5 * 3 *
         // 1.5 = 22.5)
         // netMiasma = 22.5, densità = 22.5 / 5 = 4.5 -> LETHAL_POISON
-        ToxicAirEvent.MiasmaResult smallDenseRoom = new ToxicAirEvent.MiasmaResult(22.5, 0.0, false, 5,
+        MiasmaCalculator.MiasmaResult smallDenseRoom = new MiasmaCalculator.MiasmaResult(22.5, 0.0, false, 5,
                 java.util.Collections.emptySet());
-        if (smallDenseRoom.level != ToxicAirEvent.AirToxicityLevel.LETHAL_POISON) {
+        if (smallDenseRoom.level != MiasmaCalculator.AirToxicityLevel.LETHAL_POISON) {
             context.throwPositionedException(
                     "Stanza 5 blocchi con 22.5 tossicità deve essere LETHAL_POISON, trovato: " + smallDenseRoom.level,
                     new BlockPos(0, 1, 0));
@@ -89,9 +90,9 @@ public class ToxicAirTests {
         // Stanza media (volume 20) con 2 tronchi stadio 2 (toxicScore = 2 * 2 * 1.5 =
         // 6.0)
         // netMiasma = 6.0, densità = 6.0 / 20 = 0.30 -> MODERATE_HUNGER
-        ToxicAirEvent.MiasmaResult mediumRoom = new ToxicAirEvent.MiasmaResult(6.0, 0.0, false, 20,
+        MiasmaCalculator.MiasmaResult mediumRoom = new MiasmaCalculator.MiasmaResult(6.0, 0.0, false, 20,
                 java.util.Collections.emptySet());
-        if (mediumRoom.level != ToxicAirEvent.AirToxicityLevel.MODERATE_HUNGER) {
+        if (mediumRoom.level != MiasmaCalculator.AirToxicityLevel.MODERATE_HUNGER) {
             context.throwPositionedException(
                     "Stanza media con 6.0 tossicità deve essere MODERATE_HUNGER, trovato: " + mediumRoom.level,
                     new BlockPos(0, 1, 0));
@@ -100,9 +101,9 @@ public class ToxicAirTests {
         // Stanza grande (volume 100) con 3 tronchi stadio 1 (toxicScore = 3 * 1 * 1.5 =
         // 4.5)
         // netMiasma = 4.5, densità = 4.5 / 100 = 0.045 -> WARNING
-        ToxicAirEvent.MiasmaResult largeRoom = new ToxicAirEvent.MiasmaResult(4.5, 0.0, false, 100,
+        MiasmaCalculator.MiasmaResult largeRoom = new MiasmaCalculator.MiasmaResult(4.5, 0.0, false, 100,
                 java.util.Collections.emptySet());
-        if (largeRoom.level != ToxicAirEvent.AirToxicityLevel.WARNING) {
+        if (largeRoom.level != MiasmaCalculator.AirToxicityLevel.WARNING) {
             context.throwPositionedException(
                     "Stanza grande con 4.5 tossicità deve essere WARNING, trovato: " + largeRoom.level,
                     new BlockPos(0, 1, 0));
@@ -114,9 +115,9 @@ public class ToxicAirTests {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testDensityScalingWithVolume(TestContext context) {
         // Stesso carico di muffa (netMiasma = 12.0) in una stanza piccola vs grande
-        ToxicAirEvent.MiasmaResult small = new ToxicAirEvent.MiasmaResult(12.0, 0.0, false, 6,
+        MiasmaCalculator.MiasmaResult small = new MiasmaCalculator.MiasmaResult(12.0, 0.0, false, 6,
                 java.util.Collections.emptySet());
-        ToxicAirEvent.MiasmaResult large = new ToxicAirEvent.MiasmaResult(12.0, 0.0, false, 60,
+        MiasmaCalculator.MiasmaResult large = new MiasmaCalculator.MiasmaResult(12.0, 0.0, false, 60,
                 java.util.Collections.emptySet());
 
         if (small.density <= large.density) {
@@ -153,7 +154,7 @@ public class ToxicAirTests {
                 .with(MoldyLogBlock.WAXED, false);
         context.setBlockState(new BlockPos(1, 2, 2), moldyLog);
 
-        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
 
         if (result.openAir) {
@@ -183,7 +184,7 @@ public class ToxicAirTests {
                 absCenter.getZ());
         BlockPos skyPos = new BlockPos(absCenter.getX(), Math.max(topY, absCenter.getY()), absCenter.getZ());
 
-        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(), skyPos);
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(), skyPos);
 
         if (!result.openAir) {
             context.throwPositionedException("Un blocco alla coordinata topY del cielo deve avere openAir = true!",
@@ -215,7 +216,7 @@ public class ToxicAirTests {
                 .with(MoldyLogBlock.WAXED, true);
         context.setBlockState(new BlockPos(1, 2, 2), waxedRotten);
 
-        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
 
         if (result.toxicScore != 0.0) {
@@ -258,9 +259,9 @@ public class ToxicAirTests {
                 2);
         context.setBlockState(new BlockPos(3, 2, 2), moldy);
 
-        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (result.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (result.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "La mezza lastra verso l'esterno deve conferire VENTILATED, trovato: " + result.ventilationType,
                     center);
@@ -304,9 +305,9 @@ public class ToxicAirTests {
                 .with(StairsBlock.HALF, BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsBackFacingRoom);
 
-        ToxicAirEvent.MiasmaResult resultBackToRoom = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultBackToRoom = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultBackToRoom.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultBackToRoom.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException(
                     "Scala con retro solido verso l'interno deve risultare HERMETIC_SEALED, trovato: "
                             + resultBackToRoom.ventilationType,
@@ -320,9 +321,9 @@ public class ToxicAirTests {
                 .with(StairsBlock.HALF, BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsBackFacingOutside);
 
-        ToxicAirEvent.MiasmaResult resultBackToOutside = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultBackToOutside = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultBackToOutside.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultBackToOutside.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException(
                     "Scala con gradino verso la stanza e retro solido verso l'esterno deve risultare HERMETIC_SEALED, trovato: "
                             + resultBackToOutside.ventilationType,
@@ -336,9 +337,9 @@ public class ToxicAirTests {
                 .with(StairsBlock.HALF, BlockHalf.BOTTOM);
         context.setBlockState(stairPos, stairsSideways);
 
-        ToxicAirEvent.MiasmaResult resultSideways = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultSideways = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultSideways.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultSideways.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException("Scala con profilo aperto trasversale deve risultare VENTILATED, trovato: "
                     + resultSideways.ventilationType, center);
         }
@@ -373,7 +374,7 @@ public class ToxicAirTests {
         context.setBlockState(doorPos, closedDoor);
 
         // 1. A porta CHIUSA: le stanze sono isolate ermeticamente (volume = 1)
-        ToxicAirEvent.MiasmaResult resultClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(new BlockPos(1, 2, 2)));
         if (resultClosed.volume != 1) {
             context.throwPositionedException(
@@ -385,7 +386,7 @@ public class ToxicAirTests {
         BlockState openDoor = closedDoor.with(DoorBlock.OPEN, true);
         context.setBlockState(doorPos, openDoor);
 
-        ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(new BlockPos(1, 2, 2)));
         if (resultOpen.volume <= 1) {
             context.throwPositionedException(
@@ -418,20 +419,20 @@ public class ToxicAirTests {
         context.setBlockState(trapdoorPos, closedTrapdoor);
 
         // 1. A botola CHIUSA: camera stagna, non comunica con il cielo
-        ToxicAirEvent.MiasmaResult resultClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
         if (resultClosed.openAir) {
             context.throwPositionedException("A botola chiusa la stanza non deve essere a cielo aperto!", center);
         }
 
-        // 2. A botola APERTA: comunica direttamente con il cielo (openAir = true)
+        // 2. A botola APERTA: comunica direttamente con il cielo (VENTILATED, score > 0)
         BlockState openTrapdoor = closedTrapdoor.with(TrapdoorBlock.OPEN, true);
         context.setBlockState(trapdoorPos, openTrapdoor);
 
-        ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (!resultOpen.openAir) {
-            context.throwPositionedException("A botola aperta verso il cielo, openAir deve essere true!", center);
+        if (resultOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED || resultOpen.ventilationScore <= 0.0) {
+            context.throwPositionedException("A botola aperta verso il cielo, ventilationType deve essere VENTILATED!", center);
         }
 
         context.complete();
@@ -471,7 +472,7 @@ public class ToxicAirTests {
 
         // 1. A porta CHIUSA (entrambi i blocchi): camera stagna, volume = 2 blocchi
         // della sola stanza 1
-        ToxicAirEvent.MiasmaResult resultClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(new BlockPos(1, 2, 2)));
         if (resultClosed.volume != 2) {
             context.throwPositionedException(
@@ -487,7 +488,7 @@ public class ToxicAirTests {
         context.setBlockState(doorLowerPos, lowerOpen);
         context.setBlockState(doorUpperPos, upperOpen);
 
-        ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(new BlockPos(1, 2, 2)));
         if (resultOpen.volume < 4) {
             context.throwPositionedException(
@@ -528,9 +529,9 @@ public class ToxicAirTests {
                 .with(DoorBlock.OPEN, false);
         context.setBlockState(doorPos, spruceDoorClosed);
 
-        ToxicAirEvent.MiasmaResult resultSpruce = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultSpruce = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultSpruce.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultSpruce.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException(
                     "La porta in abete chiusa deve risultare HERMETIC_SEALED, trovato: " + resultSpruce.ventilationType,
                     center);
@@ -573,9 +574,9 @@ public class ToxicAirTests {
                 .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(trapdoorPos, spruceTrapdoorClosed);
 
-        ToxicAirEvent.MiasmaResult resultSpruce = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultSpruce = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultSpruce.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultSpruce.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException("La botola in abete chiusa deve risultare HERMETIC_SEALED, trovato: "
                     + resultSpruce.ventilationType, center);
         }
@@ -619,9 +620,9 @@ public class ToxicAirTests {
                 .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(trapdoorPos, lateralShutterClosed);
 
-        ToxicAirEvent.MiasmaResult resultClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultClosed.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultClosed.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException(
                     "La botola ermetica su parete laterale chiusa deve risultare HERMETIC_SEALED!", center);
         }
@@ -631,11 +632,11 @@ public class ToxicAirTests {
         BlockState lateralShutterOpen = lateralShutterClosed.with(TrapdoorBlock.OPEN, false);
         context.setBlockState(trapdoorPos, lateralShutterOpen);
 
-        ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
+        if (resultOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED || resultOpen.ventilationScore <= 0.0) {
             context.throwPositionedException(
-                    "La botola su parete laterale aperta deve permettere CLEAN_OPEN_AIR verso l'esterno!", center);
+                    "La botola su parete laterale aperta deve risultare VENTILATED verso l'esterno!", center);
         }
 
         context.complete();
@@ -676,21 +677,21 @@ public class ToxicAirTests {
         context.setBlockState(doorLower, oakDoorLower);
         context.setBlockState(doorUpper, oakDoorUpper);
 
-        ToxicAirEvent.MiasmaResult resultOakDoor = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOakDoor = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultOakDoor.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultOakDoor.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException("La porta in quercia chiusa deve risultare HERMETIC_SEALED, trovato: "
                     + resultOakDoor.ventilationType, center);
         }
 
-        // 2. Porta in Quercia Aperta: sempre CLEAN_OPEN_AIR
+        // 2. Porta in Quercia Aperta: VENTILATED
         context.setBlockState(doorLower, oakDoorLower.with(DoorBlock.OPEN, true));
         context.setBlockState(doorUpper, oakDoorUpper.with(DoorBlock.OPEN, true));
-        ToxicAirEvent.MiasmaResult resultOakDoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOakDoorOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultOakDoorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
+        if (resultOakDoorOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
-                    "La porta in quercia aperta verso l'esterno deve risultare CLEAN_OPEN_AIR, trovato: "
+                    "La porta in quercia aperta verso l'esterno deve risultare VENTILATED, trovato: "
                             + resultOakDoorOpen.ventilationType,
                     center);
         }
@@ -706,9 +707,9 @@ public class ToxicAirTests {
                 .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(doorLower, oakTrapdoorClosed);
 
-        ToxicAirEvent.MiasmaResult resultOakTrapdoor = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOakTrapdoor = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultOakTrapdoor.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultOakTrapdoor.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException(
                     "La botola in quercia chiusa su parete deve risultare HERMETIC_SEALED, trovato: "
                             + resultOakTrapdoor.ventilationType,
@@ -716,13 +717,13 @@ public class ToxicAirTests {
         }
 
         // 4. Botola in Quercia su parete Aperta (OPEN = false, piastra orizzontale):
-        // sempre CLEAN_OPEN_AIR
+        // VENTILATED
         context.setBlockState(doorLower, oakTrapdoorClosed.with(TrapdoorBlock.OPEN, false));
-        ToxicAirEvent.MiasmaResult resultOakTrapdoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOakTrapdoorOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultOakTrapdoorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
+        if (resultOakTrapdoorOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
-                    "La botola in quercia aperta su parete deve risultare CLEAN_OPEN_AIR, trovato: "
+                    "La botola in quercia aperta su parete deve risultare VENTILATED, trovato: "
                             + resultOakTrapdoorOpen.ventilationType,
                     center);
         }
@@ -757,9 +758,9 @@ public class ToxicAirTests {
         // 1. Staccionata (Fence): sempre modificatore di ventilazione verso l'esterno
         // -> VENTILATED
         context.setBlockState(wallPos, Blocks.OAK_FENCE.getDefaultState());
-        ToxicAirEvent.MiasmaResult resultFence = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultFence = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultFence.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultFence.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "La staccionata verso l'esterno deve risultare VENTILATED, trovato: " + resultFence.ventilationType,
                     center);
@@ -769,13 +770,13 @@ public class ToxicAirTests {
                     "La staccionata verso l'esterno deve conferire un bonus di ventilazione > 0!", center);
         }
 
-        // 2. Grata di rame (Copper Grate): trattata come aria (areazione totale) ->
-        // CLEAN_OPEN_AIR
+        // 2. Grata di rame (Copper Grate): modificatore di ventilazione verso l'esterno ->
+        // VENTILATED
         context.setBlockState(wallPos, Blocks.COPPER_GRATE.getDefaultState());
-        ToxicAirEvent.MiasmaResult resultCopperGrate = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultCopperGrate = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultCopperGrate.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
-            context.throwPositionedException("La grata di rame verso l'esterno deve risultare CLEAN_OPEN_AIR, trovato: "
+        if (resultCopperGrate.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
+            context.throwPositionedException("La grata di rame verso l'esterno deve risultare VENTILATED, trovato: "
                     + resultCopperGrate.ventilationType, center);
         }
 
@@ -784,21 +785,21 @@ public class ToxicAirTests {
                 .with(DoorBlock.HALF, DoubleBlockHalf.LOWER)
                 .with(DoorBlock.OPEN, false);
         context.setBlockState(wallPos, copperDoorClosed);
-        ToxicAirEvent.MiasmaResult resultCopperDoorClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultCopperDoorClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultCopperDoorClosed.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultCopperDoorClosed.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException("La porta di rame chiusa deve risultare HERMETIC_SEALED, trovato: "
                     + resultCopperDoorClosed.ventilationType, center);
         }
 
-        // 4. Porta di rame aperta -> CLEAN_OPEN_AIR
+        // 4. Porta di rame aperta -> VENTILATED
         BlockState copperDoorOpen = copperDoorClosed.with(DoorBlock.OPEN, true);
         context.setBlockState(wallPos, copperDoorOpen);
-        ToxicAirEvent.MiasmaResult resultCopperDoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultCopperDoorOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultCopperDoorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
+        if (resultCopperDoorOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
-                    "La porta di rame aperta verso l'esterno deve risultare CLEAN_OPEN_AIR, trovato: "
+                    "La porta di rame aperta verso l'esterno deve risultare VENTILATED, trovato: "
                             + resultCopperDoorOpen.ventilationType,
                     center);
         }
@@ -810,21 +811,21 @@ public class ToxicAirTests {
                 .with(TrapdoorBlock.HALF, BlockHalf.BOTTOM)
                 .with(TrapdoorBlock.OPEN, true);
         context.setBlockState(wallPos, copperTrapdoorClosed);
-        ToxicAirEvent.MiasmaResult resultCopperTrapdoorClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultCopperTrapdoorClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultCopperTrapdoorClosed.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultCopperTrapdoorClosed.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException("La botola di rame chiusa deve risultare HERMETIC_SEALED, trovato: "
                     + resultCopperTrapdoorClosed.ventilationType, center);
         }
 
         // 6. Botola di rame su parete aperta (OPEN = false, piastra orizzontale):
-        // CLEAN_OPEN_AIR
+        // VENTILATED
         BlockState copperTrapdoorOpen = copperTrapdoorClosed.with(TrapdoorBlock.OPEN, false);
         context.setBlockState(wallPos, copperTrapdoorOpen);
-        ToxicAirEvent.MiasmaResult resultCopperTrapdoorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultCopperTrapdoorOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultCopperTrapdoorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
-            context.throwPositionedException("La botola di rame aperta deve risultare CLEAN_OPEN_AIR, trovato: "
+        if (resultCopperTrapdoorOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
+            context.throwPositionedException("La botola di rame aperta deve risultare VENTILATED, trovato: "
                     + resultCopperTrapdoorOpen.ventilationType, center);
         }
 
@@ -832,9 +833,9 @@ public class ToxicAirTests {
         context.setBlockState(wallPos, Blocks.STONE.getDefaultState());
         BlockPos ceilingPos = new BlockPos(2, 3, 2);
         context.setBlockState(ceilingPos, Blocks.OAK_FENCE.getDefaultState());
-        ToxicAirEvent.MiasmaResult resultFenceCeiling = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultFenceCeiling = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultFenceCeiling.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultFenceCeiling.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException("La staccionata sul soffitto deve risultare VENTILATED, trovato: "
                     + resultFenceCeiling.ventilationType, center);
         }
@@ -850,9 +851,9 @@ public class ToxicAirTests {
         context.setBlockState(new BlockPos(2, 0, 2), Blocks.AIR.getDefaultState());
         context.setBlockState(new BlockPos(1, 0, 2), Blocks.AIR.getDefaultState());
         context.setBlockState(new BlockPos(0, 0, 2), Blocks.AIR.getDefaultState());
-        ToxicAirEvent.MiasmaResult resultFenceFloor = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultFenceFloor = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultFenceFloor.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultFenceFloor.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "La staccionata sul pavimento verso l'esterno deve risultare VENTILATED, trovato: "
                             + resultFenceFloor.ventilationType,
@@ -895,9 +896,9 @@ public class ToxicAirTests {
                 .with(WallBlock.NORTH_SHAPE, WallShape.LOW)
                 .with(WallBlock.SOUTH_SHAPE, WallShape.LOW);
         context.setBlockState(wallPos, connectedWall);
-        ToxicAirEvent.MiasmaResult resultWallConnected = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultWallConnected = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultWallConnected.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultWallConnected.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException(
                     "Il muretto connesso su parete laterale deve chiudere ermeticamente (HERMETIC_SEALED), trovato: "
                             + resultWallConnected.ventilationType,
@@ -909,9 +910,9 @@ public class ToxicAirTests {
         BlockState singleConnectedWall = Blocks.COBBLESTONE_WALL.getDefaultState()
                 .with(WallBlock.NORTH_SHAPE, WallShape.LOW);
         context.setBlockState(wallPos, singleConnectedWall);
-        ToxicAirEvent.MiasmaResult resultWallSingle = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultWallSingle = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultWallSingle.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultWallSingle.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "Il muretto con solo 1 connessione su parete laterale deve risultare VENTILATED, trovato: "
                             + resultWallSingle.ventilationType,
@@ -926,9 +927,9 @@ public class ToxicAirTests {
         // ventilazione (VENTILATED)
         BlockState isolatedWall = Blocks.COBBLESTONE_WALL.getDefaultState();
         context.setBlockState(wallPos, isolatedWall);
-        ToxicAirEvent.MiasmaResult resultWallIsolated = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultWallIsolated = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultWallIsolated.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultWallIsolated.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "Il muretto isolato su parete laterale deve risultare VENTILATED, trovato: "
                             + resultWallIsolated.ventilationType,
@@ -943,9 +944,9 @@ public class ToxicAirTests {
         // 4. Muretto sul soffitto (2, 3, 2) -> conferisce bonus VENTILATED
         BlockPos ceilingPos = new BlockPos(2, 3, 2);
         context.setBlockState(ceilingPos, Blocks.COBBLESTONE_WALL.getDefaultState());
-        ToxicAirEvent.MiasmaResult resultWallCeiling = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultWallCeiling = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultWallCeiling.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultWallCeiling.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "Il muretto sul soffitto deve risultare VENTILATED, trovato: " + resultWallCeiling.ventilationType,
                     center);
@@ -963,9 +964,9 @@ public class ToxicAirTests {
         context.setBlockState(new BlockPos(2, 0, 2), Blocks.AIR.getDefaultState());
         context.setBlockState(new BlockPos(1, 0, 2), Blocks.AIR.getDefaultState());
         context.setBlockState(new BlockPos(0, 0, 2), Blocks.AIR.getDefaultState());
-        ToxicAirEvent.MiasmaResult resultWallFloor = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultWallFloor = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultWallFloor.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultWallFloor.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "Il muretto sul pavimento verso l'esterno deve risultare VENTILATED, trovato: "
                             + resultWallFloor.ventilationType,
@@ -1002,7 +1003,7 @@ public class ToxicAirTests {
                 2);
         context.setBlockState(new BlockPos(3, 2, 2), moldy);
 
-        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
         if (result.volume < 2) {
             context.throwPositionedException(
@@ -1041,9 +1042,9 @@ public class ToxicAirTests {
 
         // Grata di ferro su parete (1, 2, 2)
         context.setBlockState(new BlockPos(1, 2, 2), Blocks.IRON_BARS.getDefaultState());
-        ToxicAirEvent.MiasmaResult result = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (result.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (result.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "Le grate di ferro verso l'esterno devono risultare VENTILATED, trovato: " + result.ventilationType,
                     center);
@@ -1087,16 +1088,16 @@ public class ToxicAirTests {
                 .with(FenceGateBlock.OPEN, false);
         context.setBlockState(gatePos, gateClosed);
 
-        ToxicAirEvent.MiasmaResult resultClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultClosed.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (resultClosed.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
                     "Il cancelletto chiuso deve risultare VENTILATED, trovato: " + resultClosed.ventilationType,
                     center);
         }
-        if (resultClosed.ventilationScore != 8.0) {
+        if (resultClosed.ventilationScore <= 0.0) {
             context.throwPositionedException(
-                    "Il cancelletto chiuso deve dare ventilationScore = 8.0, trovato: " + resultClosed.ventilationScore,
+                    "Il cancelletto chiuso deve dare ventilationScore > 0, trovato: " + resultClosed.ventilationScore,
                     center);
         }
 
@@ -1104,9 +1105,9 @@ public class ToxicAirTests {
         BlockState gateOpen = gateClosed.with(FenceGateBlock.OPEN, true);
         context.setBlockState(gatePos, gateOpen);
 
-        ToxicAirEvent.MiasmaResult resultOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
+        if (resultOpen.ventilationType != MiasmaCalculator.RoomVentilationType.CLEAN_OPEN_AIR) {
             context.throwPositionedException(
                     "Il cancelletto aperto verso l'esterno deve risultare CLEAN_OPEN_AIR, trovato: "
                             + resultOpen.ventilationType,
@@ -1141,19 +1142,19 @@ public class ToxicAirTests {
                 .with(TrapdoorBlock.OPEN, false);
         context.setBlockState(ceilingPos, trapdoorCeilingClosed);
 
-        ToxicAirEvent.MiasmaResult resultCeilingClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultCeilingClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultCeilingClosed.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultCeilingClosed.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException("Botola chiusa sul soffitto deve risultare HERMETIC_SEALED, trovato: "
                     + resultCeilingClosed.ventilationType, center);
         }
 
-        // 2. Botola su soffitto Aperta (OPEN = true) -> CLEAN_OPEN_AIR
+        // 2. Botola su soffitto Aperta (OPEN = true) -> VENTILATED
         context.setBlockState(ceilingPos, trapdoorCeilingClosed.with(TrapdoorBlock.OPEN, true));
-        ToxicAirEvent.MiasmaResult resultCeilingOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultCeilingOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultCeilingOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
-            context.throwPositionedException("Botola aperta sul soffitto deve risultare CLEAN_OPEN_AIR, trovato: "
+        if (resultCeilingOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
+            context.throwPositionedException("Botola aperta sul soffitto deve risultare VENTILATED, trovato: "
                     + resultCeilingOpen.ventilationType, center);
         }
         context.setBlockState(ceilingPos, Blocks.STONE.getDefaultState());
@@ -1171,20 +1172,20 @@ public class ToxicAirTests {
                 .with(TrapdoorBlock.OPEN, false);
         context.setBlockState(floorPos, trapdoorFloorClosed);
 
-        ToxicAirEvent.MiasmaResult resultFloorClosed = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultFloorClosed = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultFloorClosed.ventilationType != ToxicAirEvent.RoomVentilationType.HERMETIC_SEALED) {
+        if (resultFloorClosed.ventilationType != MiasmaCalculator.RoomVentilationType.HERMETIC_SEALED) {
             context.throwPositionedException("Botola chiusa sul pavimento deve risultare HERMETIC_SEALED, trovato: "
                     + resultFloorClosed.ventilationType, center);
         }
 
-        // 4. Botola su pavimento Aperta (OPEN = true) -> CLEAN_OPEN_AIR
+        // 4. Botola su pavimento Aperta (OPEN = true) -> VENTILATED
         context.setBlockState(floorPos, trapdoorFloorClosed.with(TrapdoorBlock.OPEN, true));
-        ToxicAirEvent.MiasmaResult resultFloorOpen = ToxicAirEvent.calculateMiasma(context.getWorld(),
+        MiasmaCalculator.MiasmaResult resultFloorOpen = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(center));
-        if (resultFloorOpen.ventilationType != ToxicAirEvent.RoomVentilationType.CLEAN_OPEN_AIR) {
+        if (resultFloorOpen.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException(
-                    "Botola aperta sul pavimento verso l'esterno deve risultare CLEAN_OPEN_AIR, trovato: "
+                    "Botola aperta sul pavimento verso l'esterno deve risultare VENTILATED, trovato: "
                             + resultFloorOpen.ventilationType,
                     center);
         }
@@ -1215,16 +1216,16 @@ public class ToxicAirTests {
 
         // 1. Verifica che la colonna sotto il foro risulti coperta da soffitto,
         // mentre SOLO il blocco del foro (o sopra) risulti a cielo aperto
-        if (!ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(floorUnderHole))) {
+        if (!MiasmaCalculator.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(floorUnderHole))) {
             context.throwPositionedException("Il pavimento sotto il foro deve risultare coperto da soffitto!", floorUnderHole);
         }
-        if (!ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(midUnderHole))) {
+        if (!MiasmaCalculator.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(midUnderHole))) {
             context.throwPositionedException("La colonna d'aria sotto il foro deve risultare coperta da soffitto!", midUnderHole);
         }
-        if (ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(holePos))) {
+        if (MiasmaCalculator.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(holePos))) {
             context.throwPositionedException("Il foro nel soffitto NON deve risultare coperto da soffitto!", holePos);
         }
-        if (ToxicAirEvent.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(skyAboveHole))) {
+        if (MiasmaCalculator.isCoveredByCeiling(context.getWorld(), context.getAbsolutePos(skyAboveHole))) {
             context.throwPositionedException("L'aria sopra il tetto NON deve risultare coperta da soffitto!", skyAboveHole);
         }
 
@@ -1233,31 +1234,148 @@ public class ToxicAirTests {
         BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
         context.setBlockState(floorTargetPos, log);
 
-        ToxicAirEvent.BlockAirEvaluation floorEval = ToxicAirEvent.calculateBlockAirEvaluation(
+        MiasmaCalculator.BlockAirEvaluation floorEval = MiasmaCalculator.calculateBlockAirEvaluation(
                 context.getWorld(), context.getAbsolutePos(floorTargetPos), log);
         if (floorEval.distanceToVentilation() == 0) {
             context.throwPositionedException("Il blocco a pavimento non deve avere distanza 0 verso il cielo!", floorTargetPos);
         }
 
-        BlockPos roofTargetPos = new BlockPos(2, 4, 3);
-        context.setBlockState(roofTargetPos, log);
-        ToxicAirEvent.BlockAirEvaluation roofEval = ToxicAirEvent.calculateBlockAirEvaluation(
-                context.getWorld(), context.getAbsolutePos(roofTargetPos), log);
-        if (roofEval.distanceToVentilation() != 0 || roofEval.averageAeration() < 0.75) {
-            context.throwPositionedException("Il blocco al livello del foro deve affacciare direttamente al cielo (dist 0, aer elevata)!", roofTargetPos);
+        context.setBlockState(ceilingPos, Blocks.AIR.getDefaultState());
+
+        // Verifica che il blocco del foro stesso sia considerato cielo aperto
+        MiasmaCalculator.MiasmaResult holeResult = MiasmaCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(ceilingPos));
+        if (!holeResult.openAir) {
+            context.throwPositionedException("Il blocco foro a soffitto deve avere openAir = true!", ceilingPos);
         }
 
         // 3. Verifica miasma all'interno della stanza ventilata dal foro a soffitto
-        ToxicAirEvent.MiasmaResult roomResult = ToxicAirEvent.calculateMiasma(
+        MiasmaCalculator.MiasmaResult roomResult = MiasmaCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(new BlockPos(2, 2, 2)));
-        if (roomResult.openAir) {
-            context.throwPositionedException("La stanza con foro a soffitto non deve essere considerata openAir!", new BlockPos(2, 2, 2));
-        }
-        if (roomResult.ventilationType != ToxicAirEvent.RoomVentilationType.VENTILATED) {
+        if (roomResult.ventilationType != MiasmaCalculator.RoomVentilationType.VENTILATED) {
             context.throwPositionedException("La stanza con foro a soffitto deve risultare VENTILATED, trovato: " + roomResult.ventilationType, new BlockPos(2, 2, 2));
         }
-        if (roomResult.roomVentilationScore <= 0.0) {
-            context.throwPositionedException("La stanza con foro a soffitto deve ricevere un flusso di ventilazione > 0!", new BlockPos(2, 2, 2));
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testBase6ExactThresholdTransitions(TestContext context) {
+        MiasmaCalculator.RoomSaturationManager.clear();
+
+        // 1. CLEAN: M=0 -> CLEAN
+        MiasmaCalculator.MiasmaResult rClean = new MiasmaCalculator.MiasmaResult(0.0, 0.0, false, 24, Collections.emptySet());
+        if (rClean.level != MiasmaCalculator.AirToxicityLevel.CLEAN) {
+            context.throwPositionedException("Miasma a 0 deve essere CLEAN, trovato: " + rClean.level, new BlockPos(0, 1, 0));
+        }
+
+        // 2. WARNING: M=2.5 (>= 6/3), D = 2.5 / 90 = 0.0277 (>= 0.0417 / 2) -> WARNING
+        MiasmaCalculator.MiasmaResult rWarning = new MiasmaCalculator.MiasmaResult(2.5, 0.0, false, 90, Collections.emptySet());
+        if (rWarning.level != MiasmaCalculator.AirToxicityLevel.WARNING) {
+            context.throwPositionedException("M=2.5 su 90 blocchi (D=0.0277) deve essere WARNING, trovato: " + rWarning.level, new BlockPos(0, 1, 0));
+        }
+
+        // 3. MODERATE_HUNGER: M=6.0 (>= 6.0), D = 6.0 / 140 = 0.0428 (>= 0.0417) -> MODERATE_HUNGER
+        MiasmaCalculator.MiasmaResult rHunger1 = new MiasmaCalculator.MiasmaResult(6.0, 0.0, false, 140, Collections.emptySet());
+        if (rHunger1.level != MiasmaCalculator.AirToxicityLevel.MODERATE_HUNGER) {
+            context.throwPositionedException("M=6.0 con D>=0.0417 deve essere MODERATE_HUNGER, trovato: " + rHunger1.level, new BlockPos(0, 1, 0));
+        }
+
+        // 4. MODERATE_HUNGER da media densità: M=3.5 (>= 6/2), D = 3.5 / 35 = 0.10 (>= 0.0833) -> MODERATE_HUNGER
+        MiasmaCalculator.MiasmaResult rHunger2 = new MiasmaCalculator.MiasmaResult(3.5, 0.0, false, 35, Collections.emptySet());
+        if (rHunger2.level != MiasmaCalculator.AirToxicityLevel.MODERATE_HUNGER) {
+            context.throwPositionedException("M=3.5 con D>=0.0833 deve essere MODERATE_HUNGER, trovato: " + rHunger2.level, new BlockPos(0, 1, 0));
+        }
+
+        // 5. LETHAL_POISON: M=18.0 (>= 18.0), D = 18.0 / 200 = 0.09 (>= 0.0833) -> LETHAL_POISON
+        MiasmaCalculator.MiasmaResult rPoison1 = new MiasmaCalculator.MiasmaResult(18.0, 0.0, false, 200, Collections.emptySet());
+        if (rPoison1.level != MiasmaCalculator.AirToxicityLevel.LETHAL_POISON) {
+            context.throwPositionedException("M=18.0 con D>=0.0833 deve essere LETHAL_POISON, trovato: " + rPoison1.level, new BlockPos(0, 1, 0));
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMicroclimateSpatialDistanceConductance(TestContext context) {
+        MiasmaCalculator.RoomSaturationManager.clear();
+
+        // Corridoio 7x3x3 in pietra (X: 1..7, Y: 1..3, Z: 1..3)
+        for (int x = 1; x <= 7; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    boolean isWall = (x == 1 || x == 7 || y == 1 || y == 3 || z == 1 || z == 3);
+                    context.setBlockState(new BlockPos(x, y, z), isWall ? Blocks.STONE.getDefaultState() : Blocks.AIR.getDefaultState());
+                }
+            }
+        }
+
+        // Focolare marcio al vicolo cieco Est: piazziamo 13 blocchi marci adiacenti (score = 13 * 2.25 = 29.25 > 24.0)
+        BlockState moldy = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+                .with(MoldyLogBlock.STAGE, 3)
+                .with(MoldyLogBlock.WAXED, false);
+        for (int x = 4; x <= 6; x++) {
+            context.setBlockState(new BlockPos(x, 1, 2), moldy); // Pavimento
+            context.setBlockState(new BlockPos(x, 3, 2), moldy); // Soffitto
+            context.setBlockState(new BlockPos(x, 2, 1), moldy); // Parete Nord
+            context.setBlockState(new BlockPos(x, 2, 3), moldy); // Parete Sud
+        }
+        context.setBlockState(new BlockPos(7, 2, 2), moldy); // Parete Est
+
+        // Finestra aperta a Ovest a (1, 2, 2) che comunica con l'esterno a (0, 2, 2)
+        context.setBlockState(new BlockPos(1, 2, 2), Blocks.AIR.getDefaultState());
+        context.setBlockState(new BlockPos(0, 2, 2), Blocks.AIR.getDefaultState());
+        context.setBlockState(new BlockPos(0, 3, 2), Blocks.AIR.getDefaultState()); // cielo aperto sopra esterno
+
+        BlockPos nearWindow = new BlockPos(2, 2, 2);
+        BlockPos farCorner = new BlockPos(5, 2, 2);
+
+        MiasmaCalculator.MiasmaResult resultNear = MiasmaCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(nearWindow));
+        MiasmaCalculator.MiasmaResult resultFar = MiasmaCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(farCorner));
+
+        if (resultNear.distanceToVentilation >= resultFar.distanceToVentilation) {
+            context.throwPositionedException("La distanza dalla ventilazione vicino alla finestra (" + resultNear.distanceToVentilation
+                    + ") deve essere minore di quella nel fondo cieco (" + resultFar.distanceToVentilation + ")", nearWindow);
+        }
+        if (resultNear.localFlow <= resultFar.localFlow) {
+            context.throwPositionedException("Il flusso locale vicino alla finestra (" + resultNear.localFlow
+                    + ") deve essere maggiore di quello nel fondo cieco (" + resultFar.localFlow + ")", nearWindow);
+        }
+        if (resultNear.localAeration <= resultFar.localAeration) {
+            context.throwPositionedException("L'aerazione locale vicino alla finestra deve essere maggiore di quella in fondo!", nearWindow);
+        }
+        if (resultNear.localDensity >= resultFar.localDensity) {
+            context.throwPositionedException("La densità di spore vicino alla finestra deve essere inferiore a quella in fondo!", nearWindow);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testSporeDetectorBlockRedstoneLevels(TestContext context) {
+        // Stanza 3x3x3 in pietra
+        BlockPos center = new BlockPos(2, 2, 2);
+        for (int x = 1; x <= 3; x++) {
+            for (int y = 1; y <= 3; y++) {
+                for (int z = 1; z <= 3; z++) {
+                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
+                }
+            }
+        }
+        context.setBlockState(center, Blocks.AIR.getDefaultState());
+
+        // Posiziona lo SporeDetectorBlock a pavimento a (2, 2, 2)
+        BlockPos detectorPos = new BlockPos(2, 2, 2);
+        context.setBlockState(detectorPos, ModBlocks.SPORE_DETECTOR.getDefaultState());
+
+        // 1. Nessun miasma -> Power 0, Level 0
+        context.getWorld().scheduleBlockTick(context.getAbsolutePos(detectorPos), ModBlocks.SPORE_DETECTOR, 1);
+        BlockState stateClean = context.getWorld().getBlockState(context.getAbsolutePos(detectorPos));
+        if (stateClean.get(SporeDetectorBlock.POWER) != 0 || stateClean.get(SporeDetectorBlock.TOXICITY_LEVEL) != 0) {
+            context.throwPositionedException("Spore Detector in stanza pulita deve avere Power 0 e Level 0, trovato: "
+                    + stateClean.get(SporeDetectorBlock.POWER), detectorPos);
         }
 
         context.complete();

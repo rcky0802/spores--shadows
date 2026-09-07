@@ -104,7 +104,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public double aeration_drying_bonus = 0.50;
         @ConfigEntry.Gui.Tooltip(count = 1)
-        public double ventilation_threshold_full_aeration = 32.0;
+        public double ventilation_threshold_full_aeration = 24.0;
 
         @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_miasma_spore_pressure = true;
@@ -201,11 +201,11 @@ public class ModConfig implements ConfigData {
 
         public float mold_toxicity_multiplier = 0.75f;
         
-        // Valori di Banda Passante Interna del Voxel (Node Capacity) - Base 24.0 (1:1 constants.py)
+        // Valori di Banda Passante Interna del Voxel (Node Capacity) - Base 6 / 24
         public double open_sky_ventilation_per_block = 24.0;
         public double slab_ventilation_value = 12.0;
         public double stairs_ventilation_value = 6.0;
-        public float ventilation_gap_bonus = 8.0f;
+        public float ventilation_gap_bonus = 6.0f;
         public double copper_grate_ventilation_per_block = 18.0;
         public double leaves_ventilation_value = 18.0;
         public double door_ventilation_value = 18.0;
@@ -215,19 +215,22 @@ public class ModConfig implements ConfigData {
         public double ventilation_distance_alpha = 0.25;
 
         @ConfigEntry.Gui.Tooltip(count = 1)
+        public boolean enable_distributed_miasma = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_dynamic_spore_saturation = true;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public double dissipation_speed_multiplier = 0.35;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public double saturation_speed_multiplier = 0.15;
 
-        public double threshold_hunger = 8.0;
-        public double threshold_nausea = 10.0;
-        public double threshold_poison = 16.0;
+        public double threshold_hunger = 6.0;
+        public double threshold_nausea = 12.0;
+        public double threshold_poison = 18.0;
 
-        public double density_threshold_high = 0.18;
-        public double density_threshold_medium = 0.09;
-        public double density_threshold_low = 0.04;
+        public double density_threshold_high = 0.1667;
+        public double density_threshold_medium = 0.0833;
+        public double density_threshold_low = 0.0417;
 
         public int duration_hunger_ticks = 80;
         public int duration_nausea_ticks = 140;
@@ -267,9 +270,6 @@ public class ModConfig implements ConfigData {
         environment.water_adjacent_bonus = MathHelper.clamp(environment.water_adjacent_bonus, 0.0, 1.0);
         environment.cauldron_adjacent_bonus = MathHelper.clamp(environment.cauldron_adjacent_bonus, 0.0, 1.0);
         environment.aeration_drying_bonus = MathHelper.clamp(environment.aeration_drying_bonus, 0.0, 2.0);
-        if (Math.abs(environment.ventilation_threshold_full_aeration - 6.0) < 1e-4) {
-            environment.ventilation_threshold_full_aeration = 32.0;
-        }
         environment.ventilation_threshold_full_aeration = MathHelper
                 .clamp(environment.ventilation_threshold_full_aeration, 0.1, 100.0);
         environment.miasma_spore_multiplier = MathHelper.clamp(environment.miasma_spore_multiplier, 0.0, 5.0);

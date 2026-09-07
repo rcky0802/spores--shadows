@@ -1,8 +1,9 @@
 package moldmod.item;
 
 import moldmod.block.SporeDetectorBlock;
-import moldmod.event.ToxicAirEvent;
-import moldmod.event.ToxicAirEvent.MiasmaResult;
+import moldmod.event.MiasmaCalculator;
+import moldmod.event.MiasmaCalculator.AirToxicityLevel;
+import moldmod.event.MiasmaCalculator.MiasmaResult;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -30,12 +31,12 @@ public class SporeDetectorItem extends BlockItem {
         // Click destro nel vuoto (in aria): Scansione immediata dell'aria con output in Chat privata
         if (!world.isClient && world instanceof ServerWorld serverWorld) {
             BlockPos eyePos = BlockPos.ofFloored(player.getEyePos());
-            MiasmaResult result = ToxicAirEvent.calculateMiasma(serverWorld, eyePos);
+            MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, eyePos);
             
             int redstoneEquiv = 0;
-            if (result.level == ToxicAirEvent.AirToxicityLevel.LETHAL_POISON) redstoneEquiv = 15;
-            else if (result.level == ToxicAirEvent.AirToxicityLevel.MODERATE_HUNGER) redstoneEquiv = 8;
-            else if (result.level == ToxicAirEvent.AirToxicityLevel.WARNING) redstoneEquiv = 3;
+            if (result.level == AirToxicityLevel.LETHAL_POISON) redstoneEquiv = 15;
+            else if (result.level == AirToxicityLevel.MODERATE_HUNGER) redstoneEquiv = 8;
+            else if (result.level == AirToxicityLevel.WARNING) redstoneEquiv = 3;
 
             SporeDetectorBlock.sendDiagnosticMessage((ServerPlayerEntity) player, result, redstoneEquiv);
             world.playSound(null, player.getX(), player.getY(), player.getZ(),
@@ -64,9 +65,9 @@ public class SporeDetectorItem extends BlockItem {
         BlockPos eyePos = BlockPos.ofFloored(player.getEyePos());
 
         // Pre-filtro rapido prima del calcolo
-        if (!ToxicAirEvent.hasMoldNearby(serverWorld, eyePos, 8)) return;
+        if (!MiasmaCalculator.hasMoldNearby(serverWorld, eyePos, 8)) return;
 
-        MiasmaResult result = ToxicAirEvent.calculateMiasma(serverWorld, eyePos);
+        MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, eyePos);
         if (result.density > 0.02) {
             float pitch = 1.0f + (float) Math.min(1.0, result.density * 5.0);
             world.playSound(null, player.getX(), player.getY(), player.getZ(),

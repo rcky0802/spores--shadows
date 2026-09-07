@@ -261,12 +261,8 @@ All administrative commands require permission level 2:
 
 * `/miasma`  
   Runs a real-time BFS atmospheric scan at the player's position, outputting environment type (Open Air / Confined Space), air volume ($m^3$), Toxicity Score, Ventilation Score, Net Miasma, and Spore Density.
-* `/moldrisk`
-  Inspects the targeted block and displays its live humidity ($H_{\text{eff}}$), light ($L_{\text{uv}}$), material susceptibility ($S_{\text{mat}}$), catalyst score, airborne miasma bonus ($M_{\text{bonus}}$), effective temperature, and calculated $R$ value.
-* `/moldrisk verbose`  
-  Displays full intermediate mathematical breakdowns (depth modifiers, surface vs. cave temperatures, local moisture bonuses).
-* `/spores reload`  
-  Hot-reloads the configuration file (`config/spores--shadows.json`) directly without restarting the server or client.
+* `/moldrisk` 
+  Inspects the targeted block and displays the complete mathematical breakdown of humidity ($H_{\text{eff}}$), light ($L_{\text{uv}}$), susceptibility ($S_{\text{mat}}$), catalysts, miasma airborne bonus ($M_{\text{bonus}}$), temperature and calculated $R$ risk.
 
 ---
 
