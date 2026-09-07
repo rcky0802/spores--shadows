@@ -1,15 +1,12 @@
-package moldmod.test;
+package moldmod.test.gametest.miasma;
 
 import me.shedaniel.autoconfig.AutoConfig;
-import moldmod.block.ModBlocks;
-import moldmod.block.MoldyLogBlock;
 import moldmod.config.ModConfig;
 import moldmod.event.MiasmaCalculator;
+import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.DoorBlock;
 import net.minecraft.block.FenceBlock;
-import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
@@ -19,40 +16,19 @@ public class DynamicMiasmaSaturationTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testGradualDissipationWhenDoorOpens(TestContext context) {
-        MiasmaCalculator.RoomSaturationManager.clear();
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         config.toxicity.enable_dynamic_spore_saturation = true;
         config.toxicity.dissipation_speed_multiplier = 0.35;
 
         // Build a 3x3x3 sealed room
-        for (int x = 0; x <= 4; x++) {
-            for (int y = 0; y <= 3; y++) {
-                for (int z = 0; z <= 4; z++) {
-                    if (x == 0 || x == 4 || z == 0 || z == 4 || y == 0 || y == 3) {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
-                    } else {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState());
-                    }
-                }
-            }
-        }
-
-        // Add 2 Rotten Oak Logs (Stage 3) on the wall: Toxic Score = 2 * (3 * 0.75) =
-        // 4.5
-        context.setBlockState(new BlockPos(1, 1, 0),
-                ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                        .with(MoldyLogBlock.WAXED, false));
-        context.setBlockState(new BlockPos(2, 1, 0),
-                ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                        .with(MoldyLogBlock.WAXED, false));
-
-        // Place a closed wooden door at (2, 1, 4) facing outside (SOUTH)
-        context.setBlockState(new BlockPos(2, 1, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.LOWER).with(DoorBlock.OPEN, false));
-        context.setBlockState(new BlockPos(2, 2, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.UPPER).with(DoorBlock.OPEN, false));
+        RoomTestBuilder.of(context)
+                .stoneRoom(0, 0, 0, 4, 3, 4)
+                // Add 2 Rotten Oak Logs (Stage 3): Toxic Score = 2 * 2.25 = 4.5
+                .addMoldyOakLog(1, 1, 0, 3)
+                .addMoldyOakLog(2, 1, 0, 3)
+                // Place closed wooden door at (2, 1, 4) facing outside (SOUTH)
+                .addDoor(2, 1, 4, Direction.SOUTH, false)
+                .clearOpenAirColumn(2, 5, 1, 3);
 
         BlockPos centerAir = new BlockPos(2, 1, 2);
 
@@ -64,19 +40,13 @@ public class DynamicMiasmaSaturationTests {
         context.assertTrue(initialResult.netMiasma == 4.5,
                 "Expected initial net miasma 4.5, got: " + initialResult.netMiasma);
 
-        // Open the door towards outside (South) -> Target Miasma becomes 0.0 (Capacity
-        // 15.0 > 4.5)
-        context.setBlockState(new BlockPos(2, 1, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.LOWER).with(DoorBlock.OPEN, true));
-        context.setBlockState(new BlockPos(2, 2, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.UPPER).with(DoorBlock.OPEN, true));
+        // Open the door towards outside (South) -> Target Miasma becomes 0.0 (Capacity 15.0 > 4.5)
+        RoomTestBuilder.of(context).addDoor(2, 1, 4, Direction.SOUTH, true);
 
         // Wait 40 ticks and observe gradual reduction
         context.waitAndRun(40, () -> {
             MiasmaCalculator.MiasmaResult midResult = MiasmaCalculator.calculateMiasma(context.getWorld(),
-                context.getAbsolutePos(centerAir));
+                    context.getAbsolutePos(centerAir));
             context.assertTrue(midResult.targetMiasma == 0.0,
                     "Expected target miasma 0.0 after opening door, got: " + midResult.targetMiasma);
             context.assertTrue(midResult.netMiasma < 4.5,
@@ -89,39 +59,17 @@ public class DynamicMiasmaSaturationTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testGradualSaturationWhenDoorCloses(TestContext context) {
-        MiasmaCalculator.RoomSaturationManager.clear();
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         config.toxicity.enable_dynamic_spore_saturation = true;
         config.toxicity.saturation_speed_multiplier = 0.15;
 
-        // Build a 3x3x3 room
-        for (int x = 0; x <= 4; x++) {
-            for (int y = 0; y <= 3; y++) {
-                for (int z = 0; z <= 4; z++) {
-                    if (x == 0 || x == 4 || z == 0 || z == 4 || y == 0 || y == 3) {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
-                    } else {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState());
-                    }
-                }
-            }
-        }
-
-        // Add 2 Rotten Oak Logs (Stage 3) on the wall: Toxic Score = 4.5
-        context.setBlockState(new BlockPos(1, 1, 0),
-                ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                        .with(MoldyLogBlock.WAXED, false));
-        context.setBlockState(new BlockPos(2, 1, 0),
-                ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                        .with(MoldyLogBlock.WAXED, false));
-
-        // Start with OPEN door -> Target = 0.0, Initial = 0.0
-        context.setBlockState(new BlockPos(2, 1, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.LOWER).with(DoorBlock.OPEN, true));
-        context.setBlockState(new BlockPos(2, 2, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.UPPER).with(DoorBlock.OPEN, true));
+        // Build a 3x3x3 room starting with open door
+        RoomTestBuilder.of(context)
+                .stoneRoom(0, 0, 0, 4, 3, 4)
+                .addMoldyOakLog(1, 1, 0, 3)
+                .addMoldyOakLog(2, 1, 0, 3)
+                .addDoor(2, 1, 4, Direction.SOUTH, true)
+                .clearOpenAirColumn(2, 5, 1, 3);
 
         BlockPos centerAir = new BlockPos(2, 1, 2);
         MiasmaCalculator.MiasmaResult openResult = MiasmaCalculator.calculateMiasma(context.getWorld(),
@@ -130,12 +78,7 @@ public class DynamicMiasmaSaturationTests {
                 "Expected initial net miasma 0.0 with open door, got: " + openResult.netMiasma);
 
         // Close the door -> Target = 4.5
-        context.setBlockState(new BlockPos(2, 1, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.LOWER).with(DoorBlock.OPEN, false));
-        context.setBlockState(new BlockPos(2, 2, 4),
-                Blocks.OAK_DOOR.getDefaultState().with(DoorBlock.FACING, Direction.SOUTH)
-                        .with(DoorBlock.HALF, DoubleBlockHalf.UPPER).with(DoorBlock.OPEN, false));
+        RoomTestBuilder.of(context).addDoor(2, 1, 4, Direction.SOUTH, false);
 
         // Wait 40 ticks and observe gradual accumulation
         context.waitAndRun(40, () -> {
@@ -154,35 +97,20 @@ public class DynamicMiasmaSaturationTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testEquilibriumOnPartialVentilation(TestContext context) {
-        MiasmaCalculator.RoomSaturationManager.clear();
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         config.toxicity.enable_dynamic_spore_saturation = true;
 
-        // Build room with 6 Rotten Logs (Stage 3): Toxic Score = 6 * (3 * 0.75) = 13.5
-        for (int x = 0; x <= 4; x++) {
-            for (int y = 0; y <= 3; y++) {
-                for (int z = 0; z <= 4; z++) {
-                    if (x == 0 || x == 4 || z == 0 || z == 4 || y == 0 || y == 3) {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
-                    } else {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState());
-                    }
-                }
-            }
-        }
-
-        for (int x = 1; x <= 3; x++) {
-            context.setBlockState(new BlockPos(x, 1, 0),
-                    ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                            .with(MoldyLogBlock.WAXED, false));
-            context.setBlockState(new BlockPos(x, 2, 0),
-                    ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                            .with(MoldyLogBlock.WAXED, false));
-        }
-
-        // Place a single oak fence gap (Ventilation modifier = 3.0)
-        context.setBlockState(new BlockPos(2, 1, 4),
-                Blocks.OAK_FENCE.getDefaultState().with(FenceBlock.NORTH, false).with(FenceBlock.SOUTH, false));
+        // Build room with 6 Rotten Logs (Stage 3): Toxic Score = 6 * 2.25 = 13.5
+        RoomTestBuilder.of(context)
+                .stoneRoom(0, 0, 0, 4, 3, 4)
+                .addMoldyOakLog(1, 1, 0, 3)
+                .addMoldyOakLog(2, 1, 0, 3)
+                .addMoldyOakLog(3, 1, 0, 3)
+                .addMoldyOakLog(1, 2, 0, 3)
+                .addMoldyOakLog(2, 2, 0, 3)
+                .addMoldyOakLog(3, 2, 0, 3)
+                // Place a single oak fence gap (Ventilation modifier = 3.0)
+                .set(2, 1, 4, Blocks.OAK_FENCE.getDefaultState().with(FenceBlock.NORTH, false).with(FenceBlock.SOUTH, false));
 
         BlockPos centerAir = new BlockPos(2, 1, 2);
         MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
@@ -204,7 +132,6 @@ public class DynamicMiasmaSaturationTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testRoomSaturationManagerCleanup(TestContext context) {
-        MiasmaCalculator.RoomSaturationManager.clear();
         BlockPos pos = context.getAbsolutePos(new BlockPos(10, 64, 10));
 
         long testTick = (context.getWorld().getServer() != null ? context.getWorld().getServer().getTicks()
@@ -222,43 +149,28 @@ public class DynamicMiasmaSaturationTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testBottleneckEffectSingleHoleCannotPurgeMassiveMold(TestContext context) {
-        MiasmaCalculator.RoomSaturationManager.clear();
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         config.toxicity.enable_dynamic_spore_saturation = true;
 
         // Build a 5x3x5 sealed room
-        for (int x = 0; x <= 6; x++) {
-            for (int y = 0; y <= 3; y++) {
-                for (int z = 0; z <= 6; z++) {
-                    if (x == 0 || x == 6 || z == 0 || z == 6 || y == 0 || y == 3) {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
-                    } else {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState());
-                    }
-                }
-            }
-        }
+        RoomTestBuilder builder = RoomTestBuilder.of(context)
+                .stoneRoom(0, 0, 0, 6, 3, 6);
 
-        // Place 20 Rotten Oak Logs (Stage 3): Toxic Score = 20 * (3 * 0.75) = 45.0
-        // 10 on North wall (z=0) and 10 on West wall (x=0)
+        // Place 20 Rotten Oak Logs (Stage 3): Toxic Score = 20 * 2.25 = 45.0
         for (int x = 1; x <= 5; x++) {
             for (int y = 1; y <= 2; y++) {
-                context.setBlockState(new BlockPos(x, y, 0),
-                        ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                                .with(MoldyLogBlock.WAXED, false));
+                builder.addMoldyOakLog(x, y, 0, 3);
             }
         }
         for (int z = 1; z <= 5; z++) {
             for (int y = 1; y <= 2; y++) {
-                context.setBlockState(new BlockPos(0, y, z),
-                        ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                                .with(MoldyLogBlock.WAXED, false));
+                builder.addMoldyOakLog(0, y, z, 3);
             }
         }
 
-        // Create a single 1x1 hole in the South stone wall at (3, 1, 6) communicating
-        // with the outside
-        context.setBlockState(new BlockPos(3, 1, 6), Blocks.AIR.getDefaultState());
+        // Create a single 1x1 hole in the South stone wall at (3, 1, 6) communicating with outside
+        builder.setAir(3, 1, 6)
+                .clearOpenAirColumn(3, 7, 1, 2);
 
         BlockPos centerAir = new BlockPos(3, 1, 3);
         MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
@@ -276,45 +188,35 @@ public class DynamicMiasmaSaturationTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testMicroclimateNearWindowVsRemoteCorner(TestContext context) {
-        MiasmaCalculator.RoomSaturationManager.clear();
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         config.toxicity.enable_dynamic_spore_saturation = true;
         config.toxicity.enable_distributed_miasma = true;
 
         // Build a 5x3x5 room
-        for (int x = 0; x <= 6; x++) {
-            for (int y = 0; y <= 3; y++) {
-                for (int z = 0; z <= 6; z++) {
-                    if (x == 0 || x == 6 || z == 0 || z == 6 || y == 0 || y == 3) {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
-                    } else {
-                        context.setBlockState(new BlockPos(x, y, z), Blocks.AIR.getDefaultState());
-                    }
-                }
-            }
-        }
+        RoomTestBuilder builder = RoomTestBuilder.of(context)
+                .stoneRoom(0, 0, 0, 6, 3, 6);
 
         // Place 20 Rotten Oak Logs (Stage 3) on North & West walls: Toxic Score = 20 * 2.25 = 45.0 > 24.0
         for (int x = 1; x <= 5; x++) {
             for (int y = 1; y <= 2; y++) {
-                context.setBlockState(new BlockPos(x, y, 0),
-                        ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                                .with(MoldyLogBlock.WAXED, false));
+                builder.addMoldyOakLog(x, y, 0, 3);
             }
         }
         for (int z = 1; z <= 5; z++) {
             for (int y = 1; y <= 2; y++) {
-                context.setBlockState(new BlockPos(0, y, z),
-                        ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState().with(MoldyLogBlock.STAGE, 3)
-                                .with(MoldyLogBlock.WAXED, false));
+                builder.addMoldyOakLog(0, y, z, 3);
             }
         }
 
         // Create 1x1 hole on South wall (communicating with outside)
-        context.setBlockState(new BlockPos(3, 1, 6), Blocks.AIR.getDefaultState());
+        builder.setAir(3, 1, 6)
+                .clearOpenAirColumn(3, 7, 1, 2);
 
         BlockPos nearOpening = new BlockPos(3, 1, 5);
         BlockPos remoteCorner = new BlockPos(1, 1, 1);
+
+        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(nearOpening));
+        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(remoteCorner));
 
         MiasmaCalculator.MiasmaResult resultNear = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(nearOpening));

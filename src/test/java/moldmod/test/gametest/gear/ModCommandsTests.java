@@ -1,4 +1,4 @@
-package moldmod.test;
+package moldmod.test.gametest.gear;
 
 import moldmod.block.ModBlocks;
 import moldmod.block.MoldyLogBlock;
@@ -73,6 +73,7 @@ public class ModCommandsTests {
                       context.getAbsolutePos(new BlockPos(2, 2, 1)).getZ() + 0.5);
         player.setPitch(0.0f);
         player.setYaw(0.0f); // Guardando verso +Z
+        player.setSneaking(true); // Sneaking allows raycasting targeted block in moldrisk logic
 
         ServerCommandSource source = context.getWorld().getServer().getCommandSource().withEntity(player).withPosition(player.getPos());
         

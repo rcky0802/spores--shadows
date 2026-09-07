@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldView;
 
-public class MoldyFenceBlock extends FenceBlock implements MoldyBlock {
+public final class MoldyFenceBlock extends FenceBlock implements MoldyBlock {
 
     public MoldyFenceBlock(Settings settings) {
         super(settings);

@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldView;
 
-public class MoldyStairsBlock extends StairsBlock implements MoldyBlock {
+public final class MoldyStairsBlock extends StairsBlock implements MoldyBlock {
 
     public MoldyStairsBlock(BlockState baseBlockState, Settings settings) {
         super(baseBlockState, settings);

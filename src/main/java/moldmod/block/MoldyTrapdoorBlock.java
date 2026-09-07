@@ -15,7 +15,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
-public class MoldyTrapdoorBlock extends TrapdoorBlock implements MoldyBlock {
+public final class MoldyTrapdoorBlock extends TrapdoorBlock implements MoldyBlock {
 
     public MoldyTrapdoorBlock(BlockSetType type, Settings settings) {
         super(type, settings);

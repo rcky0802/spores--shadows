@@ -1,4 +1,4 @@
-package moldmod.test;
+package moldmod.test.gametest.gear;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;

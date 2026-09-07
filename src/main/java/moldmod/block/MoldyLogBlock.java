@@ -29,7 +29,7 @@ import net.minecraft.world.WorldView;
  * Players can interact with the block to scrape off mold (using an Axe) or wax
  * the block (using Honeycomb) to prevent further growth.
  */
-public class MoldyLogBlock extends PillarBlock implements MoldyBlock {
+public final class MoldyLogBlock extends PillarBlock implements MoldyBlock {
     public static final IntProperty STAGE = MoldyBlock.STAGE;
     public static final BooleanProperty WAXED = MoldyBlock.WAXED;
     public static final BooleanProperty STRUCTURAL = MoldyBlock.STRUCTURAL;

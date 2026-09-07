@@ -150,7 +150,7 @@ public final class MoldRiskCalculator {
 
         boolean isRainingAt = false;
         if (world instanceof World realWorld) {
-            isRainingAt = realWorld.isRaining() && realWorld.isSkyVisible(pos.up());
+            isRainingAt = realWorld.hasRain(pos.up());
         } else {
             isRainingAt = world.getBiome(pos).value().hasPrecipitation();
         }
@@ -267,13 +267,7 @@ public final class MoldRiskCalculator {
         double aerationFlow = airEval.ventilationFlow();
         double aeration = 0.0;
         if (config.environment.enable_ventilation_drying) {
-            if (airEval.anyOpenAir()) {
-                aeration = airEval.averageAeration();
-            } else {
-                double threshold = config.environment.ventilation_threshold_full_aeration > 0.0
-                        ? config.environment.ventilation_threshold_full_aeration : 32.0;
-                aeration = Math.max(0.0, Math.min(1.0, aerationFlow / threshold));
-            }
+            aeration = airEval.averageAeration();
         }
 
         double aerationDryingBonus = aeration * config.environment.aeration_drying_bonus;

@@ -79,6 +79,9 @@ dependencies {
     modCompileOnly "mezz.jei:jei-1.21.1-common-api-intermediary:19.21.0.247"
     modCompileOnly "mezz.jei:jei-1.21.1-fabric-api:19.21.0.247"
     modLocalRuntime "maven.modrinth:jei:19.21.0.247"
+	// JUnit 5
+	testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 tasks.withType(AbstractCopyTask).configureEach {
@@ -137,5 +140,6 @@ publishing {
 tasks.withType(JavaCompile) { options.compilerArgs << '-Xlint:all' << '-Xlint:-processing' }
 
 test {
+	useJUnitPlatform()
 	failOnNoDiscoveredTests = false
 }

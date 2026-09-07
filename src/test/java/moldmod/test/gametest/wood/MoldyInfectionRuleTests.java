@@ -1,4 +1,4 @@
-package moldmod.test;
+package moldmod.test.gametest.wood;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
@@ -89,4 +89,3 @@ public class MoldyInfectionRuleTests {
         context.complete();
     }
 }
-

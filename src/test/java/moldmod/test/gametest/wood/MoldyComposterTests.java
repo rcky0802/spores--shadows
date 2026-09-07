@@ -1,6 +1,7 @@
-package moldmod.test;
+package moldmod.test.gametest.wood;
 
 import moldmod.SporesShadows;
+import moldmod.test.helper.MoldyWoodTestHelper;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.minecraft.item.Item;

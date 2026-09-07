@@ -13,7 +13,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
-public class MoldyPressurePlateBlock extends PressurePlateBlock implements MoldyBlock {
+public final class MoldyPressurePlateBlock extends PressurePlateBlock implements MoldyBlock {
 
     public MoldyPressurePlateBlock(BlockSetType type, Settings settings) {
         super(type, settings);

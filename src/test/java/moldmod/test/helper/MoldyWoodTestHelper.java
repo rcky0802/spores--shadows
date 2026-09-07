@@ -1,4 +1,4 @@
-package moldmod.test;
+package moldmod.test.helper;
 
 import moldmod.SporesShadowsConstants;
 import java.util.ArrayList;

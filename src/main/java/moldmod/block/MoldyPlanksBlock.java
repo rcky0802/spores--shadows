@@ -9,7 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldView;
 
-public class MoldyPlanksBlock extends Block implements MoldyBlock {
+public final class MoldyPlanksBlock extends Block implements MoldyBlock {
 
     public MoldyPlanksBlock(Settings settings) {
         super(settings);

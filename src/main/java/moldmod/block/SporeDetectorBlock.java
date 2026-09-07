@@ -32,7 +32,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public class SporeDetectorBlock extends WallMountedBlock {
+public final class SporeDetectorBlock extends WallMountedBlock {
 
     public static final MapCodec<SporeDetectorBlock> CODEC = createCodec(SporeDetectorBlock::new);
 

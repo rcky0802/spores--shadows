@@ -16,7 +16,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.WorldView;
 
-public class MoldySlabBlock extends SlabBlock implements MoldyBlock {
+public final class MoldySlabBlock extends SlabBlock implements MoldyBlock {
 
     public MoldySlabBlock(Settings settings) {
         super(settings);

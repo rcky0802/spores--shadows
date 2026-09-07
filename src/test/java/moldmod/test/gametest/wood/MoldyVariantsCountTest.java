@@ -1,4 +1,4 @@
-package moldmod.test;
+package moldmod.test.gametest.wood;
 
 import moldmod.block.ModBlocks;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
@@ -64,4 +64,3 @@ public class MoldyVariantsCountTest {
         context.complete();
     }
 }
-

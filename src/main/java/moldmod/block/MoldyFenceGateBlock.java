@@ -15,7 +15,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
-public class MoldyFenceGateBlock extends FenceGateBlock implements MoldyBlock {
+public final class MoldyFenceGateBlock extends FenceGateBlock implements MoldyBlock {
 
     public MoldyFenceGateBlock(WoodType type, Settings settings) {
         super(type, settings);

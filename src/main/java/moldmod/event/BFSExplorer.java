@@ -355,7 +355,7 @@ public final class BFSExplorer {
     }
 
     public static boolean isCoveredByCeiling(WorldAccess world, BlockPos pos) {
-        for (int dy = 0; dy <= 24; dy++) {
+        for (int dy = 1; dy <= 24; dy++) {
             BlockPos upPos = pos.up(dy);
             BlockState upState = world.getBlockState(upPos);
             if (upState.isOf(Blocks.BARRIER) || upState.isOf(Blocks.STRUCTURE_BLOCK)
@@ -397,9 +397,6 @@ public final class BFSExplorer {
                 return false;
             }
             if (isCeilingBarrier(world, p, state)) {
-                return true;
-            }
-            if (!state.isAir() && (state.isOpaqueFullCube(world, p) || state.isSolidBlock(world, p))) {
                 return true;
             }
         }
@@ -626,7 +623,7 @@ public final class BFSExplorer {
                 BlockState neighborState = world.getBlockState(neighborPos);
 
                 if (canAirPass(world, currentPos, currentState, neighborPos, neighborState, dir)) {
-                    if (isVentilatedToOutside(world, neighborPos, dir)) {
+                    if (!isCoveredByCeiling(world, neighborPos)) {
                         visited.add(neighborPos);
                     } else {
                         int dx = startPos.getX() - neighborPos.getX();

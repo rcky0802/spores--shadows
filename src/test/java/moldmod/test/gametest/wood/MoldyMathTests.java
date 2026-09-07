@@ -1,4 +1,4 @@
-package moldmod.test;
+package moldmod.test.gametest.wood;
 
 import moldmod.block.ModBlocks;
 import moldmod.block.MoldRiskCalculator;
@@ -88,7 +88,7 @@ public class MoldyMathTests {
 
             context.waitAndRun(5, () -> {
                 MoldRiskResult rDark = MoldRiskCalculator.calculate(context.getWorld(), context.getAbsolutePos(center),
-                        false, log);
+                    false, log);
                 if (rDark.Luv() < rLight.Luv()) {
                     context.throwPositionedException("Nel buio totale Luv (" + rDark.Luv()
                             + ") deve essere >= che sotto luce (" + rLight.Luv() + ")!", center);

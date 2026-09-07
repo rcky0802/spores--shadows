@@ -18,7 +18,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
-public class MoldyDoorBlock extends DoorBlock implements MoldyBlock {
+public final class MoldyDoorBlock extends DoorBlock implements MoldyBlock {
 
     public MoldyDoorBlock(BlockSetType type, Settings settings) {
         super(type, settings);

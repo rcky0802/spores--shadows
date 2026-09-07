@@ -15,7 +15,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 
-public class MoldyButtonBlock extends ButtonBlock implements MoldyBlock {
+public final class MoldyButtonBlock extends ButtonBlock implements MoldyBlock {
 
     public MoldyButtonBlock(BlockSetType type, int pressTicks, Settings settings) {
         super(type, pressTicks, settings);

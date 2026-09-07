@@ -61,13 +61,16 @@ public final class MiasmaCalculator {
         }
 
         public static BlockPos calculateAnchor(Set<BlockPos> airBlocks, BlockPos defaultPos) {
-            if (defaultPos != null) {
-                return defaultPos;
+            if (airBlocks != null && !airBlocks.isEmpty()) {
+                BlockPos min = null;
+                for (BlockPos pos : airBlocks) {
+                    if (min == null || pos.compareTo(min) < 0) {
+                        min = pos;
+                    }
+                }
+                return min;
             }
-            if (airBlocks == null || airBlocks.isEmpty()) {
-                return BlockPos.ORIGIN;
-            }
-            return airBlocks.iterator().next();
+            return defaultPos != null ? defaultPos : BlockPos.ORIGIN;
         }
 
         public static double getDynamicMiasma(WorldAccess world, BlockPos anchor, double targetMiasma) {
@@ -90,29 +93,35 @@ public final class MiasmaCalculator {
             }
 
             long elapsedTicks = currentTick - state.lastUpdateTick();
-            if (elapsedTicks <= 0) {
-                return state.currentMiasma();
-            }
-
             double current = state.currentMiasma();
-            double alpha = (current > targetMiasma)
-                    ? config.toxicity.dissipation_speed_multiplier
-                    : config.toxicity.saturation_speed_multiplier;
 
-            double steps = elapsedTicks / (double) Math.max(1, config.toxicity.check_interval_ticks);
-            double factor = 1.0 - Math.pow(1.0 - MathHelper.clamp(alpha, 0.01, 1.0), Math.max(1.0, steps));
-            double updated = current + factor * (targetMiasma - current);
+            if (elapsedTicks > 0) {
+                double effectiveTarget = (Math.abs(state.targetMiasma() - targetMiasma) > 1e-4) ? targetMiasma : state.targetMiasma();
+                double alpha = (current > effectiveTarget)
+                        ? config.toxicity.dissipation_speed_multiplier
+                        : config.toxicity.saturation_speed_multiplier;
 
-            if (Math.abs(updated - targetMiasma) < 0.05) {
-                updated = targetMiasma;
+                double steps = elapsedTicks / (double) Math.max(1, config.toxicity.check_interval_ticks);
+                double factor = 1.0 - Math.pow(1.0 - MathHelper.clamp(alpha, 0.01, 1.0), Math.max(1.0, steps));
+                current = current + factor * (effectiveTarget - current);
+
+                if (Math.abs(current - effectiveTarget) < 0.05) {
+                    current = effectiveTarget;
+                }
             }
 
-            ACTIVE_ROOMS.put(key, new RoomGasState(updated, targetMiasma, currentTick));
-            return updated;
+            ACTIVE_ROOMS.put(key, new RoomGasState(current, targetMiasma, currentTick));
+            return current;
         }
 
         public static RoomGasState getState(BlockPos anchor) {
             return ACTIVE_ROOMS.get(anchor.asLong());
+        }
+
+        public static void reset(BlockPos anchor) {
+            if (anchor != null) {
+                ACTIVE_ROOMS.remove(anchor.asLong());
+            }
         }
 
         public static void cleanup(long currentTick) {
@@ -227,7 +236,8 @@ public final class MiasmaCalculator {
                 double weight = BFSExplorer.computeConductanceWeight(this.distanceToVentilation, config.toxicity.ventilation_distance_alpha);
                 this.localFlow = this.roomVentilationScore * weight;
                 double threshold = config.environment.ventilation_threshold_full_aeration;
-                this.localAeration = (threshold > 0.0) ? Math.min(1.0, this.localFlow / threshold) : ((this.roomVentilationScore > 0.0) ? 1.0 : 0.0);
+                double baseAeration = (threshold > 0.0) ? Math.min(1.0, this.roomVentilationScore / threshold) : ((this.roomVentilationScore > 0.0) ? 1.0 : 0.0);
+                this.localAeration = baseAeration * weight;
                 this.localDensity = 0.0;
                 this.localNetMiasma = 0.0;
                 this.localExposureIndex = 0.0;
@@ -243,7 +253,8 @@ public final class MiasmaCalculator {
                 double weight = BFSExplorer.computeConductanceWeight(this.distanceToVentilation, config.toxicity.ventilation_distance_alpha);
                 this.localFlow = this.roomVentilationScore * weight;
                 double threshold = config.environment.ventilation_threshold_full_aeration;
-                this.localAeration = (threshold > 0.0) ? Math.min(1.0, this.localFlow / threshold) : 0.0;
+                double baseAeration = (threshold > 0.0) ? Math.min(1.0, this.roomVentilationScore / threshold) : 0.0;
+                this.localAeration = baseAeration * weight;
                 this.localDensity = this.density * (1.0 - this.localAeration);
                 this.localNetMiasma = this.netMiasma * (1.0 - this.localAeration);
 
@@ -424,7 +435,7 @@ public final class MiasmaCalculator {
 
         for (BlockPos neighborPos : exposedAirPositions) {
             // A) Direct open sky
-            if (!isCoveredByCeiling(world, neighborPos)) {
+            if (isFaceOpenToSky(world, neighborPos, blockPos)) {
                 anyOpen = true;
                 double faceFlow = config.toxicity.open_sky_ventilation_per_block;
                 double faceAeration = 1.0;
@@ -458,17 +469,16 @@ public final class MiasmaCalculator {
             double faceAeration = 0.0;
 
             if (config.environment.enable_ventilation_drying) {
-                if (faceResult.openAir && blockDist == 0) {
+                if (faceResult.openAir) {
                     faceFlow = config.toxicity.open_sky_ventilation_per_block;
                     faceAeration = 1.0;
                 } else if (roomFlow > 0.0 && blockDist < 900) {
                     double alpha = config.toxicity.ventilation_distance_alpha;
                     double weight = 1.0 / (1.0 + alpha * blockDist);
-                    double totalWeight = Math.max(1.0, faceResult.totalSusceptibleWeight);
-                    faceFlow = Math.min(roomFlow, roomFlow * (weight / totalWeight));
+                    faceFlow = Math.min(roomFlow, roomFlow * weight);
                     if (config.environment.ventilation_threshold_full_aeration > 0.0) {
                         double maxPossibleRoomAeration = Math.min(1.0, roomFlow / config.environment.ventilation_threshold_full_aeration);
-                        faceAeration = Math.min(maxPossibleRoomAeration, faceFlow / config.environment.ventilation_threshold_full_aeration);
+                        faceAeration = Math.min(1.0, maxPossibleRoomAeration * weight);
                     }
                 }
             }
@@ -542,6 +552,16 @@ public final class MiasmaCalculator {
 
     public static boolean isCoveredByCeiling(WorldAccess world, BlockPos pos) {
         return BFSExplorer.isCoveredByCeiling(world, pos);
+    }
+
+    public static boolean isFaceOpenToSky(WorldAccess world, BlockPos neighborPos, BlockPos blockPos) {
+        if (!isCoveredByCeiling(world, neighborPos)) {
+            return true;
+        }
+        if (neighborPos.equals(blockPos.down()) && !isCoveredByCeiling(world, blockPos)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean hasMoldNearby(BlockView world, BlockPos center, int radius) {

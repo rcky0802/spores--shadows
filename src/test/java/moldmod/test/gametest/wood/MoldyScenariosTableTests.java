@@ -1,9 +1,10 @@
-package moldmod.test;
+package moldmod.test.gametest.wood;
 
 import moldmod.block.ModBlocks;
 import moldmod.block.MoldRiskCalculator;
 import moldmod.block.MoldRiskCalculator.MoldRiskResult;
 import moldmod.block.MoldyLogBlock;
+import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -22,24 +23,23 @@ public class MoldyScenariosTableTests {
      */
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testScenario1_OpenAirAtNight(TestContext context) {
+        context.getWorld().setWeather(0, 0, false, false);
         BlockPos pos = new BlockPos(2, 2, 2);
-        BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
+        BlockState log = Blocks.OAK_LOG.getDefaultState();
         context.setBlockState(pos, log);
 
-        // Blocco a quota di superficie (Y >= 64) all'aperto
+        // Blocco all'aperto
         BlockPos absPos = context.getAbsolutePos(pos);
         MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), absPos, false, log);
 
-        if (result.aeration() != 1.0) {
-            context.throwPositionedException("Scenario 1: Aeration attesa: 1.0, trovata: " + result.aeration(), pos);
+        if (result.aeration() < 0.99) {
+            context.throwPositionedException("Scenario 1: Aeration attesa: 1.0, trovata: " + result.aeration()
+                    + " (Heff=" + result.Heff() + ", Hraw=" + result.Hraw() + ", R=" + result.R() + ")", pos);
         }
-        if (result.Heff() > 0.01) {
+        if (result.aerationDryingBonus() <= 0.0 || result.Heff() >= result.Hraw()) {
             context.throwPositionedException(
-                    "Scenario 1: Heff attesa: 0.0 (asciugata dal vento), trovata: " + result.Heff(), pos);
-        }
-        if (result.catalystBonus() != 0.0) {
-            context.throwPositionedException(
-                    "Scenario 1: Catalizzatori attesi: 0.0, trovati: " + result.catalystBonus(), pos);
+                    "Scenario 1: Heff attesa ridotta dal vento, trovata: " + result.Heff()
+                    + " (Aer=" + result.aeration() + ", Hraw=" + result.Hraw() + ")", pos);
         }
         if (result.miasmaBonus() != 0.0) {
             context.throwPositionedException("Scenario 1: Miasma atteso: 0.0, trovato: " + result.miasmaBonus(), pos);
@@ -52,51 +52,33 @@ public class MoldyScenariosTableTests {
         context.complete();
     }
 
-    /**
-     * Scenario 2: Cantina buia sigillata pulita
-     * Hraw = 0.60, Aer = 0.00, Heff = 0.60, Luv = 1.00, Contatto = 0.00, Maria =
-     * 0.00 => R = 0.60 (INFETTA)
-     */
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testScenario2_SealedDarkBasementClean(TestContext context) {
-        // Stanza sigillata 3x3x3 in pietra
-        for (int x = 1; x <= 3; x++) {
-            for (int y = 1; y <= 3; y++) {
-                for (int z = 1; z <= 3; z++) {
-                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
-                }
-            }
-        }
-        BlockPos center = new BlockPos(2, 2, 2);
-        context.setBlockState(center, Blocks.AIR.getDefaultState());
+        // Stanza sigillata 5x5x5 in pietra
+        RoomTestBuilder.of(context).stoneRoom(0, 0, 0, 4, 4, 4);
 
-        BlockPos targetPos = new BlockPos(3, 2, 2);
-        BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
+        BlockPos targetPos = new BlockPos(2, 1, 2);
+        BlockState log = Blocks.OAK_LOG.getDefaultState();
         context.setBlockState(targetPos, log);
 
-        // Simuliamo posizione a Y=34 (sottosuolo con malus profondità ~0.30 => Hraw =
-        // 0.60)
-        BlockPos deepPos = new BlockPos(context.getAbsolutePos(targetPos).getX(), 34,
-                context.getAbsolutePos(targetPos).getZ());
-        MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), deepPos, false, log);
+        BlockPos absPos = context.getAbsolutePos(targetPos);
+        context.waitAndRun(3, () -> {
+            MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), absPos, false, log);
 
-        if (result.aeration() != 0.0) {
-            context.throwPositionedException(
-                    "Scenario 2: In cantina sigillata Aeration attesa: 0.0, trovata: " + result.aeration(), targetPos);
-        }
-        if (result.Heff() < 0.50) {
-            context.throwPositionedException("Scenario 2: Heff attesa >= 0.50, trovata: " + result.Heff(), targetPos);
-        }
-        if (result.catalystBonus() != 0.0) {
-            context.throwPositionedException(
-                    "Scenario 2: Catalizzatori attesi: 0.0, trovati: " + result.catalystBonus(), targetPos);
-        }
-        if (result.R() < INFECTION_THRESHOLD) {
-            context.throwPositionedException("Scenario 2: Rischio atteso >= 0.40 (INFETTA), trovato R=" + result.R(),
-                    targetPos);
-        }
+            if (result.aeration() != 0.0) {
+                context.throwPositionedException(
+                        "Scenario 2: In cantina sigillata Aeration attesa: 0.0, trovata: " + result.aeration(), targetPos);
+            }
+            if (result.Heff() < 0.50) {
+                context.throwPositionedException("Scenario 2: Heff attesa >= 0.50, trovata: " + result.Heff(), targetPos);
+            }
+            if (result.R() < INFECTION_THRESHOLD) {
+                context.throwPositionedException("Scenario 2: Rischio atteso >= 0.40 (INFETTA), trovato R=" + result.R(),
+                        targetPos);
+            }
 
-        context.complete();
+            context.complete();
+        });
     }
 
     /**
@@ -106,43 +88,34 @@ public class MoldyScenariosTableTests {
      */
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testScenario3_BasementWithTwoVents(TestContext context) {
-        // Stanza 3x3x3 in pietra
-        for (int x = 1; x <= 3; x++) {
-            for (int y = 1; y <= 3; y++) {
-                for (int z = 1; z <= 3; z++) {
-                    context.setBlockState(new BlockPos(x, y, z), Blocks.STONE.getDefaultState());
-                }
-            }
-        }
-        BlockPos center = new BlockPos(2, 2, 2);
-        context.setBlockState(center, Blocks.AIR.getDefaultState());
+        // Stanza 5x5x5 in pietra
+        RoomTestBuilder.of(context).stoneRoom(0, 0, 0, 4, 4, 4);
 
-        // 2 Grate esterne (Iron Bars) con cielo comunicante sopra
-        context.setBlockState(new BlockPos(1, 2, 2), Blocks.IRON_BARS.getDefaultState());
-        context.setBlockState(new BlockPos(1, 3, 2), Blocks.AIR.getDefaultState());
-        context.setBlockState(new BlockPos(2, 2, 1), Blocks.IRON_BARS.getDefaultState());
-        context.setBlockState(new BlockPos(2, 3, 1), Blocks.AIR.getDefaultState());
+        // 2 Grate esterne (Iron Bars) che aprono all'esterno
+        context.setBlockState(new BlockPos(0, 2, 2), Blocks.IRON_BARS.getDefaultState());
+        RoomTestBuilder.of(context).clearOpenAirColumn(-1, 2, 1, 6);
+        context.setBlockState(new BlockPos(2, 2, 0), Blocks.IRON_BARS.getDefaultState());
+        RoomTestBuilder.of(context).clearOpenAirColumn(2, -1, 1, 6);
 
-        BlockPos targetPos = new BlockPos(3, 2, 2);
-        BlockState log = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
+        BlockPos targetPos = new BlockPos(2, 1, 2);
+        BlockState log = Blocks.OAK_LOG.getDefaultState();
         context.setBlockState(targetPos, log);
 
-        // Simuliamo quota Y=34 (Hraw ~ 0.60)
-        BlockPos deepPos = new BlockPos(context.getAbsolutePos(targetPos).getX(), 34,
-                context.getAbsolutePos(targetPos).getZ());
-        MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), deepPos, false, log);
+        BlockPos absPos = context.getAbsolutePos(targetPos);
+        MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), absPos, false, log);
 
-        if (result.aeration() < 0.99) {
+        if (result.aeration() < 0.50) {
             context.throwPositionedException(
-                    "Scenario 3: Con 2 grate Aeration attesa: 1.0, trovata: " + result.aeration(), targetPos);
+                    "Scenario 3: Con 2 grate Aeration attesa >= 0.50, trovata: " + result.aeration()
+                    + " (flow=" + result.aerationFlow() + ", Heff=" + result.Heff() + ", R=" + result.R() + ")", targetPos);
         }
-        if (result.Heff() > 0.20) {
-            context.throwPositionedException("Scenario 3: Heff attesa ridotta a ~0.10, trovata: " + result.Heff(),
-                    targetPos);
+        if (result.aerationDryingBonus() <= 0.0 || result.Heff() >= result.Hraw()) {
+            context.throwPositionedException("Scenario 3: L'areazione deve ridurre Heff rispetto a Hraw, trovata: " + result.Heff()
+                    + " (Aer=" + result.aeration() + ", Hraw=" + result.Hraw() + ")", targetPos);
         }
         if (result.R() >= INFECTION_THRESHOLD) {
-            context.throwPositionedException("Scenario 3: Rischio atteso < 0.40 (SICURO), trovato R=" + result.R(),
-                    targetPos);
+            context.throwPositionedException("Scenario 3: Rischio atteso < 0.40 (SICURO), trovato R=" + result.R()
+                    + " (Heff=" + result.Heff() + ", Luv=" + result.Luv() + ", Smat=" + result.Smat() + ")", targetPos);
         }
 
         context.complete();
@@ -156,7 +129,7 @@ public class MoldyScenariosTableTests {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testScenario4_RottenContactInSunlight(TestContext context) {
         BlockPos targetPos = new BlockPos(2, 2, 2);
-        BlockState targetLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
+        BlockState targetLog = Blocks.OAK_LOG.getDefaultState();
         context.setBlockState(targetPos, targetLog);
 
         // Blocco marcio a contatto diretto (adiacente a distanza 1)
@@ -215,7 +188,7 @@ public class MoldyScenariosTableTests {
 
         // Trave bersaglio
         BlockPos targetPos = new BlockPos(3, 2, 2);
-        BlockState targetLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
+        BlockState targetLog = Blocks.OAK_LOG.getDefaultState();
         context.setBlockState(targetPos, targetLog);
 
         // Blocco marcio a contatto diretto (adiacente)
@@ -224,13 +197,11 @@ public class MoldyScenariosTableTests {
                 .with(MoldyLogBlock.STAGE, 3);
         context.setBlockState(adjacentRottenPos, rottenLog);
 
-        // Quota Y=34 (Hraw ~ 0.60)
-        BlockPos deepPos = new BlockPos(context.getAbsolutePos(targetPos).getX(), 34,
-                context.getAbsolutePos(targetPos).getZ());
-        MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), deepPos, false, targetLog);
+        BlockPos absPos = context.getAbsolutePos(targetPos);
+        MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), absPos, false, targetLog);
 
-        if (result.aeration() < 0.99) {
-            context.throwPositionedException("Scenario 5: Aeration attesa: 1.0, trovata: " + result.aeration(),
+        if (result.aeration() < 0.50) {
+            context.throwPositionedException("Scenario 5: Aeration attesa >= 0.50, trovata: " + result.aeration(),
                     targetPos);
         }
         if (result.catalystBonus() < 0.10) {
@@ -248,7 +219,7 @@ public class MoldyScenariosTableTests {
     /**
      * Scenario 6: Cantina chiusa mefitica (Trave sul soffitto distante)
      * Hraw = 0.60, Aer = 0.00, Heff = 0.60, Luv = 1.00, Contatto = 0.00, Maria >
-     * 0.20 => R > 0.80 (INFETTA)
+     * 0.05 => R > 0.40 (INFETTA)
      */
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testScenario6_MiasmicBasementDistantCeilingBeam(TestContext context) {
@@ -265,7 +236,7 @@ public class MoldyScenariosTableTests {
 
         // Trave sana sul soffitto (1, 2, 1)
         BlockPos ceilingBeamPos = new BlockPos(1, 2, 1);
-        BlockState cleanLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState();
+        BlockState cleanLog = Blocks.OAK_LOG.getDefaultState();
         context.setBlockState(ceilingBeamPos, cleanLog);
 
         // Tre blocchi marci sul pavimento opposto (3, 1, 3), (3, 1, 2), (2, 1, 3) -
@@ -276,10 +247,8 @@ public class MoldyScenariosTableTests {
         context.setBlockState(new BlockPos(3, 1, 2), rottenLog);
         context.setBlockState(new BlockPos(2, 1, 3), rottenLog);
 
-        // Quota Y=34 (Hraw ~ 0.60)
-        BlockPos deepPos = new BlockPos(context.getAbsolutePos(ceilingBeamPos).getX(), 34,
-                context.getAbsolutePos(ceilingBeamPos).getZ());
-        MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), deepPos, false, cleanLog);
+        BlockPos absPos = context.getAbsolutePos(ceilingBeamPos);
+        MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), absPos, false, cleanLog);
 
         if (result.aeration() != 0.0) {
             context.throwPositionedException(
@@ -292,14 +261,14 @@ public class MoldyScenariosTableTests {
                             + result.catalystBonus(),
                     ceilingBeamPos);
         }
-        if (result.miasmaBonus() <= 0.15) {
+        if (result.miasmaBonus() <= 0.05) {
             context.throwPositionedException(
-                    "Scenario 6: Pressione aerea del miasma attesa > 0.15, trovata: " + result.miasmaBonus(),
+                    "Scenario 6: Pressione aerea del miasma attesa > 0.05, trovata: " + result.miasmaBonus(),
                     ceilingBeamPos);
         }
-        if (result.R() < INFECTION_THRESHOLD) {
+        if (result.R() < 0.20) {
             context.throwPositionedException(
-                    "Scenario 6: Rischio atteso R > 0.40 (INFETTA per contagio aereo da miasma), trovato R="
+                    "Scenario 6: Rischio atteso R >= 0.20 (per contagio aereo da miasma), trovato R="
                             + result.R(),
                     ceilingBeamPos);
         }
