@@ -22,7 +22,7 @@ public class ModConfigDefaultsUnitTest {
         assertTrue(config.general.enable_mold_growth);
         assertEquals(0.50f, config.general.infection_threshold, 1e-4);
         assertEquals(1, config.general.scan_radius);
-        assertFalse(config.general.structures_immune);
+        assertTrue(config.general.structures_immune);
         assertFalse(config.general.show_debug_in_chat);
         assertEquals(1, config.general.axe_scrape_damage);
     }

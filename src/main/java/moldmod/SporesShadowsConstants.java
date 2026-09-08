@@ -30,7 +30,7 @@ public class SporesShadowsConstants {
         }
     }
 
-    public record MoldyWoodType(String name, boolean isNether, BlockSetType setType, WoodType woodType) {
+    public record MoldyWoodType(String namespace, String name, boolean isNether, BlockSetType setType, WoodType woodType) {
         public String getLogName() {
             return isNether ? name + "_stem" : name + "_log";
         }
@@ -41,16 +41,16 @@ public class SporesShadowsConstants {
     }
 
     public static final List<MoldyWoodType> WOOD_TYPES = List.of(
-            new MoldyWoodType("oak", false, BlockSetType.OAK, WoodType.OAK),
-            new MoldyWoodType("spruce", false, BlockSetType.SPRUCE, WoodType.SPRUCE),
-            new MoldyWoodType("birch", false, BlockSetType.BIRCH, WoodType.BIRCH),
-            new MoldyWoodType("jungle", false, BlockSetType.JUNGLE, WoodType.JUNGLE),
-            new MoldyWoodType("acacia", false, BlockSetType.ACACIA, WoodType.ACACIA),
-            new MoldyWoodType("dark_oak", false, BlockSetType.DARK_OAK, WoodType.DARK_OAK),
-            new MoldyWoodType("mangrove", false, BlockSetType.MANGROVE, WoodType.MANGROVE),
-            new MoldyWoodType("cherry", false, BlockSetType.CHERRY, WoodType.CHERRY),
-            new MoldyWoodType("crimson", true, BlockSetType.CRIMSON, WoodType.CRIMSON),
-            new MoldyWoodType("warped", true, BlockSetType.WARPED, WoodType.WARPED)
+            new MoldyWoodType("minecraft", "oak", false, BlockSetType.OAK, WoodType.OAK),
+            new MoldyWoodType("minecraft", "spruce", false, BlockSetType.SPRUCE, WoodType.SPRUCE),
+            new MoldyWoodType("minecraft", "birch", false, BlockSetType.BIRCH, WoodType.BIRCH),
+            new MoldyWoodType("minecraft", "jungle", false, BlockSetType.JUNGLE, WoodType.JUNGLE),
+            new MoldyWoodType("minecraft", "acacia", false, BlockSetType.ACACIA, WoodType.ACACIA),
+            new MoldyWoodType("minecraft", "dark_oak", false, BlockSetType.DARK_OAK, WoodType.DARK_OAK),
+            new MoldyWoodType("minecraft", "mangrove", false, BlockSetType.MANGROVE, WoodType.MANGROVE),
+            new MoldyWoodType("minecraft", "cherry", false, BlockSetType.CHERRY, WoodType.CHERRY),
+            new MoldyWoodType("minecraft", "crimson", true, BlockSetType.CRIMSON, WoodType.CRIMSON),
+            new MoldyWoodType("minecraft", "warped", true, BlockSetType.WARPED, WoodType.WARPED)
     );
 
     public static final List<String> BLOCK_TYPES = List.of(

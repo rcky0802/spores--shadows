@@ -3,6 +3,7 @@ package moldmod.test.gametest.miasma;
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;
 import moldmod.event.MiasmaCalculator;
+import moldmod.event.RoomSaturationManager;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Blocks;
@@ -51,9 +52,9 @@ public class MiasmaMicroclimateGameTests {
         BlockPos cornerPos = new BlockPos(5, 1, 1);
         BlockPos moldNestPos = new BlockPos(5, 1, 4);
 
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(nearWindowPos));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(cornerPos));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(moldNestPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(nearWindowPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(cornerPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(moldNestPos));
 
         MiasmaCalculator.MiasmaResult rNear = MiasmaCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(nearWindowPos));
@@ -118,8 +119,8 @@ public class MiasmaMicroclimateGameTests {
         BlockPos lowerGroundPos = new BlockPos(1, 1, 2);
         BlockPos upperFloorPos = new BlockPos(2, 3, 2);
 
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(lowerGroundPos));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(upperFloorPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(lowerGroundPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(upperFloorPos));
 
         MiasmaCalculator.MiasmaResult rLower = MiasmaCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(lowerGroundPos));
@@ -158,8 +159,8 @@ public class MiasmaMicroclimateGameTests {
         BlockPos closeToWest = new BlockPos(1, 1, 1);
         BlockPos midCorridor = new BlockPos(3, 1, 1);
 
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(closeToWest));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(midCorridor));
+        RoomSaturationManager.reset(context.getAbsolutePos(closeToWest));
+        RoomSaturationManager.reset(context.getAbsolutePos(midCorridor));
 
         MiasmaCalculator.MiasmaResult rWest = MiasmaCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(closeToWest));
@@ -210,9 +211,9 @@ public class MiasmaMicroclimateGameTests {
         BlockPos eastEndPos = new BlockPos(5, 1, 4);
         BlockPos westMoldPos = new BlockPos(1, 1, 4);
 
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(junctionPos));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(eastEndPos));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(westMoldPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(junctionPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(eastEndPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(westMoldPos));
 
         MiasmaCalculator.MiasmaResult rJunction = MiasmaCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(junctionPos));

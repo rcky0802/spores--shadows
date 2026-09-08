@@ -3,6 +3,7 @@ package moldmod.test.gametest.miasma;
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;
 import moldmod.event.MiasmaCalculator;
+import moldmod.event.RoomSaturationManager;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Blocks;
@@ -136,12 +137,12 @@ public class DynamicMiasmaSaturationTests {
 
         long testTick = (context.getWorld().getServer() != null ? context.getWorld().getServer().getTicks()
                 : context.getWorld().getTime());
-        MiasmaCalculator.RoomSaturationManager.getDynamicMiasma(context.getWorld(), pos, 12.0);
-        context.assertTrue(MiasmaCalculator.RoomSaturationManager.getState(pos) != null, "State should exist in cache");
+        RoomSaturationManager.getDynamicMiasma(context.getWorld(), pos, 12.0);
+        context.assertTrue(RoomSaturationManager.getState(pos) != null, "State should exist in cache");
 
         // Calling cleanup at testTick should NOT evict this fresh entry (age < 1200)
-        MiasmaCalculator.RoomSaturationManager.cleanup(testTick);
-        context.assertTrue(MiasmaCalculator.RoomSaturationManager.getState(pos) != null,
+        RoomSaturationManager.cleanup(testTick);
+        context.assertTrue(RoomSaturationManager.getState(pos) != null,
                 "Fresh state should NOT be evicted");
 
         context.complete();
@@ -215,8 +216,8 @@ public class DynamicMiasmaSaturationTests {
         BlockPos nearOpening = new BlockPos(3, 1, 5);
         BlockPos remoteCorner = new BlockPos(1, 1, 1);
 
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(nearOpening));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(remoteCorner));
+        RoomSaturationManager.reset(context.getAbsolutePos(nearOpening));
+        RoomSaturationManager.reset(context.getAbsolutePos(remoteCorner));
 
         MiasmaCalculator.MiasmaResult resultNear = MiasmaCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(nearOpening));

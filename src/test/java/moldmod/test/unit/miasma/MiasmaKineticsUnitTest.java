@@ -4,6 +4,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;
 import moldmod.event.BFSExplorer;
 import moldmod.event.MiasmaCalculator;
+import moldmod.event.RoomSaturationManager;
 import net.minecraft.util.math.BlockPos;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -111,8 +112,8 @@ public class MiasmaKineticsUnitTest {
         airBlocks.add(new BlockPos(1, 1, 1));
         airBlocks.add(new BlockPos(3, 2, 2));
 
-        BlockPos anchor1 = MiasmaCalculator.RoomSaturationManager.calculateAnchor(airBlocks, new BlockPos(5, 2, 4));
-        BlockPos anchor2 = MiasmaCalculator.RoomSaturationManager.calculateAnchor(airBlocks, new BlockPos(7, 3, 9));
+        BlockPos anchor1 = RoomSaturationManager.calculateAnchor(airBlocks, new BlockPos(5, 2, 4));
+        BlockPos anchor2 = RoomSaturationManager.calculateAnchor(airBlocks, new BlockPos(7, 3, 9));
 
         assertEquals(new BlockPos(1, 1, 1), anchor1, "Anchor must always be the deterministic min BlockPos");
         assertEquals(anchor1, anchor2, "Querying different default positions in the same room must return the same anchor");

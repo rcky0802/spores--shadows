@@ -225,8 +225,8 @@ public class FlowDistributor {
                         int vIn = 2 * vIdx;
                         BlockState vState = world.getBlockState(v);
 
-                        int exitMask = BFSExplorer.getFaceOpenMask(world, u, uState, dir);
-                        int enterMask = BFSExplorer.getFaceOpenMask(world, v, vState, dir.getOpposite());
+                        int exitMask = GeometryMaskHelper.getFaceOpenMask(world, u, uState, dir);
+                        int enterMask = GeometryMaskHelper.getFaceOpenMask(world, v, vState, dir.getOpposite());
                         int sharedBits = Integer.bitCount(exitMask & enterMask);
                         if (sharedBits > 0) {
                             double edgeCap = baseUnitCapacity * (sharedBits / 4.0);
@@ -417,7 +417,7 @@ public class FlowDistributor {
         }
 
         if (block instanceof WallBlock) {
-            if (BFSExplorer.isWallConnected(state)) {
+            if (GeometryMaskHelper.isWallConnected(state)) {
                 return 0.0;
             }
             return config.toxicity.ventilation_gap_bonus;

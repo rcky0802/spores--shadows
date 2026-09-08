@@ -28,19 +28,23 @@ public class MoldyInfectionRuleTests {
     }
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-    public void testDefaultAllowsStructuralInfection(TestContext context) {
+    public void testStructuralInfectionWhenNotImmune(TestContext context) {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-        config.general.structures_immune = false; // Default setting
+        try {
+            config.general.structures_immune = false;
 
-        BlockState structuralLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
-                .with(MoldyLogBlock.WAXED, false)
-                .with(MoldyLogBlock.STRUCTURAL, true);
-                
-        if (!MoldyBlockHelper.canBeInfected(structuralLog)) {
-            context.throwPositionedException("Structural (generated) Log SHOULD be infectable by default (structures_immune = false)!", new BlockPos(0,0,0));
+            BlockState structuralLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+                    .with(MoldyLogBlock.WAXED, false)
+                    .with(MoldyLogBlock.STRUCTURAL, true);
+                    
+            if (!MoldyBlockHelper.canBeInfected(structuralLog)) {
+                context.throwPositionedException("Structural (generated) Log SHOULD be infectable when structures_immune = false!", new BlockPos(0,0,0));
+            }
+            
+            context.complete();
+        } finally {
+            config.general.structures_immune = true;
         }
-        
-        context.complete();
     }
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)

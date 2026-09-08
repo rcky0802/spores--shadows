@@ -170,7 +170,7 @@ public class MoldyStructureContext {
             return getConvertedState(state, 1);
         }
 
-        return state;
+        return getConvertedState(state, 0);
     }
 
     private static boolean isConvertible(BlockState state) {

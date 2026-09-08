@@ -93,4 +93,21 @@ public class StructureDegradationTest {
             MoldyStructureContext.clear();
         }
     }
+
+    @GameTest(templateName = "fabric-gametest-api-v1:empty")
+    public void testStructureWoodConvertsToStructural(TestContext context) {
+        MoldyStructureContext.setStructure("village");
+        try {
+            BlockState result = MoldyStructureContext.processBlock(
+                    Blocks.OAK_PLANKS.getDefaultState(),
+                    context.getAbsolutePos(new BlockPos(0, 2, 0)),
+                    (StructureWorldAccess) context.getWorld()
+            );
+            context.assertTrue(result.isOf(ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_PLANKS)), "Structure wood must be converted to modded block!");
+            context.assertTrue(result.contains(MoldyLogBlock.STRUCTURAL) && result.get(MoldyLogBlock.STRUCTURAL), "Structure wood must have STRUCTURAL = true!");
+            context.complete();
+        } finally {
+            MoldyStructureContext.clear();
+        }
+    }
 }

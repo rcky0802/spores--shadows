@@ -5,6 +5,7 @@ import moldmod.block.ModBlocks;
 import moldmod.block.SporeDetectorBlock;
 import moldmod.config.ModConfig;
 import moldmod.event.MiasmaCalculator;
+import moldmod.event.RoomSaturationManager;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
@@ -99,8 +100,8 @@ public class MiasmaDeviceGameTests {
         BlockPos nearPos = new BlockPos(1, 1, 2);
         BlockPos farPos = new BlockPos(3, 1, 2);
 
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(nearPos));
-        MiasmaCalculator.RoomSaturationManager.reset(context.getAbsolutePos(farPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(nearPos));
+        RoomSaturationManager.reset(context.getAbsolutePos(farPos));
 
         MiasmaCalculator.MiasmaResult rNear = MiasmaCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(nearPos));

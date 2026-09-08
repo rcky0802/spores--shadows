@@ -68,7 +68,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int scan_radius = 1; // 1 = 3x3x3, 2 = 5x5x5
         @ConfigEntry.Gui.Tooltip(count = 1)
-        public boolean structures_immune = false;
+        public boolean structures_immune = true;
         public boolean show_debug_in_chat = false;
         public int axe_scrape_damage = 1;
     }

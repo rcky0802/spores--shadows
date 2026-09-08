@@ -4,7 +4,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.MoldyBlockHelper;
 import moldmod.config.ModConfig;
 import moldmod.event.MiasmaCalculator.MiasmaResult;
-import moldmod.event.MiasmaCalculator.RoomSaturationManager;
+
 import moldmod.item.ModItems;
 import moldmod.registry.ModEnchantments;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

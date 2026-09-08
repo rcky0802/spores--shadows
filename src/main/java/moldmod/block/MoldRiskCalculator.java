@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -43,13 +44,17 @@ public final class MoldRiskCalculator {
         if (cached != null) {
             return cached;
         }
+        
+        BlockState state = block.getDefaultState();
         String name = Registries.BLOCK.getId(block).getPath();
         double smat = config.susceptibility.default_multiplier;
-        if (name.contains("stripped")) {
-            smat = config.susceptibility.stripped_wood_multiplier;
-        } else if (name.contains("planks")) {
+        
+        if (state.isIn(BlockTags.PLANKS) || block instanceof MoldyPlanksBlock) {
             smat = config.susceptibility.planks_multiplier;
+        } else if ((state.isIn(BlockTags.LOGS) || block instanceof MoldyLogBlock) && name.contains("stripped")) {
+            smat = config.susceptibility.stripped_wood_multiplier;
         }
+        
         SUSCEPTIBILITY_CACHE.put(block, smat);
         return smat;
     }

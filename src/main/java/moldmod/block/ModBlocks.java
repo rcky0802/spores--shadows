@@ -71,6 +71,7 @@ public class ModBlocks {
     }
 
     private static void registerWoodSet(MoldyWoodType moldyWoodType) {
+        String namespace = moldyWoodType.namespace();
         String prefix = moldyWoodType.name();
         String logName = moldyWoodType.getLogName();
         String woodName = moldyWoodType.getWoodName();
@@ -78,14 +79,14 @@ public class ModBlocks {
         WoodType woodType = moldyWoodType.woodType();
 
         // 1. Logs & Stripped Logs
-        Block vanillaStrippedLog = Registries.BLOCK.get(Identifier.of("minecraft", "stripped_" + logName));
+        Block vanillaStrippedLog = Registries.BLOCK.get(Identifier.of(namespace, "stripped_" + logName));
         Block strippedLog = registerBlock("moldy_stripped_" + logName,
                 new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaStrippedLog).ticksRandomly(), null));
         Block waxedStrippedLog = registerBlock("waxed_stripped_" + logName,
                 new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaStrippedLog).ticksRandomly(), null));
         registerVariant("stripped_" + logName, vanillaStrippedLog, strippedLog, waxedStrippedLog);
 
-        Block vanillaLog = Registries.BLOCK.get(Identifier.of("minecraft", logName));
+        Block vanillaLog = Registries.BLOCK.get(Identifier.of(namespace, logName));
         Block log = registerBlock("moldy_" + logName,
                 new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaLog).ticksRandomly(), strippedLog));
         Block waxedLog = registerBlock("waxed_" + logName,
@@ -93,7 +94,7 @@ public class ModBlocks {
         registerVariant(logName, vanillaLog, log, waxedLog);
 
         // 2. Planks
-        Block vanillaPlanks = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_planks"));
+        Block vanillaPlanks = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_planks"));
         Block planks = registerBlock("moldy_" + prefix + "_planks",
                 new MoldyPlanksBlock(AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
         Block waxedPlanks = registerBlock("waxed_" + prefix + "_planks",
@@ -101,14 +102,14 @@ public class ModBlocks {
         registerVariant(prefix + "_planks", vanillaPlanks, planks, waxedPlanks);
 
         // 3. Stairs & Slabs
-        Block vanillaStairs = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_stairs"));
+        Block vanillaStairs = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_stairs"));
         Block stairs = registerBlock("moldy_" + prefix + "_stairs", new MoldyStairsBlock(planks.getDefaultState(),
                 AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
         Block waxedStairs = registerBlock("waxed_" + prefix + "_stairs", new MoldyStairsBlock(
                 waxedPlanks.getDefaultState(), AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
         registerVariant(prefix + "_stairs", vanillaStairs, stairs, waxedStairs);
 
-        Block vanillaSlab = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_slab"));
+        Block vanillaSlab = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_slab"));
         Block slab = registerBlock("moldy_" + prefix + "_slab",
                 new MoldySlabBlock(AbstractBlock.Settings.copy(vanillaPlanks).ticksRandomly()));
         Block waxedSlab = registerBlock("waxed_" + prefix + "_slab",
@@ -116,14 +117,14 @@ public class ModBlocks {
         registerVariant(prefix + "_slab", vanillaSlab, slab, waxedSlab);
 
         // 4. Fences & Gates
-        Block vanillaFence = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_fence"));
+        Block vanillaFence = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_fence"));
         Block fence = registerBlock("moldy_" + prefix + "_fence",
                 new MoldyFenceBlock(AbstractBlock.Settings.copy(vanillaFence).ticksRandomly()));
         Block waxedFence = registerBlock("waxed_" + prefix + "_fence",
                 new MoldyFenceBlock(AbstractBlock.Settings.copy(vanillaFence).ticksRandomly()));
         registerVariant(prefix + "_fence", vanillaFence, fence, waxedFence);
 
-        Block vanillaGate = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_fence_gate"));
+        Block vanillaGate = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_fence_gate"));
         Block gate = registerBlock("moldy_" + prefix + "_fence_gate",
                 new MoldyFenceGateBlock(woodType, AbstractBlock.Settings.copy(vanillaGate).ticksRandomly()));
         Block waxedGate = registerBlock("waxed_" + prefix + "_fence_gate",
@@ -131,14 +132,14 @@ public class ModBlocks {
         registerVariant(prefix + "_fence_gate", vanillaGate, gate, waxedGate);
 
         // 5. Doors & Trapdoors
-        Block vanillaDoor = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_door"));
+        Block vanillaDoor = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_door"));
         Block door = registerBlock("moldy_" + prefix + "_door",
                 new MoldyDoorBlock(setType, AbstractBlock.Settings.copy(vanillaDoor).ticksRandomly().nonOpaque()));
         Block waxedDoor = registerBlock("waxed_" + prefix + "_door",
                 new MoldyDoorBlock(setType, AbstractBlock.Settings.copy(vanillaDoor).ticksRandomly().nonOpaque()));
         registerVariant(prefix + "_door", vanillaDoor, door, waxedDoor);
 
-        Block vanillaTrapdoor = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_trapdoor"));
+        Block vanillaTrapdoor = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_trapdoor"));
         Block trapdoor = registerBlock("moldy_" + prefix + "_trapdoor", new MoldyTrapdoorBlock(setType,
                 AbstractBlock.Settings.copy(vanillaTrapdoor).ticksRandomly().nonOpaque()));
         Block waxedTrapdoor = registerBlock("waxed_" + prefix + "_trapdoor", new MoldyTrapdoorBlock(setType,
@@ -146,14 +147,14 @@ public class ModBlocks {
         registerVariant(prefix + "_trapdoor", vanillaTrapdoor, trapdoor, waxedTrapdoor);
 
         // 6. Buttons & Pressure Plates
-        Block vanillaPressurePlate = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_pressure_plate"));
+        Block vanillaPressurePlate = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_pressure_plate"));
         Block pressurePlate = registerBlock("moldy_" + prefix + "_pressure_plate",
                 new MoldyPressurePlateBlock(setType, AbstractBlock.Settings.copy(vanillaPressurePlate).ticksRandomly()));
         Block waxedPressurePlate = registerBlock("waxed_" + prefix + "_pressure_plate",
                 new MoldyPressurePlateBlock(setType, AbstractBlock.Settings.copy(vanillaPressurePlate).ticksRandomly()));
         registerVariant(prefix + "_pressure_plate", vanillaPressurePlate, pressurePlate, waxedPressurePlate);
 
-        Block vanillaButton = Registries.BLOCK.get(Identifier.of("minecraft", prefix + "_button"));
+        Block vanillaButton = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_button"));
         Block button = registerBlock("moldy_" + prefix + "_button",
                 new MoldyButtonBlock(setType, 30, AbstractBlock.Settings.copy(vanillaButton).ticksRandomly()));
         Block waxedButton = registerBlock("waxed_" + prefix + "_button",
@@ -162,14 +163,14 @@ public class ModBlocks {
 
         // 7. Wood / Hyphae (Bark 6-sides)
         if (woodName != null) {
-            Block vanillaStrippedWood = Registries.BLOCK.get(Identifier.of("minecraft", "stripped_" + woodName));
+            Block vanillaStrippedWood = Registries.BLOCK.get(Identifier.of(namespace, "stripped_" + woodName));
             Block strippedWood = registerBlock("moldy_stripped_" + woodName,
                     new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaStrippedWood).ticksRandomly(), null));
             Block waxedStrippedWood = registerBlock("waxed_stripped_" + woodName,
                     new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaStrippedWood).ticksRandomly(), null));
             registerVariant("stripped_" + woodName, vanillaStrippedWood, strippedWood, waxedStrippedWood);
 
-            Block vanillaWood = Registries.BLOCK.get(Identifier.of("minecraft", woodName));
+            Block vanillaWood = Registries.BLOCK.get(Identifier.of(namespace, woodName));
             Block wood = registerBlock("moldy_" + woodName,
                     new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaWood).ticksRandomly(), strippedWood));
             Block waxedWood = registerBlock("waxed_" + woodName,
