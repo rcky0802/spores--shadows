@@ -195,9 +195,9 @@ public class ModConfig implements ConfigData {
         public boolean enable_toxic_air = true;
         public int check_interval_ticks = 40;
         public int scan_radius = 8;
-        public int max_air_volume = 1024;
+        public int max_air_volume = 2048;
         @ConfigEntry.Gui.Tooltip(count = 1)
-        public int max_euclidean_radius = 8;
+        public int max_euclidean_radius = 16;
 
         public float mold_toxicity_multiplier = 0.75f;
         

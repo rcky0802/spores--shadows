@@ -43,7 +43,7 @@ public class MiasmaApertureHermeticGameTests {
                 "Open Air ventilationType must be CLEAN_OPEN_AIR, got: " + openAir.ventilationType);
 
         // Volume >= MAX_AIR_VOLUME -> UNCONFINED_CAVERN
-        MiasmaCalculator.MiasmaResult hugeRoom = new MiasmaCalculator.MiasmaResult(5.0, 0.0, false, 1024,
+        MiasmaCalculator.MiasmaResult hugeRoom = new MiasmaCalculator.MiasmaResult(5.0, 0.0, false, 2048,
                 Collections.emptySet());
         context.assertTrue(hugeRoom.level == MiasmaCalculator.AirToxicityLevel.CLEAN,
                 "Huge cavern with low mold must be CLEAN by dilution, got: " + hugeRoom.level);
@@ -94,24 +94,20 @@ public class MiasmaApertureHermeticGameTests {
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testBase6ExactThresholdTransitions(TestContext context) {
         // 1. CLEAN: M=0 -> CLEAN
-        MiasmaCalculator.MiasmaResult rClean = new MiasmaCalculator.MiasmaResult(0.0, 0.0, false, 24, Collections.emptySet());
+        MiasmaCalculator.MiasmaResult rClean = new MiasmaCalculator.MiasmaResult(null, 0.0, 0.0, false, 24, Collections.emptySet(), new BlockPos(101, 1, 101));
         context.assertTrue(rClean.level == MiasmaCalculator.AirToxicityLevel.CLEAN, "M=0 must be CLEAN");
 
-        // 2. WARNING: M=2.5, D = 2.5 / 90 = 0.0277 -> WARNING
-        MiasmaCalculator.MiasmaResult rWarning = new MiasmaCalculator.MiasmaResult(2.5, 0.0, false, 90, Collections.emptySet());
-        context.assertTrue(rWarning.level == MiasmaCalculator.AirToxicityLevel.WARNING, "M=2.5/90 must be WARNING");
+        // 2. WARNING: M=4.5, D = 4.5 / 100 = 0.045 >= 0.0417 -> WARNING
+        MiasmaCalculator.MiasmaResult rWarning = new MiasmaCalculator.MiasmaResult(null, 4.5, 0.0, false, 100, Collections.emptySet(), new BlockPos(102, 2, 102));
+        context.assertTrue(rWarning.level == MiasmaCalculator.AirToxicityLevel.WARNING, "M=4.5/100 must be WARNING");
 
-        // 3. MODERATE_HUNGER: M=6.0, D = 6.0 / 140 = 0.0428 -> MODERATE_HUNGER
-        MiasmaCalculator.MiasmaResult rHunger1 = new MiasmaCalculator.MiasmaResult(6.0, 0.0, false, 140, Collections.emptySet());
-        context.assertTrue(rHunger1.level == MiasmaCalculator.AirToxicityLevel.MODERATE_HUNGER, "M=6.0 with D>=0.0417 must be MODERATE_HUNGER");
+        // 3. MODERATE_HUNGER: M=6.0, D = 6.0 / 50 = 0.12 -> MODERATE_HUNGER
+        MiasmaCalculator.MiasmaResult rHunger = new MiasmaCalculator.MiasmaResult(null, 6.0, 0.0, false, 50, Collections.emptySet(), new BlockPos(103, 3, 103));
+        context.assertTrue(rHunger.level == MiasmaCalculator.AirToxicityLevel.MODERATE_HUNGER, "M=6.0 with D>=0.0417 must be MODERATE_HUNGER");
 
-        // 4. MODERATE_HUNGER from medium density: M=3.5, D = 3.5 / 35 = 0.10 -> MODERATE_HUNGER
-        MiasmaCalculator.MiasmaResult rHunger2 = new MiasmaCalculator.MiasmaResult(3.5, 0.0, false, 35, Collections.emptySet());
-        context.assertTrue(rHunger2.level == MiasmaCalculator.AirToxicityLevel.MODERATE_HUNGER, "M=3.5 with D>=0.0833 must be MODERATE_HUNGER");
-
-        // 5. LETHAL_POISON: M=18.0, D = 18.0 / 200 = 0.09 -> LETHAL_POISON
-        MiasmaCalculator.MiasmaResult rPoison1 = new MiasmaCalculator.MiasmaResult(18.0, 0.0, false, 200, Collections.emptySet());
-        context.assertTrue(rPoison1.level == MiasmaCalculator.AirToxicityLevel.LETHAL_POISON, "M=18.0 with D>=0.0833 must be LETHAL_POISON");
+        // 4. LETHAL_POISON: M=18.0, D = 18.0 / 50 = 0.36 -> LETHAL_POISON
+        MiasmaCalculator.MiasmaResult rPoison = new MiasmaCalculator.MiasmaResult(null, 18.0, 0.0, false, 50, Collections.emptySet(), new BlockPos(104, 4, 104));
+        context.assertTrue(rPoison.level == MiasmaCalculator.AirToxicityLevel.LETHAL_POISON, "M=18.0 with D>=0.0833 must be LETHAL_POISON");
 
         context.complete();
     }
@@ -712,6 +708,72 @@ public class MiasmaApertureHermeticGameTests {
                 context.getWorld(), context.getAbsolutePos(new BlockPos(2, 2, 2)));
         context.assertTrue(roomResult.ventilationType == MiasmaCalculator.RoomVentilationType.VENTILATED,
                 "Room with ceiling hole must be VENTILATED");
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testUnconfinedTunnelBeyondRadiusIsCavern(TestContext context) {
+        // Build a long 1x1 tunnel encased in stone along X from 1 to 20
+        for (int x = 1; x <= 20; x++) {
+            context.setBlockState(new BlockPos(x, 1, 2), Blocks.STONE.getDefaultState());
+            context.setBlockState(new BlockPos(x, 3, 2), Blocks.STONE.getDefaultState());
+            context.setBlockState(new BlockPos(x, 2, 1), Blocks.STONE.getDefaultState());
+            context.setBlockState(new BlockPos(x, 2, 3), Blocks.STONE.getDefaultState());
+            context.setBlockState(new BlockPos(x, 2, 2), Blocks.AIR.getDefaultState());
+        }
+        // Cap the start at x=0
+        context.setBlockState(new BlockPos(0, 2, 2), Blocks.STONE.getDefaultState());
+        // Leave x=21 open air under ceiling
+        context.setBlockState(new BlockPos(21, 3, 2), Blocks.STONE.getDefaultState());
+        context.setBlockState(new BlockPos(21, 2, 2), Blocks.AIR.getDefaultState());
+
+        BlockPos eyePos = new BlockPos(1, 2, 2);
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(eyePos));
+
+        context.assertTrue(result.ventilationType == MiasmaCalculator.RoomVentilationType.UNCONFINED_CAVERN,
+                "Long tunnel hitting radius boundary with open air must be UNCONFINED_CAVERN, got: " + result.ventilationType);
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testVerticalShaftWithinRadiusIsVentilated(TestContext context) {
+        // Pozzo verticale profondo 5 blocchi (entro il raggio di 16 e dentro la struttura)
+        // Fondo a y=1, colonna d'aria fino a y=5, cielo a y=6
+        RoomTestBuilder.of(context)
+                .set(2, 0, 2, Blocks.STONE)
+                .addVerticalChimney(2, 2, 1, 5)
+                .clearOpenAirColumn(2, 2, 6, 8);
+
+        BlockPos bottomPos = new BlockPos(2, 1, 2);
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(bottomPos));
+
+        context.assertTrue(result.ventilationType == MiasmaCalculator.RoomVentilationType.VENTILATED,
+                "Shaft within radius 16 must be VENTILATED, got: " + result.ventilationType);
+        context.assertTrue(result.ventilationScore > 0.0,
+                "Ventilation score must be > 0 in shaft reaching sky within radius");
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testVerticalShaftBeyondRadiusIsUnconfined(TestContext context) {
+        // Pozzo verticale profondo 20 blocchi (oltre il raggio di 16)
+        // Fondo a y=1, colonna d'aria fino a y=20, cielo a y=21
+        RoomTestBuilder.of(context)
+                .set(2, 0, 2, Blocks.STONE)
+                .addVerticalChimney(2, 2, 1, 20)
+                .clearOpenAirColumn(2, 2, 21, 46);
+
+        BlockPos bottomPos = new BlockPos(2, 1, 2);
+        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(bottomPos));
+
+        context.assertTrue(result.ventilationType == MiasmaCalculator.RoomVentilationType.UNCONFINED_CAVERN,
+                "Shaft deeper than radius 16 must be UNCONFINED_CAVERN, got: " + result.ventilationType);
 
         context.complete();
     }

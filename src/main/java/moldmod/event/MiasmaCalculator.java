@@ -159,12 +159,14 @@ public final class MiasmaCalculator {
         public final double localAeration;
         public final double localExposureIndex;
         public final AirToxicityLevel localLevel;
+        public final boolean unconfined;
 
         public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
                 boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
                 int distanceToVentilation, double roomVentilationScore,
                 int susceptibleBlockCount, double totalSusceptibleWeight,
-                Map<BlockPos, Integer> distToGoal, Map<BlockPos, Double> nodeFlows) {
+                Map<BlockPos, Integer> distToGoal, Map<BlockPos, Double> nodeFlows,
+                boolean unconfined) {
             this.openAir = openAir;
             this.volume = volume;
             this.airBlocks = airBlocks;
@@ -175,6 +177,7 @@ public final class MiasmaCalculator {
             this.totalSusceptibleWeight = totalSusceptibleWeight;
             this.distToGoal = (distToGoal != null) ? distToGoal : Collections.emptyMap();
             this.nodeFlows = (nodeFlows != null) ? nodeFlows : Collections.emptyMap();
+            this.unconfined = unconfined;
 
             ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
@@ -187,6 +190,8 @@ public final class MiasmaCalculator {
                 this.ventilationType = RoomVentilationType.UNCONFINED_CAVERN;
             } else if (this.ventilationScore > 0.0) {
                 this.ventilationType = RoomVentilationType.VENTILATED;
+            } else if (unconfined) {
+                this.ventilationType = RoomVentilationType.UNCONFINED_CAVERN;
             } else {
                 this.ventilationType = RoomVentilationType.HERMETIC_SEALED;
             }
@@ -292,9 +297,19 @@ public final class MiasmaCalculator {
                 boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
                 int distanceToVentilation, double roomVentilationScore,
                 int susceptibleBlockCount, double totalSusceptibleWeight,
+                Map<BlockPos, Integer> distToGoal, Map<BlockPos, Double> nodeFlows) {
+            this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
+                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight,
+                    distToGoal, nodeFlows, false);
+        }
+
+        public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
+                boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
+                int distanceToVentilation, double roomVentilationScore,
+                int susceptibleBlockCount, double totalSusceptibleWeight,
                 Map<BlockPos, Integer> distToGoal) {
             this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight, distToGoal, Collections.emptyMap());
+                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight, distToGoal, Collections.emptyMap(), false);
         }
 
         public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
@@ -302,26 +317,26 @@ public final class MiasmaCalculator {
                 int distanceToVentilation, double roomVentilationScore,
                 int susceptibleBlockCount, double totalSusceptibleWeight) {
             this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight, Collections.emptyMap(), Collections.emptyMap());
+                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight, Collections.emptyMap(), Collections.emptyMap(), false);
         }
 
         public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
                 boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
                 int distanceToVentilation, double roomVentilationScore) {
             this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    distanceToVentilation, roomVentilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap());
+                    distanceToVentilation, roomVentilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false);
         }
 
         public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
                 boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos) {
             this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap());
+                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false);
         }
 
         public MiasmaResult(double toxicScore, double ventilationScore, boolean openAir, int volume,
                 Set<BlockPos> airBlocks) {
             this(null, toxicScore, ventilationScore, openAir, volume, airBlocks, BlockPos.ORIGIN,
-                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap());
+                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false);
         }
     }
 
@@ -352,6 +367,7 @@ public final class MiasmaCalculator {
         double toxicScore = scan.toxicScore();
         boolean openAir = scan.openAir();
         Set<BlockPos> airBlocks = scan.airBlocks();
+        boolean unconfined = scan.hitBoundaryWithOpenAir();
 
         double ventilationScore = 0.0;
         int distanceToVentilation = openAir ? 0 : 999;
@@ -397,7 +413,7 @@ public final class MiasmaCalculator {
         }
 
         return new MiasmaResult(world, toxicScore, ventilationScore, openAir, airBlocks.size(), airBlocks, eyePos,
-                distanceToVentilation, roomVentilationScore, scan.roomSusceptible().size(), totalSusceptibleWeight, distToGoalMap, nodeFlows);
+                distanceToVentilation, roomVentilationScore, scan.roomSusceptible().size(), totalSusceptibleWeight, distToGoalMap, nodeFlows, unconfined);
     }
 
     public static BlockAirEvaluation calculateBlockAirEvaluation(WorldAccess world,

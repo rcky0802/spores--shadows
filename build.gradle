@@ -38,6 +38,7 @@ loom {
 			source sourceSets.test
 			vmArg "-Dfabric-api.gametest"
 			vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
+			vmArg "-Dfabric-tag-conventions-v2.missingTagTranslationWarning=SILENCED"
 			runDir "build/gametest"
 		}
 	}

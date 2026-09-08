@@ -1,4 +1,4 @@
-package moldmod.test.unit;
+package moldmod.test.unit.miasma;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;

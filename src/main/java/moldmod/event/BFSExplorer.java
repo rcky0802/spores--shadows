@@ -64,7 +64,8 @@ public final class BFSExplorer {
             Set<BlockPos> airBlocks,
             Set<BlockPos> roomSusceptible,
             double toxicScore,
-            boolean openAir
+            boolean openAir,
+            boolean hitBoundaryWithOpenAir
     ) {
     }
 
@@ -608,6 +609,7 @@ public final class BFSExplorer {
         int maxRadiusSq = maxEuclideanRadius * maxEuclideanRadius;
         float moldToxMult = config.toxicity.mold_toxicity_multiplier;
         double toxicScore = 0.0;
+        boolean hitBoundaryWithOpenAir = false;
 
         boolean openAir = !isCoveredByCeiling(world, startPos);
 
@@ -633,6 +635,8 @@ public final class BFSExplorer {
                             if (visited.add(neighborPos)) {
                                 queue.add(neighborPos);
                             }
+                        } else {
+                            hitBoundaryWithOpenAir = true;
                         }
                     }
                 } else {
@@ -650,11 +654,16 @@ public final class BFSExplorer {
             }
         }
 
+        if (visited.size() >= maxAirVolume || !queue.isEmpty()) {
+            hitBoundaryWithOpenAir = true;
+        }
+
         return new RoomScanResult(
                 visited,
                 roomSusceptible,
                 toxicScore,
-                openAir
+                openAir,
+                hitBoundaryWithOpenAir
         );
     }
 

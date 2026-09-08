@@ -1,4 +1,4 @@
-package moldmod.test.unit;
+package moldmod.test.unit.miasma;
 
 import moldmod.event.FastDinicSolver;
 import org.junit.jupiter.api.DisplayName;

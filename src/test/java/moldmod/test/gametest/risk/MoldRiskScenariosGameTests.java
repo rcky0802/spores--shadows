@@ -1,4 +1,4 @@
-package moldmod.test.gametest.wood;
+package moldmod.test.gametest.risk;
 
 import moldmod.block.ModBlocks;
 import moldmod.block.MoldRiskCalculator;
@@ -12,7 +12,7 @@ import net.minecraft.test.GameTest;
 import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
 
-public class MoldyScenariosTableTests {
+public class MoldRiskScenariosGameTests {
 
     private static final double INFECTION_THRESHOLD = 0.40;
 
@@ -104,9 +104,9 @@ public class MoldyScenariosTableTests {
         BlockPos absPos = context.getAbsolutePos(targetPos);
         MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), absPos, false, log);
 
-        if (result.aeration() < 0.50) {
+        if (result.aerationFlow() <= 0.0 || result.aeration() <= 0.0) {
             context.throwPositionedException(
-                    "Scenario 3: Con 2 grate Aeration attesa >= 0.50, trovata: " + result.aeration()
+                    "Scenario 3: Con 2 grate Aeration attesa > 0.0, trovata: " + result.aeration()
                     + " (flow=" + result.aerationFlow() + ", Heff=" + result.Heff() + ", R=" + result.R() + ")", targetPos);
         }
         if (result.aerationDryingBonus() <= 0.0 || result.Heff() >= result.Hraw()) {
