@@ -2,9 +2,10 @@ package moldmod.test.unit.miasma;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;
-import moldmod.event.BFSExplorer;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.RoomSaturationManager;
+import moldmod.atmosphere.BFSExplorer;
+import moldmod.atmosphere.RoomAtmosphereCalculator.AirToxicityLevel;
+import moldmod.atmosphere.RoomAtmosphereCalculator.MiasmaResult;
+import moldmod.atmosphere.RoomSaturationManager;
 import net.minecraft.util.math.BlockPos;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -123,19 +124,19 @@ public class MiasmaKineticsUnitTest {
     @DisplayName("Verify toxic level thresholds classification")
     public void testToxicityLevelThresholds() {
         // 1. Clean air (M=0)
-        MiasmaCalculator.MiasmaResult rClean = new MiasmaCalculator.MiasmaResult(0.0, 0.0, false, 20, Set.of());
-        assertEquals(MiasmaCalculator.AirToxicityLevel.CLEAN, rClean.level);
+        MiasmaResult rClean = new MiasmaResult(0.0, 0.0, false, 20, Set.of());
+        assertEquals(AirToxicityLevel.CLEAN, rClean.level);
 
         // 2. Warning level (M=2.0, D=0.1)
-        MiasmaCalculator.MiasmaResult rWarning = new MiasmaCalculator.MiasmaResult(2.0, 0.0, false, 20, Set.of());
-        assertEquals(MiasmaCalculator.AirToxicityLevel.WARNING, rWarning.level);
+        MiasmaResult rWarning = new MiasmaResult(2.0, 0.0, false, 20, Set.of());
+        assertEquals(AirToxicityLevel.WARNING, rWarning.level);
 
         // 3. Hunger level (M=6.0, D=0.3)
-        MiasmaCalculator.MiasmaResult rHunger = new MiasmaCalculator.MiasmaResult(6.0, 0.0, false, 20, Set.of());
-        assertEquals(MiasmaCalculator.AirToxicityLevel.MODERATE_HUNGER, rHunger.level);
+        MiasmaResult rHunger = new MiasmaResult(6.0, 0.0, false, 20, Set.of());
+        assertEquals(AirToxicityLevel.MODERATE_HUNGER, rHunger.level);
 
         // 4. Poison level (M=18.0, D=0.18)
-        MiasmaCalculator.MiasmaResult rPoison = new MiasmaCalculator.MiasmaResult(18.0, 0.0, false, 100, Set.of());
-        assertEquals(MiasmaCalculator.AirToxicityLevel.LETHAL_POISON, rPoison.level);
+        MiasmaResult rPoison = new MiasmaResult(18.0, 0.0, false, 100, Set.of());
+        assertEquals(AirToxicityLevel.LETHAL_POISON, rPoison.level);
     }
 }

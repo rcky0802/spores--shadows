@@ -49,6 +49,22 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public Hardness hardness = new Hardness();
 
+    @ConfigEntry.Category("redstone")
+    @ConfigEntry.Gui.CollapsibleObject
+    public Redstone redstone = new Redstone();
+
+    @ConfigEntry.Category("composter")
+    @ConfigEntry.Gui.CollapsibleObject
+    public Composter composter = new Composter();
+
+    @ConfigEntry.Category("particles")
+    @ConfigEntry.Gui.CollapsibleObject
+    public Particles particles = new Particles();
+
+    @ConfigEntry.Category("spore_detector")
+    @ConfigEntry.Gui.CollapsibleObject
+    public SporeDetector sporeDetector = new SporeDetector();
+
     @ConfigEntry.Category("toxicity")
     @ConfigEntry.Gui.CollapsibleObject
     public Toxicity toxicity = new Toxicity();
@@ -71,6 +87,8 @@ public class ModConfig implements ConfigData {
         public boolean structures_immune = true;
         public boolean show_debug_in_chat = false;
         public int axe_scrape_damage = 1;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float rotten_break_chance_on_use = 0.10f;
     }
 
     public static class Susceptibility {
@@ -94,10 +112,19 @@ public class ModConfig implements ConfigData {
         public double dry_humidity_base = 0.3;
         public double max_depth_modifier = 0.40;
         public double depth_modifier_per_level = 0.00625;
-        public double max_local_humidity_bonus = 0.60;
-        public double water_adjacent_bonus = 0.15;
         public double cauldron_adjacent_bonus = 0.1;
         public int water_scan_radius = 3;
+
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double water_source_humidity_contribution = 0.15;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double max_room_water_humidity_bonus = 0.60;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public boolean enable_dynamic_room_humidity = true;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double humidity_saturation_speed = 0.05;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double humidity_dissipation_speed = 0.08;
 
         @ConfigEntry.Gui.Tooltip(count = 1)
         public boolean enable_ventilation_drying = true;
@@ -156,6 +183,20 @@ public class ModConfig implements ConfigData {
                 this.rotten_chance = r;
             }
         }
+
+        // Environmental bonuses for structure generation
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int underwater_rotten_bonus = 20;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int underwater_tainted_bonus = 20;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int underground_moldy_bonus = 15;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int ground_contact_moldy_bonus = 20;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int sky_access_rotten_to_moldy = 15;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int sky_access_moldy_bonus = 25;
     }
 
     public static class FurnaceMultipliers {
@@ -191,6 +232,48 @@ public class ModConfig implements ConfigData {
         public boolean enable_break_spore_cloud = true;
     }
 
+    public static class Redstone {
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float duration_multiplier = 1.0f;
+    }
+
+    public static class Composter {
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float tainted_chance = 0.50f;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float moldy_chance = 0.65f;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float rotten_chance = 0.85f;
+    }
+
+    public static class Particles {
+        public int break_cloud_stage_2_air = 20;
+        public int break_cloud_stage_2_falling = 10;
+        public int break_cloud_stage_2_mycelium = 12;
+        public int break_cloud_stage_3_air = 35;
+        public int break_cloud_stage_3_falling = 20;
+        public int break_cloud_stage_3_mycelium = 25;
+    }
+
+    public static class SporeDetector {
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int block_initial_delay_ticks = 10;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int block_periodic_delay_ticks = 30;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int redstone_level_multiplier = 5;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int item_use_cooldown_ticks = 10;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int geiger_check_interval_ticks = 20;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double geiger_density_threshold = 0.02;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int spore_mask_durability = 165;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int spore_mask_armor_points = 1;
+    }
+
     public static class Toxicity {
         public boolean enable_toxic_air = true;
         public int check_interval_ticks = 40;
@@ -199,7 +282,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int max_euclidean_radius = 16;
 
-        public float mold_toxicity_multiplier = 0.75f;
+        public float mold_toxicity_multiplier = 1.0f;
         
         // Valori di Banda Passante Interna del Voxel (Node Capacity) - Base 6 / 24
         public double open_sky_ventilation_per_block = 24.0;
@@ -260,15 +343,18 @@ public class ModConfig implements ConfigData {
         general.infection_threshold = MathHelper.clamp(general.infection_threshold, 0.0f, 2.0f);
         general.scan_radius = MathHelper.clamp(general.scan_radius, 1, 5);
         general.axe_scrape_damage = Math.max(0, general.axe_scrape_damage);
+        general.rotten_break_chance_on_use = MathHelper.clamp(general.rotten_break_chance_on_use, 0.0f, 1.0f);
 
         environment.water_scan_radius = MathHelper.clamp(environment.water_scan_radius, 1, 10);
         environment.max_depth_modifier = MathHelper.clamp(environment.max_depth_modifier, 0.0, 2.0);
         environment.depth_modifier_per_level = MathHelper.clamp(environment.depth_modifier_per_level, 0.0, 1.0);
         environment.rain_humidity_base = MathHelper.clamp(environment.rain_humidity_base, 0.0, 2.0);
         environment.dry_humidity_base = MathHelper.clamp(environment.dry_humidity_base, 0.0, 2.0);
-        environment.max_local_humidity_bonus = MathHelper.clamp(environment.max_local_humidity_bonus, 0.0, 2.0);
-        environment.water_adjacent_bonus = MathHelper.clamp(environment.water_adjacent_bonus, 0.0, 1.0);
         environment.cauldron_adjacent_bonus = MathHelper.clamp(environment.cauldron_adjacent_bonus, 0.0, 1.0);
+        environment.water_source_humidity_contribution = MathHelper.clamp(environment.water_source_humidity_contribution, 0.0, 1.0);
+        environment.max_room_water_humidity_bonus = MathHelper.clamp(environment.max_room_water_humidity_bonus, 0.0, 2.0);
+        environment.humidity_saturation_speed = MathHelper.clamp(environment.humidity_saturation_speed, 0.001, 1.0);
+        environment.humidity_dissipation_speed = MathHelper.clamp(environment.humidity_dissipation_speed, 0.001, 1.0);
         environment.aeration_drying_bonus = MathHelper.clamp(environment.aeration_drying_bonus, 0.0, 2.0);
         environment.ventilation_threshold_full_aeration = MathHelper
                 .clamp(environment.ventilation_threshold_full_aeration, 0.1, 100.0);
@@ -289,6 +375,35 @@ public class ModConfig implements ConfigData {
         hardness.stage_1_multiplier = MathHelper.clamp(hardness.stage_1_multiplier, 0.0f, 2.0f);
         hardness.stage_2_multiplier = MathHelper.clamp(hardness.stage_2_multiplier, 0.0f, 2.0f);
         hardness.stage_3_multiplier = MathHelper.clamp(hardness.stage_3_multiplier, 0.0f, 2.0f);
+
+        redstone.duration_multiplier = MathHelper.clamp(redstone.duration_multiplier, 0.0f, 10.0f);
+
+        composter.tainted_chance = MathHelper.clamp(composter.tainted_chance, 0.0f, 1.0f);
+        composter.moldy_chance = MathHelper.clamp(composter.moldy_chance, 0.0f, 1.0f);
+        composter.rotten_chance = MathHelper.clamp(composter.rotten_chance, 0.0f, 1.0f);
+
+        particles.break_cloud_stage_2_air = Math.max(0, particles.break_cloud_stage_2_air);
+        particles.break_cloud_stage_2_falling = Math.max(0, particles.break_cloud_stage_2_falling);
+        particles.break_cloud_stage_2_mycelium = Math.max(0, particles.break_cloud_stage_2_mycelium);
+        particles.break_cloud_stage_3_air = Math.max(0, particles.break_cloud_stage_3_air);
+        particles.break_cloud_stage_3_falling = Math.max(0, particles.break_cloud_stage_3_falling);
+        particles.break_cloud_stage_3_mycelium = Math.max(0, particles.break_cloud_stage_3_mycelium);
+
+        structures.underwater_rotten_bonus = MathHelper.clamp(structures.underwater_rotten_bonus, 0, 100);
+        structures.underwater_tainted_bonus = MathHelper.clamp(structures.underwater_tainted_bonus, 0, 100);
+        structures.underground_moldy_bonus = MathHelper.clamp(structures.underground_moldy_bonus, 0, 100);
+        structures.ground_contact_moldy_bonus = MathHelper.clamp(structures.ground_contact_moldy_bonus, 0, 100);
+        structures.sky_access_rotten_to_moldy = MathHelper.clamp(structures.sky_access_rotten_to_moldy, 0, 100);
+        structures.sky_access_moldy_bonus = MathHelper.clamp(structures.sky_access_moldy_bonus, 0, 100);
+
+        sporeDetector.block_initial_delay_ticks = Math.max(1, sporeDetector.block_initial_delay_ticks);
+        sporeDetector.block_periodic_delay_ticks = Math.max(1, sporeDetector.block_periodic_delay_ticks);
+        sporeDetector.redstone_level_multiplier = MathHelper.clamp(sporeDetector.redstone_level_multiplier, 1, 15);
+        sporeDetector.item_use_cooldown_ticks = Math.max(1, sporeDetector.item_use_cooldown_ticks);
+        sporeDetector.geiger_check_interval_ticks = Math.max(1, sporeDetector.geiger_check_interval_ticks);
+        sporeDetector.geiger_density_threshold = MathHelper.clamp(sporeDetector.geiger_density_threshold, 0.0, 1.0);
+        sporeDetector.spore_mask_durability = MathHelper.clamp(sporeDetector.spore_mask_durability, 1, 10000);
+        sporeDetector.spore_mask_armor_points = MathHelper.clamp(sporeDetector.spore_mask_armor_points, 0, 20);
 
         toxicity.check_interval_ticks = MathHelper.clamp(toxicity.check_interval_ticks, 10, 200);
         toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 16);

@@ -4,8 +4,8 @@ import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
 import moldmod.block.SporeDetectorBlock;
 import moldmod.config.ModConfig;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.RoomSaturationManager;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomSaturationManager;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
@@ -46,7 +46,7 @@ public class MiasmaDeviceGameTests {
                 .set(2, 1, 2, ModBlocks.SPORE_DETECTOR.getDefaultState());
 
         BlockPos detectorPos = new BlockPos(2, 1, 2);
-        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(detectorPos));
 
         context.assertTrue(result.netMiasma >= 18.0, "Room must be highly toxic (M >= 18.0)");
@@ -103,9 +103,9 @@ public class MiasmaDeviceGameTests {
         RoomSaturationManager.reset(context.getAbsolutePos(nearPos));
         RoomSaturationManager.reset(context.getAbsolutePos(farPos));
 
-        MiasmaCalculator.MiasmaResult rNear = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rNear = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(nearPos));
-        MiasmaCalculator.MiasmaResult rFar = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rFar = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(farPos));
 
         context.assertTrue(rNear.localAeration > rFar.localAeration,

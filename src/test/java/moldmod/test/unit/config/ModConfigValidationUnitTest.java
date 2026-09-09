@@ -63,8 +63,6 @@ public class ModConfigValidationUnitTest {
         config.environment.depth_modifier_per_level = 5.0;
         config.environment.rain_humidity_base = -1.0;
         config.environment.dry_humidity_base = 3.5;
-        config.environment.max_local_humidity_bonus = -0.5;
-        config.environment.water_adjacent_bonus = 2.0;
         config.environment.cauldron_adjacent_bonus = -1.0;
         config.environment.aeration_drying_bonus = 10.0;
         config.environment.ventilation_threshold_full_aeration = 0.01;
@@ -76,8 +74,6 @@ public class ModConfigValidationUnitTest {
         assertEquals(1.0, config.environment.depth_modifier_per_level, 1e-4);
         assertEquals(0.0, config.environment.rain_humidity_base, 1e-4);
         assertEquals(2.0, config.environment.dry_humidity_base, 1e-4);
-        assertEquals(0.0, config.environment.max_local_humidity_bonus, 1e-4);
-        assertEquals(1.0, config.environment.water_adjacent_bonus, 1e-4);
         assertEquals(0.0, config.environment.cauldron_adjacent_bonus, 1e-4);
         assertEquals(2.0, config.environment.aeration_drying_bonus, 1e-4);
         assertEquals(0.1, config.environment.ventilation_threshold_full_aeration, 1e-4);

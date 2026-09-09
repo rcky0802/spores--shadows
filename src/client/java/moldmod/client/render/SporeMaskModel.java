@@ -16,7 +16,7 @@ import net.minecraft.client.render.entity.model.EntityModelPartNames;
 import net.minecraft.entity.LivingEntity;
 
 @Environment(EnvType.CLIENT)
-public class SporeMaskModel extends BipedEntityModel<LivingEntity> {
+public final class SporeMaskModel extends BipedEntityModel<LivingEntity> {
     public static final EntityModelLayer LAYER_LOCATION = new EntityModelLayer(SporesShadows.id("spore_mask"), "main");
 
     public SporeMaskModel(ModelPart root) {

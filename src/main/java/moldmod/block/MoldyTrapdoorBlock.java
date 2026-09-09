@@ -42,7 +42,7 @@ public final class MoldyTrapdoorBlock extends TrapdoorBlock implements MoldyBloc
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos,
             PlayerEntity player, BlockHitResult hit) {
-        if (MoldyBlockHelper.tryBreakRottenBlock(world, pos, state, 0.10f)) {
+        if (MoldyBlockHelper.tryBreakRottenBlock(world, pos, state)) {
             return ActionResult.SUCCESS;
         }
         return super.onUse(state, world, pos, player, hit);

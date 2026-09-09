@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
 @Environment(EnvType.CLIENT)
-public class WaxingRecipeCategory extends AbstractTwoInputRecipeCategory<WaxingRecipe> {
+public final class WaxingRecipeCategory extends AbstractTwoInputRecipeCategory<WaxingRecipe> {
 
     public static final RecipeType<WaxingRecipe> RECIPE_TYPE = RecipeType.create(SporesShadows.MOD_ID, "waxing", WaxingRecipe.class);
 

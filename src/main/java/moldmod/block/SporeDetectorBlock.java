@@ -1,8 +1,10 @@
 package moldmod.block;
 
 import com.mojang.serialization.MapCodec;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.MiasmaCalculator.MiasmaResult;
+import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomAtmosphereCalculator.MiasmaResult;
+import moldmod.config.ModConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -49,6 +51,14 @@ public final class SporeDetectorBlock extends WallMountedBlock {
     private static final VoxelShape EAST_WALL_SHAPE = Block.createCuboidShape(0.0, 1.0, 4.0, 3.0, 15.0, 12.0);
     private static final VoxelShape WEST_WALL_SHAPE = Block.createCuboidShape(13.0, 1.0, 4.0, 16.0, 15.0, 12.0);
 
+    private static ModConfig getConfig() {
+        try {
+            return AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public SporeDetectorBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState()
@@ -89,13 +99,16 @@ public final class SporeDetectorBlock extends WallMountedBlock {
     @Override
     public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean notify) {
         if (!world.isClient && !state.isOf(oldState.getBlock())) {
-            world.scheduleBlockTick(pos, this, 10);
+            ModConfig config = getConfig();
+            int initialDelay = (config != null && config.sporeDetector != null) ? config.sporeDetector.block_initial_delay_ticks : 10;
+            world.scheduleBlockTick(pos, this, initialDelay);
         }
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        MiasmaResult result = MiasmaCalculator.calculateMiasma(world, pos);
+        MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(world, pos);
+        ModConfig config = getConfig();
 
         int toxLevel = switch (result.level) {
             case CLEAN -> 0;
@@ -105,18 +118,16 @@ public final class SporeDetectorBlock extends WallMountedBlock {
         };
 
         // Calcolo emissione Redstone proporzionale allo stage di tossicità (0, 1, 2, 3)
-        // Stage 0 -> Power 0 (Off)
-        // Stage 1 -> Power 5
-        // Stage 2 -> Power 10
-        // Stage 3 -> Power 15 (Max)
-        int redstonePower = toxLevel * 5;
+        int multiplier = (config != null && config.sporeDetector != null) ? config.sporeDetector.redstone_level_multiplier : 5;
+        int redstonePower = Math.min(15, toxLevel * multiplier);
 
         if (state.get(TOXICITY_LEVEL) != toxLevel || state.get(POWER) != redstonePower) {
             world.setBlockState(pos, state.with(TOXICITY_LEVEL, toxLevel).with(POWER, redstonePower), Block.NOTIFY_ALL);
         }
 
         // Programma il prossimo controllo
-        world.scheduleBlockTick(pos, this, 30);
+        int periodicDelay = (config != null && config.sporeDetector != null) ? config.sporeDetector.block_periodic_delay_ticks : 30;
+        world.scheduleBlockTick(pos, this, periodicDelay);
     }
 
     @Override
@@ -137,7 +148,7 @@ public final class SporeDetectorBlock extends WallMountedBlock {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient && world instanceof ServerWorld serverWorld) {
-            MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, pos);
+            MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(serverWorld, pos);
             sendDiagnosticMessage((ServerPlayerEntity) player, result, state.get(POWER));
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_BULB_TURN_ON, SoundCategory.BLOCKS, 0.8f, 1.2f);
         }
@@ -148,7 +159,7 @@ public final class SporeDetectorBlock extends WallMountedBlock {
     public ItemActionResult onUseWithItem(ItemStack stack, BlockState state,
             World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient && world instanceof ServerWorld serverWorld) {
-            MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, pos);
+            MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(serverWorld, pos);
             sendDiagnosticMessage((ServerPlayerEntity) player, result, state.get(POWER));
             world.playSound(null, pos, SoundEvents.BLOCK_COPPER_BULB_TURN_ON, SoundCategory.BLOCKS, 0.8f, 1.2f);
         }

@@ -1,6 +1,6 @@
-package moldmod.event;
+package moldmod.atmosphere;
 
-import moldmod.event.MiasmaCalculator.BlockAerationType;
+import moldmod.atmosphere.RoomAtmosphereCalculator.BlockAerationType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

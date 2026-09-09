@@ -16,7 +16,10 @@ import net.minecraft.world.StructureWorldAccess;
 
 import java.util.Random;
 
-public class MoldyStructureContext {
+public final class MoldyStructureContext {
+
+    private MoldyStructureContext() {
+    }
 
     private static final ThreadLocal<String> CURRENT_STRUCTURE = new ThreadLocal<>();
     private static final Direction[] DIRECTIONS = Direction.values();
@@ -122,29 +125,39 @@ public class MoldyStructureContext {
         }
 
         // Rule: If touching water or deep underground (Y < 60), increase Rotten/Tainted
+        ModConfig cfg = null;
+        try {
+            cfg = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        } catch (Exception ignored) {}
+        int uwRottenBonus = (cfg != null && cfg.structures != null) ? cfg.structures.underwater_rotten_bonus : 20;
+        int uwTaintedBonus = (cfg != null && cfg.structures != null) ? cfg.structures.underwater_tainted_bonus : 20;
+        int ugMoldyBonus = (cfg != null && cfg.structures != null) ? cfg.structures.underground_moldy_bonus : 15;
+        int gcMoldyBonus = (cfg != null && cfg.structures != null) ? cfg.structures.ground_contact_moldy_bonus : 20;
+        int saRottenToMoldy = (cfg != null && cfg.structures != null) ? cfg.structures.sky_access_rotten_to_moldy : 15;
+        int saMoldyBonus = (cfg != null && cfg.structures != null) ? cfg.structures.sky_access_moldy_bonus : 25;
+
         if (isUnderwater || basePos.getY() <= 60) {
-            rotten = Math.min(100, rotten + 20); // +20% Rotten
-            tainted = Math.min(100 - rotten, tainted + 20); // +20% Tainted
+            rotten = Math.min(100, rotten + uwRottenBonus);
+            tainted = Math.min(100 - rotten, tainted + uwTaintedBonus);
             if (!isUnderwater && basePos.getY() <= 60 && moldy < 35) {
-                // If just deep underground (not water), ensure some base mold
-                moldy = Math.min(100 - rotten - tainted, moldy + 15);
+                moldy = Math.min(100 - rotten - tainted, moldy + ugMoldyBonus);
             }
         }
 
         // Rule: If near ground, boost moldy heavily (simulating rising damp)
         if (nearGround) {
-            moldy = Math.min(100 - rotten - tainted, moldy + 20);
+            moldy = Math.min(100 - rotten - tainted, moldy + gcMoldyBonus);
         }
 
         // Rule: If exposed to air/rain (sky access), shift towards Moldy
         if (hasSkyAccess && !isUnderwater) {
             // Convert some Rotten/Tainted back to Moldy since fresh air preserves it slightly from rotting completely
-            int recovered = Math.min(rotten, 15);
+            int recovered = Math.min(rotten, saRottenToMoldy);
             rotten -= recovered;
             moldy += recovered;
 
             // Boost Moldy heavily
-            moldy = Math.min(100 - rotten - tainted, moldy + 25);
+            moldy = Math.min(100 - rotten - tainted, moldy + saMoldyBonus);
         }
 
         // --- INFLUENCE BY PLAYER RISK FORMULA (R) ---

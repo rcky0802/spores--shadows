@@ -1,8 +1,10 @@
-package moldmod.event;
+package moldmod.atmosphere;
 
 import moldmod.block.MoldyBlock;
 import moldmod.config.ModConfig;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.WorldAccess;
@@ -44,6 +46,7 @@ public final class BFSExplorer {
     public record RoomScanResult(
             Set<BlockPos> airBlocks,
             Set<BlockPos> roomSusceptible,
+            Set<BlockPos> roomWaterSources,
             double toxicScore,
             boolean openAir,
             boolean hitBoundaryWithOpenAir
@@ -135,6 +138,7 @@ public final class BFSExplorer {
         Set<BlockPos> visited = new HashSet<>();
         Set<BlockPos> countedMold = new HashSet<>();
         Set<BlockPos> roomSusceptible = new HashSet<>();
+        Set<BlockPos> roomWaterSources = new HashSet<>();
         int maxRadiusSq = maxEuclideanRadius * maxEuclideanRadius;
         float moldToxMult = config.toxicity.mold_toxicity_multiplier;
         double toxicScore = 0.0;
@@ -176,8 +180,12 @@ public final class BFSExplorer {
                         boolean isWaxed = neighborState.contains(MoldyBlock.WAXED) && neighborState.get(MoldyBlock.WAXED);
                         if (!isWaxed && countedMold.add(neighborPos)) {
                             int stage = neighborState.get(MoldyBlock.STAGE);
-                            toxicScore += (stage * moldToxMult);
+                            int stageWeight = (stage == 3) ? 4 : stage;
+                            toxicScore += (stageWeight * moldToxMult);
                         }
+                    }
+                    if (neighborState.getFluidState().isIn(FluidTags.WATER) || neighborState.isOf(Blocks.WATER_CAULDRON)) {
+                        roomWaterSources.add(neighborPos.toImmutable());
                     }
                 }
             }
@@ -190,6 +198,7 @@ public final class BFSExplorer {
         return new RoomScanResult(
                 visited,
                 roomSusceptible,
+                roomWaterSources,
                 toxicScore,
                 openAir,
                 hitBoundaryWithOpenAir

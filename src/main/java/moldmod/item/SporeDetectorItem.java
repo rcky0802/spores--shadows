@@ -1,9 +1,11 @@
 package moldmod.item;
 
+import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.SporeDetectorBlock;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.MiasmaCalculator.AirToxicityLevel;
-import moldmod.event.MiasmaCalculator.MiasmaResult;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomAtmosphereCalculator.AirToxicityLevel;
+import moldmod.atmosphere.RoomAtmosphereCalculator.MiasmaResult;
+import moldmod.config.ModConfig;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +20,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class SporeDetectorItem extends BlockItem {
+public final class SporeDetectorItem extends BlockItem {
 
     public SporeDetectorItem(Block block, Settings settings) {
         super(block, settings);
@@ -31,7 +33,7 @@ public class SporeDetectorItem extends BlockItem {
         // Click destro nel vuoto (in aria): Scansione immediata dell'aria con output in Chat privata
         if (!world.isClient && world instanceof ServerWorld serverWorld) {
             BlockPos eyePos = BlockPos.ofFloored(player.getEyePos());
-            MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, eyePos);
+            MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(serverWorld, eyePos);
             
             int redstoneEquiv = 0;
             if (result.level == AirToxicityLevel.LETHAL_POISON) redstoneEquiv = 15;
@@ -42,7 +44,9 @@ public class SporeDetectorItem extends BlockItem {
             world.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BLOCK_COPPER_BULB_TURN_ON, SoundCategory.PLAYERS, 0.8f, 1.4f);
             
-            player.getItemCooldownManager().set(this, 10);
+            ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+            int cooldownTicks = (config != null && config.sporeDetector != null) ? config.sporeDetector.item_use_cooldown_ticks : 10;
+            player.getItemCooldownManager().set(this, cooldownTicks);
         }
 
         return TypedActionResult.success(stack, world.isClient());
@@ -57,18 +61,22 @@ public class SporeDetectorItem extends BlockItem {
         boolean isHeld = (player.getMainHandStack() == stack || player.getOffHandStack() == stack);
         if (!isHeld) return;
 
-        // Esegui controllo periodico solo ogni 20 tick per player
+        // Esegui controllo periodico solo ogni N tick per player
         long time = world.getTime();
-        if ((time + player.getId()) % 20 != 0) return;
+        ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        int geigerInterval = (config != null && config.sporeDetector != null) ? config.sporeDetector.geiger_check_interval_ticks : 20;
+        if ((time + player.getId()) % geigerInterval != 0) return;
 
         ServerWorld serverWorld = (ServerWorld) world;
         BlockPos eyePos = BlockPos.ofFloored(player.getEyePos());
 
         // Pre-filtro rapido prima del calcolo
-        if (!MiasmaCalculator.hasMoldNearby(serverWorld, eyePos, 8)) return;
+        int radius = config != null && config.toxicity != null ? config.toxicity.scan_radius : 8;
+        if (!RoomAtmosphereCalculator.hasMoldNearby(serverWorld, eyePos, radius)) return;
 
-        MiasmaResult result = MiasmaCalculator.calculateMiasma(serverWorld, eyePos);
-        if (result.density > 0.02) {
+        double densityThreshold = (config != null && config.sporeDetector != null) ? config.sporeDetector.geiger_density_threshold : 0.02;
+        MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(serverWorld, eyePos);
+        if (result.density > densityThreshold) {
             float pitch = 1.0f + (float) Math.min(1.0, result.density * 5.0);
             world.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.BLOCK_NOTE_BLOCK_HAT.value(), SoundCategory.PLAYERS, 0.25f, pitch);

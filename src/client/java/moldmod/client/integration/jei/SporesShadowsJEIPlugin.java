@@ -32,7 +32,7 @@ import java.util.Map;
 
 @JeiPlugin
 @Environment(EnvType.CLIENT)
-public class SporesShadowsJEIPlugin implements IModPlugin {
+public final class SporesShadowsJEIPlugin implements IModPlugin {
 
     public static final Identifier PLUGIN_ID = SporesShadows.id("jei_plugin");
 

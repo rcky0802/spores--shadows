@@ -5,7 +5,10 @@ import net.minecraft.block.WoodType;
 
 import java.util.List;
 
-public class SporesShadowsConstants {
+public final class SporesShadowsConstants {
+
+    private SporesShadowsConstants() {
+    }
 
     public enum MoldStage {
         WAXED(0, "waxed"),

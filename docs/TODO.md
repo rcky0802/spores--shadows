@@ -47,11 +47,33 @@ Documento di tracciamento per le funzionalità pianificate, miglioramenti archit
 
 ---
 
-### 5. 🌀 Macchinari: Ventola di Aspirazione & Sfiatamento (*Ventilation Fan*)
-- [ ] **Blocco Interattivo: Ventola di Ventilazione / Estrattore (*Ventilation Fan*)**
-  * **Obiettivo**: Un blocco direzionale (orientabile con asse frontale/posteriore) in grado di aspirare attivamente l'aria miasmatica dalla stanza frontale ed espellerla/sfiatarla sul retro.
+### 5. 💧 Ristrutturazione Umidità Volumetrica Dinamica di Stanza (*Room Humidity Refactor*)
+- [x] **Ristrutturazione Umidità di Stanza & Rischio Muffa ($R$)**
+  * **Obiettivo**: Rimpiazzare il vecchio algoritmo cubico 3x3x3 di scansione acqua con un sistema volumetrico discreto identico al Miasma, guidato da espansione BFS nello spazio aereo continuo.
+  * **Meccaniche**:
+    * Calcolo sorgenti d'acqua affacciate sul volume d'aria della stanza (+0.15 cad., tetto max 0.60).
+    * Inerzia temporale dinamica asintotica via `RoomSaturationManager` ($\alpha_{\text{sat}} = 0.05$, $\alpha_{\text{diss}} = 0.08$).
+    * Condizioni al contorno realistiche: mediazione facce aeree per blocchi esposti a più stanze, fallback geologico per blocchi interrati, 100% umidità per blocchi waterlogged.
+    * Comando `/moldrisk` allineato con diagnostica completa di stanza, trend di saturazione/svuotamento e $\alpha$ attiva.
+    * 7 GameTest dedicati (`RoomHumidityGameTests`) e 100% test passanti.
+  * **Stato**: ✅ *Completato*
+
+---
+
+### 6. 💨 Macchinari: Deumidificatore (*Dehumidifier*)
+- [ ] **Blocco Interattivo: Deumidificatore (*Dehumidifier*)**
+  * **Obiettivo**: Un macchinario posizionabile all'interno di ambienti chiusi o sotterranei per rimuovere l'umidità ambientale, bloccando attivamente la proliferazione della muffa.
   * **Integrazione Meccanica**:
-    * Riduce attivamente il volume tossico e incrementa il `ventilationScore` dello spazio chiuso.
-    * Espelle particelle di fumo e spore sul retro del blocco (verso l'esterno dell'edificio o una canna fumaria).
-    * Attivabile tramite segnale di Pietrarossa o funzionamento continuo.
+    * Agisce direttamente sul calcolatore di rischio (`MoldRiskCalculator`), abbattendo brutalmente l'umidità locale (`localHumidityBonus` o `Hraw`) nel suo raggio d'azione.
+    * Pensato appositamente per bunker, cantine o miniere dove non è possibile creare prese d'aria verso la superficie.
+    * Attivabile tramite Pietrarossa. Potrebbe richiedere di essere svuotato periodicamente dall'acqua accumulata (es. secchi) o consumare carburante.
+  * **Stato**: ⏳ *Pianificato*
+
+### 7. 🌬️ Macchinari: Depuratore d'Aria / Filtro HEPA (*Air Purifier*)
+- [ ] **Blocco Interattivo: Depuratore d'Aria a Spore (*Spore Purifier / HEPA Filter*)**
+  * **Obiettivo**: Un sistema di filtrazione avanzato capace di distruggere attivamente il miasma accumulato in una stanza sigillata, depurando l'aria senza necessità di condotti verso l'esterno.
+  * **Integrazione Meccanica**:
+    * Intercetta il `MiasmaCalculator` riducendo matematicamente la tossicità totale della stanza e sopprimendo la pressione delle spore nell'aria.
+    * Crea la perfetta "Safe Room" sotterranea in assenza di ventilazione naturale.
+    * Consuma filtri sacrificabili (es. Lana, Carta o un nuovo item dedicato) o durabilità nel tempo, garantendo un loop di manutenzione bilanciato.
   * **Stato**: ⏳ *Pianificato*

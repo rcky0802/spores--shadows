@@ -1,12 +1,14 @@
-package moldmod.block;
+package moldmod.risk;
 
 import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomAtmosphereCalculator.BlockAirEvaluation;
+import moldmod.block.MoldyBlock;
+import moldmod.block.MoldyLogBlock;
+import moldmod.block.MoldyPlanksBlock;
 import moldmod.config.ModConfig;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.MiasmaCalculator.BlockAirEvaluation;
 import moldmod.registry.ModCatalystRegistry;
 import net.minecraft.block.BlockState;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.BlockTags;
@@ -80,7 +82,22 @@ public final class MoldRiskCalculator {
             double R,
             float effectiveTemp,
             float surfaceTemp,
-            int distanceToVentilation) {
+            int distanceToVentilation,
+            double targetHumidity,
+            double currentHumidity,
+            int roomWaterSourcesCount,
+            boolean isWaterlogged,
+            RoomAtmosphereCalculator.RoomVentilationType roomVentilationType,
+            BlockPos anchorPos) {
+
+        public MoldRiskResult(double Tmult, double Heff, double Hraw, double baseHum, double depthModifier,
+                double localHumidityBonus, double aerationFlow, double aeration, double aerationDryingBonus, double Luv, double avgLight,
+                double Smat, double catalystBonus, double miasmaBonus, double netMiasma, int airVolume, int exposedFaces,
+                double R, float effectiveTemp, float surfaceTemp, int distanceToVentilation) {
+            this(Tmult, Heff, Hraw, baseHum, depthModifier, localHumidityBonus, aerationFlow, aeration, aerationDryingBonus,
+                    Luv, avgLight, Smat, catalystBonus, miasmaBonus, netMiasma, airVolume, exposedFaces, R, effectiveTemp, surfaceTemp,
+                    distanceToVentilation, Hraw, Heff, 0, false, RoomAtmosphereCalculator.RoomVentilationType.HERMETIC_SEALED, BlockPos.ORIGIN);
+        }
 
         public MoldRiskResult(double Tmult, double Heff, double Hraw, double baseHum, double depthModifier,
                 double localHumidityBonus, double aerationFlow, double aeration, double aerationDryingBonus, double Luv, double avgLight,
@@ -153,59 +170,29 @@ public final class MoldRiskCalculator {
                     temp, surfaceTemp);
         }
 
-        boolean isRainingAt = false;
-        if (world instanceof World realWorld) {
-            isRainingAt = realWorld.hasRain(pos.up());
-        } else {
-            isRainingAt = world.getBiome(pos).value().hasPrecipitation();
-        }
+        boolean isWaterlogged = (stateToCheck != null) &&
+                ((stateToCheck.contains(net.minecraft.state.property.Properties.WATERLOGGED) && stateToCheck.get(net.minecraft.state.property.Properties.WATERLOGGED))
+                || stateToCheck.getFluidState().isIn(net.minecraft.registry.tag.FluidTags.WATER));
 
-        double baseHum = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
-
-        double depthModifier = 0.0;
-        if (pos.getY() < config.environment.cave_start_y) {
-            depthModifier = Math.min(config.environment.max_depth_modifier,
-                    (config.environment.cave_start_y - pos.getY()) * config.environment.depth_modifier_per_level);
-        }
-
-        double localHumidityBonus = 0.0;
+        // 2. Scan for Organic Catalysts & Adjacent Mold
         double catalystBonus = 0.0;
+        double catalystHumidityBonus = 0.0;
+        int r = config.general.scan_radius;
 
         BlockPos.Mutable mutable = new BlockPos.Mutable();
         int cx = pos.getX();
         int cy = pos.getY();
         int cz = pos.getZ();
 
-        // 2. Optimized Unified Single-Pass Scan for Catalysts, Mold & Water
-        int r = config.general.scan_radius;
-        int wr = config.environment.water_scan_radius;
-        int maxR = Math.max(r, wr);
-
-        int waterBlocksFound = 0;
-        int maxWaterBlocksNeeded = (int) Math
-                .ceil(config.environment.max_local_humidity_bonus / Math.max(0.001, config.environment.water_adjacent_bonus));
-
         int lastChunkX = Integer.MIN_VALUE;
         int lastChunkZ = Integer.MIN_VALUE;
         boolean isChunkLoaded = true;
         World realWorld = (world instanceof World w) ? w : null;
 
-        for (int x = -maxR; x <= maxR; x++) {
-            int dx = Math.abs(x);
-            for (int y = -maxR; y <= maxR; y++) {
-                int dy = Math.abs(y);
-                for (int z = -maxR; z <= maxR; z++) {
+        for (int x = -r; x <= r; x++) {
+            for (int y = -r; y <= r; y++) {
+                for (int z = -r; z <= r; z++) {
                     if (x == 0 && y == 0 && z == 0) {
-                        continue;
-                    }
-                    int dz = Math.abs(z);
-
-                    boolean inCatalystRange = (dx <= r && dy <= r && dz <= r);
-                    boolean inWaterRange = (dx <= wr && dy <= wr && dz <= wr);
-                    boolean needWater = inWaterRange && (waterBlocksFound < maxWaterBlocksNeeded);
-
-                    // Skip blocks outside catalyst range if water cap is already reached
-                    if (!inCatalystRange && !needWater) {
                         continue;
                     }
 
@@ -214,7 +201,6 @@ public final class MoldRiskCalculator {
                     int chunkX = posX >> 4;
                     int chunkZ = posZ >> 4;
 
-                    // Micro-cached chunk lookup: only check when crossing chunk boundaries
                     if (realWorld != null && (chunkX != lastChunkX || chunkZ != lastChunkZ)) {
                         lastChunkX = chunkX;
                         lastChunkZ = chunkZ;
@@ -228,34 +214,20 @@ public final class MoldRiskCalculator {
                     mutable.set(posX, cy + y, posZ);
                     BlockState nearbyState = world.getBlockState(mutable);
 
-                    // A) Organic catalysts and adjacent mold scan (in radius r)
-                    if (inCatalystRange) {
-                        ModCatalystRegistry.CatalystContribution contribution = ModCatalystRegistry
-                                .getContribution(nearbyState, config);
-                        localHumidityBonus += contribution.localHumidityBonus();
-                        catalystBonus += contribution.catalystBonus();
+                    ModCatalystRegistry.CatalystContribution contribution = ModCatalystRegistry
+                            .getContribution(nearbyState, config);
+                    catalystHumidityBonus += contribution.localHumidityBonus();
+                    catalystBonus += contribution.catalystBonus();
 
-                        if (nearbyState.contains(MoldyBlock.STAGE) && nearbyState.get(MoldyBlock.STAGE) > 0) {
-                            if (!nearbyState.contains(MoldyBlock.WAXED) || !nearbyState.get(MoldyBlock.WAXED)) {
-                                int stage = nearbyState.get(MoldyBlock.STAGE);
-                                if (stage == 1) {
-                                    catalystBonus += config.catalysts.tainted_block_bonus;
-                                } else if (stage == 2) {
-                                    catalystBonus += config.catalysts.moldy_block_bonus;
-                                } else if (stage == 3) {
-                                    catalystBonus += config.catalysts.rotten_block_bonus;
-                                }
-                            }
-                        }
-                    }
-
-                    // B) Water scan (in radius wr, early-stops once max water is found)
-                    if (needWater) {
-                        var fluidState = nearbyState.getFluidState();
-                        if (!fluidState.isEmpty()) {
-                            if (fluidState.isOf(Fluids.WATER) || fluidState.isOf(Fluids.FLOWING_WATER)) {
-                                localHumidityBonus += config.environment.water_adjacent_bonus;
-                                waterBlocksFound++;
+                    if (nearbyState.contains(MoldyBlock.STAGE) && nearbyState.get(MoldyBlock.STAGE) > 0) {
+                        if (!nearbyState.contains(MoldyBlock.WAXED) || !nearbyState.get(MoldyBlock.WAXED)) {
+                            int stage = nearbyState.get(MoldyBlock.STAGE);
+                            if (stage == 1) {
+                                catalystBonus += config.catalysts.tainted_block_bonus;
+                            } else if (stage == 2) {
+                                catalystBonus += config.catalysts.moldy_block_bonus;
+                            } else if (stage == 3) {
+                                catalystBonus += config.catalysts.rotten_block_bonus;
                             }
                         }
                     }
@@ -263,27 +235,65 @@ public final class MoldRiskCalculator {
             }
         }
 
-        localHumidityBonus = Math.min(config.environment.max_local_humidity_bonus, localHumidityBonus);
-        double Hraw = baseHum + depthModifier + localHumidityBonus;
+        // 3. Aeration, Room Atmosphere & Miasma Evaluation over exposed air faces
+        BlockAirEvaluation airEval = RoomAtmosphereCalculator.calculateBlockAirEvaluation(world, pos, stateToCheck);
 
-        // 4. Aeration & Miasma Evaluation over exposed air faces
-        BlockAirEvaluation airEval = MiasmaCalculator.calculateBlockAirEvaluation(world, pos, stateToCheck);
+        double baseHum = airEval.baseHumidity();
+        double depthModifier = airEval.depthModifier();
+        double roomWaterBonus;
+        int roomWaterSourcesCount;
+        double targetHumidity;
+        double currentHumidity;
+        double aerationFlow;
+        double aeration;
+        double aerationDryingBonus;
+        double Heff;
+        double Hraw;
 
-        double aerationFlow = airEval.ventilationFlow();
-        double aeration = 0.0;
-        if (config.environment.enable_ventilation_drying) {
-            aeration = airEval.averageAeration();
+        if (isWaterlogged) {
+            baseHum = 1.0;
+            depthModifier = 0.0;
+            roomWaterBonus = config.environment.max_room_water_humidity_bonus;
+            roomWaterSourcesCount = 1;
+            targetHumidity = 1.0;
+            currentHumidity = 1.0;
+            Hraw = 1.0;
+            aerationFlow = 0.0;
+            aeration = 0.0;
+            aerationDryingBonus = 0.0;
+            Heff = 1.0;
+        } else if (airEval.exposedFacesCount() == 0) {
+            // Case 4: Fully buried block without air exposure
+            roomWaterBonus = 0.0;
+            roomWaterSourcesCount = 0;
+            targetHumidity = Math.min(1.0, baseHum + depthModifier + catalystHumidityBonus);
+            currentHumidity = targetHumidity;
+            Hraw = targetHumidity;
+            aerationFlow = 0.0;
+            aeration = 0.0;
+            aerationDryingBonus = 0.0;
+            Heff = Math.max(0.0, Math.min(1.0, Hraw));
+        } else {
+            roomWaterBonus = airEval.waterBonus();
+            roomWaterSourcesCount = airEval.waterSourcesCount();
+            targetHumidity = Math.min(1.0, airEval.targetHumidity() + catalystHumidityBonus);
+            currentHumidity = Math.min(1.0, airEval.currentHumidity() + catalystHumidityBonus);
+            Hraw = currentHumidity;
+
+            aerationFlow = airEval.ventilationFlow();
+            aeration = config.environment.enable_ventilation_drying ? airEval.averageAeration() : 0.0;
+            aerationDryingBonus = aeration * config.environment.aeration_drying_bonus;
+            Heff = Math.max(0.0, Math.min(1.0, Hraw - aerationDryingBonus));
         }
 
-        double aerationDryingBonus = aeration * config.environment.aeration_drying_bonus;
-        double Heff = Math.max(0.0, Math.min(1.0, Hraw - aerationDryingBonus));
+        double localHumidityBonus = roomWaterBonus + catalystHumidityBonus;
 
         double miasmaBonus = 0.0;
         if (config.environment.enable_miasma_spore_pressure && airEval.averageExposureIndex() > 0.0) {
             miasmaBonus = airEval.averageExposureIndex() * config.environment.miasma_spore_multiplier;
         }
 
-        // 5. Light Sampling (Luv)
+        // 4. Light Sampling (Luv)
         int totalLight = 0;
         int samplePoints = 6;
         for (Direction dir : DIRECTIONS) {
@@ -302,14 +312,16 @@ public final class MoldRiskCalculator {
         double avgLight = totalLight / (double) samplePoints;
         double Luv = Math.max(0.0, (15.0 - avgLight) / 15.0);
 
-        // 6. Material Susceptibility (Smat) - memoized O(1) lookup
+        // 5. Material Susceptibility (Smat) - memoized O(1) lookup
         double Smat = getMaterialSusceptibility(stateToCheck != null ? stateToCheck.getBlock() : null, config);
 
-        // 7. Final Mold Risk calculation
+        // 6. Final Mold Risk calculation
         double R = ((Heff * Luv * Smat) + catalystBonus + miasmaBonus) * Tmult;
 
         return new MoldRiskResult(Tmult, Heff, Hraw, baseHum, depthModifier, localHumidityBonus, aerationFlow, aeration,
                 aerationDryingBonus, Luv, avgLight, Smat, catalystBonus, miasmaBonus, airEval.averageNetMiasma(),
-                airEval.maxVolume(), airEval.exposedFacesCount(), R, temp, surfaceTemp, airEval.distanceToVentilation());
+                airEval.maxVolume(), airEval.exposedFacesCount(), R, temp, surfaceTemp, airEval.distanceToVentilation(),
+                targetHumidity, currentHumidity, roomWaterSourcesCount, isWaterlogged,
+                airEval.primaryVentilationType(), airEval.anchorPos());
     }
 }

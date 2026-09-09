@@ -3,12 +3,12 @@ package moldmod.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import me.shedaniel.autoconfig.AutoConfig;
-import moldmod.block.MoldRiskCalculator;
-import moldmod.block.MoldRiskCalculator.MoldRiskResult;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomAtmosphereCalculator.MiasmaResult;
 import moldmod.block.MoldyBlock;
 import moldmod.config.ModConfig;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.MiasmaCalculator.MiasmaResult;
+import moldmod.risk.MoldRiskCalculator;
+import moldmod.risk.MoldRiskCalculator.MoldRiskResult;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.CommandRegistryAccess;
@@ -22,7 +22,10 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 
-public class ModCommands {
+public final class ModCommands {
+
+    private ModCommands() {
+    }
 
     public static void registerCommands() {
         CommandRegistrationCallback.EVENT.register(ModCommands::registerCommandsInternal);
@@ -46,7 +49,7 @@ public class ModCommands {
         }
 
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-        MiasmaResult result = MiasmaCalculator.calculateMiasma((ServerWorld) player.getWorld(),
+        MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma((ServerWorld) player.getWorld(),
                 BlockPos.ofFloored(player.getEyePos()));
 
         source.sendMessage(Text.literal("§a[Miasma Scanner] §eScanning environment..."));
@@ -121,33 +124,70 @@ public class ModCommands {
             int stage = state.contains(MoldyBlock.STAGE) ? state.get(MoldyBlock.STAGE) : 0;
             String stageText = stage == 0 ? "Normal" : stage == 1 ? "Tainted" : stage == 2 ? "Moldy" : "Rotten";
             String waxedText = isWaxed ? "§eYes" : "§cNo";
+            String waterloggedText = result.isWaterlogged() ? "§bYes" : "§7No";
 
             source.sendMessage(Text.literal(
                     String.format("§a[Mold Risk] §eBlock at (%d, %d, %d)", pos.getX(), pos.getY(), pos.getZ())));
             source.sendMessage(Text.literal(
-                    String.format("§7- Block: §f%s §7(Stage: §f%s§7, Waxed: %s§7)", blockName, stageText, waxedText)));
-            source.sendMessage(Text.literal("§7- Formula: §f((Heff * Luv * Smat) + Catalysts + MiasmaAir) * Tmult"));
-            source.sendMessage(Text.literal(
-                    String.format("§7- Raw Humidity (Hraw): §b%.2f §7[Base: %.2f | Depth: +%.2f | Water: +%.2f]",
-                            result.Hraw(), result.baseHum(), result.depthModifier(), result.localHumidityBonus())));
-            String distStr = (result.distanceToVentilation() < 900)
-                    ? String.format("Dist to Vent: §b%d blocks§7 | ", result.distanceToVentilation())
-                    : (result.aerationFlow() > 0 ? "Dist to Vent: §b0 blocks (Sky)§7 | "
-                            : "Dist to Vent: §cSealed§7 | ");
+                    String.format("§7- Block: §f%s §7(Stage: §f%s§7, Waxed: %s§7, Waterlogged: %s§7)", blockName, stageText, waxedText, waterloggedText)));
+
+            switch (result.roomVentilationType()) {
+                case CLEAN_OPEN_AIR -> source.sendMessage(
+                        Text.literal("§7- Ventilation State: §bClean Air / Open Sky §7(humidity regulated by weather & sunlight)"));
+                case UNCONFINED_CAVERN -> source.sendMessage(
+                        Text.literal("§7- Ventilation State: §aUnconfined Cavern §7(Massive volume ≥ "
+                                + config.toxicity.max_air_volume + " - naturally diluted)"));
+                case VENTILATED -> {
+                    String distStr = (result.distanceToVentilation() < 900)
+                            ? String.format(" | Dist to Vent: §b%d blocks§7", result.distanceToVentilation())
+                            : "";
+                    source.sendMessage(Text.literal(String.format(
+                            "§7- Ventilation State: §eVentilated Environment §7(Ventilation: §a%.1f§7%s | Purge modifier: §a-%.2f§7)",
+                            result.aerationFlow(), distStr, result.aerationDryingBonus())));
+                }
+                case HERMETIC_SEALED -> source.sendMessage(
+                        Text.literal("§7- Ventilation State: §cHermetically Sealed §7(Isolated room, zero ventilation)"));
+            }
+
+            double waterContr = result.roomWaterSourcesCount() * config.environment.water_source_humidity_contribution;
+            if (result.exposedFaces() == 0) {
+                source.sendMessage(Text.literal(
+                        "§7- Explored Room Volume: §8None §7(Completely buried block) | Connected Water Sources: §80 blocks"));
+            } else {
+                source.sendMessage(Text.literal(String.format(
+                        "§7- Explored Room Volume: §f%d blocks §7| Connected Water Sources: §b%d blocks §7(+%.2f, Cap: %.2f)",
+                        result.airVolume(), result.roomWaterSourcesCount(), waterContr, config.environment.max_room_water_humidity_bonus)));
+            }
+
+            double totalSources = result.baseHum() + result.depthModifier() + Math.min(config.environment.max_room_water_humidity_bonus, waterContr);
             source.sendMessage(Text.literal(String.format(
-                    "§7- Aeration: §a%.1f flow §7(§b%.1f%%§7) [%sDrying Bonus: §3-%.2f §7| Exposed Faces: §f%d/6 §7| Air Domain: §b%d blocks§7]",
-                    result.aerationFlow(), result.aeration() * 100.0, distStr, result.aerationDryingBonus(),
-                    result.exposedFaces(), result.airVolume())));
-            source.sendMessage(Text.literal(
-                    String.format("§7- Effective Humidity (Heff): §b%.2f §7(Hraw - AerationBonus)", result.Heff())));
+                    "§7- Moisture Balance: Sources: §b+%.2f §7(Base: %.2f, Depth: +%.2f, Water: +%.2f) | Purge: §3-%.2f",
+                    totalSources, result.baseHum(), result.depthModifier(), Math.min(config.environment.max_room_water_humidity_bonus, waterContr), result.aerationDryingBonus())));
+
+            double currentH = result.currentHumidity();
+            double targetH = result.targetHumidity();
+            double alphaSat = config.environment.humidity_saturation_speed;
+            double alphaDiss = config.environment.humidity_dissipation_speed;
+            String dynamicStatus = String.format("§aSTABLE §7(Target: §f%.2f§7)", targetH);
+            if (currentH > targetH + 0.02) {
+                dynamicStatus = String.format("§bPURIFYING / DISSIPATING §7(Target: §f%.2f§7 | Rate α: §b%.2f§7)", targetH, alphaDiss);
+            } else if (currentH < targetH - 0.02) {
+                dynamicStatus = String.format("§cACCUMULATING / SATURATING §7(Target: §f%.2f§7 | Rate α: §c%.2f§7)", targetH, alphaSat);
+            }
+
+            source.sendMessage(Text.literal(String.format("§7- Target Humidity Htarget: §b%.2f", targetH)));
+            source.sendMessage(Text.literal(String.format("§7- Current Room Humidity H(t): §b%.2f §7[%s§7]", currentH, dynamicStatus)));
+
+            source.sendMessage(Text.literal(String.format(
+                    "§7- Local Face Aeration: §a%.1f flow §7(§b%.1f%% aeration§7) | Drying Bonus: §3-%.2f",
+                    result.aerationFlow(), result.aeration() * 100.0, result.aerationDryingBonus())));
+            source.sendMessage(Text.literal(String.format("§7- Effective Humidity Heff: §b%.2f", result.Heff())));
+
             source.sendMessage(Text.literal(String.format("§7- Luv (Darkness): §8%.2f §7[Avg Light: %.1f / 15.0]",
                     result.Luv(), result.avgLight())));
-            source.sendMessage(Text.literal(
-                    String.format("§7- Smat (Susceptibility): §e%.2f §7[Based on block material]", result.Smat())));
-            source.sendMessage(Text
-                    .literal(String.format("§7- Catalysts: §d%.2f §7[Nearby blocks & mold]", result.catalystBonus())));
-            source.sendMessage(Text.literal(String.format("§7- Miasma Pressure: §5+%.2f §7[Net Miasma: %.2f]",
-                    result.miasmaBonus(), result.netMiasma())));
+            source.sendMessage(Text.literal(String.format(
+                    "§7- Smat (Susceptibility): §e%.2f §7[%s] | Catalysts: §d%.2f §7| Miasma Pressure: §5+%.2f",
+                    result.Smat(), blockName, result.catalystBonus(), result.miasmaBonus())));
 
             String tempMod = "";
             if (Math.abs(result.effectiveTemp() - result.surfaceTemp()) > 0.01) {

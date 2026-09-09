@@ -10,7 +10,10 @@ import moldmod.SporesShadowsConstants.MoldyWoodType;
 
 import java.nio.charset.StandardCharsets;
 
-public class MoldyJsonGenerator {
+public final class MoldyJsonGenerator {
+
+    private MoldyJsonGenerator() {
+    }
 
     public static void generateAll(ResourcePackBuilder builder) {
         for (MoldyWoodType moldyWoodType : SporesShadowsConstants.WOOD_TYPES) {

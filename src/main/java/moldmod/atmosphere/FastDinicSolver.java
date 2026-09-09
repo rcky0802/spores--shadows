@@ -1,4 +1,4 @@
-package moldmod.event;
+package moldmod.atmosphere;
 
 import java.util.Arrays;
 
@@ -8,7 +8,7 @@ import java.util.Arrays;
  *
  * Implements Level Graph BFS and Blocking Flow DFS with residual pointers.
  */
-public class FastDinicSolver {
+public final class FastDinicSolver {
     public final int n;
     public final int[] head;
     public final int[] to;

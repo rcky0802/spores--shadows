@@ -100,9 +100,15 @@ public class BlockMixin {
                     double cy = pos.getY() + 0.5;
                     double cz = pos.getZ() + 0.5;
 
-                    int countAir = (stage == 3) ? 35 : 20;
-                    int countFalling = (stage == 3) ? 20 : 10;
-                    int countMycelium = (stage == 3) ? 25 : 12;
+                    int countAir = (stage == 3)
+                            ? config.particles.break_cloud_stage_3_air
+                            : config.particles.break_cloud_stage_2_air;
+                    int countFalling = (stage == 3)
+                            ? config.particles.break_cloud_stage_3_falling
+                            : config.particles.break_cloud_stage_2_falling;
+                    int countMycelium = (stage == 3)
+                            ? config.particles.break_cloud_stage_3_mycelium
+                            : config.particles.break_cloud_stage_2_mycelium;
 
                     serverWorld.spawnParticles(ParticleTypes.SPORE_BLOSSOM_AIR, cx, cy, cz, countAir, 0.4, 0.4, 0.4, 0.05);
                     serverWorld.spawnParticles(ParticleTypes.FALLING_SPORE_BLOSSOM, cx, cy, cz, countFalling, 0.3, 0.3, 0.3, 0.02);

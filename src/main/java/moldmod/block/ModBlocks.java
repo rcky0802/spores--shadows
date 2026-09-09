@@ -31,7 +31,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModBlocks {
+public final class ModBlocks {
+
+    private ModBlocks() {
+    }
 
     public static final Map<Block, Block> MOLDY_TO_VANILLA = new HashMap<>();
     public static final Map<Block, Block> VANILLA_TO_MOLDY = new HashMap<>();

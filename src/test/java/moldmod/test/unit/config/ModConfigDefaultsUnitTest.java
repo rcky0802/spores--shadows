@@ -54,10 +54,13 @@ public class ModConfigDefaultsUnitTest {
         assertEquals(0.3, config.environment.dry_humidity_base, 1e-4);
         assertEquals(0.40, config.environment.max_depth_modifier, 1e-4);
         assertEquals(0.00625, config.environment.depth_modifier_per_level, 1e-6);
-        assertEquals(0.60, config.environment.max_local_humidity_bonus, 1e-4);
-        assertEquals(0.15, config.environment.water_adjacent_bonus, 1e-4);
         assertEquals(0.1, config.environment.cauldron_adjacent_bonus, 1e-4);
         assertEquals(3, config.environment.water_scan_radius);
+        assertEquals(0.15, config.environment.water_source_humidity_contribution, 1e-4);
+        assertEquals(0.60, config.environment.max_room_water_humidity_bonus, 1e-4);
+        assertTrue(config.environment.enable_dynamic_room_humidity);
+        assertEquals(0.05, config.environment.humidity_saturation_speed, 1e-4);
+        assertEquals(0.08, config.environment.humidity_dissipation_speed, 1e-4);
 
         assertTrue(config.environment.enable_ventilation_drying);
         assertEquals(0.50, config.environment.aeration_drying_bonus, 1e-4);
@@ -157,7 +160,7 @@ public class ModConfigDefaultsUnitTest {
         assertEquals(8, config.toxicity.scan_radius);
         assertEquals(2048, config.toxicity.max_air_volume);
         assertEquals(16, config.toxicity.max_euclidean_radius);
-        assertEquals(0.75f, config.toxicity.mold_toxicity_multiplier, 1e-4);
+        assertEquals(1.0f, config.toxicity.mold_toxicity_multiplier, 1e-4);
 
         assertEquals(24.0, config.toxicity.open_sky_ventilation_per_block, 1e-4);
         assertEquals(12.0, config.toxicity.slab_ventilation_value, 1e-4);
@@ -204,5 +207,60 @@ public class ModConfigDefaultsUnitTest {
     @DisplayName("Client category defaults")
     void testClientDefaults() {
         assertEquals(0.002f, config.client.mold_z_offset, 1e-4);
+    }
+
+    @Test
+    @DisplayName("Rotten break chance on use default")
+    void testRottenBreakChanceDefault() {
+        assertEquals(0.10f, config.general.rotten_break_chance_on_use, 1e-4);
+    }
+
+    @Test
+    @DisplayName("Redstone category defaults")
+    void testRedstoneDefaults() {
+        assertEquals(1.0f, config.redstone.duration_multiplier, 1e-4);
+    }
+
+    @Test
+    @DisplayName("Composter category defaults")
+    void testComposterDefaults() {
+        assertEquals(0.50f, config.composter.tainted_chance, 1e-4);
+        assertEquals(0.65f, config.composter.moldy_chance, 1e-4);
+        assertEquals(0.85f, config.composter.rotten_chance, 1e-4);
+    }
+
+    @Test
+    @DisplayName("Particles category defaults")
+    void testParticlesDefaults() {
+        assertEquals(20, config.particles.break_cloud_stage_2_air);
+        assertEquals(10, config.particles.break_cloud_stage_2_falling);
+        assertEquals(12, config.particles.break_cloud_stage_2_mycelium);
+        assertEquals(35, config.particles.break_cloud_stage_3_air);
+        assertEquals(20, config.particles.break_cloud_stage_3_falling);
+        assertEquals(25, config.particles.break_cloud_stage_3_mycelium);
+    }
+
+    @Test
+    @DisplayName("Spore detector and mask category defaults")
+    void testSporeDetectorDefaults() {
+        assertEquals(10, config.sporeDetector.block_initial_delay_ticks);
+        assertEquals(30, config.sporeDetector.block_periodic_delay_ticks);
+        assertEquals(5, config.sporeDetector.redstone_level_multiplier);
+        assertEquals(10, config.sporeDetector.item_use_cooldown_ticks);
+        assertEquals(20, config.sporeDetector.geiger_check_interval_ticks);
+        assertEquals(0.02, config.sporeDetector.geiger_density_threshold, 1e-4);
+        assertEquals(165, config.sporeDetector.spore_mask_durability);
+        assertEquals(1, config.sporeDetector.spore_mask_armor_points);
+    }
+
+    @Test
+    @DisplayName("Structure environmental bonuses defaults")
+    void testStructureEnvironmentalDefaults() {
+        assertEquals(20, config.structures.underwater_rotten_bonus);
+        assertEquals(20, config.structures.underwater_tainted_bonus);
+        assertEquals(15, config.structures.underground_moldy_bonus);
+        assertEquals(20, config.structures.ground_contact_moldy_bonus);
+        assertEquals(15, config.structures.sky_access_rotten_to_moldy);
+        assertEquals(25, config.structures.sky_access_moldy_bonus);
     }
 }

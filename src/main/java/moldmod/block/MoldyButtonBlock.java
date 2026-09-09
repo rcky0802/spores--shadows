@@ -41,7 +41,7 @@ public final class MoldyButtonBlock extends ButtonBlock implements MoldyBlock {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
-        if (!state.get(POWERED) && MoldyBlockHelper.tryBreakRottenBlock(world, pos, state, 0.10f)) {
+        if (!state.get(POWERED) && MoldyBlockHelper.tryBreakRottenBlock(world, pos, state)) {
             return ActionResult.SUCCESS;
         }
         return super.onUse(state, world, pos, player, hit);
@@ -49,13 +49,14 @@ public final class MoldyButtonBlock extends ButtonBlock implements MoldyBlock {
 
     public int getMoldyPressTicks(BlockState state) {
         int stage = state.get(MoldyBlock.STAGE);
-        return switch (stage) {
+        int base = switch (stage) {
             case 0 -> 30;
             case 1 -> 60;
             case 2 -> 150;
             case 3 -> 450;
             default -> 30;
         };
+        return Math.max(1, Math.round(base * MoldyBlockHelper.getRedstoneDurationMultiplier()));
     }
 
     @Override

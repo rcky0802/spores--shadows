@@ -11,8 +11,6 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
-import net.minecraft.state.property.BooleanProperty;
-import net.minecraft.state.property.IntProperty;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemActionResult;
 import net.minecraft.util.hit.BlockHitResult;
@@ -30,9 +28,6 @@ import net.minecraft.world.WorldView;
  * the block (using Honeycomb) to prevent further growth.
  */
 public final class MoldyLogBlock extends PillarBlock implements MoldyBlock {
-    public static final IntProperty STAGE = MoldyBlock.STAGE;
-    public static final BooleanProperty WAXED = MoldyBlock.WAXED;
-    public static final BooleanProperty STRUCTURAL = MoldyBlock.STRUCTURAL;
 
     private final Block strippedBlock;
 

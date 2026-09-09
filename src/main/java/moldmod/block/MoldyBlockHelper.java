@@ -3,6 +3,7 @@ package moldmod.block;
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.SporesShadows;
 import moldmod.config.ModConfig;
+import moldmod.risk.MoldRiskCalculator;
 import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.block.Block;
@@ -28,7 +29,10 @@ import net.minecraft.world.WorldView;
 
 import java.util.List;
 
-public class MoldyBlockHelper {
+public final class MoldyBlockHelper {
+
+    private MoldyBlockHelper() {
+    }
 
     public static BlockState initMoldyDefaultState(BlockState state) {
         return state
@@ -39,6 +43,50 @@ public class MoldyBlockHelper {
 
     public static void appendMoldyProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(MoldyBlock.STAGE, MoldyBlock.WAXED, MoldyBlock.STRUCTURAL);
+    }
+
+    public static float getRottenBreakChance() {
+        try {
+            return AutoConfig.getConfigHolder(ModConfig.class).getConfig().general.rotten_break_chance_on_use;
+        } catch (Exception e) {
+            return 0.10f;
+        }
+    }
+
+    public static float getRedstoneDurationMultiplier() {
+        try {
+            return AutoConfig.getConfigHolder(ModConfig.class).getConfig().redstone.duration_multiplier;
+        } catch (Exception e) {
+            return 1.0f;
+        }
+    }
+
+    public static boolean tryBreakRottenBlock(World world, BlockPos pos, BlockState state) {
+        return tryBreakRottenBlock(world, pos, state, getRottenBreakChance());
+    }
+
+    public static boolean tryBreakRottenDoor(World world, BlockPos pos, BlockState state) {
+        if (!world.isClient && state.contains(MoldyBlock.STAGE) && state.contains(MoldyBlock.WAXED)) {
+            int stage = state.get(MoldyBlock.STAGE);
+            boolean waxed = state.get(MoldyBlock.WAXED);
+            if (stage == 3 && !waxed) {
+                if (world.random.nextFloat() < getRottenBreakChance()) {
+                    if (state.contains(DoorBlock.HALF)) {
+                        BlockPos otherPos = state.get(DoorBlock.HALF) == DoubleBlockHalf.LOWER
+                                ? pos.up()
+                                : pos.down();
+                        if (world.getBlockState(otherPos).isOf(state.getBlock())) {
+                            world.breakBlock(otherPos, false);
+                        }
+                    }
+                    world.breakBlock(pos, false);
+                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK,
+                            SoundCategory.BLOCKS, 1.0f, 0.8f);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static boolean tryBreakRottenBlock(World world, BlockPos pos, BlockState state, float chance) {
@@ -148,7 +196,7 @@ public class MoldyBlockHelper {
         double R = calculateR(world, pos, false, state);
 
         if (config.general.show_debug_in_chat) {
-            System.out.println("Mold tick at " + pos + ", R = " + R);
+            SporesShadows.LOGGER.info("Mold tick at {}, R = {}", pos, R);
         }
 
         if (R > config.general.infection_threshold) {

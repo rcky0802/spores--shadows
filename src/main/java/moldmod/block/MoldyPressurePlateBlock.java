@@ -39,7 +39,7 @@ public final class MoldyPressurePlateBlock extends PressurePlateBlock implements
 
     @Override
     public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
-        if (!state.get(POWERED) && MoldyBlockHelper.tryBreakRottenBlock(world, pos, state, 0.10f)) {
+        if (!state.get(POWERED) && MoldyBlockHelper.tryBreakRottenBlock(world, pos, state)) {
             return; // Stop processing, block is destroyed
         }
         super.onEntityCollision(state, world, pos, entity);
@@ -47,13 +47,14 @@ public final class MoldyPressurePlateBlock extends PressurePlateBlock implements
 
     public int getMoldyPressTicks(BlockState state) {
         int stage = state.get(MoldyBlock.STAGE);
-        return switch (stage) {
+        int base = switch (stage) {
             case 0 -> 20;
             case 1 -> 40;
             case 2 -> 100;
             case 3 -> 300;
             default -> 20;
         };
+        return Math.max(1, Math.round(base * MoldyBlockHelper.getRedstoneDurationMultiplier()));
     }
 
     @Override

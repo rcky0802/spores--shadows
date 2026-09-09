@@ -2,8 +2,8 @@ package moldmod.test.gametest.miasma;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.RoomSaturationManager;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomSaturationManager;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Blocks;
@@ -56,11 +56,11 @@ public class MiasmaMicroclimateGameTests {
         RoomSaturationManager.reset(context.getAbsolutePos(cornerPos));
         RoomSaturationManager.reset(context.getAbsolutePos(moldNestPos));
 
-        MiasmaCalculator.MiasmaResult rNear = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rNear = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(nearWindowPos));
-        MiasmaCalculator.MiasmaResult rCorner = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rCorner = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(cornerPos));
-        MiasmaCalculator.MiasmaResult rNest = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rNest = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(moldNestPos));
 
         // Spatial BFS distances must follow the L-bend path:
@@ -122,9 +122,9 @@ public class MiasmaMicroclimateGameTests {
         RoomSaturationManager.reset(context.getAbsolutePos(lowerGroundPos));
         RoomSaturationManager.reset(context.getAbsolutePos(upperFloorPos));
 
-        MiasmaCalculator.MiasmaResult rLower = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rLower = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(lowerGroundPos));
-        MiasmaCalculator.MiasmaResult rUpper = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rUpper = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(upperFloorPos));
 
         context.assertTrue(rLower.distanceToVentilation < rUpper.distanceToVentilation,
@@ -162,9 +162,9 @@ public class MiasmaMicroclimateGameTests {
         RoomSaturationManager.reset(context.getAbsolutePos(closeToWest));
         RoomSaturationManager.reset(context.getAbsolutePos(midCorridor));
 
-        MiasmaCalculator.MiasmaResult rWest = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rWest = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(closeToWest));
-        MiasmaCalculator.MiasmaResult rMid = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rMid = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(midCorridor));
 
         context.assertTrue(rWest.localAeration > rMid.localAeration,
@@ -215,11 +215,11 @@ public class MiasmaMicroclimateGameTests {
         RoomSaturationManager.reset(context.getAbsolutePos(eastEndPos));
         RoomSaturationManager.reset(context.getAbsolutePos(westMoldPos));
 
-        MiasmaCalculator.MiasmaResult rJunction = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rJunction = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(junctionPos));
-        MiasmaCalculator.MiasmaResult rEast = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rEast = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(eastEndPos));
-        MiasmaCalculator.MiasmaResult rWest = MiasmaCalculator.calculateMiasma(
+        RoomAtmosphereCalculator.MiasmaResult rWest = RoomAtmosphereCalculator.calculateMiasma(
                 context.getWorld(), context.getAbsolutePos(westMoldPos));
 
         context.assertTrue(rJunction.distanceToVentilation < rEast.distanceToVentilation,

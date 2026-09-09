@@ -3,7 +3,9 @@ package moldmod.event;
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.MoldyBlockHelper;
 import moldmod.config.ModConfig;
-import moldmod.event.MiasmaCalculator.MiasmaResult;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomAtmosphereCalculator.MiasmaResult;
+import moldmod.atmosphere.RoomSaturationManager;
 
 import moldmod.item.ModItems;
 import moldmod.registry.ModEnchantments;
@@ -29,9 +31,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Toxic Air Event, Player Toxicity Listener, and Particle Spawner.
- * Delegates miasma calculations and gas dynamics to MiasmaCalculator.
+ * Delegates miasma calculations and gas dynamics to RoomAtmosphereCalculator.
  */
-public class ToxicAirEvent {
+public final class ToxicAirEvent {
+
+    private ToxicAirEvent() {
+    }
 
     public record PlayerAirCache(BlockPos eyePos, long lastTick, MiasmaResult result) {
     }
@@ -73,7 +78,7 @@ public class ToxicAirEvent {
         }
         BlockPos eyePos = BlockPos.ofFloored(player.getEyePos());
 
-        if (!MiasmaCalculator.hasMoldNearby(world, eyePos, radius)) {
+        if (!RoomAtmosphereCalculator.hasMoldNearby(world, eyePos, radius)) {
             PLAYER_AIR_CACHE.remove(player.getUuid());
             return;
         }
@@ -101,7 +106,7 @@ public class ToxicAirEvent {
             }
             PLAYER_AIR_CACHE.put(player.getUuid(), new PlayerAirCache(eyePos, currentTick, result));
         } else {
-            result = MiasmaCalculator.calculateMiasma(world, eyePos);
+            result = RoomAtmosphereCalculator.calculateMiasma(world, eyePos);
             PLAYER_AIR_CACHE.put(player.getUuid(), new PlayerAirCache(eyePos, currentTick, result));
         }
 

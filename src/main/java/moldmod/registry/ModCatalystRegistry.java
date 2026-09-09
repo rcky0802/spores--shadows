@@ -14,6 +14,9 @@ import java.util.Map;
  */
 public final class ModCatalystRegistry {
 
+    private ModCatalystRegistry() {
+    }
+
     public enum CatalystType {
         MUD,
         WATER_CAULDRON,

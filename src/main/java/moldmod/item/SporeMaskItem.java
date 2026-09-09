@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
 
-public class SporeMaskItem extends ArmorItem {
+public final class SporeMaskItem extends ArmorItem {
 
     public SporeMaskItem(RegistryEntry<ArmorMaterial> material, Settings settings) {
         super(material, Type.HELMET, settings);

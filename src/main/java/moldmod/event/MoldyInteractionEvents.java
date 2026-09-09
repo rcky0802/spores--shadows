@@ -20,7 +20,10 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.world.World;
 
-public class MoldyInteractionEvents {
+public final class MoldyInteractionEvents {
+
+    private MoldyInteractionEvents() {
+    }
 
     public static void register() {
         PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, entity) -> {

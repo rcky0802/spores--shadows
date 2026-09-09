@@ -11,11 +11,12 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.registry.Registries;
 
 @Environment(EnvType.CLIENT)
-public class SporesShadowsClient implements ClientModInitializer {
+public final class SporesShadowsClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		for (Block block : Registries.BLOCK) {
@@ -36,7 +37,7 @@ public class SporesShadowsClient implements ClientModInitializer {
 		);
 
 		// Dynamic Model Predicate for Spore Detector
-		net.minecraft.client.item.ModelPredicateProviderRegistry.register(
+		ModelPredicateProviderRegistry.register(
 			ModItems.SPORE_DETECTOR,
 			SporesShadows.id("toxicity"),
 			(stack, world, entity, seed) -> ClientToxicityCache.getToxicity(entity)

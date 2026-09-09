@@ -1,4 +1,4 @@
-package moldmod.event;
+package moldmod.atmosphere;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
@@ -42,7 +42,7 @@ import java.util.Set;
  *    Conductance weights w_i = 1 / (1 + alpha * d_i) prioritize shortest paths to sky/goals.
  * 5. Flow extraction and assignment across faces, blocks, and voxels.
  */
-public class FlowDistributor {
+public final class FlowDistributor {
 
     private static final Direction[] DIRECTIONS = Direction.values();
 

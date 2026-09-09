@@ -10,7 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 
-public class ModFuelRegistry {
+public final class ModFuelRegistry {
+
+    private ModFuelRegistry() {
+    }
 
     public static void register() {
         for (MoldyWoodType woodType : SporesShadowsConstants.WOOD_TYPES) {

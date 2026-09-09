@@ -1,4 +1,4 @@
-package moldmod.event;
+package moldmod.atmosphere;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.MoldyBlock;
@@ -18,14 +18,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Core mathematical and volumetric engine for Miasma, Air Toxicity, Room Saturation, and Block Air Evaluation.
+ * Core mathematical and volumetric engine for Room Atmosphere, Air Toxicity, Miasma,
+ * Humidity, Room Saturation, and Block Air Evaluation.
  * Orchestrates spatial exploration via BFSExplorer and aerodynamic flow via FlowDistributor.
  */
-public final class MiasmaCalculator {
+public final class RoomAtmosphereCalculator {
 
     private static final Direction[] DIRECTIONS = Direction.values();
 
-    private MiasmaCalculator() {
+    private RoomAtmosphereCalculator() {
     }
 
     public enum AirToxicityLevel {
@@ -76,13 +77,20 @@ public final class MiasmaCalculator {
         public final double localExposureIndex;
         public final AirToxicityLevel localLevel;
         public final boolean unconfined;
+        public final Set<BlockPos> roomWaterSources;
+        public final int roomWaterCount;
+        public final double baseHumidity;
+        public final double depthModifier;
+        public final double roomWaterBonus;
+        public final double targetHumidity;
+        public final double currentHumidity;
 
         public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
                 boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
                 int distanceToVentilation, double roomVentilationScore,
                 int susceptibleBlockCount, double totalSusceptibleWeight,
                 Map<BlockPos, Integer> distToGoal, Map<BlockPos, Double> nodeFlows,
-                boolean unconfined) {
+                boolean unconfined, Set<BlockPos> roomWaterSources) {
             this.openAir = openAir;
             this.volume = volume;
             this.airBlocks = airBlocks;
@@ -94,6 +102,8 @@ public final class MiasmaCalculator {
             this.distToGoal = (distToGoal != null) ? distToGoal : Collections.emptyMap();
             this.nodeFlows = (nodeFlows != null) ? nodeFlows : Collections.emptyMap();
             this.unconfined = unconfined;
+            this.roomWaterSources = (roomWaterSources != null) ? roomWaterSources : Collections.emptySet();
+            this.roomWaterCount = this.roomWaterSources.size();
 
             ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
@@ -117,6 +127,34 @@ public final class MiasmaCalculator {
                     : RoomSaturationManager.getDynamicMiasma(world, this.anchorPos, this.targetMiasma);
 
             this.density = (volume > 0) ? (this.netMiasma / (double) volume) : 0.0;
+
+            boolean isRainingAt = false;
+            if (world instanceof net.minecraft.world.World realWorld) {
+                isRainingAt = realWorld.hasRain(this.anchorPos.up());
+            } else if (world != null) {
+                isRainingAt = world.getBiome(this.anchorPos).value().hasPrecipitation();
+            }
+            this.baseHumidity = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
+
+            double depth = 0.0;
+            if (this.anchorPos.getY() < config.environment.cave_start_y) {
+                depth = Math.min(config.environment.max_depth_modifier,
+                        (config.environment.cave_start_y - this.anchorPos.getY()) * config.environment.depth_modifier_per_level);
+            }
+            this.depthModifier = depth;
+
+            this.roomWaterBonus = Math.min(config.environment.max_room_water_humidity_bonus,
+                    this.roomWaterCount * config.environment.water_source_humidity_contribution);
+
+            if (this.openAir) {
+                this.targetHumidity = this.baseHumidity;
+                this.currentHumidity = this.baseHumidity;
+            } else {
+                this.targetHumidity = Math.max(0.0, Math.min(1.0, this.baseHumidity + this.depthModifier + this.roomWaterBonus));
+                this.currentHumidity = (world != null)
+                        ? RoomSaturationManager.getDynamicHumidity(world, this.anchorPos, this.targetHumidity)
+                        : this.targetHumidity;
+            }
 
             // Room-wide baseline level
             if (volume == 0 || this.netMiasma <= 0.0) {
@@ -216,43 +254,19 @@ public final class MiasmaCalculator {
                 Map<BlockPos, Integer> distToGoal, Map<BlockPos, Double> nodeFlows) {
             this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
                     distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight,
-                    distToGoal, nodeFlows, false);
-        }
-
-        public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
-                boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
-                int distanceToVentilation, double roomVentilationScore,
-                int susceptibleBlockCount, double totalSusceptibleWeight,
-                Map<BlockPos, Integer> distToGoal) {
-            this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight, distToGoal, Collections.emptyMap(), false);
-        }
-
-        public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
-                boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
-                int distanceToVentilation, double roomVentilationScore,
-                int susceptibleBlockCount, double totalSusceptibleWeight) {
-            this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight, Collections.emptyMap(), Collections.emptyMap(), false);
-        }
-
-        public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
-                boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
-                int distanceToVentilation, double roomVentilationScore) {
-            this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    distanceToVentilation, roomVentilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false);
+                    distToGoal, nodeFlows, false, Collections.emptySet());
         }
 
         public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
                 boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos) {
             this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
-                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false);
+                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false, Collections.emptySet());
         }
 
         public MiasmaResult(double toxicScore, double ventilationScore, boolean openAir, int volume,
                 Set<BlockPos> airBlocks) {
             this(null, toxicScore, ventilationScore, openAir, volume, airBlocks, BlockPos.ORIGIN,
-                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false);
+                    openAir ? 0 : 999, ventilationScore, 0, 1.0, Collections.emptyMap(), Collections.emptyMap(), false, Collections.emptySet());
         }
     }
 
@@ -264,7 +278,21 @@ public final class MiasmaCalculator {
             int exposedFacesCount,
             int maxVolume,
             boolean anyOpenAir,
-            int distanceToVentilation) {
+            int distanceToVentilation,
+            double currentHumidity,
+            double targetHumidity,
+            int waterSourcesCount,
+            double waterBonus,
+            double baseHumidity,
+            double depthModifier,
+            RoomVentilationType primaryVentilationType,
+            BlockPos anchorPos) {
+
+        public BlockAirEvaluation(double ventilationFlow, double averageAeration, double averageExposureIndex,
+                                  double averageNetMiasma, int exposedFacesCount, int maxVolume, boolean anyOpenAir, int distanceToVentilation) {
+            this(ventilationFlow, averageAeration, averageExposureIndex, averageNetMiasma, exposedFacesCount, maxVolume, anyOpenAir, distanceToVentilation,
+                    0.3, 0.3, 0, 0.0, 0.3, 0.0, RoomVentilationType.HERMETIC_SEALED, BlockPos.ORIGIN);
+        }
 
         public BlockAirEvaluation(double ventilationFlow, double averageAeration, double averageExposureIndex,
                                   double averageNetMiasma, int exposedFacesCount, int maxVolume, boolean anyOpenAir) {
@@ -329,7 +357,7 @@ public final class MiasmaCalculator {
         }
 
         return new MiasmaResult(world, toxicScore, ventilationScore, openAir, airBlocks.size(), airBlocks, eyePos,
-                distanceToVentilation, roomVentilationScore, scan.roomSusceptible().size(), totalSusceptibleWeight, distToGoalMap, nodeFlows, unconfined);
+                distanceToVentilation, roomVentilationScore, scan.roomSusceptible().size(), totalSusceptibleWeight, distToGoalMap, nodeFlows, unconfined, scan.roomWaterSources());
     }
 
     public static BlockAirEvaluation calculateBlockAirEvaluation(WorldAccess world,
@@ -352,7 +380,21 @@ public final class MiasmaCalculator {
 
         int exposedFaces = exposedDirs.size();
         if (exposedFaces == 0) {
-            return new BlockAirEvaluation(0.0, 0.0, 0.0, 0.0, 0, 0, false, 999);
+            boolean isRainingAt = false;
+            if (world instanceof net.minecraft.world.World realWorld) {
+                isRainingAt = realWorld.hasRain(blockPos.up());
+            } else if (world != null) {
+                isRainingAt = world.getBiome(blockPos).value().hasPrecipitation();
+            }
+            double baseHum = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
+            double depth = 0.0;
+            if (blockPos.getY() < config.environment.cave_start_y) {
+                depth = Math.min(config.environment.max_depth_modifier,
+                        (config.environment.cave_start_y - blockPos.getY()) * config.environment.depth_modifier_per_level);
+            }
+            double buriedHum = Math.min(1.0, baseHum + depth);
+            return new BlockAirEvaluation(0.0, 0.0, 0.0, 0.0, 0, 0, false, 999,
+                    buriedHum, buriedHum, 0, 0.0, baseHum, depth, RoomVentilationType.HERMETIC_SEALED, blockPos);
         }
 
         double sumAeration = 0.0;
@@ -362,6 +404,14 @@ public final class MiasmaCalculator {
         int maxVol = 0;
         boolean anyOpen = false;
         int minDistance = 999;
+        double sumHumidity = 0.0;
+        double sumTargetHumidity = 0.0;
+        int sumWaterSources = 0;
+        double sumWaterBonus = 0.0;
+        double sumBaseHum = 0.0;
+        double sumDepth = 0.0;
+        RoomVentilationType primaryVentType = RoomVentilationType.HERMETIC_SEALED;
+        BlockPos primaryAnchor = blockPos;
 
         List<MiasmaResult> computedResults = new ArrayList<>();
 
@@ -375,6 +425,46 @@ public final class MiasmaCalculator {
                 sumVentilationFlow += faceFlow;
                 minDistance = 0;
                 maxVol = Math.max(maxVol, 1);
+                primaryVentType = RoomVentilationType.CLEAN_OPEN_AIR;
+
+                int openAirWaterCount = 0;
+                BlockPos.Mutable mut = new BlockPos.Mutable();
+                int r = config.environment.water_scan_radius;
+                for (int dx = -r; dx <= r; dx++) {
+                    for (int dy = -r; dy <= r; dy++) {
+                        for (int dz = -r; dz <= r; dz++) {
+                            mut.set(blockPos.getX() + dx, blockPos.getY() + dy, blockPos.getZ() + dz);
+                            BlockState ws = world.getBlockState(mut);
+                            if (ws.getFluidState().isIn(net.minecraft.registry.tag.FluidTags.WATER) || ws.isOf(net.minecraft.block.Blocks.WATER_CAULDRON)) {
+                                openAirWaterCount++;
+                            }
+                        }
+                    }
+                }
+                double openAirWaterBonus = Math.min(config.environment.max_room_water_humidity_bonus,
+                        openAirWaterCount * config.environment.water_source_humidity_contribution);
+
+                boolean isRainingAt = false;
+                if (world instanceof net.minecraft.world.World realWorld) {
+                    isRainingAt = realWorld.hasRain(blockPos.up());
+                } else if (world != null) {
+                    isRainingAt = world.getBiome(blockPos).value().hasPrecipitation();
+                }
+                double faceBaseHum = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
+                double faceDepth = 0.0;
+                if (blockPos.getY() < config.environment.cave_start_y) {
+                    faceDepth = Math.min(config.environment.max_depth_modifier,
+                            (config.environment.cave_start_y - blockPos.getY()) * config.environment.depth_modifier_per_level);
+                }
+                double faceTargetHum = Math.min(1.0, faceBaseHum + faceDepth + openAirWaterBonus);
+                double faceDynamicHum = faceTargetHum;
+
+                sumHumidity += faceDynamicHum;
+                sumTargetHumidity += faceTargetHum;
+                sumWaterSources += openAirWaterCount;
+                sumWaterBonus += openAirWaterBonus;
+                sumBaseHum += faceBaseHum;
+                sumDepth += faceDepth;
                 continue;
             }
 
@@ -389,6 +479,11 @@ public final class MiasmaCalculator {
             if (faceResult == null) {
                 faceResult = calculateMiasma(world, neighborPos);
                 computedResults.add(faceResult);
+            }
+
+            if (primaryVentType == RoomVentilationType.HERMETIC_SEALED) {
+                primaryVentType = faceResult.ventilationType;
+                primaryAnchor = faceResult.anchorPos;
             }
 
             double roomFlow = faceResult.roomVentilationScore;
@@ -427,6 +522,13 @@ public final class MiasmaCalculator {
             sumNetMiasma += faceResult.targetMiasma;
             sumVentilationFlow += faceFlow;
 
+            sumHumidity += faceResult.currentHumidity;
+            sumTargetHumidity += faceResult.targetHumidity;
+            sumWaterSources += faceResult.roomWaterCount;
+            sumWaterBonus += faceResult.roomWaterBonus;
+            sumBaseHum += faceResult.baseHumidity;
+            sumDepth += faceResult.depthModifier;
+
             maxVol = Math.max(maxVol, faceResult.volume);
             if (faceResult.openAir) {
                 anyOpen = true;
@@ -436,6 +538,12 @@ public final class MiasmaCalculator {
         double avgAeration = sumAeration / (double) exposedFaces;
         double avgExposure = sumExposure / (double) exposedFaces;
         double avgNetMiasma = sumNetMiasma / (double) exposedFaces;
+        double avgHumidity = sumHumidity / (double) exposedFaces;
+        double avgTargetHumidity = sumTargetHumidity / (double) exposedFaces;
+        int avgWaterSources = (int) Math.round((double) sumWaterSources / (double) exposedFaces);
+        double avgWaterBonus = sumWaterBonus / (double) exposedFaces;
+        double avgBaseHum = sumBaseHum / (double) exposedFaces;
+        double avgDepth = sumDepth / (double) exposedFaces;
 
         double finalFlow = sumVentilationFlow;
         double finalAeration = avgAeration;
@@ -452,7 +560,8 @@ public final class MiasmaCalculator {
             }
         }
 
-        return new BlockAirEvaluation(finalFlow, finalAeration, avgExposure, avgNetMiasma, exposedFaces, maxVol, anyOpen, minDistance);
+        return new BlockAirEvaluation(finalFlow, finalAeration, avgExposure, avgNetMiasma, exposedFaces, maxVol, anyOpen, minDistance,
+                avgHumidity, avgTargetHumidity, avgWaterSources, avgWaterBonus, avgBaseHum, avgDepth, primaryVentType, primaryAnchor);
     }
 
     public static MiasmaResult calculateBlockAirEnvironment(WorldAccess world, BlockPos blockPos,

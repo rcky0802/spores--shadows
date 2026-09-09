@@ -2,8 +2,10 @@ package moldmod.test.gametest.miasma;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;
-import moldmod.event.MiasmaCalculator;
-import moldmod.event.RoomSaturationManager;
+import moldmod.atmosphere.RoomAtmosphereCalculator;
+import moldmod.atmosphere.RoomAtmosphereCalculator.MiasmaResult;
+import moldmod.atmosphere.RoomAtmosphereCalculator.RoomVentilationType;
+import moldmod.atmosphere.RoomSaturationManager;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Blocks;
@@ -24,7 +26,7 @@ public class DynamicMiasmaSaturationTests {
         // Build a 3x3x3 sealed room
         RoomTestBuilder.of(context)
                 .stoneRoom(0, 0, 0, 4, 3, 4)
-                // Add 2 Rotten Oak Logs (Stage 3): Toxic Score = 2 * 2.25 = 4.5
+                // Add 2 Rotten Oak Logs (Stage 3): Toxic Score = 2 * 4.0 = 8.0
                 .addMoldyOakLog(1, 1, 0, 3)
                 .addMoldyOakLog(2, 1, 0, 3)
                 // Place closed wooden door at (2, 1, 4) facing outside (SOUTH)
@@ -33,25 +35,25 @@ public class DynamicMiasmaSaturationTests {
 
         BlockPos centerAir = new BlockPos(2, 1, 2);
 
-        // Initial scan in sealed room: M(0) = 4.5
-        MiasmaCalculator.MiasmaResult initialResult = MiasmaCalculator.calculateMiasma(context.getWorld(),
+        // Initial scan in sealed room: M(0) = 8.0
+        MiasmaResult initialResult = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(centerAir));
-        context.assertTrue(initialResult.targetMiasma == 4.5,
-                "Expected target miasma 4.5 in sealed room, got: " + initialResult.targetMiasma);
-        context.assertTrue(initialResult.netMiasma == 4.5,
-                "Expected initial net miasma 4.5, got: " + initialResult.netMiasma);
+        context.assertTrue(initialResult.targetMiasma == 8.0,
+                "Expected target miasma 8.0 in sealed room, got: " + initialResult.targetMiasma);
+        context.assertTrue(initialResult.netMiasma == 8.0,
+                "Expected initial net miasma 8.0, got: " + initialResult.netMiasma);
 
-        // Open the door towards outside (South) -> Target Miasma becomes 0.0 (Capacity 15.0 > 4.5)
+        // Open the door towards outside (South) -> Target Miasma becomes 0.0 (Capacity 15.0 > 8.0)
         RoomTestBuilder.of(context).addDoor(2, 1, 4, Direction.SOUTH, true);
 
         // Wait 40 ticks and observe gradual reduction
         context.waitAndRun(40, () -> {
-            MiasmaCalculator.MiasmaResult midResult = MiasmaCalculator.calculateMiasma(context.getWorld(),
+            MiasmaResult midResult = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                     context.getAbsolutePos(centerAir));
             context.assertTrue(midResult.targetMiasma == 0.0,
                     "Expected target miasma 0.0 after opening door, got: " + midResult.targetMiasma);
-            context.assertTrue(midResult.netMiasma < 4.5,
-                    "Expected net miasma to decrease below 4.5, got: " + midResult.netMiasma);
+            context.assertTrue(midResult.netMiasma < 8.0,
+                    "Expected net miasma to decrease below 8.0, got: " + midResult.netMiasma);
             context.assertTrue(midResult.netMiasma > 0.0,
                     "Expected net miasma to still be dissipating gradually (> 0), got: " + midResult.netMiasma);
             context.complete();
@@ -73,24 +75,24 @@ public class DynamicMiasmaSaturationTests {
                 .clearOpenAirColumn(2, 5, 1, 3);
 
         BlockPos centerAir = new BlockPos(2, 1, 2);
-        MiasmaCalculator.MiasmaResult openResult = MiasmaCalculator.calculateMiasma(context.getWorld(),
+        MiasmaResult openResult = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(centerAir));
         context.assertTrue(openResult.netMiasma == 0.0,
                 "Expected initial net miasma 0.0 with open door, got: " + openResult.netMiasma);
 
-        // Close the door -> Target = 4.5
+        // Close the door -> Target = 8.0
         RoomTestBuilder.of(context).addDoor(2, 1, 4, Direction.SOUTH, false);
 
         // Wait 40 ticks and observe gradual accumulation
         context.waitAndRun(40, () -> {
-            MiasmaCalculator.MiasmaResult midResult = MiasmaCalculator.calculateMiasma(context.getWorld(),
+            MiasmaResult midResult = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                     context.getAbsolutePos(centerAir));
-            context.assertTrue(Math.abs(midResult.targetMiasma - 4.5) < 0.01,
-                    "Expected target miasma 4.5 after closing door, got: " + midResult.targetMiasma);
+            context.assertTrue(Math.abs(midResult.targetMiasma - 8.0) < 0.01,
+                    "Expected target miasma 8.0 after closing door, got: " + midResult.targetMiasma);
             context.assertTrue(midResult.netMiasma > 0.0, "Expected net miasma to begin accumulating (> 0), got: "
                     + midResult.netMiasma + " (target=" + midResult.targetMiasma + ")");
-            context.assertTrue(midResult.netMiasma < 4.5,
-                    "Expected net miasma to be accumulating gradually (< 4.5), got: " + midResult.netMiasma);
+            context.assertTrue(midResult.netMiasma < 8.0,
+                    "Expected net miasma to be accumulating gradually (< 8.0), got: " + midResult.netMiasma);
 
             context.complete();
         });
@@ -101,7 +103,7 @@ public class DynamicMiasmaSaturationTests {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         config.toxicity.enable_dynamic_spore_saturation = true;
 
-        // Build room with 6 Rotten Logs (Stage 3): Toxic Score = 6 * 2.25 = 13.5
+        // Build room with 6 Rotten Logs (Stage 3): Toxic Score = 6 * 4.0 = 24.0
         RoomTestBuilder.of(context)
                 .stoneRoom(0, 0, 0, 4, 3, 4)
                 .addMoldyOakLog(1, 1, 0, 3)
@@ -110,22 +112,22 @@ public class DynamicMiasmaSaturationTests {
                 .addMoldyOakLog(1, 2, 0, 3)
                 .addMoldyOakLog(2, 2, 0, 3)
                 .addMoldyOakLog(3, 2, 0, 3)
-                // Place a single oak fence gap (Ventilation modifier = 3.0)
+                // Place a single oak fence gap (Ventilation modifier = 6.0)
                 .set(2, 1, 4, Blocks.OAK_FENCE.getDefaultState().with(FenceBlock.NORTH, false).with(FenceBlock.SOUTH, false));
 
         BlockPos centerAir = new BlockPos(2, 1, 2);
-        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
+        MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(centerAir));
 
-        // Equilibrium: Target = 13.5 - 6.0 = 7.5
-        context.assertTrue(result.toxicScore == 13.5, "Expected gross toxic score 13.5, got: " + result.toxicScore);
+        // Equilibrium: Target = 24.0 - 6.0 = 18.0
+        context.assertTrue(result.toxicScore == 24.0, "Expected gross toxic score 24.0, got: " + result.toxicScore);
         context.assertTrue(result.ventilationScore == config.toxicity.ventilation_gap_bonus,
                 "Expected ventilation score " + config.toxicity.ventilation_gap_bonus + ", got: "
                         + result.ventilationScore);
-        context.assertTrue(result.netMiasma == (13.5 - config.toxicity.ventilation_gap_bonus),
-                "Expected net miasma equilibrium " + (13.5 - config.toxicity.ventilation_gap_bonus) + ", got: "
+        context.assertTrue(result.netMiasma == (24.0 - config.toxicity.ventilation_gap_bonus),
+                "Expected net miasma equilibrium " + (24.0 - config.toxicity.ventilation_gap_bonus) + ", got: "
                         + result.netMiasma);
-        context.assertTrue(result.ventilationType == MiasmaCalculator.RoomVentilationType.VENTILATED,
+        context.assertTrue(result.ventilationType == RoomVentilationType.VENTILATED,
                 "Expected VENTILATED environment");
 
         context.complete();
@@ -174,16 +176,16 @@ public class DynamicMiasmaSaturationTests {
                 .clearOpenAirColumn(3, 7, 1, 2);
 
         BlockPos centerAir = new BlockPos(3, 1, 3);
-        MiasmaCalculator.MiasmaResult result = MiasmaCalculator.calculateMiasma(context.getWorld(),
+        MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(centerAir));
 
         // Bottleneck: 1 single opening gives exactly 24.0 throughput
-        // Target = 45.0 - 24.0 = 21.0
-        context.assertTrue(result.toxicScore == 45.0, "Expected gross toxic score 45.0, got: " + result.toxicScore);
+        // Target = 80.0 - 24.0 = 56.0
+        context.assertTrue(result.toxicScore == 80.0, "Expected gross toxic score 80.0, got: " + result.toxicScore);
         context.assertTrue(result.ventilationScore == config.toxicity.open_sky_ventilation_per_block,
                 "Expected bottleneck throughput 24.0 for 1x1 hole, got: " + result.ventilationScore);
-        context.assertTrue(result.targetMiasma == (45.0 - config.toxicity.open_sky_ventilation_per_block),
-                "Expected target equilibrium 21.0 due to bottleneck, got: " + result.targetMiasma);
+        context.assertTrue(result.targetMiasma == (80.0 - config.toxicity.open_sky_ventilation_per_block),
+                "Expected target equilibrium 56.0 due to bottleneck, got: " + result.targetMiasma);
         context.complete();
     }
 
@@ -197,7 +199,7 @@ public class DynamicMiasmaSaturationTests {
         RoomTestBuilder builder = RoomTestBuilder.of(context)
                 .stoneRoom(0, 0, 0, 6, 3, 6);
 
-        // Place 20 Rotten Oak Logs (Stage 3) on North & West walls: Toxic Score = 20 * 2.25 = 45.0 > 24.0
+        // Place 20 Rotten Oak Logs (Stage 3) on North & West walls: Toxic Score = 20 * 4.0 = 80.0 > 24.0
         for (int x = 1; x <= 5; x++) {
             for (int y = 1; y <= 2; y++) {
                 builder.addMoldyOakLog(x, y, 0, 3);
@@ -219,9 +221,9 @@ public class DynamicMiasmaSaturationTests {
         RoomSaturationManager.reset(context.getAbsolutePos(nearOpening));
         RoomSaturationManager.reset(context.getAbsolutePos(remoteCorner));
 
-        MiasmaCalculator.MiasmaResult resultNear = MiasmaCalculator.calculateMiasma(context.getWorld(),
+        MiasmaResult resultNear = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(nearOpening));
-        MiasmaCalculator.MiasmaResult resultRemote = MiasmaCalculator.calculateMiasma(context.getWorld(),
+        MiasmaResult resultRemote = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(remoteCorner));
 
         context.assertTrue(resultNear.localDensity < resultRemote.localDensity,

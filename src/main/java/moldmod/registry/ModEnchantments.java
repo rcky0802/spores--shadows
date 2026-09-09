@@ -6,7 +6,10 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
-public class ModEnchantments {
+public final class ModEnchantments {
+
+    private ModEnchantments() {
+    }
     public static final RegistryKey<Enchantment> SPORE_FILTRATION = RegistryKey.of(
             RegistryKeys.ENCHANTMENT,
             Identifier.of(SporesShadows.MOD_ID, "spore_filtration")

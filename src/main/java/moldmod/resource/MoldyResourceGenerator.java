@@ -12,7 +12,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class MoldyResourceGenerator {
+public final class MoldyResourceGenerator {
+
+    private MoldyResourceGenerator() {
+    }
 
     public static void initialize() {
         // Tells Polymer to include our mod's base resources in the virtual pack
@@ -107,8 +110,7 @@ public class MoldyResourceGenerator {
                                 builder.addData("assets/" + SporesShadows.MOD_ID + "/textures/item/" + itemName + ".png", imageBytes);
                             }
                         } catch (Exception e) {
-                            System.err.println("Error during dynamic generation of the door: " + itemName);
-                            e.printStackTrace();
+                            SporesShadows.LOGGER.error("Error during dynamic generation of the door {}: {}", itemName, e.getMessage(), e);
                         }
                     }
                 }

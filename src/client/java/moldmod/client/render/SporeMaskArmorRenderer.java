@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class SporeMaskArmorRenderer implements ArmorRenderer {
+public final class SporeMaskArmorRenderer implements ArmorRenderer {
     private static final Identifier TEXTURE = SporesShadows.id("textures/models/armor/spore_mask_layer_1.png");
     private SporeMaskModel model;
 

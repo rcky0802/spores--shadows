@@ -17,7 +17,10 @@ import net.minecraft.sound.SoundEvents;
 import java.util.List;
 import java.util.Map;
 
-public class ModItems {
+public final class ModItems {
+
+    private ModItems() {
+    }
 
     public static final RegistryEntry<ArmorMaterial> SPORE_MASK_ARMOR_MATERIAL = Registry.registerReference(
         Registries.ARMOR_MATERIAL,

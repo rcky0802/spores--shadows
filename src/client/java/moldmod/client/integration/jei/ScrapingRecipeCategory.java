@@ -15,7 +15,7 @@ import net.minecraft.item.Items;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
-public class ScrapingRecipeCategory extends AbstractTwoInputRecipeCategory<ScrapingRecipe> {
+public final class ScrapingRecipeCategory extends AbstractTwoInputRecipeCategory<ScrapingRecipe> {
 
     public static final RecipeType<ScrapingRecipe> RECIPE_TYPE = RecipeType.create(SporesShadows.MOD_ID, "scraping", ScrapingRecipe.class);
 

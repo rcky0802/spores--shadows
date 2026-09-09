@@ -1,7 +1,7 @@
 package moldmod.test.unit.risk;
 
 import me.shedaniel.autoconfig.AutoConfig;
-import moldmod.block.MoldRiskCalculator.MoldRiskResult;
+import moldmod.risk.MoldRiskCalculator.MoldRiskResult;
 import moldmod.config.ModConfig;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

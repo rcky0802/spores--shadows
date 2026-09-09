@@ -49,23 +49,8 @@ public final class MoldyDoorBlock extends DoorBlock implements MoldyBlock {
     @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos,
             PlayerEntity player, BlockHitResult hit) {
-        if (!world.isClient) {
-            int stage = state.get(MoldyBlock.STAGE);
-            boolean waxed = state.get(MoldyBlock.WAXED);
-            if (stage == 3 && !waxed) {
-                if (world.random.nextFloat() < 0.10f) {
-                    BlockPos otherPos = state.get(HALF) == DoubleBlockHalf.LOWER
-                            ? pos.up()
-                            : pos.down();
-                    if (world.getBlockState(otherPos).isOf(this)) {
-                        world.breakBlock(otherPos, false);
-                    }
-                    world.breakBlock(pos, false);
-                    world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK,
-                            SoundCategory.BLOCKS, 1.0f, 0.8f);
-                    return ActionResult.SUCCESS;
-                }
-            }
+        if (!world.isClient && MoldyBlockHelper.tryBreakRottenDoor(world, pos, state)) {
+            return ActionResult.SUCCESS;
         }
         return super.onUse(state, world, pos, player, hit);
     }

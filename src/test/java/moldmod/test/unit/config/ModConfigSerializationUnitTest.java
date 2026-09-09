@@ -54,6 +54,10 @@ public class ModConfigSerializationUnitTest {
         assertNotNull(config.flammability);
         assertNotNull(config.blastResistance);
         assertNotNull(config.hardness);
+        assertNotNull(config.redstone);
+        assertNotNull(config.composter);
+        assertNotNull(config.particles);
+        assertNotNull(config.sporeDetector);
         assertNotNull(config.toxicity);
         assertNotNull(config.client);
     }

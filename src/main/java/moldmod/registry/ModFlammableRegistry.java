@@ -8,7 +8,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.Registries;
 
-public class ModFlammableRegistry {
+public final class ModFlammableRegistry {
+
+    private ModFlammableRegistry() {
+    }
 
     public static void register() {
         for (MoldyWoodType woodType : SporesShadowsConstants.WOOD_TYPES) {

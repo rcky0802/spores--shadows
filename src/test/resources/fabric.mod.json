@@ -20,6 +20,7 @@
 			"moldmod.test.gametest.wood.MoldyRedstoneTests",
 			"moldmod.test.gametest.wood.StructureDegradationTest",
 			"moldmod.test.gametest.risk.MoldRiskHumidityGameTests",
+			"moldmod.test.gametest.risk.RoomHumidityGameTests",
 			"moldmod.test.gametest.risk.MoldRiskLightGameTests",
 			"moldmod.test.gametest.risk.MoldRiskTemperatureGameTests",
 			"moldmod.test.gametest.risk.MoldRiskAerationGameTests",
