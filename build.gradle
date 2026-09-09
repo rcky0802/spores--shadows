@@ -7,10 +7,10 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-	maven { url "https://maven.shedaniel.me/" }
-	maven { url "https://maven.terraformersmc.com/" } // For ModMenu if needed
-	maven { url "https://maven.nucleoid.xyz/" } // For Polymer
-	maven { url "https://maven.blamejared.com/" } // For Jade
+	maven { url = "https://maven.shedaniel.me/" }
+	maven { url = "https://maven.terraformersmc.com/" } // For ModMenu if needed
+	maven { url = "https://maven.nucleoid.xyz/" } // For Polymer
+	maven { url = "https://maven.blamejared.com/" } // For Jade
 	mavenCentral()
 	maven {
 		name = "Modrinth"

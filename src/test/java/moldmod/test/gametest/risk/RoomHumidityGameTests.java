@@ -138,14 +138,14 @@ public class RoomHumidityGameTests {
         context.setBlockState(new BlockPos(2, 1, 2), Blocks.OAK_PLANKS.getDefaultState());
         RoomTestBuilder.of(context).clearOpenAirColumn(2, 2, 2, 6);
 
-        // Control dry plank in open air with stone underneath
-        context.setBlockState(new BlockPos(5, 0, 5), Blocks.STONE.getDefaultState());
-        context.setBlockState(new BlockPos(5, 1, 5), Blocks.OAK_PLANKS.getDefaultState());
-        RoomTestBuilder.of(context).clearOpenAirColumn(5, 5, 2, 6);
+        // Control dry plank in open air with stone underneath (dist > 3 from water at 2,0,2)
+        context.setBlockState(new BlockPos(8, 0, 8), Blocks.STONE.getDefaultState());
+        context.setBlockState(new BlockPos(8, 1, 8), Blocks.OAK_PLANKS.getDefaultState());
+        RoomTestBuilder.of(context).clearOpenAirColumn(8, 8, 2, 6);
 
         MoldRiskResult rDock = MoldRiskCalculator.calculate(context.getWorld(), context.getAbsolutePos(new BlockPos(2, 1, 2)),
                 false, Blocks.OAK_PLANKS.getDefaultState());
-        MoldRiskResult rDry = MoldRiskCalculator.calculate(context.getWorld(), context.getAbsolutePos(new BlockPos(5, 1, 5)),
+        MoldRiskResult rDry = MoldRiskCalculator.calculate(context.getWorld(), context.getAbsolutePos(new BlockPos(8, 1, 8)),
                 false, Blocks.OAK_PLANKS.getDefaultState());
 
         context.assertTrue(rDock.localHumidityBonus() > rDry.localHumidityBonus(),
