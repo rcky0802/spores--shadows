@@ -1,6 +1,7 @@
 {
   "values": [
     "spores--shadows:spore_detector",
+    "spores--shadows:moisture_detector",
     "spores--shadows:moldy_stripped_oak_log",
     "spores--shadows:waxed_stripped_oak_log",
     "spores--shadows:moldy_oak_log",

@@ -49,6 +49,9 @@ public class JEIIngredientInfoGameTests {
         ItemStack detector = new ItemStack(ModItems.SPORE_DETECTOR);
         context.assertTrue(!detector.isEmpty(), "Spore detector stack must not be empty");
 
+        ItemStack moistureDetector = new ItemStack(ModItems.MOISTURE_DETECTOR);
+        context.assertTrue(!moistureDetector.isEmpty(), "Moisture detector stack must not be empty");
+
         context.complete();
     }
 

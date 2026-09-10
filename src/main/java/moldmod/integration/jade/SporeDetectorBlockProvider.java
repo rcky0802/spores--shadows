@@ -22,21 +22,16 @@ public enum SporeDetectorBlockProvider implements IBlockComponentProvider {
         }
 
         int level = state.get(SporeDetectorBlock.TOXICITY_LEVEL);
-        int power = state.get(SporeDetectorBlock.POWER);
 
         Text levelText = switch (level) {
-            case 0 -> Text.literal("Clean Air").formatted(Formatting.GREEN);
-            case 1 -> Text.literal("Warning (Low)").formatted(Formatting.YELLOW);
-            case 2 -> Text.literal("Moderate (Hunger)").formatted(Formatting.GOLD);
-            case 3 -> Text.literal("Lethal (Poison)").formatted(Formatting.RED);
-            default -> Text.literal("Unknown").formatted(Formatting.GRAY);
+            case 0 -> Text.translatable("tooltip.spores--shadows.jade.spore_detector.clean").formatted(Formatting.GREEN);
+            case 1 -> Text.translatable("tooltip.spores--shadows.jade.spore_detector.warning").formatted(Formatting.YELLOW);
+            case 2 -> Text.translatable("tooltip.spores--shadows.jade.spore_detector.moderate").formatted(Formatting.GOLD);
+            case 3 -> Text.translatable("tooltip.spores--shadows.jade.spore_detector.lethal").formatted(Formatting.RED);
+            default -> Text.translatable("tooltip.spores--shadows.jade.unknown").formatted(Formatting.GRAY);
         };
 
-        tooltip.add(Text.literal("Air Quality: ").formatted(Formatting.GRAY).append(levelText));
-        if (power > 0) {
-            tooltip.add(Text.literal("Redstone Signal: ").formatted(Formatting.GRAY)
-                    .append(Text.literal(String.valueOf(power)).formatted(Formatting.RED)));
-        }
+        tooltip.add(Text.translatable("tooltip.spores--shadows.jade.spore_detector.air_quality").formatted(Formatting.GRAY).append(levelText));
     }
 
     @Override

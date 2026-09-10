@@ -132,7 +132,13 @@ public final class RoomAtmosphereCalculator {
             if (world instanceof net.minecraft.world.World realWorld) {
                 isRainingAt = realWorld.hasRain(this.anchorPos.up());
             } else if (world != null) {
-                isRainingAt = world.getBiome(this.anchorPos).value().hasPrecipitation();
+                try {
+                    isRainingAt = world.getBiome(this.anchorPos).value().hasPrecipitation();
+                } catch (Exception ignored) {
+                    try {
+                        isRainingAt = world.getBiome(defaultPos).value().hasPrecipitation();
+                    } catch (Exception ignored2) {}
+                }
             }
             this.baseHumidity = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
 
@@ -384,7 +390,9 @@ public final class RoomAtmosphereCalculator {
             if (world instanceof net.minecraft.world.World realWorld) {
                 isRainingAt = realWorld.hasRain(blockPos.up());
             } else if (world != null) {
-                isRainingAt = world.getBiome(blockPos).value().hasPrecipitation();
+                try {
+                    isRainingAt = world.getBiome(blockPos).value().hasPrecipitation();
+                } catch (Exception ignored) {}
             }
             double baseHum = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
             double depth = 0.0;
@@ -448,7 +456,9 @@ public final class RoomAtmosphereCalculator {
                 if (world instanceof net.minecraft.world.World realWorld) {
                     isRainingAt = realWorld.hasRain(blockPos.up());
                 } else if (world != null) {
-                    isRainingAt = world.getBiome(blockPos).value().hasPrecipitation();
+                    try {
+                        isRainingAt = world.getBiome(blockPos).value().hasPrecipitation();
+                    } catch (Exception ignored) {}
                 }
                 double faceBaseHum = isRainingAt ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
                 double faceDepth = 0.0;

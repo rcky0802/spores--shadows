@@ -5,11 +5,13 @@ import moldmod.block.ModBlocks;
 import moldmod.block.MoldyBlock;
 import moldmod.block.MoldyBlockHelper;
 import moldmod.config.ModConfig;
+import moldmod.risk.MoldRiskCalculator;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.StructureWorldAccess;
@@ -161,7 +163,7 @@ public final class MoldyStructureContext {
         }
 
         // --- INFLUENCE BY PLAYER RISK FORMULA (R) ---
-        double R = MoldyBlockHelper.calculateR(world, basePos, false, state);
+        double R = calculateStructureR(world, basePos, state, isUnderwater, hasSkyAccess, config);
         if (R > 0.8) {
             rotten = Math.min(100, rotten + (int) (R * 15));
             tainted = Math.min(100 - rotten, tainted + 15);
@@ -206,5 +208,58 @@ public final class MoldyStructureContext {
             return newState;
         }
         return original;
+    }
+
+    private static double calculateStructureR(StructureWorldAccess world, BlockPos pos, BlockState state,
+            boolean isUnderwater, boolean hasSkyAccess, ModConfig config) {
+        float surfaceTemp = 0.8f;
+        boolean hasRain = false;
+        try {
+            var biomeEntry = world.getBiome(pos);
+            surfaceTemp = biomeEntry.value().getTemperature();
+            hasRain = biomeEntry.value().hasPrecipitation();
+            if (biomeEntry.isIn(BiomeTags.IS_NETHER) || biomeEntry.isIn(BiomeTags.IS_END)) {
+                return 0.0;
+            }
+        } catch (Exception ignored) {}
+
+        float temp = surfaceTemp;
+
+        // Depth-based temperature normalization
+        if (pos.getY() < config.environment.cave_start_y) {
+            float caveTemp = config.environment.cave_temperature;
+            if (pos.getY() <= config.environment.cave_full_y) {
+                temp = caveTemp;
+            } else {
+                float range = (float) (config.environment.cave_start_y - config.environment.cave_full_y);
+                float depthFactor = (config.environment.cave_start_y - pos.getY()) / range;
+                depthFactor = Math.max(0.0f, Math.min(1.0f, depthFactor));
+                temp = surfaceTemp + (caveTemp - surfaceTemp) * depthFactor;
+            }
+        }
+
+        // Temperature survival check
+        double Tmult = (temp >= config.environment.min_temperature_survival
+                && temp <= config.environment.max_temperature_survival) ? 1.0 : 0.0;
+        if (Tmult == 0.0) {
+            return 0.0;
+        }
+
+        // Humidity
+        double baseHum = hasRain ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
+        double depth = 0.0;
+        if (pos.getY() < config.environment.cave_start_y) {
+            depth = Math.min(config.environment.max_depth_modifier,
+                    (config.environment.cave_start_y - pos.getY()) * config.environment.depth_modifier_per_level);
+        }
+        double humidity = isUnderwater ? 1.0 : Math.min(1.0, baseHum + depth);
+
+        // Light approximation (underground/dark vs open sky)
+        double Luv = hasSkyAccess ? 0.3 : 1.0;
+
+        // Material susceptibility
+        double Smat = MoldRiskCalculator.getMaterialSusceptibility(state.getBlock(), config);
+
+        return humidity * Luv * Smat * Tmult;
     }
 }

@@ -50,6 +50,7 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         }
 
         addDrop(ModBlocks.SPORE_DETECTOR);
+        addDrop(ModBlocks.MOISTURE_DETECTOR);
     }
     
     private void generateMoldyLoot(Block baseBlock, Item stage1, Item stage2, Item stage3, Block vanillaBlock) {

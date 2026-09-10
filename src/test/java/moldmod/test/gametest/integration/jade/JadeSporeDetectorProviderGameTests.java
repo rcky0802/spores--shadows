@@ -28,8 +28,8 @@ public class JadeSporeDetectorProviderGameTests {
 
         context.assertTrue(defaultState.contains(SporeDetectorBlock.TOXICITY_LEVEL),
                 "Spore detector state must contain TOXICITY_LEVEL property");
-        context.assertTrue(defaultState.contains(SporeDetectorBlock.POWER),
-                "Spore detector state must contain POWER property");
+        context.assertFalse(defaultState.emitsRedstonePower(),
+                "Spore detector state must not emit redstone power");
 
         // Test toxicity levels 0..3
         for (int level = 0; level <= 3; level++) {
@@ -38,13 +38,23 @@ public class JadeSporeDetectorProviderGameTests {
                     "Toxicity level state must equal " + level);
         }
 
-        // Test power levels 0..15
-        for (int power = 0; power <= 15; power++) {
-            BlockState powerState = defaultState.with(SporeDetectorBlock.POWER, power);
-            context.assertTrue(powerState.get(SporeDetectorBlock.POWER) == power,
-                    "Power level state must equal " + power);
-        }
+        context.complete();
+    }
 
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testSporeDetectorJadeTooltipKeys(TestContext context) {
+        java.util.List<String> keys = java.util.List.of(
+                "config.jade.plugin_spores--shadows.spore_detector_info",
+                "tooltip.spores--shadows.jade.spore_detector.air_quality",
+                "tooltip.spores--shadows.jade.spore_detector.clean",
+                "tooltip.spores--shadows.jade.spore_detector.warning",
+                "tooltip.spores--shadows.jade.spore_detector.moderate",
+                "tooltip.spores--shadows.jade.spore_detector.lethal"
+        );
+        for (String key : keys) {
+            net.minecraft.text.Text text = net.minecraft.text.Text.translatable(key);
+            context.assertTrue(!text.getString().isEmpty(), "Jade tooltip key " + key + " must not be empty");
+        }
         context.complete();
     }
 }

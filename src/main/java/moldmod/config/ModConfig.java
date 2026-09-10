@@ -65,6 +65,10 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public SporeDetector sporeDetector = new SporeDetector();
 
+    @ConfigEntry.Category("moisture_detector")
+    @ConfigEntry.Gui.CollapsibleObject
+    public MoistureDetector moistureDetector = new MoistureDetector();
+
     @ConfigEntry.Category("toxicity")
     @ConfigEntry.Gui.CollapsibleObject
     public Toxicity toxicity = new Toxicity();
@@ -274,6 +278,15 @@ public class ModConfig implements ConfigData {
         public int spore_mask_armor_points = 1;
     }
 
+    public static class MoistureDetector {
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int block_initial_delay_ticks = 10;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int block_periodic_delay_ticks = 20;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int item_use_cooldown_ticks = 10;
+    }
+
     public static class Toxicity {
         public boolean enable_toxic_air = true;
         public int check_interval_ticks = 40;
@@ -404,6 +417,10 @@ public class ModConfig implements ConfigData {
         sporeDetector.geiger_density_threshold = MathHelper.clamp(sporeDetector.geiger_density_threshold, 0.0, 1.0);
         sporeDetector.spore_mask_durability = MathHelper.clamp(sporeDetector.spore_mask_durability, 1, 10000);
         sporeDetector.spore_mask_armor_points = MathHelper.clamp(sporeDetector.spore_mask_armor_points, 0, 20);
+
+        moistureDetector.block_initial_delay_ticks = Math.max(1, moistureDetector.block_initial_delay_ticks);
+        moistureDetector.block_periodic_delay_ticks = Math.max(1, moistureDetector.block_periodic_delay_ticks);
+        moistureDetector.item_use_cooldown_ticks = Math.max(1, moistureDetector.item_use_cooldown_ticks);
 
         toxicity.check_interval_ticks = MathHelper.clamp(toxicity.check_interval_ticks, 10, 200);
         toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 16);

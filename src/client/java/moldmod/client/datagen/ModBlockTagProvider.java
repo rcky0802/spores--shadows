@@ -31,6 +31,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
         FabricTagBuilder axeBuilder = getOrCreateTagBuilder(BlockTags.AXE_MINEABLE);
         FabricTagBuilder pickaxeBuilder = getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE);
         pickaxeBuilder.add(ModBlocks.SPORE_DETECTOR);
+        pickaxeBuilder.add(ModBlocks.MOISTURE_DETECTOR);
 
         FabricTagBuilder logsThatBurn = getOrCreateTagBuilder(BlockTags.LOGS_THAT_BURN);
         FabricTagBuilder logs = getOrCreateTagBuilder(BlockTags.LOGS);

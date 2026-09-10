@@ -1,5 +1,6 @@
 {
   "values": [
-    "spores--shadows:spore_detector"
+    "spores--shadows:spore_detector",
+    "spores--shadows:moisture_detector"
   ]
 }

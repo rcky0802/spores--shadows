@@ -22,6 +22,7 @@ public class JadePlugin implements IWailaPlugin {
     public void registerClient(IWailaClientRegistration registration) {
         registration.registerBlockComponent(MoldyBlockProvider.INSTANCE, Block.class);
         registration.registerBlockComponent(SporeDetectorBlockProvider.INSTANCE, Block.class);
+        registration.registerBlockComponent(MoistureDetectorBlockProvider.INSTANCE, Block.class);
         registration.registerEntityComponent(SporeProtectionEntityProvider.INSTANCE, LivingEntity.class);
         
         registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {

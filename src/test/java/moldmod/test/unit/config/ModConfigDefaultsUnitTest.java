@@ -254,6 +254,14 @@ public class ModConfigDefaultsUnitTest {
     }
 
     @Test
+    @DisplayName("Moisture detector category defaults")
+    void testMoistureDetectorDefaults() {
+        assertEquals(10, config.moistureDetector.block_initial_delay_ticks);
+        assertEquals(20, config.moistureDetector.block_periodic_delay_ticks);
+        assertEquals(10, config.moistureDetector.item_use_cooldown_ticks);
+    }
+
+    @Test
     @DisplayName("Structure environmental bonuses defaults")
     void testStructureEnvironmentalDefaults() {
         assertEquals(20, config.structures.underwater_rotten_bonus);

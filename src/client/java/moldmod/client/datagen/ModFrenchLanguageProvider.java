@@ -302,6 +302,16 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.sporeDetector.spore_mask_armor_points", "Points d'Armure du Masque");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.sporeDetector.spore_mask_armor_points.@Tooltip", "Points d'armure conférés par le masque (nécessite un redémarrage).");
 
+        // Moisture Detector
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.moisture_detector", "Détecteur d'Humidité");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.moistureDetector", "Détecteur d'Humidité");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.moistureDetector.block_initial_delay_ticks", "Délai Initial du Bloc (ticks)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.moistureDetector.block_initial_delay_ticks.@Tooltip", "Ticks avant la première analyse après le placement du bloc.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.moistureDetector.block_periodic_delay_ticks", "Délai Périodique du Bloc (ticks)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.moistureDetector.block_periodic_delay_ticks.@Tooltip", "Ticks entre les analyses périodiques.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.moistureDetector.item_use_cooldown_ticks", "Délai de Récupération Objet (ticks)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.moistureDetector.item_use_cooldown_ticks.@Tooltip", "Délai de récupération après une analyse au clic droit.");
+
         // Structures environmental bonuses
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.structures.underwater_rotten_bonus", "Bonus Pourri Sous l'Eau/Profondeur (%)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.structures.underwater_rotten_bonus.@Tooltip", "Bonus de pourcentage pourri sous l'eau ou Y <= 60.");
@@ -343,12 +353,63 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_mask", "Protection contre les Spores : Active (Masque Anti-Spores)");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_protection_enchant", "Filtration de Spores : Niveau %d");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_protection_info", "Spores & Shadows : Info Protection Spores");
-        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows : Info Détecteur de Miasme");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows : Info Détecteur de Spores");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Masque Anti-Spores");
-        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Détecteur de Miasme");
-        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Détecteur de Miasme");
-        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "Le Détecteur de Miasme mesure la toxicité de l'air et la ventilation de la pièce. Clic Droit dans l'air pour analyser. Peut être placé sur les murs ou sols pour émettre un signal de Redstone proportionnel à la densité de spores.");
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Détecteur de Spores");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Détecteur de Spores");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "Le Détecteur de Miasme mesure la toxicité de l'air et la ventilation de la pièce. Clic Droit dans l'air pour analyser. Peut être placé sur les murs ou sols.");
+
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moisture_detector_info", "Spores & Shadows : Info Détecteur d'Humidité");
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".moisture_detector", "Détecteur d'Humidité");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".moisture_detector", "Détecteur d'Humidité");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.moisture_detector", "Le Détecteur d'Humidité mesure l'humidité effective et la saturation de la pièce. Clic Droit dans l'air pour analyser. Peut être placé sur les murs, sols ou plafonds.");
+
+        // Jade Tooltips for Detectors
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_detector.air_quality", "Qualité de l'Air : ");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_detector.clean", "Air Pur");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_detector.warning", "Avertissement (Faible)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_detector.moderate", "Modéré (Faim)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_detector.lethal", "Mortel (Poison)");
+
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.moisture_detector.effective_moisture", "Niveau d'Humidité : ");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.moisture_detector.dry", "Sec");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.moisture_detector.moderate", "Modéré");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.moisture_detector.humid", "Humide");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.moisture_detector.critical", "Critique");
+
+        // Shared Detector Messages
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".detector.blocks_dist", "%d blocs");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".detector.none", "Aucune");
+
+        // Spore Detector Chat Messages
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.header", "§6[Détecteur de Spores] ");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.clean", "§aAIR PUR §7(Sûr)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.warning", "§eAVERTISSEMENT §7(Faibles spores dans l'air)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.moderate", "§6RISQUE MODÉRÉ §7(Faim imminente)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.lethal", "§4DANGER MORTEL §7(Poison et nausée imminents !)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.metric", "§7- Densité de spores : §d%s/b");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.open_air", "§7- Environnement : §aPlein Air §7| Dist. à la ventilation : §b0 blocs");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.room", "§7- Volume de la pièce : §f%d blocs §7| Dist. à la ventilation : §b%s");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.aeration", "§7- Aération locale : §a%s flux §7(§b%s§7) | Miasme de la pièce : §6%s");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.trend_stable", "§7- Tendance : §a= STABLE");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.trend_purifying", "§7- Tendance : §b▼ PURIFICATION / DISSIPATION §7(Cible : §f%s§7)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".spore_detector.trend_accumulating", "§7- Tendance : §c▲ ACCUMULATION / SATURATION §7(Cible : §f%s§7)");
+
+        // Moisture Detector Chat Messages
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.header", "§6[Détecteur d'Humidité] ");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.dry", "§aSEC §7(Sans danger pour le bois)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.moderate", "§eMODÉRÉ §7(Attention : seuil de moisissure proche)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.humid", "§6HUMIDE §7(Alerte : risque élevé de moisissure !)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.critical", "§4CRITIQUE §7(Danger : décomposition rapide et saturation !)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.metric", "§7- Humidité Effective : §b%s");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.open_air", "§7- Environnement : §aPlein Air §7| Dist. à la ventilation : §b0 blocs");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.room", "§7- Volume de la pièce : §f%d blocs §7| Dist. à la ventilation : §b%s");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.aeration", "§7- Aération locale : §a%s flux §7(§b%s§7) | Humidité Brute : §f%s");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.trend_stable", "§7- Tendance : §a= STABLE");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.trend_drying", "§7- Tendance : §b▼ SÉCHAGE / VENTILATION §7(Cible : §f%s§7)");
+        translationBuilder.add("message." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.trend_humidifying", "§7- Tendance : §c▲ HUMIDIFICATION / SATURATION §7(Cible : §f%s§7)");
+
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.title", "Air Pur");
         translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".spore_mask_protection.description", "Filtrez les spores toxiques en respirant à travers un Masque Anti-Spores dans une pièce contaminée.");
 

@@ -98,6 +98,19 @@ public class JEISporeGearAndDeviceGameTests {
         }
 
         @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+        public void testMoistureDetectorCraftingRecipe(TestContext context) {
+                Identifier recipeId = Identifier.of(SporesShadows.MOD_ID, "moisture_detector");
+                Optional<RecipeEntry<?>> recipeOpt = context.getWorld().getRecipeManager().get(recipeId);
+
+                context.assertTrue(recipeOpt.isPresent(), "Recipe for moisture_detector must be present in RecipeManager");
+                ItemStack result = recipeOpt.get().value().getResult(context.getWorld().getRegistryManager());
+                context.assertTrue(result.isOf(ModBlocks.MOISTURE_DETECTOR.asItem()),
+                                "Moisture detector recipe result must be MOISTURE_DETECTOR block item");
+
+                context.complete();
+        }
+
+        @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
         public void testSporeMaskAndDetectorJEIInfoDescriptions(TestContext context) {
                 String maskInfoKey = "jei." + SporesShadows.MOD_ID + ".info.spore_mask";
                 Text maskInfoText = Text.translatable(maskInfoKey);
@@ -108,6 +121,11 @@ public class JEISporeGearAndDeviceGameTests {
                 Text detectorInfoText = Text.translatable(detectorInfoKey);
                 context.assertTrue(!detectorInfoText.getString().isEmpty(),
                                 "Spore detector JEI info description must not be empty");
+
+                String moistureInfoKey = "jei." + SporesShadows.MOD_ID + ".info.moisture_detector";
+                Text moistureInfoText = Text.translatable(moistureInfoKey);
+                context.assertTrue(!moistureInfoText.getString().isEmpty(),
+                                "Moisture detector JEI info description must not be empty");
 
                 context.complete();
         }

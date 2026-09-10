@@ -43,24 +43,29 @@ public final class ModItems {
 
     public static final Item SPORE_MASK = new SporeMaskItem(SPORE_MASK_ARMOR_MATERIAL, new Item.Settings().maxDamage(165));
     public static final Item SPORE_DETECTOR = new SporeDetectorItem(ModBlocks.SPORE_DETECTOR, new Item.Settings().maxCount(16));
+    public static final Item MOISTURE_DETECTOR = new MoistureDetectorItem(ModBlocks.MOISTURE_DETECTOR, new Item.Settings().maxCount(16));
 
     public static void registerModItems() {
         SporesShadows.LOGGER.info("Registering ModItems for " + SporesShadows.MOD_ID);
 
         Registry.register(Registries.ITEM, SporesShadows.id("spore_mask"), SPORE_MASK);
         Registry.register(Registries.ITEM, SporesShadows.id("spore_detector"), SPORE_DETECTOR);
+        Registry.register(Registries.ITEM, SporesShadows.id("moisture_detector"), MOISTURE_DETECTOR);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(SPORE_MASK);
             entries.add(SPORE_DETECTOR);
+            entries.add(MOISTURE_DETECTOR);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(SPORE_DETECTOR);
+            entries.add(MOISTURE_DETECTOR);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
             entries.add(SPORE_DETECTOR);
+            entries.add(MOISTURE_DETECTOR);
         });
     }
 }

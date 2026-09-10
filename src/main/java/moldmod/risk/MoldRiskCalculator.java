@@ -128,20 +128,89 @@ public final class MoldRiskCalculator {
 
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
-        float surfaceTemp = world.getBiome(pos).value().getTemperature();
-        float temp = surfaceTemp;
+        // If not a full World (e.g. ChunkRegion during worldgen), use a safe local evaluation without BFS
+        if (!(world instanceof World)) {
+            float surfaceTemp = 0.8f;
+            boolean hasRain = false;
+            try {
+                var biomeEntry = world.getBiome(pos);
+                surfaceTemp = biomeEntry.value().getTemperature();
+                hasRain = biomeEntry.value().hasPrecipitation();
+                if (biomeEntry.isIn(BiomeTags.IS_NETHER) || biomeEntry.isIn(BiomeTags.IS_END) ||
+                        biomeEntry.matchesId(Identifier.of("minecraft", "the_end"))) {
+                    return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0,
+                            100.0f, 100.0f);
+                }
+            } catch (Exception ignored) {}
 
-        if (world.getBiome(pos).isIn(BiomeTags.IS_NETHER) ||
-                (world instanceof World w && w.getRegistryKey() == World.NETHER)) {
+            float temp = surfaceTemp;
+            if (pos.getY() < config.environment.cave_start_y) {
+                float caveTemp = config.environment.cave_temperature;
+                if (pos.getY() <= config.environment.cave_full_y) {
+                    temp = caveTemp;
+                } else {
+                    float range = (float) (config.environment.cave_start_y - config.environment.cave_full_y);
+                    float depthFactor = (config.environment.cave_start_y - pos.getY()) / range;
+                    depthFactor = Math.max(0.0f, Math.min(1.0f, depthFactor));
+                    temp = surfaceTemp + (caveTemp - surfaceTemp) * depthFactor;
+                }
+            }
+
+            double Tmult = (temp >= config.environment.min_temperature_survival
+                    && temp <= config.environment.max_temperature_survival) ? 1.0 : 0.0;
+            if (Tmult == 0.0) {
+                return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0,
+                        temp, surfaceTemp);
+            }
+
+            boolean isWaterlogged = (stateToCheck != null) &&
+                    ((stateToCheck.contains(net.minecraft.state.property.Properties.WATERLOGGED) && stateToCheck.get(net.minecraft.state.property.Properties.WATERLOGGED))
+                    || stateToCheck.getFluidState().isIn(net.minecraft.registry.tag.FluidTags.WATER));
+
+            double baseHum = hasRain ? config.environment.rain_humidity_base : config.environment.dry_humidity_base;
+            double depthModifier = 0.0;
+            if (pos.getY() < config.environment.cave_start_y) {
+                depthModifier = Math.min(config.environment.max_depth_modifier,
+                        (config.environment.cave_start_y - pos.getY()) * config.environment.depth_modifier_per_level);
+            }
+
+            double Heff = isWaterlogged ? 1.0 : Math.min(1.0, baseHum + depthModifier);
+            double Hraw = Heff;
+            boolean skyVisible = false;
+            try {
+                skyVisible = world.isSkyVisible(pos.up());
+            } catch (Exception ignored) {}
+            double Luv = skyVisible ? 0.3 : 1.0;
+            double Smat = getMaterialSusceptibility(stateToCheck != null ? stateToCheck.getBlock() : null, config);
+            double R = ((Heff * Luv * Smat)) * Tmult;
+
+            return new MoldRiskResult(Tmult, Heff, Hraw, baseHum, depthModifier, 0.0, 0.0, 0.0, 0.0,
+                    Luv, 0.0, Smat, 0.0, 0.0, 0.0, 1, 1, R, temp, surfaceTemp, 999,
+                    Heff, Heff, 0, isWaterlogged,
+                    skyVisible ? RoomAtmosphereCalculator.RoomVentilationType.CLEAN_OPEN_AIR : RoomAtmosphereCalculator.RoomVentilationType.HERMETIC_SEALED,
+                    pos);
+        }
+
+        float surfaceTemp = 0.8f;
+        boolean isNether = (world instanceof World w && w.getRegistryKey() == World.NETHER);
+        boolean isEnd = (world instanceof World w && w.getRegistryKey() == World.END);
+
+        try {
+            var biomeEntry = world.getBiome(pos);
+            surfaceTemp = biomeEntry.value().getTemperature();
+            if (biomeEntry.isIn(BiomeTags.IS_NETHER)) isNether = true;
+            if (biomeEntry.isIn(BiomeTags.IS_END) || biomeEntry.matchesId(Identifier.of("minecraft", "the_end"))) isEnd = true;
+        } catch (Exception ignored) {}
+
+        if (isNether) {
             return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0,
                     100.0f, 100.0f);
         }
-        if (world.getBiome(pos).isIn(BiomeTags.IS_END) ||
-                (world instanceof World w && w.getRegistryKey() == World.END) ||
-                world.getBiome(pos).matchesId(Identifier.of("minecraft", "the_end"))) {
+        if (isEnd) {
             return new MoldRiskResult(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0.0,
                     -100.0f, -100.0f);
         }
+        float temp = surfaceTemp;
 
         // 1. Depth-based & Altitude-based temperature normalization
         if (pos.getY() < config.environment.cave_start_y) {

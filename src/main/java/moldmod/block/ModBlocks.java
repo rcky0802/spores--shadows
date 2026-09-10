@@ -52,6 +52,15 @@ public final class ModBlocks {
                     .sounds(BlockSoundGroup.COPPER))
     );
 
+    public static final Block MOISTURE_DETECTOR = Registry.register(
+            Registries.BLOCK,
+            SporesShadows.id("moisture_detector"),
+            new MoistureDetectorBlock(AbstractBlock.Settings.copy(Blocks.COPPER_BLOCK)
+                    .nonOpaque()
+                    .strength(1.5f)
+                    .sounds(BlockSoundGroup.COPPER))
+    );
+
     public static void registerModBlocks() {
         SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 

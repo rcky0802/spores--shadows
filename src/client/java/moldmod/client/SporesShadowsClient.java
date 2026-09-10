@@ -42,5 +42,12 @@ public final class SporesShadowsClient implements ClientModInitializer {
 			SporesShadows.id("toxicity"),
 			(stack, world, entity, seed) -> ClientToxicityCache.getToxicity(entity)
 		);
+
+		// Dynamic Model Predicate for Moisture Detector
+		ModelPredicateProviderRegistry.register(
+			ModItems.MOISTURE_DETECTOR,
+			SporesShadows.id("moisture"),
+			(stack, world, entity, seed) -> ClientMoistureCache.getMoisture(entity)
+		);
 	}
 }
