@@ -31,6 +31,10 @@ public class SporesShadows implements ModInitializer {
 		
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
+		moldmod.block.entity.ModBlockEntities.registerModBlockEntities();
+		moldmod.screen.ModScreenHandlers.registerModScreenHandlers();
+		moldmod.network.DehumidifierNetworking.registerPayloads();
+		moldmod.network.DehumidifierNetworking.registerServerReceivers();
 		MoldyInteractionEvents.register();
 		ToxicAirEvent.register();
 		ModCommands.registerCommands();

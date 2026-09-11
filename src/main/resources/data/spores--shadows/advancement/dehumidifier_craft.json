@@ -1,0 +1,30 @@
+{
+  "parent": "spores--shadows:moisture_detector",
+  "display": {
+    "icon": {
+      "id": "spores--shadows:dehumidifier"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.dehumidifier_craft.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.dehumidifier_craft.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_dehumidifier": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:dehumidifier"
+          }
+        ]
+      }
+    }
+  }
+}

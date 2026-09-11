@@ -1,0 +1,23 @@
+{
+  "parent": "spores--shadows:dehumidifier_craft",
+  "display": {
+    "icon": {
+      "id": "minecraft:water_bucket"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.dry_oasis.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.dry_oasis.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "dry_underground": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -271,4 +271,15 @@ public class ModConfigDefaultsUnitTest {
         assertEquals(15, config.structures.sky_access_rotten_to_moldy);
         assertEquals(25, config.structures.sky_access_moldy_bonus);
     }
+
+    @Test
+    @DisplayName("Dehumidifier category defaults")
+    void testDehumidifierDefaults() {
+        assertEquals(2000, config.dehumidifier.capacity_mb);
+        assertEquals(24, config.dehumidifier.ticks_per_mb);
+        assertEquals(1.0f, config.dehumidifier.fuel_multiplier, 1e-4);
+        assertEquals(1.0, config.dehumidifier.drying_power, 1e-4);
+        assertEquals(32000, config.dehumidifier.energy_capacity);
+        assertEquals(10, config.dehumidifier.energy_cost_per_tick);
+    }
 }

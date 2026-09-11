@@ -61,6 +61,21 @@ public final class ModBlocks {
                     .sounds(BlockSoundGroup.COPPER))
     );
 
+    public static final Block DEHUMIDIFIER = Registry.register(
+            Registries.BLOCK,
+            SporesShadows.id("dehumidifier"),
+            new moldmod.block.dehumidifier.DehumidifierBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .strength(3.5f)
+                    .sounds(BlockSoundGroup.COPPER)
+                    .luminance(state -> state.get(moldmod.block.dehumidifier.DehumidifierBlock.STATUS) == moldmod.block.dehumidifier.DehumidifierStatus.RUNNING ? 7 : 0))
+    );
+
+    public static final Item DEHUMIDIFIER_ITEM = Registry.register(
+            Registries.ITEM,
+            SporesShadows.id("dehumidifier"),
+            new BlockItem(DEHUMIDIFIER, new Item.Settings())
+    );
+
     public static void registerModBlocks() {
         SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 
@@ -79,6 +94,10 @@ public final class ModBlocks {
                 }
                 entries.addAfter(vanillaItem, stacksToAdd);
             }
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
+            entries.add(DEHUMIDIFIER_ITEM);
         });
     }
 

@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "spores--shadows",
-	"version": "${version}",
+	"version": "1.2.0",
 	"name": "Spores & Shadows",
 	"description": "A dynamic, realistic, and unforgiving environmental decay ecosystem for wood.",
 	"authors": [

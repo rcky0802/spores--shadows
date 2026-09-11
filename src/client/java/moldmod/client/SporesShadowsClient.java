@@ -49,5 +49,11 @@ public final class SporesShadowsClient implements ClientModInitializer {
 			SporesShadows.id("moisture"),
 			(stack, world, entity, seed) -> ClientMoistureCache.getMoisture(entity)
 		);
+
+		// Register Dehumidifier HandledScreen
+		net.minecraft.client.gui.screen.ingame.HandledScreens.register(
+			moldmod.screen.ModScreenHandlers.DEHUMIDIFIER,
+			moldmod.client.screen.DehumidifierScreen::new
+		);
 	}
 }

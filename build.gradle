@@ -12,6 +12,7 @@ repositories {
 	maven { url = "https://maven.nucleoid.xyz/" } // For Polymer
 	maven { url = "https://maven.blamejared.com/" } // For Jade
 	mavenCentral()
+	maven { url = "https://maven.fabricmc.net/" }
 	maven {
 		name = "Modrinth"
 		url = "https://api.modrinth.com/maven"
@@ -32,12 +33,27 @@ loom {
 	}
 
 	runs {
+		client {
+			client()
+			name "Minecraft Client"
+			source sourceSets.main
+			vmArg "-Dfabric-tag-conventions-v1.legacyTagWarning=SILENCED"
+			vmArg "-Dfabric-tag-conventions-v2.missingTagTranslationWarning=SILENCED"
+		}
+		server {
+			server()
+			name "Minecraft Server"
+			source sourceSets.main
+			vmArg "-Dfabric-tag-conventions-v1.legacyTagWarning=SILENCED"
+			vmArg "-Dfabric-tag-conventions-v2.missingTagTranslationWarning=SILENCED"
+		}
 		gametest {
 			server()
 			name "GameTest"
 			source sourceSets.test
 			vmArg "-Dfabric-api.gametest"
 			vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
+			vmArg "-Dfabric-tag-conventions-v1.legacyTagWarning=SILENCED"
 			vmArg "-Dfabric-tag-conventions-v2.missingTagTranslationWarning=SILENCED"
 			runDir "build/gametest"
 		}
@@ -80,6 +96,19 @@ dependencies {
     modCompileOnly "mezz.jei:jei-1.21.1-common-api-intermediary:19.21.0.247"
     modCompileOnly "mezz.jei:jei-1.21.1-fabric-api:19.21.0.247"
     modLocalRuntime "maven.modrinth:jei:19.21.0.247"
+
+    // TeamReborn Energy API (RF/FE/E compatibility - JiJ bundled as soft-dependency)
+    include modApi("teamreborn:energy:4.1.0") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    // Tech Reborn & RebornCore (Local Runtime per testare cavi, generatori e batterie RF/FE in dev)
+    modLocalRuntime "maven.modrinth:techreborn:5.11.19"
+    modLocalRuntime "maven.modrinth:reborncore:5.11.19"
+
+    // BuildCraft Refabricated (Local Runtime per testare tubi fluidi classici in dev)
+    modLocalRuntime "maven.modrinth:buildcraftrefabricated:26.7.27+mc1.21.1"
+
 	// JUnit 5
 	testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
 	testRuntimeOnly "org.junit.platform:junit-platform-launcher"

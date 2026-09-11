@@ -58,6 +58,8 @@ public class ModConfigSerializationUnitTest {
         assertNotNull(config.composter);
         assertNotNull(config.particles);
         assertNotNull(config.sporeDetector);
+        assertNotNull(config.moistureDetector);
+        assertNotNull(config.dehumidifier);
         assertNotNull(config.toxicity);
         assertNotNull(config.client);
     }

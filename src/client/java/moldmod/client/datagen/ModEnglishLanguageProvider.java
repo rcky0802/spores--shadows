@@ -271,6 +271,21 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.sporeDetector.spore_mask_armor_points", "Spore Mask Armor Points");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.sporeDetector.spore_mask_armor_points.@Tooltip", "Armor points provided by the Spore Mask (requires restart).");
 
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.dehumidifier", "Dehumidifier");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier", "Dehumidifier");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.capacity_mb", "Water Tank Capacity (mB)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.capacity_mb.@Tooltip", "Maximum condensed water storage in milliBuckets (1000 mB = 1 Bucket).");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.ticks_per_mb", "Ticks Per mB Condensed");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.ticks_per_mb.@Tooltip", "Base operating ticks required to condense 1 mB of water at high humidity.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.fuel_multiplier", "Fuel Burn Time Multiplier");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.fuel_multiplier.@Tooltip", "Multiplier applied to standard furnace burn times (e.g. 4.0 = coal lasts 4x longer).");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.drying_power", "Drying Power (Bonus per Unit)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.drying_power.@Tooltip", "Linear reduction subtracted from room target humidity per active running dehumidifier.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.energy_capacity", "Energy Buffer Capacity (E/RF)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.energy_capacity.@Tooltip", "Internal energy storage when external energy mods (TR/RF) are present.");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.energy_cost_per_tick", "Energy Consumption (E/tick)");
+        translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.dehumidifier.energy_cost_per_tick.@Tooltip", "Energy consumed per tick while running instead of burning solid fuel.");
+
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.structures.underwater_rotten_bonus", "Underwater/Deep Rotten Bonus (%)");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.structures.underwater_rotten_bonus.@Tooltip", "Rotten percentage bonus when underwater or Y <= 60.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.structures.underwater_tainted_bonus", "Underwater/Deep Tainted Bonus (%)");
@@ -324,6 +339,49 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".moisture_detector", "Moisture Detector");
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".moisture_detector", "Moisture Detector");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.moisture_detector", "The Moisture Detector measures effective humidity and environmental saturation. Right-Click in the air to scan. Can be mounted on walls, floors, or ceilings.");
+
+        // Dehumidifier
+        translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".dehumidifier", "Dehumidifier");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".dehumidifier", "Dehumidifier");
+        translationBuilder.add("container." + moldmod.SporesShadows.MOD_ID + ".dehumidifier", "Dehumidifier");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.dehumidifier", "Active environmental machinery that extracts humidity from enclosed rooms and condenses it into liquid water (2000 mB capacity).");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.dehumidifier.energy", "Energy & Fuel: Accepts external RF / FE / TR Energy (up to 16,000 FE buffer, 10 FE/tick operating cost). Solid fuels (Coal, Charcoal, etc.) placed in the fuel slot are burned immediately to generate electricity internally. Power cannot be extracted.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.dehumidifier.water", "Water Condensation: Extracted humidity accumulates as water in the internal tank. Liquid can ONLY be extracted (using an empty bucket or fluid pipes via Fabric Transfer API). External liquid insertion is strictly blocked.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.dehumidifier.automation", "Automation & Controls: Supports automated fuel insertion via Hoppers/droppers. Features a GUI button to cycle redstone control modes (Ignored, Active with Signal, Active without Signal). Comparators measure water level.");
+
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.water", "Water: %d / %d mB");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.energy", "Energy: %d / %d E");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.energy_usage", "Usage: %d E/t (%d E/s)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.redstone_mode", "Redstone Mode: %s");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.redstone.ignored", "Ignored");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.redstone.ignored.desc", "Always active while fueled");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.redstone.low", "Low");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.redstone.low.desc", "Active without signal; paused by redstone");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.redstone.high", "High");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.redstone.high.desc", "Active only when receiving redstone signal");
+        translationBuilder.add("gui." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.status.running", "● Active");
+        translationBuilder.add("gui." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.status.full", "● Full");
+        translationBuilder.add("gui." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.status.off", "● Idle");
+        translationBuilder.add("gui." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.status_desc.running", "Machine is actively dehumidifying the room.");
+        translationBuilder.add("gui." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.status_desc.full", "Internal water tank is full (2000 mB). Drain water to resume.");
+        translationBuilder.add("gui." + moldmod.SporesShadows.MOD_ID + ".dehumidifier.status_desc.off", "Machine is idle (needs energy/fuel, valid room, or redstone signal).");
+
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".dehumidifier_info", "Spores & Shadows: Dehumidifier Info");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.status", "Status: ");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.status.running", "Running");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.status.full", "Standby (Full)");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.status.off", "Off");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.water", "Water: %d / %d mB");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.energy", "Energy: %d E");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.fuel_min_sec", "Fuel: %dm %ds");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.dehumidifier.fuel_sec", "Fuel: %ds");
+
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.title", "Moisture Sensing");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".moisture_detector.description", "Craft a Moisture Detector to monitor room humidity.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".dehumidifier_craft.title", "Climate Control");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".dehumidifier_craft.description", "Craft a Dehumidifier to actively dry enclosed rooms and collect condensed water.");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".dry_oasis.title", "Subterranean Oasis");
+        translationBuilder.add("advancements." + moldmod.SporesShadows.MOD_ID + ".dry_oasis.description", "Dry an underground chamber (Y <= 40) down to less than 15% humidity using a Dehumidifier.");
 
         // Jade Tooltips for Detectors
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.spore_detector.air_quality", "Air Quality: ");

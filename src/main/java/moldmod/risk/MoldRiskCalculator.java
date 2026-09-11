@@ -347,12 +347,14 @@ public final class MoldRiskCalculator {
             roomWaterSourcesCount = airEval.waterSourcesCount();
             targetHumidity = Math.min(1.0, airEval.targetHumidity() + catalystHumidityBonus);
             currentHumidity = Math.min(1.0, airEval.currentHumidity() + catalystHumidityBonus);
-            Hraw = currentHumidity;
+            // Hraw rappresenta l'umidità grezza della stanza (inclusi i contributi ambientali e del nebulizzatore/umidificatore)
+            Hraw = Math.max(0.0, Math.min(1.0, airEval.rawHumidity() + catalystHumidityBonus));
 
             aerationFlow = airEval.ventilationFlow();
             aeration = config.environment.enable_ventilation_drying ? airEval.averageAeration() : 0.0;
             aerationDryingBonus = aeration * config.environment.aeration_drying_bonus;
-            Heff = Math.max(0.0, Math.min(1.0, Hraw - aerationDryingBonus));
+            // Heff è l'umidità effettiva risultante sia dall'eventuale deumidificatore (in currentHumidity) che dalla ventilazione
+            Heff = Math.max(0.0, Math.min(1.0, currentHumidity - aerationDryingBonus));
         }
 
         double localHumidityBonus = roomWaterBonus + catalystHumidityBonus;

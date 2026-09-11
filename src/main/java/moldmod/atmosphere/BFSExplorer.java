@@ -47,6 +47,8 @@ public final class BFSExplorer {
             Set<BlockPos> airBlocks,
             Set<BlockPos> roomSusceptible,
             Set<BlockPos> roomWaterSources,
+            Set<BlockPos> roomDehumidifiers,
+            Set<BlockPos> roomHumidifiers,
             double toxicScore,
             boolean openAir,
             boolean hitBoundaryWithOpenAir
@@ -139,6 +141,8 @@ public final class BFSExplorer {
         Set<BlockPos> countedMold = new HashSet<>();
         Set<BlockPos> roomSusceptible = new HashSet<>();
         Set<BlockPos> roomWaterSources = new HashSet<>();
+        Set<BlockPos> roomDehumidifiers = new HashSet<>();
+        Set<BlockPos> roomHumidifiers = new HashSet<>();
         int maxRadiusSq = maxEuclideanRadius * maxEuclideanRadius;
         float moldToxMult = config.toxicity.mold_toxicity_multiplier;
         double toxicScore = 0.0;
@@ -187,6 +191,17 @@ public final class BFSExplorer {
                     if (neighborState.getFluidState().isIn(FluidTags.WATER) || neighborState.isOf(Blocks.WATER_CAULDRON)) {
                         roomWaterSources.add(neighborPos.toImmutable());
                     }
+                    if (neighborState.isOf(moldmod.block.ModBlocks.DEHUMIDIFIER)) {
+                        if (neighborState.contains(moldmod.block.dehumidifier.DehumidifierBlock.STATUS)
+                                && neighborState.get(moldmod.block.dehumidifier.DehumidifierBlock.STATUS) == moldmod.block.dehumidifier.DehumidifierStatus.RUNNING) {
+                            if (neighborState.contains(moldmod.block.dehumidifier.DehumidifierBlock.MODE)
+                                    && neighborState.get(moldmod.block.dehumidifier.DehumidifierBlock.MODE) == moldmod.block.dehumidifier.DehumidifierMode.HUMIDIFY) {
+                                roomHumidifiers.add(neighborPos.toImmutable());
+                            } else {
+                                roomDehumidifiers.add(neighborPos.toImmutable());
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -199,6 +214,8 @@ public final class BFSExplorer {
                 visited,
                 roomSusceptible,
                 roomWaterSources,
+                roomDehumidifiers,
+                roomHumidifiers,
                 toxicScore,
                 openAir,
                 hitBoundaryWithOpenAir

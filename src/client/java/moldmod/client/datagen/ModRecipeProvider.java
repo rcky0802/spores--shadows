@@ -103,6 +103,19 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 .criterion("has_redstone", conditionsFromItem(Items.REDSTONE))
                 .criterion("has_paper", conditionsFromItem(Items.PAPER))
                 .offerTo(exporter, SporesShadows.id("moisture_detector"));
+
+        ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, moldmod.block.ModBlocks.DEHUMIDIFIER)
+                .pattern("SCS")
+                .pattern("IFI")
+                .pattern("SMS")
+                .input('F', Items.FURNACE)
+                .input('I', Items.IRON_INGOT)
+                .input('C', Items.COPPER_INGOT)
+                .input('S', Items.SMOOTH_STONE)
+                .input('M', ModItems.MOISTURE_DETECTOR)
+                .criterion("has_moisture_detector", conditionsFromItem(ModItems.MOISTURE_DETECTOR))
+                .criterion("has_furnace", conditionsFromItem(Items.FURNACE))
+                .offerTo(exporter, SporesShadows.id("dehumidifier"));
     }
 
     private void generatePlanksRecipe(RecipeExporter exporter, String sourceBase, String destBase) {

@@ -169,4 +169,34 @@ public class ModConfigValidationUnitTest {
         assertEquals(1.0f, config.toxicity.filtration_level_3_save_chance, 1e-4);
         assertEquals(0.0f, config.client.mold_z_offset, 1e-4);
     }
+
+    @Test
+    @DisplayName("Dehumidifier parameters get properly clamped")
+    void testDehumidifierClamping() throws ConfigData.ValidationException {
+        config.dehumidifier.capacity_mb = 100;
+        config.dehumidifier.ticks_per_mb = 0;
+        config.dehumidifier.fuel_multiplier = -2.0f;
+        config.dehumidifier.drying_power = -1.0;
+        config.dehumidifier.energy_capacity = 500;
+        config.dehumidifier.energy_cost_per_tick = -5;
+
+        config.validatePostLoad();
+
+        assertEquals(500, config.dehumidifier.capacity_mb);
+        assertEquals(1, config.dehumidifier.ticks_per_mb);
+        assertEquals(0.1f, config.dehumidifier.fuel_multiplier, 1e-4);
+        assertEquals(0.0, config.dehumidifier.drying_power, 1e-4);
+        assertEquals(1000, config.dehumidifier.energy_capacity);
+        assertEquals(1, config.dehumidifier.energy_cost_per_tick);
+
+        config.dehumidifier.capacity_mb = 50000;
+        config.dehumidifier.fuel_multiplier = 50.0f;
+        config.dehumidifier.drying_power = 25.0;
+
+        config.validatePostLoad();
+
+        assertEquals(10000, config.dehumidifier.capacity_mb);
+        assertEquals(20.0f, config.dehumidifier.fuel_multiplier, 1e-4);
+        assertEquals(10.0, config.dehumidifier.drying_power, 1e-4);
+    }
 }

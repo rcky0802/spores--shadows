@@ -127,6 +127,40 @@ public class JEISporeGearAndDeviceGameTests {
                 context.assertTrue(!moistureInfoText.getString().isEmpty(),
                                 "Moisture detector JEI info description must not be empty");
 
+                String dehumInfoKey = "jei." + SporesShadows.MOD_ID + ".info.dehumidifier";
+                Text dehumInfoText = Text.translatable(dehumInfoKey);
+                context.assertTrue(!dehumInfoText.getString().isEmpty(),
+                                "Dehumidifier JEI info description must not be empty");
+
+                String dehumEnergyKey = "jei." + SporesShadows.MOD_ID + ".info.dehumidifier.energy";
+                Text dehumEnergyText = Text.translatable(dehumEnergyKey);
+                context.assertTrue(!dehumEnergyText.getString().isEmpty(),
+                                "Dehumidifier JEI energy info description must not be empty");
+
+                String dehumWaterKey = "jei." + SporesShadows.MOD_ID + ".info.dehumidifier.water";
+                Text dehumWaterText = Text.translatable(dehumWaterKey);
+                context.assertTrue(!dehumWaterText.getString().isEmpty(),
+                                "Dehumidifier JEI water info description must not be empty");
+
+                String dehumAutoKey = "jei." + SporesShadows.MOD_ID + ".info.dehumidifier.automation";
+                Text dehumAutoText = Text.translatable(dehumAutoKey);
+                context.assertTrue(!dehumAutoText.getString().isEmpty(),
+                                "Dehumidifier JEI automation info description must not be empty");
+
+                context.complete();
+        }
+
+        @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+        public void testDehumidifierCraftingRecipe(TestContext context) {
+                Identifier recipeId = Identifier.of(SporesShadows.MOD_ID, "dehumidifier");
+                Optional<RecipeEntry<?>> recipeOpt = context.getWorld().getRecipeManager().get(recipeId);
+
+                context.assertTrue(recipeOpt.isPresent(),
+                                "Recipe for dehumidifier must be present in RecipeManager");
+                ItemStack result = recipeOpt.get().value().getResult(context.getWorld().getRegistryManager());
+                context.assertTrue(result.isOf(ModBlocks.DEHUMIDIFIER.asItem()),
+                                "Dehumidifier recipe result must be DEHUMIDIFIER block item");
+
                 context.complete();
         }
 }

@@ -103,6 +103,15 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         registration.addIngredientInfo(new ItemStack(ModItems.SPORE_FILTER), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.spore_filter"));
         registration.addIngredientInfo(new ItemStack(ModItems.SPORE_DETECTOR), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.spore_detector"));
         registration.addIngredientInfo(new ItemStack(ModItems.MOISTURE_DETECTOR), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.moisture_detector"));
+        registration.addIngredientInfo(new ItemStack(moldmod.block.ModBlocks.DEHUMIDIFIER), VanillaTypes.ITEM_STACK,
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.dehumidifier"),
+                Text.empty(),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.dehumidifier.energy"),
+                Text.empty(),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.dehumidifier.water"),
+                Text.empty(),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.dehumidifier.automation")
+        );
 
         var client = MinecraftClient.getInstance();
         var registryManager = (client != null && client.world != null) ? client.world.getRegistryManager() : null;
@@ -206,5 +215,7 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(Items.GOLDEN_AXE), ScrapingRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Items.DIAMOND_AXE), ScrapingRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Items.NETHERITE_AXE), ScrapingRecipeCategory.RECIPE_TYPE);
+
+        registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.DEHUMIDIFIER), mezz.jei.api.constants.RecipeTypes.FUELING);
     }
 }
