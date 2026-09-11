@@ -30,8 +30,8 @@ public class SporeFiltrationEnchantmentTests {
         context.assertTrue(mask.getItem().getEnchantability() == 0, 
                 "Spore Mask must have enchantability 0 to disable enchanting table!");
         
-        context.assertTrue(ModItems.SPORE_MASK.canRepair(mask, new ItemStack(Items.WHITE_WOOL)),
-                "Spore Mask must be repairable with wool (#minecraft:wool)");
+        context.assertTrue(ModItems.SPORE_MASK.canRepair(mask, new ItemStack(ModItems.SPORE_FILTER)),
+                "Spore Mask must be repairable with Spore Filter");
         context.assertFalse(ModItems.SPORE_MASK.canRepair(mask, new ItemStack(Items.COBBLESTONE)),
                 "Spore Mask must NOT be repairable with cobblestone");
         
@@ -280,14 +280,14 @@ public class SporeFiltrationEnchantmentTests {
         context.assertFalse(anvil.getSlot(2).getStack().isEmpty(), "Anvil MUST accept Unbreaking III on Spore Mask!");
         context.assertTrue(EnchantmentHelper.getLevel(unbreaking, anvil.getSlot(2).getStack()) == 3, "Output must have Unbreaking III!");
 
-        // 4. Accepted: Wool Repair
+        // 4. Accepted: Spore Filter Repair
         anvil = new net.minecraft.screen.AnvilScreenHandler(0, player.getInventory(), net.minecraft.screen.ScreenHandlerContext.EMPTY);
         ItemStack damaged = new ItemStack(ModItems.SPORE_MASK);
         damaged.setDamage(100);
         anvil.getSlot(0).setStack(damaged);
-        anvil.getSlot(1).setStack(new ItemStack(Items.WHITE_WOOL));
+        anvil.getSlot(1).setStack(new ItemStack(ModItems.SPORE_FILTER));
         anvil.updateResult();
-        context.assertFalse(anvil.getSlot(2).getStack().isEmpty(), "Anvil MUST accept Wool repair on Spore Mask!");
+        context.assertFalse(anvil.getSlot(2).getStack().isEmpty(), "Anvil MUST accept Spore Filter repair on Spore Mask!");
 
         context.complete();
     }

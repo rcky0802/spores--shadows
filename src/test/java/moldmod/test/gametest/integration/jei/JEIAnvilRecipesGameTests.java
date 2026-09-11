@@ -18,30 +18,10 @@ import java.util.List;
 public class JEIAnvilRecipesGameTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-    public void testWoolListSizeForSporeMaskRepair(TestContext context) {
-        List<ItemStack> woolList = List.of(
-                new ItemStack(Items.WHITE_WOOL),
-                new ItemStack(Items.ORANGE_WOOL),
-                new ItemStack(Items.MAGENTA_WOOL),
-                new ItemStack(Items.LIGHT_BLUE_WOOL),
-                new ItemStack(Items.YELLOW_WOOL),
-                new ItemStack(Items.LIME_WOOL),
-                new ItemStack(Items.PINK_WOOL),
-                new ItemStack(Items.GRAY_WOOL),
-                new ItemStack(Items.LIGHT_GRAY_WOOL),
-                new ItemStack(Items.CYAN_WOOL),
-                new ItemStack(Items.PURPLE_WOOL),
-                new ItemStack(Items.BLUE_WOOL),
-                new ItemStack(Items.BROWN_WOOL),
-                new ItemStack(Items.GREEN_WOOL),
-                new ItemStack(Items.RED_WOOL),
-                new ItemStack(Items.BLACK_WOOL));
-
-        context.assertTrue(woolList.size() == 16, "Wool list must contain all 16 Minecraft wool colors");
-        for (ItemStack wool : woolList) {
-            context.assertTrue(ModItems.SPORE_MASK.canRepair(new ItemStack(ModItems.SPORE_MASK), wool),
-                    "Spore mask must be repairable with " + wool.getItem());
-        }
+    public void testFilterForSporeMaskRepair(TestContext context) {
+        ItemStack filter = new ItemStack(ModItems.SPORE_FILTER);
+        context.assertTrue(ModItems.SPORE_MASK.canRepair(new ItemStack(ModItems.SPORE_MASK), filter),
+                "Spore mask must be repairable with Spore Filter in anvil");
 
         context.complete();
     }

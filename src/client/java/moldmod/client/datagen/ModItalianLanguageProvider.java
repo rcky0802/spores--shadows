@@ -348,7 +348,8 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Ceratura");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Raschiamento con Ascia");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Il legno marcio è friabile e degradato. Non può essere curato con un'ascia. Richiede Tocco di Velluto per essere raccolto, altrimenti si disintegrerà nel nulla quando viene rotto.");
-        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Maschera Antispore offre protezione totale dal miasma tossico (Veleno, Nausea e Fame). Consuma durabilità mentre filtra l'aria tossica. Sostituisci il filtro riparandola all'incudine con Lana (#minecraft:wool). Può essere incantata solo con Indistruttibilità, Ripristino e Maledizione della Scomparsa.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Maschera Antispore offre protezione totale dal miasma tossico (Veleno, Nausea e Fame). Consuma durabilità mentre filtra l'aria tossica. Sostituisci il filtro riparandola con un Filtro per Spore nell'incudine (la ripara completamente con un solo filtro). Nel banco da lavoro puoi combinare solo due maschere tra loro per una rapida riparazione d'emergenza. Può essere incantata solo con Indistruttibilità, Ripristino e Maledizione della Scomparsa.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filter", "Utilizzato per fabbricare e riparare completamente la Maschera Antispore, nonché per futuri dispositivi di filtraggio.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtrazione Spore è un incantesimo per elmi che neutralizza il miasma tossico e l'inalazione di spore. Consuma durabilità dell'elmo quando esposto al miasma (Livello I: 2 durabilità, Livello II: 1 durabilità, Livello III: 50% probabilità di risparmio). Compatibile con tutti gli elmi convenzionali.");
 
         // Jade Tooltips for Spore Protection & Spore Detector
@@ -358,6 +359,7 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Info Rilevatore di Spore");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Maschera Antispore");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_filter", "Filtro per Spore");
         translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Rilevatore di Spore");
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Rilevatore di Spore");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "Il Rilevatore di Spore misura la tossicità dell'aria e la ventilazione della stanza. Usa Tasto Destro nel vuoto per scansionare l'ambiente. Può essere posizionato su pareti o pavimenti.");
@@ -430,5 +432,11 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost.@Tooltip", "Costo durabilità dell'elmo per esposizione con Livello II.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Probabilità Risparmio Durabilità Livello III");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance.@Tooltip", "Probabilità di annullare il consumo di durabilità con Livello III.");
+
+        // Tag Translations (Fabric Tag Convention v2)
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_items", "Oggetti Muffosi");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Elmi per Filtrazione");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocchi Muffosi");
+        translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocchi Muffosi");
     }
 }

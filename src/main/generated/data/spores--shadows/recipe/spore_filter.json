@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "K": {
+      "tag": "minecraft:coals"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    " I ",
+    "LKL",
+    " W "
+  ],
+  "result": {
+    "count": 1,
+    "id": "spores--shadows:spore_filter"
+  }
+}

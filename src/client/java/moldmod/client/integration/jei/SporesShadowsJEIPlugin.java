@@ -98,8 +98,9 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
             registration.addIngredientInfo(rottenStacks, VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.rotten_wood"));
         }
 
-        // 4. Spore Mask Info, Spore Detector Info, Moisture Detector Info & Spore Filtration Info on Enchanted Books
+        // 4. Spore Mask Info, Spore Filter Info, Spore Detector Info, Moisture Detector Info & Spore Filtration Info on Enchanted Books
         registration.addIngredientInfo(new ItemStack(ModItems.SPORE_MASK), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.spore_mask"));
+        registration.addIngredientInfo(new ItemStack(ModItems.SPORE_FILTER), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.spore_filter"));
         registration.addIngredientInfo(new ItemStack(ModItems.SPORE_DETECTOR), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.spore_detector"));
         registration.addIngredientInfo(new ItemStack(ModItems.MOISTURE_DETECTOR), VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.moisture_detector"));
 
@@ -126,34 +127,17 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         var vanillaRecipes = registration.getVanillaRecipeFactory();
         List<IJeiAnvilRecipe> anvilRecipes = new ArrayList<>();
 
-        // A) Spore Mask Filter Repair with Wool
+        // A) Spore Mask Filter Repair with Spore Filter
         ItemStack damagedMask = new ItemStack(ModItems.SPORE_MASK);
         damagedMask.setDamage(80);
         ItemStack repairedMask = new ItemStack(ModItems.SPORE_MASK);
         repairedMask.setDamage(0);
 
-        List<ItemStack> woolList = List.of(
-            new ItemStack(Items.WHITE_WOOL),
-            new ItemStack(Items.ORANGE_WOOL),
-            new ItemStack(Items.MAGENTA_WOOL),
-            new ItemStack(Items.LIGHT_BLUE_WOOL),
-            new ItemStack(Items.YELLOW_WOOL),
-            new ItemStack(Items.LIME_WOOL),
-            new ItemStack(Items.PINK_WOOL),
-            new ItemStack(Items.GRAY_WOOL),
-            new ItemStack(Items.LIGHT_GRAY_WOOL),
-            new ItemStack(Items.CYAN_WOOL),
-            new ItemStack(Items.PURPLE_WOOL),
-            new ItemStack(Items.BLUE_WOOL),
-            new ItemStack(Items.BROWN_WOOL),
-            new ItemStack(Items.GREEN_WOOL),
-            new ItemStack(Items.RED_WOOL),
-            new ItemStack(Items.BLACK_WOOL)
-        );
+        List<ItemStack> filterList = List.of(new ItemStack(ModItems.SPORE_FILTER));
 
         anvilRecipes.add(vanillaRecipes.createAnvilRecipe(
             List.of(damagedMask),
-            woolList,
+            filterList,
             List.of(repairedMask),
             SporesShadows.id("anvil/spore_mask_repair")
         ));

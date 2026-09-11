@@ -304,7 +304,8 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Waxing");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Axe Scraping");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Rotten wood is brittle and crumbling. It cannot be cured with an axe. It requires Silk Touch to be harvested, otherwise it will disintegrate into nothing when broken.");
-        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "The Spore Mask provides complete protection against toxic miasma (Poison, Nausea, and Hunger). It consumes durability while filtering toxic air. Replace the filter by repairing it in an anvil with Wool (#minecraft:wool). Can be enchanted only with Unbreaking, Mending, and Curse of Vanishing.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "The Spore Mask provides complete protection against toxic miasma (Poison, Nausea, and Hunger). It consumes durability while filtering toxic air. Replace the filter by repairing it with a Spore Filter in an anvil (fully repairs in one use). In a crafting grid, you can only combine two masks for a quick field repair. Can be enchanted only with Unbreaking, Mending, and Curse of Vanishing.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filter", "Used in the crafting and complete repair of the Spore Mask, as well as future air filtration devices.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Spore Filtration is a helmet enchantment that neutralizes toxic miasma and spore inhalation. Consumes helmet durability when exposed to miasma (Level I: 2 durability, Level II: 1 durability, Level III: 50% durability save chance). Compatible with all conventional helmets.");
 
         // Jade Tooltips for Spore Protection & Spore Detector
@@ -314,6 +315,7 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Spore Detector Info");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Spore Mask");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_filter", "Spore Filter");
         translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Spore Detector");
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Spore Detector");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "The Spore Detector measures air toxicity and room ventilation. Right-Click in the air to scan. Can be mounted on walls or floors.");
@@ -386,6 +388,12 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost.@Tooltip", "Helmet durability consumed per check with Level II.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Filtration Level III Durability Save Chance");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance.@Tooltip", "Chance to prevent durability loss with Level III.");
+
+        // Tag Translations (Fabric Tag Convention v2)
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_items", "Moldy Items");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Filtration Helmets");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Moldy Blocks");
+        translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Moldy Blocks");
     }
     
     private String capitalize(String str) {

@@ -4,7 +4,6 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.ItemTags;
 
 public final class SporeMaskItem extends ArmorItem {
 
@@ -19,6 +18,6 @@ public final class SporeMaskItem extends ArmorItem {
 
     @Override
     public boolean canRepair(ItemStack stack, ItemStack ingredient) {
-        return ingredient.isIn(ItemTags.WOOL) || super.canRepair(stack, ingredient);
+        return ingredient.isOf(ModItems.SPORE_FILTER) || super.canRepair(stack, ingredient);
     }
 }

@@ -5,6 +5,9 @@
     "C": {
       "item": "minecraft:copper_ingot"
     },
+    "F": {
+      "item": "spores--shadows:spore_filter"
+    },
     "G": {
       "item": "minecraft:glass_pane"
     },
@@ -13,14 +16,11 @@
     },
     "L": {
       "item": "minecraft:leather"
-    },
-    "W": {
-      "tag": "minecraft:wool"
     }
   },
   "pattern": [
     "LGL",
-    "CWC",
+    "CFC",
     " H "
   ],
   "result": {

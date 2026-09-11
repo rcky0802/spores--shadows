@@ -348,7 +348,8 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Encerado");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Raspado con Hacha");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "La madera podrida es quebradiza y frágil. No se puede curar con un hacha. Requiere Toque de Seda para ser recolectada, de lo contrario se desintegrará en la nada al romperse.");
-        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola en un yunque con Lana (#minecraft:wool). Solo se puede encantar con Irrompibilidad, Reparación y Maldición de Desaparición.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola con un Filtro de Esporas en un yunque (la repara por completo de un solo uso). En una mesa de trabajo, solo puedes combinar dos máscaras para una reparación rápida de emergencia. Solo se puede encantar con Irrompibilidad, Reparación y Maldición de Desaparición.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filter", "Utilizado para fabricar y reparar por completo la Máscara Antiesporas, así como para futuros dispositivos de filtración.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtración de Esporas es un encantamiento de casco que neutraliza el miasma tóxico y la inhalación de esporas. Consume durabilidad del casco al exponerse al miasma (Nivel I: 2 durabilidad, Nivel II: 1 durabilidad, Nivel III: 50% de ahorro). Compatible con todos los cascos convencionales.");
 
         // Jade Tooltips for Spore Protection & Spore Detector
@@ -358,6 +359,7 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Info del Detector de Esporas");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Máscara Antiesporas");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_filter", "Filtro de Esporas");
         translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Detector de Esporas");
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Detector de Esporas");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "El Detector de Miasma mide la toxicidad del aire y la ventilación de la habitación. Clic Derecho en el aire para escanear. Se puede colocar en paredes o suelos.");
@@ -430,5 +432,11 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost.@Tooltip", "Coste de durabilidad del casco por comprobación con Nivel II.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Probabilidad de Ahorro de Durabilidad Nivel III");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance.@Tooltip", "Probabilidad de evitar la pérdida de durabilidad con Nivel III.");
+
+        // Tag Translations (Fabric Tag Convention v2)
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_items", "Objetos Mohosos");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Cascos de Filtración");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Bloques Mohosos");
+        translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Bloques Mohosos");
     }
 }

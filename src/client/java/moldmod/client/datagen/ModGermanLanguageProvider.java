@@ -368,7 +368,8 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Wachsen");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Axt-Schaben");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Morsches Holz ist brüchig und zerfällt. Es kann nicht mit einer Axt geheilt werden. Es erfordert Behutsamkeit zum Abbau, sonst zerfällt es beim Zerstören zu Staub.");
-        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "Die Sporenmaske bietet vollständigen Schutz vor giftigem Miasma (Gift, Übelkeit und Hunger). Sie verbraucht Haltbarkeit beim Filtern giftiger Luft. Tausche den Filter aus, indem du sie im Amboss mit Wolle (#minecraft:wool) reparierst. Kann nur mit Haltbarkeit, Reparatur und Fluch des Verschwindens verzaubert werden.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "Die Sporenmaske bietet vollständigen Schutz vor giftigem Miasma (Gift, Übelkeit und Hunger). Sie verbraucht Haltbarkeit beim Filtern giftiger Luft. Tausche den Filter aus, indem du sie mit einem Sporenfilter im Amboss reparierst (wird mit einem Filter vollständig repariert). An der Werkbank können nur zwei Masken für eine schnelle Notreparatur kombiniert werden. Kann nur mit Haltbarkeit, Reparatur und Fluch des Verschwindens verzaubert werden.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filter", "Wird für die Herstellung und vollständige Reparatur der Sporenmaske sowie für zukünftige Luftfiltrationsgeräte verwendet.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Sporenfiltration ist eine Helm-Verzauberung, die giftiges Miasma und das Einatmen von Sporen neutralisiert. Verbraucht Helm-Haltbarkeit bei Miasma-Exposition (Stufe I: 2 Haltbarkeit, Stufe II: 1 Haltbarkeit, Stufe III: 50% Haltbarkeits-Ersparnis). Kompatibel mit allen konventionellen Helmen.");
 
         // Jade Tooltips for Spore Protection & Spore Detector
@@ -378,6 +379,7 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".spore_detector_info", "Spores & Shadows: Sporendetektor Info");
 
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_mask", "Sporenmaske");
+        translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_filter", "Sporenfilter");
         translationBuilder.add("block." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Sporendetektor");
         translationBuilder.add("item." + moldmod.SporesShadows.MOD_ID + ".spore_detector", "Sporendetektor");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_detector", "Der Sporendetektor misst Lufttoxizität und Raumbelüftung. Rechtsklick in die Luft zum Scannen. Kann an Wänden oder Böden platziert werden.");
@@ -450,5 +452,11 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_2_durability_cost.@Tooltip", "Helm-Haltbarkeitskosten pro Prüfung mit Stufe II.");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Filtration Stufe III Haltbarkeit-Ersparnischance");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance.@Tooltip", "Chance, Haltbarkeitsverlust mit Stufe III zu verhindern.");
+
+        // Tag Translations (Fabric Tag Convention v2)
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_items", "Schimmlige Gegenstände");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Filtrationshelme");
+        translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Schimmlige Blöcke");
+        translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Schimmlige Blöcke");
     }
 }

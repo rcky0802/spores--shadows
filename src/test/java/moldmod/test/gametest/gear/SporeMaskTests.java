@@ -6,11 +6,21 @@ import moldmod.item.ModItems;
 import moldmod.item.SporeMaskItem;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.RecipeEntry;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.input.CraftingRecipeInput;
+import net.minecraft.screen.AnvilScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.test.GameTest;
 import net.minecraft.test.TestContext;
 import net.minecraft.util.math.BlockPos;
+
+import java.util.List;
+import java.util.Optional;
 
 public class SporeMaskTests {
 
@@ -38,27 +48,109 @@ public class SporeMaskTests {
     }
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
-    public void testMaskWoolRepair(TestContext context) {
+    public void testMaskFilterRepair(TestContext context) {
         ItemStack maskStack = new ItemStack(ModItems.SPORE_MASK);
         maskStack.setDamage(50);
 
-        // Verifica che qualsiasi lana sia accettata per la riparazione del filtro
-        if (!ModItems.SPORE_MASK.canRepair(maskStack, new ItemStack(Items.WHITE_WOOL))) {
-            context.throwPositionedException("La lana bianca deve poter riparare la Spore Mask", BlockPos.ORIGIN);
-        }
-        if (!ModItems.SPORE_MASK.canRepair(maskStack, new ItemStack(Items.BLACK_WOOL))) {
-            context.throwPositionedException("La lana nera deve poter riparare la Spore Mask", BlockPos.ORIGIN);
-        }
-        if (!ModItems.SPORE_MASK.canRepair(maskStack, new ItemStack(Items.RED_WOOL))) {
-            context.throwPositionedException("La lana rossa deve poter riparare la Spore Mask", BlockPos.ORIGIN);
+        // Verifica che il Filtro per Spore sia accettato per la riparazione
+        if (!ModItems.SPORE_MASK.canRepair(maskStack, new ItemStack(ModItems.SPORE_FILTER))) {
+            context.throwPositionedException("Il Filtro per Spore deve poter riparare la Spore Mask", BlockPos.ORIGIN);
         }
 
-        // Verifica che materiali non validi vengano rifiutati
+        // Verifica che materiali non validi (inclusa la vecchia lana) vengano rifiutati
+        if (ModItems.SPORE_MASK.canRepair(maskStack, new ItemStack(Items.WHITE_WOOL))) {
+            context.throwPositionedException("La lana non deve piu' riparare direttamente la Spore Mask", BlockPos.ORIGIN);
+        }
         if (ModItems.SPORE_MASK.canRepair(maskStack, new ItemStack(Items.DIRT))) {
             context.throwPositionedException("La terra non deve poter riparare la Spore Mask", BlockPos.ORIGIN);
         }
         if (ModItems.SPORE_MASK.canRepair(maskStack, new ItemStack(Items.IRON_INGOT))) {
             context.throwPositionedException("Il ferro non deve poter riparare la Spore Mask", BlockPos.ORIGIN);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMaskAnvilFullRepairWithFilter(TestContext context) {
+        PlayerEntity player = context.createMockPlayer(net.minecraft.world.GameMode.SURVIVAL);
+        player.addExperienceLevels(10);
+
+        AnvilScreenHandler anvil = new AnvilScreenHandler(1, player.getInventory(), ScreenHandlerContext.EMPTY);
+
+        // 1. Damaged mask (damage = 120 / 165) + 5 Spore Filters
+        ItemStack damagedMask = new ItemStack(ModItems.SPORE_MASK);
+        damagedMask.setDamage(120);
+        damagedMask.set(net.minecraft.component.DataComponentTypes.CUSTOM_NAME, net.minecraft.text.Text.literal("My Custom Gas Mask"));
+
+        ItemStack filterStack = new ItemStack(ModItems.SPORE_FILTER, 5);
+
+        anvil.getSlot(0).setStack(damagedMask);
+        anvil.getSlot(1).setStack(filterStack);
+        anvil.setNewItemName("My Custom Gas Mask");
+        anvil.updateResult();
+
+        ItemStack output = anvil.getSlot(2).getStack();
+        if (output.isEmpty()) {
+            context.throwPositionedException("L'incudine deve produrre un output per maschera danneggiata + filtro", BlockPos.ORIGIN);
+        }
+        if (output.getDamage() != 0) {
+            context.throwPositionedException("Il filtro nell'incudine deve riparare completamente (100%) la maschera a danno 0, trovato: " + output.getDamage(), BlockPos.ORIGIN);
+        }
+        if (!"My Custom Gas Mask".equals(output.getName().getString())) {
+            context.throwPositionedException("Il nome personalizzato deve essere preservato, trovato: " + output.getName().getString(), BlockPos.ORIGIN);
+        }
+
+        // 2. Simulate player taking the repaired mask from the anvil
+        anvil.getSlot(2).onTakeItem(player, output);
+
+        ItemStack remainingFilters = anvil.getSlot(1).getStack();
+        if (remainingFilters.getCount() != 4) {
+            context.throwPositionedException("L'incudine deve consumare esattamente 1 filtro (rimasti: " + remainingFilters.getCount() + ")", BlockPos.ORIGIN);
+        }
+
+        // 3. Undamaged mask + filter must NOT produce an output
+        ItemStack pristineMask = new ItemStack(ModItems.SPORE_MASK);
+        anvil.getSlot(0).setStack(pristineMask);
+        anvil.getSlot(1).setStack(new ItemStack(ModItems.SPORE_FILTER));
+        anvil.updateResult();
+
+        if (!anvil.getSlot(2).getStack().isEmpty()) {
+            context.throwPositionedException("La maschera integra non deve poter essere riparata nell'incudine", BlockPos.ORIGIN);
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testCraftingGridFilterRejectedAndMaskCombiningAllowed(TestContext context) {
+        ItemStack damagedMask1 = new ItemStack(ModItems.SPORE_MASK);
+        damagedMask1.setDamage(120);
+        ItemStack filter = new ItemStack(ModItems.SPORE_FILTER);
+
+        // A) Crafting grid: Damaged mask + Filter -> MUST NOT MATCH ANY RECIPE
+        CraftingRecipeInput filterInput = CraftingRecipeInput.create(
+                2, 2, List.of(damagedMask1, filter, ItemStack.EMPTY, ItemStack.EMPTY));
+        Optional<RecipeEntry<CraftingRecipe>> filterMatch = context.getWorld().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, filterInput, context.getWorld());
+        if (filterMatch.isPresent()) {
+            context.throwPositionedException("La riparazione con filtro non deve funzionare nel banco da lavoro!", BlockPos.ORIGIN);
+        }
+
+        // B) Crafting grid: Damaged mask + Damaged mask -> MUST MATCH vanilla RepairItemRecipe (quick field repair)
+        ItemStack damagedMask2 = new ItemStack(ModItems.SPORE_MASK);
+        damagedMask2.setDamage(80);
+        CraftingRecipeInput twoMasksInput = CraftingRecipeInput.create(
+                2, 2, List.of(damagedMask1, damagedMask2, ItemStack.EMPTY, ItemStack.EMPTY));
+        Optional<RecipeEntry<CraftingRecipe>> twoMasksMatch = context.getWorld().getRecipeManager().getFirstMatch(RecipeType.CRAFTING, twoMasksInput, context.getWorld());
+        if (twoMasksMatch.isEmpty()) {
+            context.throwPositionedException("Il banco da lavoro deve consentire di combinare due maschere danneggiate per riparazione d'emergenza!", BlockPos.ORIGIN);
+        }
+        ItemStack combinedOutput = twoMasksMatch.get().value().craft(twoMasksInput, context.getWorld().getRegistryManager());
+        if (!combinedOutput.isOf(ModItems.SPORE_MASK)) {
+            context.throwPositionedException("L'unione di due maschere deve produrre una Spore Mask!", BlockPos.ORIGIN);
+        }
+        if (!combinedOutput.isDamaged() || combinedOutput.getDamage() >= 120) {
+            context.throwPositionedException("La combinazione nel banco da lavoro deve sommare le durabilità residue delle maschere", BlockPos.ORIGIN);
         }
 
         context.complete();

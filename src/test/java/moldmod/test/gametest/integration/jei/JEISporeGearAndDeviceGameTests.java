@@ -8,7 +8,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -58,9 +57,9 @@ public class JEISporeGearAndDeviceGameTests {
                 context.assertTrue(damagedMask.getDamage() == 80, "Damaged mask must have 80 damage");
                 context.assertTrue(repairedMask.getDamage() == 0, "Repaired mask must have 0 damage");
 
-                ItemStack wool = new ItemStack(Items.WHITE_WOOL);
-                context.assertTrue(ModItems.SPORE_MASK.canRepair(damagedMask, wool),
-                                "Spore mask must be repairable with wool in anvil");
+                ItemStack filter = new ItemStack(ModItems.SPORE_FILTER);
+                context.assertTrue(ModItems.SPORE_MASK.canRepair(damagedMask, filter),
+                                "Spore mask must be repairable with spore filter in anvil");
 
                 Identifier anvilRecipeId = SporesShadows.id("anvil/spore_mask_repair");
                 context.assertTrue(anvilRecipeId.getPath().equals("anvil/spore_mask_repair"),
@@ -102,7 +101,8 @@ public class JEISporeGearAndDeviceGameTests {
                 Identifier recipeId = Identifier.of(SporesShadows.MOD_ID, "moisture_detector");
                 Optional<RecipeEntry<?>> recipeOpt = context.getWorld().getRecipeManager().get(recipeId);
 
-                context.assertTrue(recipeOpt.isPresent(), "Recipe for moisture_detector must be present in RecipeManager");
+                context.assertTrue(recipeOpt.isPresent(),
+                                "Recipe for moisture_detector must be present in RecipeManager");
                 ItemStack result = recipeOpt.get().value().getResult(context.getWorld().getRegistryManager());
                 context.assertTrue(result.isOf(ModBlocks.MOISTURE_DETECTOR.asItem()),
                                 "Moisture detector recipe result must be MOISTURE_DETECTOR block item");

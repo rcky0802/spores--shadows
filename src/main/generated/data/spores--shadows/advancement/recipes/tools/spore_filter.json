@@ -1,31 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_copper": {
+    "has_coal": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:copper_ingot"
+            "items": "#minecraft:coals"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_filter": {
+    "has_iron": {
       "conditions": {
         "items": [
           {
-            "items": "spores--shadows:spore_filter"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
-    "has_honeycomb": {
-      "conditions": {
-        "items": [
-          {
-            "items": "minecraft:honeycomb"
+            "items": "minecraft:iron_ingot"
           }
         ]
       },
@@ -43,23 +33,33 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "spores--shadows:spore_mask"
+        "recipe": "spores--shadows:spore_filter"
       },
       "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wool": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:wool"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     }
   },
   "requirements": [
     [
       "has_the_recipe",
+      "has_iron",
       "has_leather",
-      "has_honeycomb",
-      "has_copper",
-      "has_filter"
+      "has_coal",
+      "has_wool"
     ]
   ],
   "rewards": {
     "recipes": [
-      "spores--shadows:spore_mask"
+      "spores--shadows:spore_filter"
     ]
   }
 }

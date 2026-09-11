@@ -11,7 +11,6 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.sound.SoundEvents;
 
 import java.util.List;
@@ -23,39 +22,47 @@ public final class ModItems {
     }
 
     public static final RegistryEntry<ArmorMaterial> SPORE_MASK_ARMOR_MATERIAL = Registry.registerReference(
-        Registries.ARMOR_MATERIAL,
-        SporesShadows.id("spore_mask"),
-        new ArmorMaterial(
-            Map.of(
-                ArmorItem.Type.HELMET, 1,
-                ArmorItem.Type.CHESTPLATE, 0,
-                ArmorItem.Type.LEGGINGS, 0,
-                ArmorItem.Type.BOOTS, 0
-            ),
-            15,
-            SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,
-            () -> Ingredient.fromTag(ItemTags.WOOL),
-            List.of(new ArmorMaterial.Layer(SporesShadows.id("spore_mask"))),
-            0.0F,
-            0.0F
-        )
-    );
+            Registries.ARMOR_MATERIAL,
+            SporesShadows.id("spore_mask"),
+            new ArmorMaterial(
+                    Map.of(
+                            ArmorItem.Type.HELMET, 1,
+                            ArmorItem.Type.CHESTPLATE, 0,
+                            ArmorItem.Type.LEGGINGS, 0,
+                            ArmorItem.Type.BOOTS, 0),
+                    15,
+                    SoundEvents.ITEM_ARMOR_EQUIP_LEATHER,
+                    () -> Ingredient.ofItems(ModItems.SPORE_FILTER),
+                    List.of(new ArmorMaterial.Layer(SporesShadows.id("spore_mask"))),
+                    0.0F,
+                    0.0F));
 
-    public static final Item SPORE_MASK = new SporeMaskItem(SPORE_MASK_ARMOR_MATERIAL, new Item.Settings().maxDamage(165));
-    public static final Item SPORE_DETECTOR = new SporeDetectorItem(ModBlocks.SPORE_DETECTOR, new Item.Settings().maxCount(16));
-    public static final Item MOISTURE_DETECTOR = new MoistureDetectorItem(ModBlocks.MOISTURE_DETECTOR, new Item.Settings().maxCount(16));
+    public static final Item SPORE_FILTER = new Item(new Item.Settings());
+    public static final Item SPORE_MASK = new SporeMaskItem(SPORE_MASK_ARMOR_MATERIAL,
+            new Item.Settings().maxDamage(165));
+    public static final Item SPORE_DETECTOR = new SporeDetectorItem(ModBlocks.SPORE_DETECTOR,
+            new Item.Settings().maxCount(16));
+    public static final Item MOISTURE_DETECTOR = new MoistureDetectorItem(ModBlocks.MOISTURE_DETECTOR,
+            new Item.Settings().maxCount(16));
 
     public static void registerModItems() {
         SporesShadows.LOGGER.info("Registering ModItems for " + SporesShadows.MOD_ID);
 
+        Registry.register(Registries.ITEM, SporesShadows.id("spore_filter"), SPORE_FILTER);
         Registry.register(Registries.ITEM, SporesShadows.id("spore_mask"), SPORE_MASK);
         Registry.register(Registries.ITEM, SporesShadows.id("spore_detector"), SPORE_DETECTOR);
         Registry.register(Registries.ITEM, SporesShadows.id("moisture_detector"), MOISTURE_DETECTOR);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
+            entries.add(SPORE_FILTER);
             entries.add(SPORE_MASK);
             entries.add(SPORE_DETECTOR);
             entries.add(MOISTURE_DETECTOR);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
+            entries.add(SPORE_FILTER);
+            entries.add(SPORE_MASK);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
