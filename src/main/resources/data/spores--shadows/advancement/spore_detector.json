@@ -1,0 +1,30 @@
+{
+  "parent": "spores--shadows:root",
+  "display": {
+    "icon": {
+      "id": "spores--shadows:spore_detector"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.spore_detector.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.spore_detector.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_spore_detector": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:spore_detector"
+          }
+        ]
+      }
+    }
+  }
+}

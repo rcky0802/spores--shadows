@@ -169,6 +169,8 @@ public class MiasmaDeviceGameTests {
                 List<String> expectedKeys = List.of(
                                 "message.spores--shadows.detector.none",
                                 "message.spores--shadows.detector.blocks_dist",
+                                "message.spores--shadows.detector.purifiers_active",
+                                "message.spores--shadows.detector.purifiers_none",
                                 "message.spores--shadows.spore_detector.header",
                                 "message.spores--shadows.spore_detector.clean",
                                 "message.spores--shadows.spore_detector.warning",

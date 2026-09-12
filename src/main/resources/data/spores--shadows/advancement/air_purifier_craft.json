@@ -1,0 +1,30 @@
+{
+  "parent": "spores--shadows:spore_detector",
+  "display": {
+    "icon": {
+      "id": "spores--shadows:air_purifier"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.air_purifier_craft.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.air_purifier_craft.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_air_purifier": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "spores--shadows:air_purifier"
+          }
+        ]
+      }
+    }
+  }
+}

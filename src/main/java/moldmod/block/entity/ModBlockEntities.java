@@ -18,6 +18,12 @@ public final class ModBlockEntities {
             BlockEntityType.Builder.create(DehumidifierBlockEntity::new, ModBlocks.DEHUMIDIFIER).build()
     );
 
+    public static final BlockEntityType<moldmod.block.purifier.AirPurifierBlockEntity> AIR_PURIFIER = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            SporesShadows.id("air_purifier"),
+            BlockEntityType.Builder.create(moldmod.block.purifier.AirPurifierBlockEntity::new, ModBlocks.AIR_PURIFIER).build()
+    );
+
     public static void registerModBlockEntities() {
         SporesShadows.LOGGER.info("Registering ModBlockEntities for " + SporesShadows.MOD_ID);
 
@@ -26,5 +32,6 @@ public final class ModBlockEntities {
 
         // Registrazione TeamReborn Energy API (EnergyStorage) su tutti i lati per compatibilità universale RF / FE
         team.reborn.energy.api.EnergyStorage.SIDED.registerForBlockEntity((be, direction) -> be.getEnergyStorage(), DEHUMIDIFIER);
+        team.reborn.energy.api.EnergyStorage.SIDED.registerForBlockEntity((be, direction) -> be.getEnergyStorage(), AIR_PURIFIER);
     }
 }

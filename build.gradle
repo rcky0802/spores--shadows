@@ -102,14 +102,7 @@ dependencies {
         exclude(group: "net.fabricmc.fabric-api")
     }
 
-    // Tech Reborn & RebornCore (Local Runtime per testare cavi, generatori e batterie RF/FE in dev)
-    modLocalRuntime "maven.modrinth:techreborn:5.11.19"
-    modLocalRuntime "maven.modrinth:reborncore:5.11.19"
-
-    // BuildCraft Refabricated (Local Runtime per testare tubi fluidi classici in dev)
-    modLocalRuntime "maven.modrinth:buildcraftrefabricated:26.7.27+mc1.21.1"
-
-	// JUnit 5
+    // JUnit 5
 	testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
 	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }

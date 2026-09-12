@@ -49,6 +49,7 @@ public final class BFSExplorer {
             Set<BlockPos> roomWaterSources,
             Set<BlockPos> roomDehumidifiers,
             Set<BlockPos> roomHumidifiers,
+            Set<BlockPos> roomPurifiers,
             double toxicScore,
             boolean openAir,
             boolean hitBoundaryWithOpenAir
@@ -143,6 +144,7 @@ public final class BFSExplorer {
         Set<BlockPos> roomWaterSources = new HashSet<>();
         Set<BlockPos> roomDehumidifiers = new HashSet<>();
         Set<BlockPos> roomHumidifiers = new HashSet<>();
+        Set<BlockPos> roomPurifiers = new HashSet<>();
         int maxRadiusSq = maxEuclideanRadius * maxEuclideanRadius;
         float moldToxMult = config.toxicity.mold_toxicity_multiplier;
         double toxicScore = 0.0;
@@ -202,6 +204,12 @@ public final class BFSExplorer {
                             }
                         }
                     }
+                    if (neighborState.isOf(moldmod.block.ModBlocks.AIR_PURIFIER)) {
+                        if (neighborState.contains(moldmod.block.purifier.AirPurifierBlock.STATUS)
+                                && neighborState.get(moldmod.block.purifier.AirPurifierBlock.STATUS) == moldmod.block.purifier.PurifierStatus.RUNNING) {
+                            roomPurifiers.add(neighborPos.toImmutable());
+                        }
+                    }
                 }
             }
         }
@@ -216,6 +224,7 @@ public final class BFSExplorer {
                 roomWaterSources,
                 roomDehumidifiers,
                 roomHumidifiers,
+                roomPurifiers,
                 toxicScore,
                 openAir,
                 hitBoundaryWithOpenAir

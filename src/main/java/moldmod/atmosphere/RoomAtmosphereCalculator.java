@@ -85,6 +85,9 @@ public final class RoomAtmosphereCalculator {
         public final Set<BlockPos> roomHumidifiers;
         public final int roomHumidifierCount;
         public final double humidifierMoistureBonus;
+        public final Set<BlockPos> roomPurifiers;
+        public final int roomPurifierCount;
+        public final double purifierCleaningBonus;
         public final double baseHumidity;
         public final double depthModifier;
         public final double roomWaterBonus;
@@ -100,7 +103,7 @@ public final class RoomAtmosphereCalculator {
                 boolean unconfined, Set<BlockPos> roomWaterSources, Set<BlockPos> roomDehumidifiers) {
             this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
                     distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight,
-                    distToGoal, nodeFlows, unconfined, roomWaterSources, roomDehumidifiers, Collections.emptySet());
+                    distToGoal, nodeFlows, unconfined, roomWaterSources, roomDehumidifiers, Collections.emptySet(), Collections.emptySet());
         }
 
         public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
@@ -110,6 +113,18 @@ public final class RoomAtmosphereCalculator {
                 Map<BlockPos, Integer> distToGoal, Map<BlockPos, Double> nodeFlows,
                 boolean unconfined, Set<BlockPos> roomWaterSources, Set<BlockPos> roomDehumidifiers,
                 Set<BlockPos> roomHumidifiers) {
+            this(world, toxicScore, ventilationScore, openAir, volume, airBlocks, defaultPos,
+                    distanceToVentilation, roomVentilationScore, susceptibleBlockCount, totalSusceptibleWeight,
+                    distToGoal, nodeFlows, unconfined, roomWaterSources, roomDehumidifiers, roomHumidifiers, Collections.emptySet());
+        }
+
+        public MiasmaResult(WorldAccess world, double toxicScore, double ventilationScore,
+                boolean openAir, int volume, Set<BlockPos> airBlocks, BlockPos defaultPos,
+                int distanceToVentilation, double roomVentilationScore,
+                int susceptibleBlockCount, double totalSusceptibleWeight,
+                Map<BlockPos, Integer> distToGoal, Map<BlockPos, Double> nodeFlows,
+                boolean unconfined, Set<BlockPos> roomWaterSources, Set<BlockPos> roomDehumidifiers,
+                Set<BlockPos> roomHumidifiers, Set<BlockPos> roomPurifiers) {
             this.openAir = openAir;
             this.volume = volume;
             this.airBlocks = airBlocks;
@@ -127,11 +142,16 @@ public final class RoomAtmosphereCalculator {
             this.roomDehumidifierCount = this.roomDehumidifiers.size();
             this.roomHumidifiers = (roomHumidifiers != null) ? roomHumidifiers : Collections.emptySet();
             this.roomHumidifierCount = this.roomHumidifiers.size();
+            this.roomPurifiers = (roomPurifiers != null) ? roomPurifiers : Collections.emptySet();
+            this.roomPurifierCount = this.roomPurifiers.size();
 
             ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
 
             this.toxicScore = Math.max(0.0, toxicScore);
             this.ventilationScore = Math.max(0.0, ventilationScore);
+
+            double purifierPower = (config.airPurifier != null) ? config.airPurifier.purifier_cleaning_power : 48.0;
+            this.purifierCleaningBonus = this.roomPurifierCount * purifierPower;
 
             if (openAir) {
                 this.ventilationType = RoomVentilationType.CLEAN_OPEN_AIR;
@@ -145,7 +165,7 @@ public final class RoomAtmosphereCalculator {
                 this.ventilationType = RoomVentilationType.HERMETIC_SEALED;
             }
 
-            this.targetMiasma = openAir ? 0.0 : Math.max(0.0, this.toxicScore - this.ventilationScore);
+            this.targetMiasma = openAir ? 0.0 : Math.max(0.0, this.toxicScore - this.ventilationScore - this.purifierCleaningBonus);
             this.netMiasma = (openAir || this.toxicScore == 0.0) ? 0.0
                     : RoomSaturationManager.getDynamicMiasma(world, this.anchorPos, this.targetMiasma);
 
@@ -325,7 +345,36 @@ public final class RoomAtmosphereCalculator {
             RoomVentilationType primaryVentilationType,
             BlockPos anchorPos,
             double humidifierBonus,
-            double rawHumidity) {
+            double rawHumidity,
+            double dehumidifierBonus,
+            int dehumidifierCount,
+            int humidifierCount,
+            int purifierCount,
+            double purifierBonus) {
+
+        public BlockAirEvaluation(
+                double ventilationFlow,
+                double averageAeration,
+                double averageExposureIndex,
+                double averageNetMiasma,
+                int exposedFacesCount,
+                int maxVolume,
+                boolean anyOpenAir,
+                int distanceToVentilation,
+                double currentHumidity,
+                double targetHumidity,
+                int waterSourcesCount,
+                double waterBonus,
+                double baseHumidity,
+                double depthModifier,
+                RoomVentilationType primaryVentilationType,
+                BlockPos anchorPos,
+                double humidifierBonus,
+                double rawHumidity) {
+            this(ventilationFlow, averageAeration, averageExposureIndex, averageNetMiasma, exposedFacesCount, maxVolume, anyOpenAir, distanceToVentilation,
+                    currentHumidity, targetHumidity, waterSourcesCount, waterBonus, baseHumidity, depthModifier, primaryVentilationType, anchorPos,
+                    humidifierBonus, rawHumidity, 0.0, 0, 0, 0, 0.0);
+        }
 
         public BlockAirEvaluation(double ventilationFlow, double averageAeration, double averageExposureIndex,
                                   double averageNetMiasma, int exposedFacesCount, int maxVolume, boolean anyOpenAir, int distanceToVentilation) {
@@ -406,7 +455,7 @@ public final class RoomAtmosphereCalculator {
         }
 
         return new MiasmaResult(world, toxicScore, ventilationScore, openAir, airBlocks.size(), airBlocks, eyePos,
-                distanceToVentilation, roomVentilationScore, scan.roomSusceptible().size(), totalSusceptibleWeight, distToGoalMap, nodeFlows, unconfined, scan.roomWaterSources(), scan.roomDehumidifiers(), scan.roomHumidifiers());
+                distanceToVentilation, roomVentilationScore, scan.roomSusceptible().size(), totalSusceptibleWeight, distToGoalMap, nodeFlows, unconfined, scan.roomWaterSources(), scan.roomDehumidifiers(), scan.roomHumidifiers(), scan.roomPurifiers());
     }
 
     public static BlockAirEvaluation calculateBlockAirEvaluation(WorldAccess world,
@@ -463,6 +512,11 @@ public final class RoomAtmosphereCalculator {
         double sumWaterBonus = 0.0;
         double sumBaseHum = 0.0;
         double sumDepth = 0.0;
+        int sumDehumidifiers = 0;
+        double sumDehumidifierBonus = 0.0;
+        int sumHumidifiers = 0;
+        int sumPurifiers = 0;
+        double sumPurifierBonus = 0.0;
         RoomVentilationType primaryVentType = RoomVentilationType.HERMETIC_SEALED;
         BlockPos primaryAnchor = blockPos;
 
@@ -582,6 +636,11 @@ public final class RoomAtmosphereCalculator {
             sumTargetHumidity += faceResult.targetHumidity;
             sumHumidifierBonus += faceResult.humidifierMoistureBonus;
             sumRawHumidity += faceResult.rawHumidity;
+            sumDehumidifiers += faceResult.roomDehumidifierCount;
+            sumDehumidifierBonus += faceResult.dehumidifierDryingBonus;
+            sumHumidifiers += faceResult.roomHumidifierCount;
+            sumPurifiers += faceResult.roomPurifierCount;
+            sumPurifierBonus += faceResult.purifierCleaningBonus;
             sumWaterSources += faceResult.roomWaterCount;
             sumWaterBonus += faceResult.roomWaterBonus;
             sumBaseHum += faceResult.baseHumidity;
@@ -600,6 +659,11 @@ public final class RoomAtmosphereCalculator {
         double avgTargetHumidity = sumTargetHumidity / (double) exposedFaces;
         double avgHumidifierBonus = sumHumidifierBonus / (double) exposedFaces;
         double avgRawHumidity = sumRawHumidity / (double) exposedFaces;
+        double avgDehumidifierBonus = sumDehumidifierBonus / (double) exposedFaces;
+        int avgDehumidifiers = (int) Math.round((double) sumDehumidifiers / (double) exposedFaces);
+        int avgHumidifiers = (int) Math.round((double) sumHumidifiers / (double) exposedFaces);
+        int avgPurifiers = (int) Math.round((double) sumPurifiers / (double) exposedFaces);
+        double avgPurifierBonus = sumPurifierBonus / (double) exposedFaces;
         int avgWaterSources = (int) Math.round((double) sumWaterSources / (double) exposedFaces);
         double avgWaterBonus = sumWaterBonus / (double) exposedFaces;
         double avgBaseHum = sumBaseHum / (double) exposedFaces;
@@ -622,7 +686,7 @@ public final class RoomAtmosphereCalculator {
 
         return new BlockAirEvaluation(finalFlow, finalAeration, avgExposure, avgNetMiasma, exposedFaces, maxVol, anyOpen, minDistance,
                 avgHumidity, avgTargetHumidity, avgWaterSources, avgWaterBonus, avgBaseHum, avgDepth, primaryVentType, primaryAnchor,
-                avgHumidifierBonus, avgRawHumidity);
+                avgHumidifierBonus, avgRawHumidity, avgDehumidifierBonus, avgDehumidifiers, avgHumidifiers, avgPurifiers, avgPurifierBonus);
     }
 
     public static MiasmaResult calculateBlockAirEnvironment(WorldAccess world, BlockPos blockPos,

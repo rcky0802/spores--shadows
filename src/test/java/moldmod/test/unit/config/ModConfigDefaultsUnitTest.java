@@ -277,9 +277,19 @@ public class ModConfigDefaultsUnitTest {
     void testDehumidifierDefaults() {
         assertEquals(2000, config.dehumidifier.capacity_mb);
         assertEquals(24, config.dehumidifier.ticks_per_mb);
-        assertEquals(1.0f, config.dehumidifier.fuel_multiplier, 1e-4);
+        assertEquals(4.0f, config.dehumidifier.fuel_multiplier, 1e-4);
         assertEquals(1.0, config.dehumidifier.drying_power, 1e-4);
         assertEquals(32000, config.dehumidifier.energy_capacity);
         assertEquals(10, config.dehumidifier.energy_cost_per_tick);
+    }
+
+    @Test
+    @DisplayName("Air purifier category defaults")
+    void testAirPurifierDefaults() {
+        assertEquals(48.0, config.airPurifier.purifier_cleaning_power, 1e-4);
+        assertEquals(2400, config.airPurifier.filter_durability_ticks);
+        assertEquals(4.0f, config.airPurifier.fuel_multiplier, 1e-4);
+        assertEquals(32000, config.airPurifier.energy_capacity);
+        assertEquals(10, config.airPurifier.energy_cost_per_tick);
     }
 }

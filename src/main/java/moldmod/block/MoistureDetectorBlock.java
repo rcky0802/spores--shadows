@@ -180,7 +180,27 @@ public final class MoistureDetectorBlock extends WallMountedBlock {
                 String.format("%.1f%%", result.aeration() * 100.0),
                 String.format("%.1f%%", rawPercent)), false);
 
-        // Line 5: Dynamic Trend
+        // Line 5: Dehumidifiers (and Humidifiers)
+        if (result.dehumidifierCount() > 0 && result.humidifierCount() > 0) {
+            double dehumPercent = result.dehumidifierDryingBonus() * 100.0;
+            double humPercent = result.humidifierMoistureBonus() * 100.0;
+            player.sendMessage(Text.translatable("message.spores--shadows.detector.dehumidifiers_active",
+                    result.dehumidifierCount(), String.format("%.1f%%", dehumPercent)), false);
+            player.sendMessage(Text.translatable("message.spores--shadows.detector.humidifiers_active",
+                    result.humidifierCount(), String.format("%.1f%%", humPercent)), false);
+        } else if (result.dehumidifierCount() > 0) {
+            double dehumPercent = result.dehumidifierDryingBonus() * 100.0;
+            player.sendMessage(Text.translatable("message.spores--shadows.detector.dehumidifiers_active",
+                    result.dehumidifierCount(), String.format("%.1f%%", dehumPercent)), false);
+        } else if (result.humidifierCount() > 0) {
+            double humPercent = result.humidifierMoistureBonus() * 100.0;
+            player.sendMessage(Text.translatable("message.spores--shadows.detector.humidifiers_active",
+                    result.humidifierCount(), String.format("%.1f%%", humPercent)), false);
+        } else {
+            player.sendMessage(Text.translatable("message.spores--shadows.detector.dehumidifiers_none"), false);
+        }
+
+        // Line 6: Dynamic Trend
         if (result.currentHumidity() > result.targetHumidity() + 0.02) {
             player.sendMessage(Text.translatable("message.spores--shadows.moisture_detector.trend_drying",
                     String.format("%.1f%%", result.targetHumidity() * 100.0)), false);

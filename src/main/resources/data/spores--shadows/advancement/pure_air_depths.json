@@ -1,0 +1,23 @@
+{
+  "parent": "spores--shadows:air_purifier_craft",
+  "display": {
+    "icon": {
+      "id": "spores--shadows:spore_filter"
+    },
+    "title": {
+      "translate": "advancements.spores--shadows.pure_air_depths.title"
+    },
+    "description": {
+      "translate": "advancements.spores--shadows.pure_air_depths.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "pure_air": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

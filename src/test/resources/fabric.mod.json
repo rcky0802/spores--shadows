@@ -33,6 +33,7 @@
 			"moldmod.test.gametest.miasma.MiasmaDeviceGameTests",
 			"moldmod.test.gametest.miasma.MoistureDetectorGameTests",
 			"moldmod.test.gametest.miasma.DehumidifierGameTests",
+			"moldmod.test.gametest.miasma.AirPurifierGameTests",
 			"moldmod.test.gametest.miasma.DynamicMiasmaSaturationTests",
 			"moldmod.test.gametest.miasma.MiasmaApertureHermeticGameTests",
 			"moldmod.test.gametest.gear.SporeMaskTests",

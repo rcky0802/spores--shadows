@@ -1,0 +1,229 @@
+{
+  "variants": {
+    "facing=north,filter_level=0,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_0"
+    },
+    "facing=north,filter_level=1,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_1"
+    },
+    "facing=north,filter_level=2,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_2"
+    },
+    "facing=north,filter_level=3,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_3"
+    },
+    "facing=north,filter_level=4,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_4"
+    },
+    "facing=north,filter_level=0,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_0"
+    },
+    "facing=north,filter_level=1,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_1"
+    },
+    "facing=north,filter_level=2,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_2"
+    },
+    "facing=north,filter_level=3,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_3"
+    },
+    "facing=north,filter_level=4,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_4"
+    },
+    "facing=north,filter_level=0,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_0"
+    },
+    "facing=north,filter_level=1,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_1"
+    },
+    "facing=north,filter_level=2,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_2"
+    },
+    "facing=north,filter_level=3,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_3"
+    },
+    "facing=north,filter_level=4,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_4"
+    },
+    "facing=east,filter_level=0,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_0",
+      "y": 90
+    },
+    "facing=east,filter_level=1,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_1",
+      "y": 90
+    },
+    "facing=east,filter_level=2,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_2",
+      "y": 90
+    },
+    "facing=east,filter_level=3,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_3",
+      "y": 90
+    },
+    "facing=east,filter_level=4,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_4",
+      "y": 90
+    },
+    "facing=east,filter_level=0,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_0",
+      "y": 90
+    },
+    "facing=east,filter_level=1,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_1",
+      "y": 90
+    },
+    "facing=east,filter_level=2,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_2",
+      "y": 90
+    },
+    "facing=east,filter_level=3,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_3",
+      "y": 90
+    },
+    "facing=east,filter_level=4,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_4",
+      "y": 90
+    },
+    "facing=east,filter_level=0,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_0",
+      "y": 90
+    },
+    "facing=east,filter_level=1,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_1",
+      "y": 90
+    },
+    "facing=east,filter_level=2,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_2",
+      "y": 90
+    },
+    "facing=east,filter_level=3,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_3",
+      "y": 90
+    },
+    "facing=east,filter_level=4,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_4",
+      "y": 90
+    },
+    "facing=south,filter_level=0,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_0",
+      "y": 180
+    },
+    "facing=south,filter_level=1,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_1",
+      "y": 180
+    },
+    "facing=south,filter_level=2,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_2",
+      "y": 180
+    },
+    "facing=south,filter_level=3,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_3",
+      "y": 180
+    },
+    "facing=south,filter_level=4,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_4",
+      "y": 180
+    },
+    "facing=south,filter_level=0,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_0",
+      "y": 180
+    },
+    "facing=south,filter_level=1,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_1",
+      "y": 180
+    },
+    "facing=south,filter_level=2,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_2",
+      "y": 180
+    },
+    "facing=south,filter_level=3,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_3",
+      "y": 180
+    },
+    "facing=south,filter_level=4,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_4",
+      "y": 180
+    },
+    "facing=south,filter_level=0,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_0",
+      "y": 180
+    },
+    "facing=south,filter_level=1,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_1",
+      "y": 180
+    },
+    "facing=south,filter_level=2,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_2",
+      "y": 180
+    },
+    "facing=south,filter_level=3,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_3",
+      "y": 180
+    },
+    "facing=south,filter_level=4,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_4",
+      "y": 180
+    },
+    "facing=west,filter_level=0,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_0",
+      "y": 270
+    },
+    "facing=west,filter_level=1,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_1",
+      "y": 270
+    },
+    "facing=west,filter_level=2,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_2",
+      "y": 270
+    },
+    "facing=west,filter_level=3,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_3",
+      "y": 270
+    },
+    "facing=west,filter_level=4,status=off": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_off_4",
+      "y": 270
+    },
+    "facing=west,filter_level=0,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_0",
+      "y": 270
+    },
+    "facing=west,filter_level=1,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_1",
+      "y": 270
+    },
+    "facing=west,filter_level=2,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_2",
+      "y": 270
+    },
+    "facing=west,filter_level=3,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_3",
+      "y": 270
+    },
+    "facing=west,filter_level=4,status=running": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_running_4",
+      "y": 270
+    },
+    "facing=west,filter_level=0,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_0",
+      "y": 270
+    },
+    "facing=west,filter_level=1,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_1",
+      "y": 270
+    },
+    "facing=west,filter_level=2,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_2",
+      "y": 270
+    },
+    "facing=west,filter_level=3,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_3",
+      "y": 270
+    },
+    "facing=west,filter_level=4,status=filter_depleted": {
+      "model": "spores--shadows:block/air_purifier/air_purifier_filter_depleted_4",
+      "y": 270
+    }
+  }
+}

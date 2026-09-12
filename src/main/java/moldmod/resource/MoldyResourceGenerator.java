@@ -32,7 +32,7 @@ public final class MoldyResourceGenerator {
                 {
                   "parent": "minecraft:item/generated",
                   "textures": {
-                    "layer0": "spores--shadows:item/spore_mask"
+                    "layer0": "spores--shadows:item/gear/spore_mask"
                   }
                 }
                 """;
@@ -72,7 +72,7 @@ public final class MoldyResourceGenerator {
                         // 2. TEXTURE GENERATION (In Memory with Alpha Masking)
                         try {
                             InputStream doorIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/minecraft/textures/item/" + wood + "_door.png");
-                            InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/" + SporesShadows.MOD_ID + "/textures/block/mold_stage_" + i + ".png");
+                            InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/" + SporesShadows.MOD_ID + "/textures/block/mold/mold_stage_" + i + ".png");
                             
                             if (doorIn != null && moldIn != null) {
                                 BufferedImage doorImage = ImageIO.read(doorIn);

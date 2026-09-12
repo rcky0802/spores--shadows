@@ -2,15 +2,15 @@
   "sources": [
     {
       "type": "single",
-      "resource": "spores--shadows:block/mold_stage_1"
+      "resource": "spores--shadows:block/mold/mold_stage_1"
     },
     {
       "type": "single",
-      "resource": "spores--shadows:block/mold_stage_2"
+      "resource": "spores--shadows:block/mold/mold_stage_2"
     },
     {
       "type": "single",
-      "resource": "spores--shadows:block/mold_stage_3"
+      "resource": "spores--shadows:block/mold/mold_stage_3"
     }
   ]
 }

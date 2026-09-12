@@ -76,6 +76,21 @@ public final class ModBlocks {
             new BlockItem(DEHUMIDIFIER, new Item.Settings())
     );
 
+    public static final Block AIR_PURIFIER = Registry.register(
+            Registries.BLOCK,
+            SporesShadows.id("air_purifier"),
+            new moldmod.block.purifier.AirPurifierBlock(AbstractBlock.Settings.copy(Blocks.IRON_BLOCK)
+                    .strength(3.5f)
+                    .sounds(BlockSoundGroup.COPPER)
+                    .luminance(state -> state.get(moldmod.block.purifier.AirPurifierBlock.STATUS) == moldmod.block.purifier.PurifierStatus.RUNNING ? 7 : 0))
+    );
+
+    public static final Item AIR_PURIFIER_ITEM = Registry.register(
+            Registries.ITEM,
+            SporesShadows.id("air_purifier"),
+            new BlockItem(AIR_PURIFIER, new Item.Settings())
+    );
+
     public static void registerModBlocks() {
         SporesShadows.LOGGER.info("Registering ModBlocks for " + SporesShadows.MOD_ID);
 
@@ -98,6 +113,7 @@ public final class ModBlocks {
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(DEHUMIDIFIER_ITEM);
+            entries.add(AIR_PURIFIER_ITEM);
         });
     }
 

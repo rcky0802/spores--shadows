@@ -16,6 +16,12 @@ public final class ModScreenHandlers {
             new ScreenHandlerType<>(DehumidifierScreenHandler::new, FeatureFlags.VANILLA_FEATURES)
     );
 
+    public static final ScreenHandlerType<AirPurifierScreenHandler> AIR_PURIFIER = Registry.register(
+            Registries.SCREEN_HANDLER,
+            SporesShadows.id("air_purifier"),
+            new ScreenHandlerType<>(AirPurifierScreenHandler::new, FeatureFlags.VANILLA_FEATURES)
+    );
+
     public static void registerModScreenHandlers() {
         // Trigger class loading
     }

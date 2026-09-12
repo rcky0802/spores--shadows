@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "spores--shadows:item/spore_filter"
+    "layer0": "spores--shadows:item/gear/spore_filter"
   }
 }

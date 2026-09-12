@@ -1,8 +1,10 @@
 package moldmod.client;
 
 import moldmod.SporesShadows;
-import moldmod.client.render.SporeMaskArmorRenderer;
-import moldmod.client.render.SporeMaskModel;
+import moldmod.client.cache.ClientMoistureCache;
+import moldmod.client.cache.ClientToxicityCache;
+import moldmod.client.render.armor.SporeMaskArmorRenderer;
+import moldmod.client.render.model.SporeMaskModel;
 import moldmod.item.ModItems;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -54,6 +56,12 @@ public final class SporesShadowsClient implements ClientModInitializer {
 		net.minecraft.client.gui.screen.ingame.HandledScreens.register(
 			moldmod.screen.ModScreenHandlers.DEHUMIDIFIER,
 			moldmod.client.screen.DehumidifierScreen::new
+		);
+
+		// Register Air Purifier HandledScreen
+		net.minecraft.client.gui.screen.ingame.HandledScreens.register(
+			moldmod.screen.ModScreenHandlers.AIR_PURIFIER,
+			moldmod.client.screen.AirPurifierScreen::new
 		);
 	}
 }

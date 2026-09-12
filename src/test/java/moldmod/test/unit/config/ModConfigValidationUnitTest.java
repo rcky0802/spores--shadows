@@ -199,4 +199,32 @@ public class ModConfigValidationUnitTest {
         assertEquals(20.0f, config.dehumidifier.fuel_multiplier, 1e-4);
         assertEquals(10.0, config.dehumidifier.drying_power, 1e-4);
     }
+
+    @Test
+    @DisplayName("Air purifier parameters get properly clamped")
+    void testAirPurifierClamping() throws ConfigData.ValidationException {
+        config.airPurifier.purifier_cleaning_power = -5.0;
+        config.airPurifier.filter_durability_ticks = 10;
+        config.airPurifier.fuel_multiplier = -1.0f;
+        config.airPurifier.energy_capacity = 200;
+        config.airPurifier.energy_cost_per_tick = -4;
+
+        config.validatePostLoad();
+
+        assertEquals(0.0, config.airPurifier.purifier_cleaning_power, 1e-4);
+        assertEquals(100, config.airPurifier.filter_durability_ticks);
+        assertEquals(0.1f, config.airPurifier.fuel_multiplier, 1e-4);
+        assertEquals(1000, config.airPurifier.energy_capacity);
+        assertEquals(1, config.airPurifier.energy_cost_per_tick);
+
+        config.airPurifier.purifier_cleaning_power = 250.0;
+        config.airPurifier.filter_durability_ticks = 200000;
+        config.airPurifier.fuel_multiplier = 50.0f;
+
+        config.validatePostLoad();
+
+        assertEquals(100.0, config.airPurifier.purifier_cleaning_power, 1e-4);
+        assertEquals(100000, config.airPurifier.filter_durability_ticks);
+        assertEquals(20.0f, config.airPurifier.fuel_multiplier, 1e-4);
+    }
 }

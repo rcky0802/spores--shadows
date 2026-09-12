@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "spores--shadows:block/dehumidifier/dehumidifier_front_off_2",
+    "down": "spores--shadows:block/dehumidifier/dehumidifier_bottom",
+    "up": "spores--shadows:block/dehumidifier/dehumidifier_top",
+    "north": "spores--shadows:block/dehumidifier/dehumidifier_front_off_2",
+    "south": "spores--shadows:block/dehumidifier/dehumidifier_side",
+    "west": "spores--shadows:block/dehumidifier/dehumidifier_side",
+    "east": "spores--shadows:block/dehumidifier/dehumidifier_side"
+  }
+}

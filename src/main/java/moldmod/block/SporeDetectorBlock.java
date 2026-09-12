@@ -183,7 +183,15 @@ public final class SporeDetectorBlock extends WallMountedBlock {
                 String.format("%.1f%%", result.localAeration * 100.0),
                 String.format("%.2f", result.netMiasma)), false);
 
-        // Line 5: Dynamic Trend
+        // Line 5: Air Purifiers
+        if (result.roomPurifierCount > 0) {
+            player.sendMessage(Text.translatable("message.spores--shadows.detector.purifiers_active",
+                    result.roomPurifierCount, String.format("%.2f", result.purifierCleaningBonus)), false);
+        } else {
+            player.sendMessage(Text.translatable("message.spores--shadows.detector.purifiers_none"), false);
+        }
+
+        // Line 6: Dynamic Trend
         if (result.netMiasma > result.targetMiasma + 0.05) {
             player.sendMessage(Text.translatable("message.spores--shadows.spore_detector.trend_purifying",
                     String.format("%.2f", result.targetMiasma)), false);

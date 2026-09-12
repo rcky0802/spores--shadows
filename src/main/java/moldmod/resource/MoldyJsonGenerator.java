@@ -94,10 +94,10 @@ public final class MoldyJsonGenerator {
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     JsonObject model = new JsonObject();
-                    model.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_cube_all");
+                    model.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_cube_all");
                     JsonObject textures = new JsonObject();
                     textures.addProperty("all", tex);
-                    textures.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    textures.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     model.add("textures", textures);
                     write(builder, "models/block/" + blockId + "_stage_" + stage, model);
                 }
@@ -131,10 +131,10 @@ public final class MoldyJsonGenerator {
             JsonObject model = new JsonObject();
             JsonObject textures = new JsonObject();
             if (stage > 0) {
-                model.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_cube_column");
+                model.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_cube_column");
                 textures.addProperty("end", topTex);
                 textures.addProperty("side", vanillaTex);
-                textures.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                textures.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                 model.add("textures", textures);
                 write(builder, "models/block/" + blockId + "_stage_" + stage, model);
             }
@@ -168,14 +168,14 @@ public final class MoldyJsonGenerator {
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     JsonObject mBot = new JsonObject();
-                    mBot.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_slab");
+                    mBot.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_slab");
                     JsonObject tBot = new JsonObject();
-                    tBot.addProperty("bottom", tex); tBot.addProperty("top", tex); tBot.addProperty("side", tex); tBot.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    tBot.addProperty("bottom", tex); tBot.addProperty("top", tex); tBot.addProperty("side", tex); tBot.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     mBot.add("textures", tBot);
                     write(builder, "models/block/" + blockId + "_stage_" + stage, mBot);
 
                     JsonObject mTop = new JsonObject();
-                    mTop.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_slab_top");
+                    mTop.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_slab_top");
                     mTop.add("textures", tBot);
                     write(builder, "models/block/" + blockId + "_stage_" + stage + "_top", mTop);
                 }
@@ -220,15 +220,15 @@ public final class MoldyJsonGenerator {
             for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
-                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_stairs");
-                    JsonObject tDef = new JsonObject(); tDef.addProperty("bottom", tex); tDef.addProperty("top", tex); tDef.addProperty("side", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_stairs");
+                    JsonObject tDef = new JsonObject(); tDef.addProperty("bottom", tex); tDef.addProperty("top", tex); tDef.addProperty("side", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     mDef.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
 
-                    JsonObject mIn = new JsonObject(); mIn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_inner_stairs"); mIn.add("textures", tDef);
+                    JsonObject mIn = new JsonObject(); mIn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_inner_stairs"); mIn.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_stage_" + stage + "_inner", mIn);
 
-                    JsonObject mOut = new JsonObject(); mOut.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_outer_stairs"); mOut.add("textures", tDef);
+                    JsonObject mOut = new JsonObject(); mOut.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_outer_stairs"); mOut.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_stage_" + stage + "_outer", mOut);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_stairs" : blockId + "_stage_" + stage;
@@ -285,9 +285,9 @@ public final class MoldyJsonGenerator {
                         for (String hinge : new String[]{"left", "right"}) {
                             for (String openS : new String[]{"", "_open"}) {
                                 String mName = blockId + "_" + half + "_" + hinge + openS + "_stage_" + stage;
-                                String parent = moldmod.SporesShadows.MOD_ID + ":block/moldy_door_" + half + "_" + hinge + openS;
+                                String parent = moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_door_" + half + "_" + hinge + openS;
                                 JsonObject mDef = new JsonObject(); mDef.addProperty("parent", parent);
-                                JsonObject tDef = new JsonObject(); tDef.addProperty("bottom", texBot); tDef.addProperty("top", texTop); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                                JsonObject tDef = new JsonObject(); tDef.addProperty("bottom", texBot); tDef.addProperty("top", texTop); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                                 mDef.add("textures", tDef);
                                 write(builder, "models/block/" + mName, mDef);
                             }
@@ -338,14 +338,14 @@ public final class MoldyJsonGenerator {
             for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_trapdoor";
                 if (stage > 0) {
-                    JsonObject mBot = new JsonObject(); mBot.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_orientable_trapdoor_bottom");
-                    JsonObject tBot = new JsonObject(); tBot.addProperty("texture", tex); tBot.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    JsonObject mBot = new JsonObject(); mBot.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_orientable_trapdoor_bottom");
+                    JsonObject tBot = new JsonObject(); tBot.addProperty("texture", tex); tBot.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     mBot.add("textures", tBot); write(builder, "models/block/" + blockId + "_bottom_stage_" + stage, mBot);
 
-                    JsonObject mTop = new JsonObject(); mTop.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_orientable_trapdoor_top"); mTop.add("textures", tBot);
+                    JsonObject mTop = new JsonObject(); mTop.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_orientable_trapdoor_top"); mTop.add("textures", tBot);
                     write(builder, "models/block/" + blockId + "_top_stage_" + stage, mTop);
 
-                    JsonObject mOpn = new JsonObject(); mOpn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_orientable_trapdoor_open"); mOpn.add("textures", tBot);
+                    JsonObject mOpn = new JsonObject(); mOpn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_orientable_trapdoor_open"); mOpn.add("textures", tBot);
                     write(builder, "models/block/" + blockId + "_open_stage_" + stage, mOpn);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_trapdoor_bottom" : blockId + "_bottom_stage_" + stage;
@@ -385,14 +385,14 @@ public final class MoldyJsonGenerator {
             for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
-                    JsonObject mP = new JsonObject(); mP.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_fence_post");
-                    JsonObject tP = new JsonObject(); tP.addProperty("texture", tex); tP.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    JsonObject mP = new JsonObject(); mP.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_post");
+                    JsonObject tP = new JsonObject(); tP.addProperty("texture", tex); tP.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     mP.add("textures", tP); write(builder, "models/block/" + blockId + "_post_stage_" + stage, mP);
 
-                    JsonObject mS = new JsonObject(); mS.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_fence_side"); mS.add("textures", tP);
+                    JsonObject mS = new JsonObject(); mS.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_side"); mS.add("textures", tP);
                     write(builder, "models/block/" + blockId + "_side_stage_" + stage, mS);
 
-                    JsonObject mI = new JsonObject(); mI.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_fence_inventory"); mI.add("textures", tP);
+                    JsonObject mI = new JsonObject(); mI.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_inventory"); mI.add("textures", tP);
                     write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mI);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_fence_inventory" : blockId + "_inventory_stage_" + stage;
@@ -441,13 +441,13 @@ public final class MoldyJsonGenerator {
             for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
-                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_fence_gate");
-                    JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate");
+                    JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     mDef.add("textures", tDef); write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
 
-                    JsonObject mOpn = new JsonObject(); mOpn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_fence_gate_open"); mOpn.add("textures", tDef); write(builder, "models/block/" + blockId + "_open_stage_" + stage, mOpn);
-                    JsonObject mWal = new JsonObject(); mWal.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_fence_gate_wall"); mWal.add("textures", tDef); write(builder, "models/block/" + blockId + "_wall_stage_" + stage, mWal);
-                    JsonObject mWO = new JsonObject(); mWO.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_template_fence_gate_wall_open"); mWO.add("textures", tDef); write(builder, "models/block/" + blockId + "_wall_open_stage_" + stage, mWO);
+                    JsonObject mOpn = new JsonObject(); mOpn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate_open"); mOpn.add("textures", tDef); write(builder, "models/block/" + blockId + "_open_stage_" + stage, mOpn);
+                    JsonObject mWal = new JsonObject(); mWal.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate_wall"); mWal.add("textures", tDef); write(builder, "models/block/" + blockId + "_wall_stage_" + stage, mWal);
+                    JsonObject mWO = new JsonObject(); mWO.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate_wall_open"); mWO.add("textures", tDef); write(builder, "models/block/" + blockId + "_wall_open_stage_" + stage, mWO);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_fence_gate" : blockId + "_stage_" + stage;
                 if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_fence_gate", itemParent, stage, false, idPrefix); }
@@ -491,12 +491,12 @@ public final class MoldyJsonGenerator {
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     // Normal
-                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_pressure_plate_up");
-                    JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_pressure_plate_up");
+                    JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     mDef.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
                     // Pressed
-                    JsonObject mPressed = new JsonObject(); mPressed.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_pressure_plate_down");
+                    JsonObject mPressed = new JsonObject(); mPressed.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_pressure_plate_down");
                     mPressed.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_down_stage_" + stage, mPressed);
                 }
@@ -528,18 +528,18 @@ public final class MoldyJsonGenerator {
                 String tex = "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
                     // Normal
-                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_button");
-                    JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold_stage_" + stage);
+                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_button");
+                    JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
                     mDef.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
                     
                     // Pressed
-                    JsonObject mPressed = new JsonObject(); mPressed.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_button_pressed");
+                    JsonObject mPressed = new JsonObject(); mPressed.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_button_pressed");
                     mPressed.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_pressed_stage_" + stage, mPressed);
                     
                     // Inventory
-                    JsonObject mInv = new JsonObject(); mInv.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/moldy_button_inventory");
+                    JsonObject mInv = new JsonObject(); mInv.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_button_inventory");
                     mInv.add("textures", tDef);
                     write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mInv);
                 }

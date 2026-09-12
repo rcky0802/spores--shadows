@@ -88,7 +88,25 @@ public final class MoldRiskCalculator {
             int roomWaterSourcesCount,
             boolean isWaterlogged,
             RoomAtmosphereCalculator.RoomVentilationType roomVentilationType,
-            BlockPos anchorPos) {
+            BlockPos anchorPos,
+            int dehumidifierCount,
+            double dehumidifierDryingBonus,
+            int humidifierCount,
+            double humidifierMoistureBonus,
+            int purifierCount,
+            double purifierCleaningBonus) {
+
+        public MoldRiskResult(double Tmult, double Heff, double Hraw, double baseHum, double depthModifier,
+                double localHumidityBonus, double aerationFlow, double aeration, double aerationDryingBonus, double Luv, double avgLight,
+                double Smat, double catalystBonus, double miasmaBonus, double netMiasma, int airVolume, int exposedFaces,
+                double R, float effectiveTemp, float surfaceTemp, int distanceToVentilation, double targetHumidity,
+                double currentHumidity, int roomWaterSourcesCount, boolean isWaterlogged,
+                RoomAtmosphereCalculator.RoomVentilationType roomVentilationType, BlockPos anchorPos) {
+            this(Tmult, Heff, Hraw, baseHum, depthModifier, localHumidityBonus, aerationFlow, aeration, aerationDryingBonus,
+                    Luv, avgLight, Smat, catalystBonus, miasmaBonus, netMiasma, airVolume, exposedFaces, R, effectiveTemp, surfaceTemp,
+                    distanceToVentilation, targetHumidity, currentHumidity, roomWaterSourcesCount, isWaterlogged,
+                    roomVentilationType, anchorPos, 0, 0.0, 0, 0.0, 0, 0.0);
+        }
 
         public MoldRiskResult(double Tmult, double Heff, double Hraw, double baseHum, double depthModifier,
                 double localHumidityBonus, double aerationFlow, double aeration, double aerationDryingBonus, double Luv, double avgLight,
@@ -393,6 +411,9 @@ public final class MoldRiskCalculator {
                 aerationDryingBonus, Luv, avgLight, Smat, catalystBonus, miasmaBonus, airEval.averageNetMiasma(),
                 airEval.maxVolume(), airEval.exposedFacesCount(), R, temp, surfaceTemp, airEval.distanceToVentilation(),
                 targetHumidity, currentHumidity, roomWaterSourcesCount, isWaterlogged,
-                airEval.primaryVentilationType(), airEval.anchorPos());
+                airEval.primaryVentilationType(), airEval.anchorPos(),
+                airEval.dehumidifierCount(), airEval.dehumidifierBonus(),
+                airEval.humidifierCount(), airEval.humidifierBonus(),
+                airEval.purifierCount(), airEval.purifierBonus());
     }
 }

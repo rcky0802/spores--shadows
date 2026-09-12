@@ -73,6 +73,10 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public Dehumidifier dehumidifier = new Dehumidifier();
 
+    @ConfigEntry.Category("air_purifier")
+    @ConfigEntry.Gui.CollapsibleObject
+    public AirPurifier airPurifier = new AirPurifier();
+
     @ConfigEntry.Category("toxicity")
     @ConfigEntry.Gui.CollapsibleObject
     public Toxicity toxicity = new Toxicity();
@@ -297,9 +301,22 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int ticks_per_mb = 24;
         @ConfigEntry.Gui.Tooltip(count = 1)
-        public float fuel_multiplier = 1.0f;
+        public float fuel_multiplier = 4.0f;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public double drying_power = 1.0;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int energy_capacity = 32000;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int energy_cost_per_tick = 10;
+    }
+
+    public static class AirPurifier {
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public double purifier_cleaning_power = 48.0;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int filter_durability_ticks = 2400;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float fuel_multiplier = 4.0f;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int energy_capacity = 32000;
         @ConfigEntry.Gui.Tooltip(count = 1)
@@ -447,6 +464,12 @@ public class ModConfig implements ConfigData {
         dehumidifier.drying_power = MathHelper.clamp(dehumidifier.drying_power, 0.0, 10.0);
         dehumidifier.energy_capacity = Math.max(1000, dehumidifier.energy_capacity);
         dehumidifier.energy_cost_per_tick = Math.max(1, dehumidifier.energy_cost_per_tick);
+
+        airPurifier.purifier_cleaning_power = MathHelper.clamp(airPurifier.purifier_cleaning_power, 0.0, 100.0);
+        airPurifier.filter_durability_ticks = MathHelper.clamp(airPurifier.filter_durability_ticks, 100, 100000);
+        airPurifier.fuel_multiplier = MathHelper.clamp(airPurifier.fuel_multiplier, 0.1f, 20.0f);
+        airPurifier.energy_capacity = Math.max(1000, airPurifier.energy_capacity);
+        airPurifier.energy_cost_per_tick = Math.max(1, airPurifier.energy_cost_per_tick);
 
         toxicity.check_interval_ticks = MathHelper.clamp(toxicity.check_interval_ticks, 10, 200);
         toxicity.scan_radius = MathHelper.clamp(toxicity.scan_radius, 1, 16);

@@ -46,7 +46,9 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         var guiHelper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(
                 new WaxingRecipeCategory(guiHelper),
-                new ScrapingRecipeCategory(guiHelper)
+                new ScrapingRecipeCategory(guiHelper),
+                new DehumidifierRecipeCategory(guiHelper),
+                new AirPurifierRecipeCategory(guiHelper)
         );
     }
 
@@ -94,6 +96,87 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         registration.addRecipes(WaxingRecipeCategory.RECIPE_TYPE, waxingRecipes);
         registration.addRecipes(ScrapingRecipeCategory.RECIPE_TYPE, scrapingRecipes);
 
+        // Dehumidifier Recipes (Water Production & Humidification)
+        List<ItemStack> commonFuels = List.of(
+                new ItemStack(Items.COAL),
+                new ItemStack(Items.CHARCOAL),
+                new ItemStack(Items.LAVA_BUCKET),
+                new ItemStack(Items.BLAZE_ROD)
+        );
+
+        List<DehumidifierRecipe> dehumidifierRecipes = List.of(
+                new DehumidifierRecipe(
+                        new ItemStack(Items.BUCKET),
+                        commonFuels,
+                        new ItemStack(Items.WATER_BUCKET),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_dehumidify"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_rate"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_tank"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_power"),
+                        List.of(
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.dehumidify"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.rate"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.tank"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.power"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.energy_desc")
+                        )
+                ),
+                new DehumidifierRecipe(
+                        new ItemStack(Items.WATER_BUCKET),
+                        commonFuels,
+                        new ItemStack(Items.BUCKET),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_humidify"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_humidify_rate"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_tank"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.short_power"),
+                        List.of(
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.humidify"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.humidify_rate"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.tank"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.humidify_desc"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".dehumidifier.energy_desc")
+                        )
+                )
+        );
+        registration.addRecipes(DehumidifierRecipeCategory.RECIPE_TYPE, dehumidifierRecipes);
+
+        // Air Purifier Recipes (Spore Filter Consumption & Air Decontamination)
+        List<AirPurifierRecipe> purifierRecipes = List.of(
+                new AirPurifierRecipe(
+                        new ItemStack(ModItems.SPORE_FILTER),
+                        commonFuels,
+                        new ItemStack(ModBlocks.AIR_PURIFIER),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_standard"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_cleaning"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_duration"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_rate_standard"),
+                        List.of(
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.standard"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.cleaning"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.duration"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.rate_standard"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.energy_desc")
+                        )
+                ),
+                new AirPurifierRecipe(
+                        new ItemStack(ModItems.SPORE_FILTER),
+                        commonFuels,
+                        new ItemStack(ModBlocks.AIR_PURIFIER),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_lethal"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_cleaning"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_lethal_duration"),
+                        Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.short_rate_lethal"),
+                        List.of(
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.lethal"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.cleaning"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.lethal_duration"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.rate_lethal"),
+                                Text.translatable("jei." + SporesShadows.MOD_ID + ".air_purifier.energy_desc")
+                        )
+                )
+        );
+        registration.addRecipes(AirPurifierRecipeCategory.RECIPE_TYPE, purifierRecipes);
+
         if (!rottenStacks.isEmpty()) {
             registration.addIngredientInfo(rottenStacks, VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.rotten_wood"));
         }
@@ -111,6 +194,15 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
                 Text.translatable("jei." + SporesShadows.MOD_ID + ".info.dehumidifier.water"),
                 Text.empty(),
                 Text.translatable("jei." + SporesShadows.MOD_ID + ".info.dehumidifier.automation")
+        );
+        registration.addIngredientInfo(new ItemStack(moldmod.block.ModBlocks.AIR_PURIFIER), VanillaTypes.ITEM_STACK,
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.air_purifier"),
+                Text.empty(),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.air_purifier.energy"),
+                Text.empty(),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.air_purifier.filters"),
+                Text.empty(),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".info.air_purifier.automation")
         );
 
         var client = MinecraftClient.getInstance();
@@ -216,6 +308,9 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(Items.DIAMOND_AXE), ScrapingRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(Items.NETHERITE_AXE), ScrapingRecipeCategory.RECIPE_TYPE);
 
+        registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.DEHUMIDIFIER), DehumidifierRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.AIR_PURIFIER), AirPurifierRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.DEHUMIDIFIER), mezz.jei.api.constants.RecipeTypes.FUELING);
+        registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.AIR_PURIFIER), mezz.jei.api.constants.RecipeTypes.FUELING);
     }
 }

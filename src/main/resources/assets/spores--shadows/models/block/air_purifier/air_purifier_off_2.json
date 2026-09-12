@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "spores--shadows:block/air_purifier/air_purifier_front_off_2",
+    "down": "spores--shadows:block/air_purifier/air_purifier_bottom",
+    "up": "spores--shadows:block/air_purifier/air_purifier_top",
+    "north": "spores--shadows:block/air_purifier/air_purifier_front_off_2",
+    "south": "spores--shadows:block/air_purifier/air_purifier_side",
+    "west": "spores--shadows:block/air_purifier/air_purifier_side",
+    "east": "spores--shadows:block/air_purifier/air_purifier_side"
+  }
+}

@@ -1,453 +1,228 @@
 {
   "variants": {
-    "facing=north,mode=dehumidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0"
+    "facing=north,status=off,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_0"
     },
-    "facing=north,mode=dehumidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1"
+    "facing=north,status=off,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_1"
     },
-    "facing=north,mode=dehumidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2"
+    "facing=north,status=off,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_2"
     },
-    "facing=north,mode=dehumidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3"
+    "facing=north,status=off,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_3"
     },
-    "facing=north,mode=dehumidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4"
+    "facing=north,status=off,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_4"
     },
-    "facing=north,mode=dehumidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_running_0"
+    "facing=north,status=running,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_0"
     },
-    "facing=north,mode=dehumidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_running_1"
+    "facing=north,status=running,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_1"
     },
-    "facing=north,mode=dehumidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_running_2"
+    "facing=north,status=running,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_2"
     },
-    "facing=north,mode=dehumidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_running_3"
+    "facing=north,status=running,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_3"
     },
-    "facing=north,mode=dehumidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_running_4"
+    "facing=north,status=running,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_4"
     },
-    "facing=north,mode=dehumidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0"
+    "facing=north,status=full,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_0"
     },
-    "facing=north,mode=dehumidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1"
+    "facing=north,status=full,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_1"
     },
-    "facing=north,mode=dehumidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2"
+    "facing=north,status=full,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_2"
     },
-    "facing=north,mode=dehumidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3"
+    "facing=north,status=full,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_3"
     },
-    "facing=north,mode=dehumidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4"
+    "facing=north,status=full,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_4"
     },
-    "facing=north,mode=humidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0"
-    },
-    "facing=north,mode=humidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1"
-    },
-    "facing=north,mode=humidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2"
-    },
-    "facing=north,mode=humidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3"
-    },
-    "facing=north,mode=humidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4"
-    },
-    "facing=north,mode=humidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_0"
-    },
-    "facing=north,mode=humidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_1"
-    },
-    "facing=north,mode=humidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_2"
-    },
-    "facing=north,mode=humidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_3"
-    },
-    "facing=north,mode=humidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_4"
-    },
-    "facing=north,mode=humidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0"
-    },
-    "facing=north,mode=humidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1"
-    },
-    "facing=north,mode=humidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2"
-    },
-    "facing=north,mode=humidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3"
-    },
-    "facing=north,mode=humidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4"
-    },
-    "facing=east,mode=dehumidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0",
+    "facing=east,status=off,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_0",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1",
+    "facing=east,status=off,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_1",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2",
+    "facing=east,status=off,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_2",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3",
+    "facing=east,status=off,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_3",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4",
+    "facing=east,status=off,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_4",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_running_0",
+    "facing=east,status=running,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_0",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_running_1",
+    "facing=east,status=running,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_1",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_running_2",
+    "facing=east,status=running,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_2",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_running_3",
+    "facing=east,status=running,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_3",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_running_4",
+    "facing=east,status=running,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_4",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0",
+    "facing=east,status=full,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_0",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1",
+    "facing=east,status=full,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_1",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2",
+    "facing=east,status=full,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_2",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3",
+    "facing=east,status=full,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_3",
       "y": 90
     },
-    "facing=east,mode=dehumidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4",
+    "facing=east,status=full,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_4",
       "y": 90
     },
-    "facing=east,mode=humidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_0",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_1",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_2",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_3",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_4",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3",
-      "y": 90
-    },
-    "facing=east,mode=humidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4",
-      "y": 90
-    },
-    "facing=south,mode=dehumidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0",
+    "facing=south,status=off,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_0",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1",
+    "facing=south,status=off,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_1",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2",
+    "facing=south,status=off,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_2",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3",
+    "facing=south,status=off,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_3",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4",
+    "facing=south,status=off,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_4",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_running_0",
+    "facing=south,status=running,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_0",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_running_1",
+    "facing=south,status=running,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_1",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_running_2",
+    "facing=south,status=running,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_2",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_running_3",
+    "facing=south,status=running,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_3",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_running_4",
+    "facing=south,status=running,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_4",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0",
+    "facing=south,status=full,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_0",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1",
+    "facing=south,status=full,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_1",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2",
+    "facing=south,status=full,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_2",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3",
+    "facing=south,status=full,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_3",
       "y": 180
     },
-    "facing=south,mode=dehumidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4",
+    "facing=south,status=full,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_4",
       "y": 180
     },
-    "facing=south,mode=humidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_0",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_1",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_2",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_3",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_4",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3",
-      "y": 180
-    },
-    "facing=south,mode=humidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4",
-      "y": 180
-    },
-    "facing=west,mode=dehumidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0",
+    "facing=west,status=off,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_0",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1",
+    "facing=west,status=off,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_1",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2",
+    "facing=west,status=off,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_2",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3",
+    "facing=west,status=off,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_3",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4",
+    "facing=west,status=off,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_off_4",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_running_0",
+    "facing=west,status=running,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_0",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_running_1",
+    "facing=west,status=running,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_1",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_running_2",
+    "facing=west,status=running,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_2",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_running_3",
+    "facing=west,status=running,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_3",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_running_4",
+    "facing=west,status=running,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_running_4",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0",
+    "facing=west,status=full,water_level=0": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_0",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1",
+    "facing=west,status=full,water_level=1": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_1",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2",
+    "facing=west,status=full,water_level=2": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_2",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3",
+    "facing=west,status=full,water_level=3": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_3",
       "y": 270
     },
-    "facing=west,mode=dehumidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=off,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_off_0",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=off,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_off_1",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=off,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_off_2",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=off,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_off_3",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=off,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_off_4",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=running,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_0",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=running,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_1",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=running,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_2",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=running,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_3",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=running,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_humidifying_4",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=full,water_level=0": {
-      "model": "spores--shadows:block/dehumidifier_full_0",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=full,water_level=1": {
-      "model": "spores--shadows:block/dehumidifier_full_1",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=full,water_level=2": {
-      "model": "spores--shadows:block/dehumidifier_full_2",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=full,water_level=3": {
-      "model": "spores--shadows:block/dehumidifier_full_3",
-      "y": 270
-    },
-    "facing=west,mode=humidify,status=full,water_level=4": {
-      "model": "spores--shadows:block/dehumidifier_full_4",
+    "facing=west,status=full,water_level=4": {
+      "model": "spores--shadows:block/dehumidifier/dehumidifier_full_4",
       "y": 270
     }
   }

@@ -174,6 +174,9 @@ public class MoistureDetectorGameTests {
         List<String> expectedKeys = List.of(
                 "message.spores--shadows.detector.none",
                 "message.spores--shadows.detector.blocks_dist",
+                "message.spores--shadows.detector.dehumidifiers_active",
+                "message.spores--shadows.detector.dehumidifiers_none",
+                "message.spores--shadows.detector.humidifiers_active",
                 "message.spores--shadows.moisture_detector.header",
                 "message.spores--shadows.moisture_detector.dry",
                 "message.spores--shadows.moisture_detector.moderate",

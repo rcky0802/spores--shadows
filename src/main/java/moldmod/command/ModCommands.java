@@ -75,6 +75,8 @@ public final class ModCommands {
         source.sendMessage(Text.literal(String.format("§7- Explored Air Volume: §f%d blocks", result.volume)));
         source.sendMessage(Text.literal(String.format("§7- Mold Toxicity: §c+%.2f §7| Ventilation Purge: §a-%.2f",
                 result.toxicScore, result.ventilationScore)));
+        source.sendMessage(Text.literal(String.format("§7- Active Purifiers: §b%d §7(Purifier Purge: §b-%.2f§7)",
+                result.roomPurifierCount, result.purifierCleaningBonus)));
 
         String dynamicStatus = "§aSTABLE";
         if (result.netMiasma > result.targetMiasma + 0.05) {

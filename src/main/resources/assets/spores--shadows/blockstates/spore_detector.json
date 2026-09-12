@@ -1,183 +1,183 @@
 {
   "variants": {
     "face=floor,facing=north,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_floor_0"
+      "model": "spores--shadows:block/detectors/spore_detector_floor_0"
     },
     "face=floor,facing=north,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_floor_1"
+      "model": "spores--shadows:block/detectors/spore_detector_floor_1"
     },
     "face=floor,facing=north,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_floor_2"
+      "model": "spores--shadows:block/detectors/spore_detector_floor_2"
     },
     "face=floor,facing=north,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_floor_3"
+      "model": "spores--shadows:block/detectors/spore_detector_floor_3"
     },
     "face=floor,facing=east,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_floor_0",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_0",
       "y": 90
     },
     "face=floor,facing=east,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_floor_1",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_1",
       "y": 90
     },
     "face=floor,facing=east,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_floor_2",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_2",
       "y": 90
     },
     "face=floor,facing=east,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_floor_3",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_3",
       "y": 90
     },
     "face=floor,facing=south,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_floor_0",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_0",
       "y": 180
     },
     "face=floor,facing=south,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_floor_1",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_1",
       "y": 180
     },
     "face=floor,facing=south,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_floor_2",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_2",
       "y": 180
     },
     "face=floor,facing=south,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_floor_3",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_3",
       "y": 180
     },
     "face=floor,facing=west,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_floor_0",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_0",
       "y": 270
     },
     "face=floor,facing=west,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_floor_1",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_1",
       "y": 270
     },
     "face=floor,facing=west,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_floor_2",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_2",
       "y": 270
     },
     "face=floor,facing=west,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_floor_3",
+      "model": "spores--shadows:block/detectors/spore_detector_floor_3",
       "y": 270
     },
     "face=wall,facing=north,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_wall_0"
+      "model": "spores--shadows:block/detectors/spore_detector_wall_0"
     },
     "face=wall,facing=north,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_wall_1"
+      "model": "spores--shadows:block/detectors/spore_detector_wall_1"
     },
     "face=wall,facing=north,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_wall_2"
+      "model": "spores--shadows:block/detectors/spore_detector_wall_2"
     },
     "face=wall,facing=north,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_wall_3"
+      "model": "spores--shadows:block/detectors/spore_detector_wall_3"
     },
     "face=wall,facing=east,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_wall_0",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_0",
       "y": 90
     },
     "face=wall,facing=east,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_wall_1",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_1",
       "y": 90
     },
     "face=wall,facing=east,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_wall_2",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_2",
       "y": 90
     },
     "face=wall,facing=east,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_wall_3",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_3",
       "y": 90
     },
     "face=wall,facing=south,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_wall_0",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_0",
       "y": 180
     },
     "face=wall,facing=south,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_wall_1",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_1",
       "y": 180
     },
     "face=wall,facing=south,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_wall_2",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_2",
       "y": 180
     },
     "face=wall,facing=south,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_wall_3",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_3",
       "y": 180
     },
     "face=wall,facing=west,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_wall_0",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_0",
       "y": 270
     },
     "face=wall,facing=west,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_wall_1",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_1",
       "y": 270
     },
     "face=wall,facing=west,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_wall_2",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_2",
       "y": 270
     },
     "face=wall,facing=west,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_wall_3",
+      "model": "spores--shadows:block/detectors/spore_detector_wall_3",
       "y": 270
     },
     "face=ceiling,facing=north,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_ceiling_0"
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_0"
     },
     "face=ceiling,facing=north,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_ceiling_1"
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_1"
     },
     "face=ceiling,facing=north,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_ceiling_2"
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_2"
     },
     "face=ceiling,facing=north,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_ceiling_3"
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_3"
     },
     "face=ceiling,facing=east,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_ceiling_0",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_0",
       "y": 90
     },
     "face=ceiling,facing=east,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_ceiling_1",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_1",
       "y": 90
     },
     "face=ceiling,facing=east,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_ceiling_2",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_2",
       "y": 90
     },
     "face=ceiling,facing=east,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_ceiling_3",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_3",
       "y": 90
     },
     "face=ceiling,facing=south,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_ceiling_0",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_0",
       "y": 180
     },
     "face=ceiling,facing=south,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_ceiling_1",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_1",
       "y": 180
     },
     "face=ceiling,facing=south,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_ceiling_2",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_2",
       "y": 180
     },
     "face=ceiling,facing=south,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_ceiling_3",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_3",
       "y": 180
     },
     "face=ceiling,facing=west,toxicity_level=0": {
-      "model": "spores--shadows:block/spore_detector_ceiling_0",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_0",
       "y": 270
     },
     "face=ceiling,facing=west,toxicity_level=1": {
-      "model": "spores--shadows:block/spore_detector_ceiling_1",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_1",
       "y": 270
     },
     "face=ceiling,facing=west,toxicity_level=2": {
-      "model": "spores--shadows:block/spore_detector_ceiling_2",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_2",
       "y": 270
     },
     "face=ceiling,facing=west,toxicity_level=3": {
-      "model": "spores--shadows:block/spore_detector_ceiling_3",
+      "model": "spores--shadows:block/detectors/spore_detector_ceiling_3",
       "y": 270
     }
   }

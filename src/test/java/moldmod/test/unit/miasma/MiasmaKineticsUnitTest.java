@@ -139,4 +139,43 @@ public class MiasmaKineticsUnitTest {
         MiasmaResult rPoison = new MiasmaResult(18.0, 0.0, false, 100, Set.of());
         assertEquals(AirToxicityLevel.LETHAL_POISON, rPoison.level);
     }
+
+    @Test
+    @DisplayName("Verify Air Purifier cleaning bonus, target miasma reduction, and multi-purifier scaling")
+    public void testAirPurifierCleaningBonusAndTargetMiasma() {
+        Set<BlockPos> airBlocks = Set.of(new BlockPos(0, 60, 0), new BlockPos(0, 61, 0));
+        Set<BlockPos> onePurifier = Set.of(new BlockPos(1, 60, 0));
+        Set<BlockPos> twoPurifiers = Set.of(new BlockPos(1, 60, 0), new BlockPos(2, 60, 0));
+        Set<BlockPos> threePurifiers = Set.of(new BlockPos(1, 60, 0), new BlockPos(2, 60, 0), new BlockPos(3, 60, 0));
+
+        // Case A: 1 Purifier cleans 8.0 toxic load to 0.0
+        MiasmaResult rCleaned = new MiasmaResult(null, 8.0, 0.0, false, 2, airBlocks, BlockPos.ORIGIN,
+                999, 0.0, 0, 1.0, null, null, false, Set.of(), Set.of(), Set.of(), onePurifier);
+        assertEquals(1, rCleaned.roomPurifierCount);
+        assertEquals(48.0, rCleaned.purifierCleaningBonus, 1e-4);
+        assertEquals(0.0, rCleaned.targetMiasma, 1e-4, "Purifier power (48) > toxic load (8) -> target miasma must be 0.0");
+
+        // Case B: High mold load (70.0), 1 Purifier reduces load to 22.0 (accumulation still occurs)
+        MiasmaResult rHighMold1 = new MiasmaResult(null, 70.0, 0.0, false, 2, airBlocks, BlockPos.ORIGIN,
+                999, 0.0, 0, 1.0, null, null, false, Set.of(), Set.of(), Set.of(), onePurifier);
+        assertEquals(48.0, rHighMold1.purifierCleaningBonus, 1e-4);
+        assertEquals(22.0, rHighMold1.targetMiasma, 1e-4, "High load (70) - Purifier (48) = 22.0");
+
+        // Case C: High mold load (100.0), 2 Purifiers reduce load to 4.0
+        MiasmaResult rHighMold2 = new MiasmaResult(null, 100.0, 0.0, false, 2, airBlocks, BlockPos.ORIGIN,
+                999, 0.0, 0, 1.0, null, null, false, Set.of(), Set.of(), Set.of(), twoPurifiers);
+        assertEquals(96.0, rHighMold2.purifierCleaningBonus, 1e-4);
+        assertEquals(4.0, rHighMold2.targetMiasma, 1e-4, "High load (100) - 2 Purifiers (96) = 4.0");
+
+        // Case D: High mold load (100.0), 3 Purifiers overcome production (144 >= 100 -> 0.0)
+        MiasmaResult rHighMold3 = new MiasmaResult(null, 100.0, 0.0, false, 2, airBlocks, BlockPos.ORIGIN,
+                999, 0.0, 0, 1.0, null, null, false, Set.of(), Set.of(), Set.of(), threePurifiers);
+        assertEquals(144.0, rHighMold3.purifierCleaningBonus, 1e-4);
+        assertEquals(0.0, rHighMold3.targetMiasma, 1e-4, "3 Purifiers (144) >= High load (100) -> target miasma is 0.0");
+
+        // Case E: Open air always has target miasma 0.0
+        MiasmaResult rOpen = new MiasmaResult(null, 25.0, 0.0, true, 2, airBlocks, BlockPos.ORIGIN,
+                0, 0.0, 0, 1.0, null, null, false, Set.of(), Set.of(), Set.of(), onePurifier);
+        assertEquals(0.0, rOpen.targetMiasma, 1e-4, "Open air target miasma is always 0.0");
+    }
 }
