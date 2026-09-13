@@ -394,15 +394,46 @@ public final class MoldyJsonGenerator {
             for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
                 String tex = isBamboo ? "minecraft:block/bamboo_fence" : "minecraft:block/" + prefix + "_planks";
                 if (stage > 0) {
-                    JsonObject mP = new JsonObject(); mP.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_post");
-                    JsonObject tP = new JsonObject(); tP.addProperty("texture", tex); tP.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
-                    mP.add("textures", tP); write(builder, "models/block/" + blockId + "_post_stage_" + stage, mP);
+                    if (isBamboo) {
+                        JsonObject mP = new JsonObject();
+                        mP.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_custom_fence_post");
+                        JsonObject tP = new JsonObject();
+                        tP.addProperty("texture", tex);
+                        tP.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                        tP.addProperty("particle", "minecraft:block/bamboo_fence_particle");
+                        mP.add("textures", tP);
+                        write(builder, "models/block/" + blockId + "_post_stage_" + stage, mP);
 
-                    JsonObject mS = new JsonObject(); mS.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_side"); mS.add("textures", tP);
-                    write(builder, "models/block/" + blockId + "_side_stage_" + stage, mS);
+                        for (String dir : new String[]{"north", "east", "south", "west"}) {
+                            JsonObject mS = new JsonObject();
+                            mS.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_custom_fence_side_" + dir);
+                            mS.add("textures", tP);
+                            write(builder, "models/block/" + blockId + "_side_" + dir + "_stage_" + stage, mS);
+                        }
 
-                    JsonObject mI = new JsonObject(); mI.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_inventory"); mI.add("textures", tP);
-                    write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mI);
+                        JsonObject mI = new JsonObject();
+                        mI.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_custom_fence_inventory");
+                        mI.add("textures", tP);
+                        write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mI);
+                    } else {
+                        JsonObject mP = new JsonObject();
+                        mP.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_post");
+                        JsonObject tP = new JsonObject();
+                        tP.addProperty("texture", tex);
+                        tP.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                        mP.add("textures", tP);
+                        write(builder, "models/block/" + blockId + "_post_stage_" + stage, mP);
+
+                        JsonObject mS = new JsonObject();
+                        mS.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_side");
+                        mS.add("textures", tP);
+                        write(builder, "models/block/" + blockId + "_side_stage_" + stage, mS);
+
+                        JsonObject mI = new JsonObject();
+                        mI.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_fence_inventory");
+                        mI.add("textures", tP);
+                        write(builder, "models/block/" + blockId + "_inventory_stage_" + stage, mI);
+                    }
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_fence_inventory" : blockId + "_inventory_stage_" + stage;
                 if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_fence", itemParent, stage, false, idPrefix); }
@@ -428,8 +459,11 @@ public final class MoldyJsonGenerator {
                             JsonObject wD = new JsonObject(); wD.addProperty("stage", String.valueOf(stage)); wD.addProperty("structural", structural); wD.addProperty("waxed", waxed); wD.addProperty("waterlogged", waterlogged); wD.addProperty(dirs[d], "true");
                             pD.add("when", wD);
                             JsonObject aD = new JsonObject();
-                            if (isBamboo && stage == 0) {
-                                aD.addProperty("model", "minecraft:block/bamboo_fence_side_" + dirs[d]);
+                            if (isBamboo) {
+                                String sideModel = stage == 0
+                                        ? "minecraft:block/bamboo_fence_side_" + dirs[d]
+                                        : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_side_" + dirs[d] + "_stage_" + stage;
+                                aD.addProperty("model", sideModel);
                                 aD.addProperty("uvlock", false);
                             } else {
                                 aD.addProperty("model", mSide); 
@@ -447,22 +481,43 @@ public final class MoldyJsonGenerator {
     }
 
     private static void genGate(ResourcePackBuilder builder, String wood, String prefix) {
+        boolean isBamboo = prefix.equals("bamboo");
         for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
             String blockId = idPrefix + prefix + "_fence_gate";
             JsonObject variants = new JsonObject();
-            String[] facings = {"north", "east", "south", "west"};
+            String[] facings = {"south", "west", "north", "east"};
             int[] yRots = {0, 90, 180, 270};
 
             for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) { int stage = moldStage.getId();
-                String tex = "minecraft:block/" + prefix + "_planks";
+                String tex = isBamboo ? "minecraft:block/bamboo_fence_gate" : "minecraft:block/" + prefix + "_planks";
+                String templatePrefix = isBamboo ? "moldy_template_custom_fence_gate" : "moldy_template_fence_gate";
                 if (stage > 0) {
-                    JsonObject mDef = new JsonObject(); mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate");
-                    JsonObject tDef = new JsonObject(); tDef.addProperty("texture", tex); tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
-                    mDef.add("textures", tDef); write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
+                    JsonObject tDef = new JsonObject();
+                    tDef.addProperty("texture", tex);
+                    tDef.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                    if (isBamboo) {
+                        tDef.addProperty("particle", "minecraft:block/bamboo_fence_gate_particle");
+                    }
 
-                    JsonObject mOpn = new JsonObject(); mOpn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate_open"); mOpn.add("textures", tDef); write(builder, "models/block/" + blockId + "_open_stage_" + stage, mOpn);
-                    JsonObject mWal = new JsonObject(); mWal.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate_wall"); mWal.add("textures", tDef); write(builder, "models/block/" + blockId + "_wall_stage_" + stage, mWal);
-                    JsonObject mWO = new JsonObject(); mWO.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_template_fence_gate_wall_open"); mWO.add("textures", tDef); write(builder, "models/block/" + blockId + "_wall_open_stage_" + stage, mWO);
+                    JsonObject mDef = new JsonObject();
+                    mDef.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/" + templatePrefix);
+                    mDef.add("textures", tDef);
+                    write(builder, "models/block/" + blockId + "_stage_" + stage, mDef);
+
+                    JsonObject mOpn = new JsonObject();
+                    mOpn.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/" + templatePrefix + "_open");
+                    mOpn.add("textures", tDef);
+                    write(builder, "models/block/" + blockId + "_open_stage_" + stage, mOpn);
+
+                    JsonObject mWal = new JsonObject();
+                    mWal.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/" + templatePrefix + "_wall");
+                    mWal.add("textures", tDef);
+                    write(builder, "models/block/" + blockId + "_wall_stage_" + stage, mWal);
+
+                    JsonObject mWO = new JsonObject();
+                    mWO.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/" + templatePrefix + "_wall_open");
+                    mWO.add("textures", tDef);
+                    write(builder, "models/block/" + blockId + "_wall_open_stage_" + stage, mWO);
                 }
                 String itemParent = stage == 0 ? "minecraft:block/" + prefix + "_fence_gate" : blockId + "_stage_" + stage;
                 if (idPrefix.equals("waxed_") || stage > 0) { genItemModel(builder, prefix + "_fence_gate", itemParent, stage, false, idPrefix); }
@@ -483,9 +538,10 @@ public final class MoldyJsonGenerator {
                                 }
 
                                 for (String common : getCommonProps()) {
-                                    JsonObject v = new JsonObject(); v.addProperty("model", m);
+                                    JsonObject v = new JsonObject();
+                                    v.addProperty("model", m);
                                     if (yBase != 0) v.addProperty("y", yBase);
-                                    v.addProperty("uvlock", true);
+                                    v.addProperty("uvlock", !isBamboo);
                                     variants.add("facing=" + facing + ",in_wall=" + inWall + ",open=" + openState + ",powered=" + powered + ",stage=" + stage + "," + common, v);
                                 }
                             }

@@ -9,6 +9,8 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.DoorBlock;
+import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.item.Item;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
@@ -62,52 +64,62 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         float stage3Chance = AutoConfig.getConfigHolder(ModConfig.class).getConfig().drops.stage_3_drop_chance;
         float stage2Chance = AutoConfig.getConfigHolder(ModConfig.class).getConfig().drops.stage_2_drop_chance;
             
-        addDrop(baseBlock, (block) -> LootTable.builder()
-            .pool(LootPool.builder()
-                .rolls(ConstantLootNumberProvider.create(1.0F))
-                .with(AlternativeEntry.builder(
-                    ItemEntry.builder(stage3)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.ROTTEN.getId())))
-                        .conditionally(
-                            AnyOfLootCondition.builder(
-                                this.createSilkTouchCondition(), isWaxed, RandomChanceLootCondition.builder(stage3Chance)
-                            )
-                        ),
-                    ItemEntry.builder(stage2)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.MOLDY.getId())))
-                        .conditionally(
-                            AnyOfLootCondition.builder(
-                                this.createSilkTouchCondition(),
-                                isWaxed,
-                                RandomChanceLootCondition.builder(stage2Chance)
-                            )
-                        ),
-                    ItemEntry.builder(stage1)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.TAINTED.getId()))),
-                    ItemEntry.builder(vanillaBlock)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.WAXED.getId())))
-                ))
-                .apply(CopyStateLootFunction.builder(baseBlock).addProperty(MoldyBlock.WAXED))
-            )
-        );
+        LootPool.Builder pool = LootPool.builder()
+            .rolls(ConstantLootNumberProvider.create(1.0F));
+
+        if (baseBlock instanceof DoorBlock) {
+            pool.conditionally(BlockStatePropertyLootCondition.builder(baseBlock)
+                .properties(StatePredicate.Builder.create().exactMatch(DoorBlock.HALF, DoubleBlockHalf.LOWER)));
+        }
+
+        pool.with(AlternativeEntry.builder(
+            ItemEntry.builder(stage3)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.ROTTEN.getId())))
+                .conditionally(
+                    AnyOfLootCondition.builder(
+                        this.createSilkTouchCondition(), isWaxed, RandomChanceLootCondition.builder(stage3Chance)
+                    )
+                ),
+            ItemEntry.builder(stage2)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.MOLDY.getId())))
+                .conditionally(
+                    AnyOfLootCondition.builder(
+                        this.createSilkTouchCondition(),
+                        isWaxed,
+                        RandomChanceLootCondition.builder(stage2Chance)
+                    )
+                ),
+            ItemEntry.builder(stage1)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.TAINTED.getId()))),
+            ItemEntry.builder(vanillaBlock)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.WAXED.getId())))
+        ))
+        .apply(CopyStateLootFunction.builder(baseBlock).addProperty(MoldyBlock.WAXED));
+
+        addDrop(baseBlock, (block) -> LootTable.builder().pool(pool));
     }
     
     private void generateWaxedLoot(Block baseBlock, Item stage0, Item stage1, Item stage2, Item stage3) {
-        addDrop(baseBlock, (block) -> LootTable.builder()
-            .pool(LootPool.builder()
-                .rolls(ConstantLootNumberProvider.create(1.0F))
-                .with(AlternativeEntry.builder(
-                    ItemEntry.builder(stage3)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.ROTTEN.getId()))),
-                    ItemEntry.builder(stage2)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.MOLDY.getId()))),
-                    ItemEntry.builder(stage1)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.TAINTED.getId()))),
-                    ItemEntry.builder(stage0)
-                        .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.WAXED.getId())))
-                ))
-                .apply(CopyStateLootFunction.builder(baseBlock).addProperty(MoldyBlock.WAXED))
-            )
-        );
+        LootPool.Builder pool = LootPool.builder()
+            .rolls(ConstantLootNumberProvider.create(1.0F));
+
+        if (baseBlock instanceof DoorBlock) {
+            pool.conditionally(BlockStatePropertyLootCondition.builder(baseBlock)
+                .properties(StatePredicate.Builder.create().exactMatch(DoorBlock.HALF, DoubleBlockHalf.LOWER)));
+        }
+
+        pool.with(AlternativeEntry.builder(
+            ItemEntry.builder(stage3)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.ROTTEN.getId()))),
+            ItemEntry.builder(stage2)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.MOLDY.getId()))),
+            ItemEntry.builder(stage1)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.TAINTED.getId()))),
+            ItemEntry.builder(stage0)
+                .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, MoldStage.WAXED.getId())))
+        ))
+        .apply(CopyStateLootFunction.builder(baseBlock).addProperty(MoldyBlock.WAXED));
+
+        addDrop(baseBlock, (block) -> LootTable.builder().pool(pool));
     }
 }

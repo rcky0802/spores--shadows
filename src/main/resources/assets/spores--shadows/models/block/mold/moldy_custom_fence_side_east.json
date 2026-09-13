@@ -1,0 +1,259 @@
+{
+  "textures": {
+    "particle": "#texture"
+  },
+  "elements": [
+    {
+      "name": "top bar",
+      "from": [
+        7,
+        12,
+        7
+      ],
+      "to": [
+        16,
+        15,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "texture": "#texture",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 270,
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 90,
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "top bar overlay",
+      "from": [
+        6.99,
+        11.99,
+        6.99
+      ],
+      "to": [
+        16.01,
+        15.01,
+        9.01
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "east": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "texture": "#overlay",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 270,
+          "texture": "#overlay"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 90,
+          "texture": "#overlay"
+        }
+      }
+    },
+    {
+      "name": "lower bar",
+      "from": [
+        7,
+        6,
+        7
+      ],
+      "to": [
+        16,
+        9,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "texture": "#texture",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 270,
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 90,
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "lower bar overlay",
+      "from": [
+        6.99,
+        5.99,
+        6.99
+      ],
+      "to": [
+        16.01,
+        9.01,
+        9.01
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "east": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "texture": "#overlay",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 270,
+          "texture": "#overlay"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "rotation": 90,
+          "texture": "#overlay"
+        }
+      }
+    }
+  ]
+}

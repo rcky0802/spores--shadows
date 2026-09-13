@@ -43,7 +43,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
             Identifier id = Registries.ITEM.getId(item);
             if (!id.getNamespace().equals(SporesShadows.MOD_ID)) continue;
             String name = id.getPath();
-            if ((name.contains("crimson") || name.contains("warped")) && ModBlockTagProvider.isHealthyWaxed(name)) {
+            if (name.contains("crimson") || name.contains("warped")) {
                 nonFlammable.add(item);
             }
         }

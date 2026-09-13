@@ -70,7 +70,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 fenceGates.add(block);
             } else if (block instanceof FenceBlock) {
                 fences.add(block);
-                if (isHealthyWaxed && !isNether) woodenFences.add(block);
+                woodenFences.add(block);
             } else if (block instanceof StairsBlock) {
                 stairs.add(block);
                 if (isHealthyWaxed && !isNether) woodenStairs.add(block);

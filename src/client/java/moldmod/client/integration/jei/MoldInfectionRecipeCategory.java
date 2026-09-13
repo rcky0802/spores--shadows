@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import moldmod.SporesShadows;
-import moldmod.block.ModBlocks;
 import moldmod.item.ModItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

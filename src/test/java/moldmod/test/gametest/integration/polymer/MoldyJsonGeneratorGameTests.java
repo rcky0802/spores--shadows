@@ -141,4 +141,101 @@ public class MoldyJsonGeneratorGameTests {
 
         context.complete();
     }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testBambooFenceModelsAndBlockstate(TestContext context) {
+        TestResourcePackBuilder builder = new TestResourcePackBuilder();
+        MoldyJsonGenerator.generateAll(builder);
+
+        Map<String, byte[]> capturedFiles = builder.capturedFiles;
+
+        // Blockstates
+        String moldyBlockstate = "assets/" + SporesShadows.MOD_ID + "/blockstates/moldy_bamboo_fence.json";
+        String waxedBlockstate = "assets/" + SporesShadows.MOD_ID + "/blockstates/waxed_bamboo_fence.json";
+        context.assertTrue(capturedFiles.containsKey(moldyBlockstate), "Missing moldy_bamboo_fence blockstate");
+        context.assertTrue(capturedFiles.containsKey(waxedBlockstate), "Missing waxed_bamboo_fence blockstate");
+
+        // Models for stages 1..3
+        for (int stage = 1; stage <= 3; stage++) {
+            for (String blockId : new String[]{"moldy_bamboo_fence", "waxed_bamboo_fence"}) {
+                String postModel = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + "_post_stage_" + stage + ".json";
+                context.assertTrue(capturedFiles.containsKey(postModel), "Missing bamboo fence post model: " + postModel);
+                JsonObject postJson = JsonParser.parseString(new String(capturedFiles.get(postModel), StandardCharsets.UTF_8)).getAsJsonObject();
+                context.assertEquals(SporesShadows.MOD_ID + ":block/mold/moldy_custom_fence_post", postJson.get("parent").getAsString(),
+                        "Bamboo fence post must use moldy_custom_fence_post parent");
+
+                String invModel = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + "_inventory_stage_" + stage + ".json";
+                context.assertTrue(capturedFiles.containsKey(invModel), "Missing bamboo fence inventory model: " + invModel);
+                JsonObject invJson = JsonParser.parseString(new String(capturedFiles.get(invModel), StandardCharsets.UTF_8)).getAsJsonObject();
+                context.assertEquals(SporesShadows.MOD_ID + ":block/mold/moldy_custom_fence_inventory", invJson.get("parent").getAsString(),
+                        "Bamboo fence inventory must use moldy_custom_fence_inventory parent");
+
+                for (String dir : new String[]{"north", "east", "south", "west"}) {
+                    String sideModel = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + "_side_" + dir + "_stage_" + stage + ".json";
+                    context.assertTrue(capturedFiles.containsKey(sideModel), "Missing bamboo fence side model: " + sideModel);
+                    JsonObject sideJson = JsonParser.parseString(new String(capturedFiles.get(sideModel), StandardCharsets.UTF_8)).getAsJsonObject();
+                    context.assertEquals(SporesShadows.MOD_ID + ":block/mold/moldy_custom_fence_side_" + dir, sideJson.get("parent").getAsString(),
+                            "Bamboo fence side " + dir + " must use moldy_custom_fence_side_" + dir + " parent");
+                }
+            }
+        }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testBambooFenceGateModelsAndBlockstate(TestContext context) {
+        TestResourcePackBuilder builder = new TestResourcePackBuilder();
+        MoldyJsonGenerator.generateAll(builder);
+
+        Map<String, byte[]> capturedFiles = builder.capturedFiles;
+
+        // Blockstates
+        String moldyGateBs = "assets/" + SporesShadows.MOD_ID + "/blockstates/moldy_bamboo_fence_gate.json";
+        String waxedGateBs = "assets/" + SporesShadows.MOD_ID + "/blockstates/waxed_bamboo_fence_gate.json";
+        context.assertTrue(capturedFiles.containsKey(moldyGateBs), "Missing moldy_bamboo_fence_gate blockstate");
+        context.assertTrue(capturedFiles.containsKey(waxedGateBs), "Missing waxed_bamboo_fence_gate blockstate");
+
+        // Verify uvlock is false in bamboo fence gate blockstate
+        JsonObject gateBsJson = JsonParser.parseString(new String(capturedFiles.get(moldyGateBs), StandardCharsets.UTF_8)).getAsJsonObject();
+        JsonObject variants = gateBsJson.getAsJsonObject("variants");
+        for (Map.Entry<String, JsonElement> entry : variants.entrySet()) {
+            JsonObject varObj = entry.getValue().getAsJsonObject();
+            context.assertTrue(varObj.has("uvlock") && !varObj.get("uvlock").getAsBoolean(),
+                    "Bamboo fence gate variants must have uvlock: false: " + entry.getKey());
+        }
+
+        // Models for stages 1..3
+        for (int stage = 1; stage <= 3; stage++) {
+            for (String blockId : new String[]{"moldy_bamboo_fence_gate", "waxed_bamboo_fence_gate"}) {
+                String mainModel = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + "_stage_" + stage + ".json";
+                context.assertTrue(capturedFiles.containsKey(mainModel), "Missing bamboo fence gate model: " + mainModel);
+                JsonObject mainJson = JsonParser.parseString(new String(capturedFiles.get(mainModel), StandardCharsets.UTF_8)).getAsJsonObject();
+                context.assertEquals(SporesShadows.MOD_ID + ":block/mold/moldy_template_custom_fence_gate", mainJson.get("parent").getAsString(),
+                        "Bamboo fence gate must use moldy_template_custom_fence_gate parent");
+                context.assertEquals("minecraft:block/bamboo_fence_gate", mainJson.getAsJsonObject("textures").get("texture").getAsString(),
+                        "Bamboo fence gate texture must be bamboo_fence_gate");
+
+                String openModel = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + "_open_stage_" + stage + ".json";
+                context.assertTrue(capturedFiles.containsKey(openModel), "Missing bamboo fence gate open model: " + openModel);
+                JsonObject openJson = JsonParser.parseString(new String(capturedFiles.get(openModel), StandardCharsets.UTF_8)).getAsJsonObject();
+                context.assertEquals(SporesShadows.MOD_ID + ":block/mold/moldy_template_custom_fence_gate_open", openJson.get("parent").getAsString(),
+                        "Bamboo fence gate open must use moldy_template_custom_fence_gate_open parent");
+
+                String wallModel = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + "_wall_stage_" + stage + ".json";
+                context.assertTrue(capturedFiles.containsKey(wallModel), "Missing bamboo fence gate wall model: " + wallModel);
+                JsonObject wallJson = JsonParser.parseString(new String(capturedFiles.get(wallModel), StandardCharsets.UTF_8)).getAsJsonObject();
+                context.assertEquals(SporesShadows.MOD_ID + ":block/mold/moldy_template_custom_fence_gate_wall", wallJson.get("parent").getAsString(),
+                        "Bamboo fence gate wall must use moldy_template_custom_fence_gate_wall parent");
+
+                String wallOpenModel = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + "_wall_open_stage_" + stage + ".json";
+                context.assertTrue(capturedFiles.containsKey(wallOpenModel), "Missing bamboo fence gate wall open model: " + wallOpenModel);
+                JsonObject wallOpenJson = JsonParser.parseString(new String(capturedFiles.get(wallOpenModel), StandardCharsets.UTF_8)).getAsJsonObject();
+                context.assertEquals(SporesShadows.MOD_ID + ":block/mold/moldy_template_custom_fence_gate_wall_open", wallOpenJson.get("parent").getAsString(),
+                        "Bamboo fence gate wall open must use moldy_template_custom_fence_gate_wall_open parent");
+            }
+        }
+
+        context.complete();
+    }
 }

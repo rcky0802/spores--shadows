@@ -1,0 +1,255 @@
+{
+  "textures": {
+    "particle": "#texture"
+  },
+  "elements": [
+    {
+      "name": "top bar",
+      "from": [
+        7,
+        12,
+        0
+      ],
+      "to": [
+        9,
+        15,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#texture",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "top bar overlay",
+      "from": [
+        6.99,
+        11.99,
+        -0.01
+      ],
+      "to": [
+        9.01,
+        15.01,
+        9.01
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#overlay",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#overlay"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#overlay"
+        }
+      }
+    },
+    {
+      "name": "lower bar",
+      "from": [
+        7,
+        6,
+        0
+      ],
+      "to": [
+        9,
+        9,
+        9
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#texture",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "lower bar overlay",
+      "from": [
+        6.99,
+        5.99,
+        -0.01
+      ],
+      "to": [
+        9.01,
+        9.01,
+        9.01
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            13,
+            4,
+            15,
+            7
+          ],
+          "rotation": 180,
+          "texture": "#overlay",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "west": {
+          "uv": [
+            4,
+            4,
+            13,
+            7
+          ],
+          "texture": "#overlay"
+        },
+        "up": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#overlay"
+        },
+        "down": {
+          "uv": [
+            13,
+            7,
+            15,
+            16
+          ],
+          "texture": "#overlay"
+        }
+      }
+    }
+  ]
+}
