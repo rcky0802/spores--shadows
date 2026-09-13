@@ -41,6 +41,12 @@ public final class ModFuelRegistry {
                 registerForSet(woodName, 300);
                 registerForSet("stripped_" + woodName, 300);
             }
+
+            if (woodType.isBamboo()) {
+                registerForSet(prefix + "_mosaic", 300);
+                registerForSet(prefix + "_mosaic_stairs", 300);
+                registerForSet(prefix + "_mosaic_slab", 150);
+            }
         }
     }
 

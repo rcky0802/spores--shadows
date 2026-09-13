@@ -39,4 +39,15 @@ public class JEICatalystsRegistrationGameTests {
 
         context.complete();
     }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMoldInfectionCatalysts(TestContext context) {
+        ItemStack moistureDetector = new ItemStack(moldmod.item.ModItems.MOISTURE_DETECTOR);
+        ItemStack sporeDetector = new ItemStack(moldmod.item.ModItems.SPORE_DETECTOR);
+
+        context.assertTrue(!moistureDetector.isEmpty(), "Moisture Detector catalyst must not be empty");
+        context.assertTrue(!sporeDetector.isEmpty(), "Spore Detector catalyst must not be empty");
+
+        context.complete();
+    }
 }

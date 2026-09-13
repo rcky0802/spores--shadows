@@ -24,6 +24,7 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.LOGS, ItemTags.LOGS);
         copy(BlockTags.CRIMSON_STEMS, ItemTags.CRIMSON_STEMS);
         copy(BlockTags.WARPED_STEMS, ItemTags.WARPED_STEMS);
+        copy(BlockTags.BAMBOO_BLOCKS, ItemTags.BAMBOO_BLOCKS);
         copy(BlockTags.PLANKS, ItemTags.PLANKS);
         
         copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);

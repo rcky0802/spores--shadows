@@ -43,8 +43,15 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 generatePlanksRecipe(exporter, "stripped_" + woodName, prefix + "_planks");
             }
 
+            // Planks Recovery Recipes (2 Tainted -> 1 Vanilla, 4 Moldy -> 1 Vanilla)
+            generatePlanksRecoveryRecipes(exporter, prefix);
+
             // Processed Block Recipes
             generateProcessedRecipes(exporter, prefix);
+
+            if (woodTypeObj.isBamboo()) {
+                generateMosaicRecipes(exporter, prefix);
+            }
         }
 
         // Equipment Recipes
@@ -142,9 +149,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     .get(Identifier.of("minecraft", sourceBase.replace("_log", "_wood").replace("_stem", "_hyphae")));
         }
 
+        int waxedYield = sourceBase.contains("bamboo") ? 2 : 4;
+        int taintedYield = sourceBase.contains("bamboo") ? 1 : 2;
+        int moldyYield = sourceBase.contains("bamboo") ? 0 : 1;
+
         Item waxedVanillaSource = Registries.ITEM.get(SporesShadows.id("waxed_" + sourceBase));
         if (waxedVanillaSource != Items.AIR) {
-            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaDest, 4)
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaDest, waxedYield)
                     .input(waxedVanillaSource)
                     .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaSource))
                     .offerTo(exporter, SporesShadows.id(destBase + "_from_waxed_" + sourceBase));
@@ -164,7 +175,7 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         Item waxedTaintedSource = Registries.ITEM.get(SporesShadows.id("waxed_tainted_" + sourceBase));
         if (taintedSource != Items.AIR && waxedTaintedSource != Items.AIR) {
             Ingredient taintedIngredient = Ingredient.ofItems(taintedSource, waxedTaintedSource);
-            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaDest, 2)
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaDest, taintedYield)
                     .input(taintedIngredient)
                     .criterion("has_tainted", conditionsFromItem(taintedSource))
                     .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedSource))
@@ -184,13 +195,43 @@ public class ModRecipeProvider extends FabricRecipeProvider {
 
         Item moldySource = Registries.ITEM.get(SporesShadows.id("moldy_" + sourceBase));
         Item waxedMoldySource = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + sourceBase));
-        if (moldySource != Items.AIR && waxedMoldySource != Items.AIR) {
+        if (moldyYield > 0 && moldySource != Items.AIR && waxedMoldySource != Items.AIR) {
             Ingredient moldyIngredient = Ingredient.ofItems(moldySource, waxedMoldySource);
-            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaDest, 1)
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaDest, moldyYield)
                     .input(moldyIngredient)
                     .criterion("has_moldy", conditionsFromItem(moldySource))
                     .criterion("has_waxed_moldy", conditionsFromItem(waxedMoldySource))
                     .offerTo(exporter, SporesShadows.id(destBase + "_from_moldy_" + sourceBase));
+        }
+    }
+
+    private void generatePlanksRecoveryRecipes(RecipeExporter exporter, String prefix) {
+        Item vanillaPlanks = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_planks"));
+        Item taintedPlanks = Registries.ITEM.get(SporesShadows.id("tainted_" + prefix + "_planks"));
+        Item waxedTaintedPlanks = Registries.ITEM.get(SporesShadows.id("waxed_tainted_" + prefix + "_planks"));
+        Item moldyPlanks = Registries.ITEM.get(SporesShadows.id("moldy_" + prefix + "_planks"));
+        Item waxedMoldyPlanks = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + prefix + "_planks"));
+
+        if (vanillaPlanks != Items.AIR && taintedPlanks != Items.AIR && waxedTaintedPlanks != Items.AIR) {
+            Ingredient taintedIngredient = Ingredient.ofItems(taintedPlanks, waxedTaintedPlanks);
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaPlanks, 1)
+                    .input(taintedIngredient)
+                    .input(taintedIngredient)
+                    .criterion("has_tainted_planks", conditionsFromItem(taintedPlanks))
+                    .criterion("has_waxed_tainted_planks", conditionsFromItem(waxedTaintedPlanks))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_planks_from_tainted_planks"));
+        }
+
+        if (vanillaPlanks != Items.AIR && moldyPlanks != Items.AIR && waxedMoldyPlanks != Items.AIR) {
+            Ingredient moldyIngredient = Ingredient.ofItems(moldyPlanks, waxedMoldyPlanks);
+            ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaPlanks, 1)
+                    .input(moldyIngredient)
+                    .input(moldyIngredient)
+                    .input(moldyIngredient)
+                    .input(moldyIngredient)
+                    .criterion("has_moldy_planks", conditionsFromItem(moldyPlanks))
+                    .criterion("has_waxed_moldy_planks", conditionsFromItem(waxedMoldyPlanks))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_planks_from_moldy_planks"));
         }
     }
 
@@ -204,9 +245,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         Item vanillaButton = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_button"));
         Item vanillaPressurePlate = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_pressure_plate"));
         Item vanillaSign = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_sign"));
-        Item vanillaBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_boat"));
-        Item vanillaChestBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_chest_boat"));
+        Item vanillaBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix.equals("bamboo") ? "bamboo_raft" : prefix + "_boat"));
+        Item vanillaChestBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix.equals("bamboo") ? "bamboo_chest_raft" : prefix + "_chest_boat"));
         Item sticks = Items.STICK;
+        Item fenceSupport = prefix.equals("bamboo") ? Items.STRING : Items.STICK;
 
         Item waxedVanillaPlanks = Registries.ITEM.get(SporesShadows.id("waxed_" + prefix + "_planks"));
         Item vanillaPlanks = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_planks"));
@@ -240,13 +282,13 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                     .offerTo(exporter, SporesShadows.id(prefix + "_trapdoor_from_waxed"));
 
             ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, vanillaFence, 3).pattern("#|#").pattern("#|#")
-                    .input('#', mixedPlanks).input('|', sticks)
+                    .input('#', mixedPlanks).input('|', fenceSupport)
                     .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
                     .offerTo(exporter, SporesShadows.id(prefix + "_fence_from_waxed"));
 
             if (vanillaFenceGate != Items.AIR) {
                 ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, vanillaFenceGate, 1).pattern("|#|")
-                        .pattern("|#|").input('#', mixedPlanks).input('|', sticks)
+                        .pattern("|#|").input('#', mixedPlanks).input('|', fenceSupport)
                         .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
                         .offerTo(exporter, SporesShadows.id(prefix + "_fence_gate_from_waxed"));
             }
@@ -271,84 +313,56 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                 ShapedRecipeJsonBuilder.create(RecipeCategory.TRANSPORTATION, vanillaBoat, 1).pattern("# #")
                         .pattern("###").input('#', mixedPlanks)
                         .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
-                        .offerTo(exporter, SporesShadows.id(prefix + "_boat_from_waxed"));
+                        .offerTo(exporter, SporesShadows.id(prefix + (prefix.equals("bamboo") ? "_raft_from_waxed" : "_boat_from_waxed")));
             }
             if (vanillaChestBoat != Items.AIR && vanillaBoat != Items.AIR) {
                 ShapelessRecipeJsonBuilder.create(RecipeCategory.TRANSPORTATION, vanillaChestBoat, 1).input(vanillaBoat)
                         .input(Items.CHEST)
                         .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
-                        .offerTo(exporter, SporesShadows.id(prefix + "_chest_boat_from_waxed"));
+                        .offerTo(exporter, SporesShadows.id(prefix + (prefix.equals("bamboo") ? "_chest_raft_from_waxed" : "_chest_boat_from_waxed")));
             }
         }
+    }
 
-        Item taintedPlanks = Registries.ITEM.get(SporesShadows.id("tainted_" + prefix + "_planks"));
-        Item waxedTaintedPlanks = Registries.ITEM.get(SporesShadows.id("waxed_tainted_" + prefix + "_planks"));
+    private void generateMosaicRecipes(RecipeExporter exporter, String prefix) {
+        Item vanillaMosaic = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_mosaic"));
+        Item vanillaMosaicStairs = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_mosaic_stairs"));
+        Item vanillaMosaicSlab = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_mosaic_slab"));
 
-        Item moldyPlanks = Registries.ITEM.get(SporesShadows.id("moldy_" + prefix + "_planks"));
-        Item waxedMoldyPlanks = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + prefix + "_planks"));
+        Item waxedMosaic = Registries.ITEM.get(SporesShadows.id("waxed_" + prefix + "_mosaic"));
+        Item waxedSlab = Registries.ITEM.get(SporesShadows.id("waxed_" + prefix + "_slab"));
+        Item vanillaSlab = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_slab"));
 
-        // --- STAGE 1 (Tainted) ---
-        if (taintedPlanks != Items.AIR && waxedTaintedPlanks != Items.AIR) {
-            Ingredient taintedIngredient = Ingredient.ofItems(taintedPlanks, waxedTaintedPlanks);
-
-            ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, sticks, 2).pattern("#").pattern("#")
-                    .input('#', taintedIngredient)
-                    .criterion("has_tainted", conditionsFromItem(taintedPlanks))
-                    .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedPlanks))
-                    .offerTo(exporter, SporesShadows.id("sticks_from_tainted_" + prefix + "_planks"));
-
-            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaSlab, 3).pattern("###")
-                    .input('#', taintedIngredient)
-                    .criterion("has_tainted", conditionsFromItem(taintedPlanks))
-                    .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedPlanks))
-                    .offerTo(exporter, SporesShadows.id(prefix + "_slab_from_tainted"));
-
-            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaStairs, 2).pattern("#  ")
-                    .pattern("## ").pattern("###").input('#', taintedIngredient)
-                    .criterion("has_tainted", conditionsFromItem(taintedPlanks))
-                    .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedPlanks))
-                    .offerTo(exporter, SporesShadows.id(prefix + "_stairs_from_tainted"));
-
-            ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, vanillaDoor, 1).pattern("##").pattern("##")
-                    .pattern("##").input('#', taintedIngredient)
-                    .criterion("has_tainted", conditionsFromItem(taintedPlanks))
-                    .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedPlanks))
-                    .offerTo(exporter, SporesShadows.id(prefix + "_door_from_tainted"));
-
-            ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, vanillaTrapdoor, 1).pattern("###").pattern("###")
-                    .input('#', taintedIngredient)
-                    .criterion("has_tainted", conditionsFromItem(taintedPlanks))
-                    .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedPlanks))
-                    .offerTo(exporter, SporesShadows.id(prefix + "_trapdoor_from_tainted"));
-
-            ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, vanillaFence, 1).pattern("#|#").pattern("#|#")
-                    .input('#', taintedIngredient).input('|', sticks)
-                    .criterion("has_tainted", conditionsFromItem(taintedPlanks))
-                    .criterion("has_waxed_tainted", conditionsFromItem(waxedTaintedPlanks))
-                    .offerTo(exporter, SporesShadows.id(prefix + "_fence_from_tainted"));
+        // Craft Mosaic from Slabs (1 slab over 1 slab)
+        if (vanillaMosaic != Items.AIR && waxedSlab != Items.AIR && vanillaSlab != Items.AIR) {
+            Ingredient mixedSlabs = Ingredient.ofItems(vanillaSlab, waxedSlab);
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaMosaic, 1)
+                    .pattern("#")
+                    .pattern("#")
+                    .input('#', mixedSlabs)
+                    .criterion("has_waxed_slab", conditionsFromItem(waxedSlab))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_mosaic_from_waxed_slab"));
         }
 
-        // --- STAGE 2 (Moldy) ---
-        if (moldyPlanks != Items.AIR && waxedMoldyPlanks != Items.AIR) {
-            Ingredient moldyIngredient = Ingredient.ofItems(moldyPlanks, waxedMoldyPlanks);
+        // Craft Mosaic Stairs & Slabs (6 mosaic -> 4 stairs, 3 mosaic -> 6 slabs)
+        if (vanillaMosaicStairs != Items.AIR && (waxedMosaic != Items.AIR || vanillaMosaic != Items.AIR)) {
+            Ingredient mixedMosaic = (waxedMosaic != Items.AIR && vanillaMosaic != Items.AIR)
+                    ? Ingredient.ofItems(vanillaMosaic, waxedMosaic)
+                    : (waxedMosaic != Items.AIR ? Ingredient.ofItems(waxedMosaic) : Ingredient.ofItems(vanillaMosaic));
 
-            ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, sticks, 1).pattern("#").pattern("#")
-                    .input('#', moldyIngredient)
-                    .criterion("has_moldy", conditionsFromItem(moldyPlanks))
-                    .criterion("has_waxed_moldy", conditionsFromItem(waxedMoldyPlanks))
-                    .offerTo(exporter, SporesShadows.id("sticks_from_moldy_" + prefix + "_planks"));
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaMosaicStairs, 4)
+                    .pattern("#  ")
+                    .pattern("## ")
+                    .pattern("###")
+                    .input('#', mixedMosaic)
+                    .criterion("has_waxed_mosaic", conditionsFromItem(waxedMosaic != Items.AIR ? waxedMosaic : vanillaMosaic))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_mosaic_stairs_from_waxed"));
 
-            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaSlab, 1).pattern("###")
-                    .input('#', moldyIngredient)
-                    .criterion("has_moldy", conditionsFromItem(moldyPlanks))
-                    .criterion("has_waxed_moldy", conditionsFromItem(waxedMoldyPlanks))
-                    .offerTo(exporter, SporesShadows.id(prefix + "_slab_from_moldy"));
-
-            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaStairs, 1).pattern("#  ")
-                    .pattern("## ").pattern("###").input('#', moldyIngredient)
-                    .criterion("has_moldy", conditionsFromItem(moldyPlanks))
-                    .criterion("has_waxed_moldy", conditionsFromItem(waxedMoldyPlanks))
-                    .offerTo(exporter, SporesShadows.id(prefix + "_stairs_from_moldy"));
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaMosaicSlab, 6)
+                    .pattern("###")
+                    .input('#', mixedMosaic)
+                    .criterion("has_waxed_mosaic", conditionsFromItem(waxedMosaic != Items.AIR ? waxedMosaic : vanillaMosaic))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_mosaic_slab_from_waxed"));
         }
     }
 }

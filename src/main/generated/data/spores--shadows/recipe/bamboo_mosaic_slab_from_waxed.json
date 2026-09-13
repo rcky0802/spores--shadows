@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:bamboo_mosaic"
+      },
+      {
+        "item": "spores--shadows:waxed_bamboo_mosaic"
+      }
+    ]
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "minecraft:bamboo_mosaic_slab"
+  }
+}

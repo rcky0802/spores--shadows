@@ -224,6 +224,30 @@ public final class ModBlocks {
                     new MoldyLogBlock(AbstractBlock.Settings.copy(vanillaWood).ticksRandomly(), waxedStrippedWood));
             registerVariant(woodName, vanillaWood, wood, waxedWood);
         }
+
+        // 8. Bamboo Mosaic family (unique to bamboo)
+        if (moldyWoodType.isBamboo()) {
+            Block vanillaMosaic = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_mosaic"));
+            Block mosaic = registerBlock("moldy_" + prefix + "_mosaic",
+                    new MoldyPlanksBlock(AbstractBlock.Settings.copy(vanillaMosaic).ticksRandomly()));
+            Block waxedMosaic = registerBlock("waxed_" + prefix + "_mosaic",
+                    new MoldyPlanksBlock(AbstractBlock.Settings.copy(vanillaMosaic).ticksRandomly()));
+            registerVariant(prefix + "_mosaic", vanillaMosaic, mosaic, waxedMosaic);
+
+            Block vanillaMosaicStairs = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_mosaic_stairs"));
+            Block mosaicStairs = registerBlock("moldy_" + prefix + "_mosaic_stairs",
+                    new MoldyStairsBlock(mosaic.getDefaultState(), AbstractBlock.Settings.copy(vanillaMosaic).ticksRandomly()));
+            Block waxedMosaicStairs = registerBlock("waxed_" + prefix + "_mosaic_stairs",
+                    new MoldyStairsBlock(waxedMosaic.getDefaultState(), AbstractBlock.Settings.copy(vanillaMosaic).ticksRandomly()));
+            registerVariant(prefix + "_mosaic_stairs", vanillaMosaicStairs, mosaicStairs, waxedMosaicStairs);
+
+            Block vanillaMosaicSlab = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_mosaic_slab"));
+            Block mosaicSlab = registerBlock("moldy_" + prefix + "_mosaic_slab",
+                    new MoldySlabBlock(AbstractBlock.Settings.copy(vanillaMosaic).ticksRandomly()));
+            Block waxedMosaicSlab = registerBlock("waxed_" + prefix + "_mosaic_slab",
+                    new MoldySlabBlock(AbstractBlock.Settings.copy(vanillaMosaic).ticksRandomly()));
+            registerVariant(prefix + "_mosaic_slab", vanillaMosaicSlab, mosaicSlab, waxedMosaicSlab);
+        }
     }
 
     private static Block registerBlock(String name, Block block) {

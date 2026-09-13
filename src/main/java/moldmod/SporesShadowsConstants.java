@@ -33,12 +33,18 @@ public final class SporesShadowsConstants {
         }
     }
 
-    public record MoldyWoodType(String namespace, String name, boolean isNether, BlockSetType setType, WoodType woodType) {
+    public record MoldyWoodType(String namespace, String name, boolean isNether, boolean isBamboo, BlockSetType setType, WoodType woodType) {
+        public MoldyWoodType(String namespace, String name, boolean isNether, BlockSetType setType, WoodType woodType) {
+            this(namespace, name, isNether, false, setType, woodType);
+        }
+
         public String getLogName() {
+            if (isBamboo) return name + "_block";
             return isNether ? name + "_stem" : name + "_log";
         }
 
         public String getWoodName() {
+            if (isBamboo) return null;
             return isNether ? name + "_hyphae" : name + "_wood";
         }
     }
@@ -52,6 +58,7 @@ public final class SporesShadowsConstants {
             new MoldyWoodType("minecraft", "dark_oak", false, BlockSetType.DARK_OAK, WoodType.DARK_OAK),
             new MoldyWoodType("minecraft", "mangrove", false, BlockSetType.MANGROVE, WoodType.MANGROVE),
             new MoldyWoodType("minecraft", "cherry", false, BlockSetType.CHERRY, WoodType.CHERRY),
+            new MoldyWoodType("minecraft", "bamboo", false, true, BlockSetType.BAMBOO, WoodType.BAMBOO),
             new MoldyWoodType("minecraft", "crimson", true, BlockSetType.CRIMSON, WoodType.CRIMSON),
             new MoldyWoodType("minecraft", "warped", true, BlockSetType.WARPED, WoodType.WARPED)
     );

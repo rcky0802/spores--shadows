@@ -15,8 +15,8 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
     protected String getTranslation(String wood, String blockType, String state) {
         String capitalizedWood = capitalize(wood.replace("_", " "));
         String stateStr = capitalize(state.replace("_", " "));
-        
         String typeStr = capitalize(blockType.replace("_", " "));
+        
         if (blockType.equals("pressure_plate")) typeStr = "Pressure Plate";
         else if (blockType.equals("fence_gate")) typeStr = "Fence Gate";
         else if (blockType.equals("stripped_log")) typeStr = "Stripped Log";
@@ -25,6 +25,11 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         else if (blockType.equals("stripped_stem")) typeStr = "Stripped Stem";
         else if (blockType.equals("hyphae")) typeStr = "Hyphae";
         else if (blockType.equals("stripped_hyphae")) typeStr = "Stripped Hyphae";
+        else if (blockType.equals("block")) typeStr = "Block";
+        else if (blockType.equals("stripped_block")) typeStr = "Stripped Block";
+        else if (blockType.equals("mosaic")) typeStr = "Mosaic";
+        else if (blockType.equals("mosaic_stairs")) typeStr = "Mosaic Stairs";
+        else if (blockType.equals("mosaic_slab")) typeStr = "Mosaic Slab";
         
         return stateStr + " " + capitalizedWood + " " + typeStr;
     }
@@ -319,6 +324,8 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Waxing");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Axe Scraping");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Rotten wood is brittle and crumbling. It cannot be cured with an axe. It requires Silk Touch to be harvested, otherwise it will disintegrate into nothing when broken.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.tainted_planks", "Tainted planks cannot be used to craft complex wooden items (stairs, slabs, doors, etc.). They can only be recovered into clean planks in a crafting table (2 tainted planks produce 1 clean plank) or scraped with an axe once placed in the world.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.moldy_planks", "Moldy planks cannot be used to craft complex wooden items. They can only be recovered into clean planks in a crafting table (4 moldy planks produce 1 clean plank) or cured with an axe once placed in the world.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "The Spore Mask provides complete protection against toxic miasma (Poison, Nausea, and Hunger). It consumes durability while filtering toxic air. Replace the filter by repairing it with a Spore Filter in an anvil (fully repairs in one use). In a crafting grid, you can only combine two masks for a quick field repair. Can be enchanted only with Unbreaking, Mending, and Curse of Vanishing.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filter", "Essential filtration cartridge. Used to craft and repair the Spore Mask on an anvil, and as a consumable replacement cartridge in the Air Purifier.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Spore Filtration is a helmet enchantment that neutralizes toxic miasma and spore inhalation. Consumes helmet durability when exposed to miasma (Level I: 2 durability, Level II: 1 durability, Level III: 50% durability save chance). Compatible with all conventional helmets.");
@@ -490,6 +497,74 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Filtration Level III Durability Save Chance");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance.@Tooltip", "Chance to prevent durability loss with Level III.");
 
+        // Air Purifier, Dehumidifier, and Detector Messages
+        translationBuilder.add("advancements.spores--shadows.air_purifier_craft.description", "Craft an Air Purifier to purge miasma and make enclosed rooms breathable.");
+        translationBuilder.add("advancements.spores--shadows.air_purifier_craft.title", "Hermetic Bunker");
+        translationBuilder.add("advancements.spores--shadows.pure_air_depths.description", "Completely decontaminate a mold-infested underground room (Y <= 0), restoring air quality to CLEAN.");
+        translationBuilder.add("advancements.spores--shadows.pure_air_depths.title", "Pure Air in the Depths");
+        translationBuilder.add("advancements.spores--shadows.spore_detector.description", "Craft a Spore Detector to monitor air quality and fungal miasma.");
+        translationBuilder.add("advancements.spores--shadows.spore_detector.title", "Airborne Sentinel");
+        translationBuilder.add("block.spores--shadows.air_purifier", "Air Purifier");
+        translationBuilder.add("container.spores--shadows.air_purifier", "Air Purifier");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.filter_depleted", "Filter Depleted");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.off", "Off");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.running", "Running");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.filter_depleted", "Active spore filter is fully worn out. Insert a fresh filter.");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.off", "Machine is idle (needs energy/fuel, valid room, or redstone signal).");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.running", "Machine is actively purifying air in the room.");
+        translationBuilder.add("gui.spores--shadows.dehumidifier.status.humidifying", "Vaporizing");
+        translationBuilder.add("gui.spores--shadows.dehumidifier.status.water_empty", "Empty Water Tank");
+        translationBuilder.add("item.spores--shadows.air_purifier", "Air Purifier");
+        translationBuilder.add("message.spores--shadows.detector.dehumidifiers_active", "§7- Dehumidifiers: §b%d §7(Drying: §b-%s§7)");
+        translationBuilder.add("message.spores--shadows.detector.dehumidifiers_none", "§7- Dehumidifiers: §8None");
+        translationBuilder.add("message.spores--shadows.detector.humidifiers_active", "§7- Humidifiers: §b%d §7(Humidifying: §b+%s§7)");
+        translationBuilder.add("message.spores--shadows.detector.purifiers_active", "§7- Air Purifiers: §b%d §7(Filtration: §b-%s miasma§7)");
+        translationBuilder.add("message.spores--shadows.detector.purifiers_none", "§7- Air Purifiers: §8None");
+        translationBuilder.add("text.autoconfig.spores--shadows.category.air_purifier", "Air Purifier");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier", "Air Purifier");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_capacity", "Energy Buffer Capacity (E/RF)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_capacity.@Tooltip", "Internal energy storage when external energy mods (TR/RF) are present.");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_cost_per_tick", "Energy Consumption (E/tick)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_cost_per_tick.@Tooltip", "Energy consumed per tick while running instead of burning solid fuel.");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.filter_durability_ticks", "Filter Durability (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.filter_durability_ticks.@Tooltip", "Operating ticks before an active spore filter wears out (2400 ticks = 2 minutes base).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.fuel_multiplier", "Fuel Burn Time Multiplier");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.fuel_multiplier.@Tooltip", "Multiplier applied to standard furnace burn times (e.g. 4.0 = coal lasts 4x longer).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.purifier_cleaning_power", "Purifying Power (Bonus per Unit)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.purifier_cleaning_power.@Tooltip", "Linear reduction subtracted from room miasma score per active running purifier.");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.energy", "Energy: %d / %d E");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.energy_usage", "Usage: %d E/t (%d E/s)");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.filter_backup", "Reserve: %d filters available");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.filter_integrity", "Active Filter Integrity: %d%%");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.high", "High");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.high.desc", "Active only when receiving redstone signal");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.ignored", "Ignored");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.ignored.desc", "Always active while powered");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.low", "Low");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.low.desc", "Active without signal; paused by redstone");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone_mode", "Redstone Mode: %s");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode", "Mode: %s");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.dehumidify", "Dehumidify");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.dehumidify.desc", "Extracts room moisture and condenses pure water");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.fluid_info.dehumidify", "Pipes/Buckets: Output only (drains condensation)");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.fluid_info.humidify", "Pipes/Buckets: Input only (accepts pure water)");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.humidify", "Humidify");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.humidify.desc", "Consumes water tank to vaporize mist into room");
+        translationBuilder.add("tooltip.spores--shadows.jade.dehumidifier.status.humidifying", "Vaporizing");
+        translationBuilder.add("tooltip.spores--shadows.jade.dehumidifier.status.water_empty", "Tank Empty");
+        // JEI Mold Infection Category Translations
+        translationBuilder.add("jei.spores--shadows.category.mold_infection", "Mold Infection");
+        translationBuilder.add("jei.spores--shadows.infection.note", "Random Tick • Unwaxed");
+        translationBuilder.add("jei.spores--shadows.infection.stage_0_to_1", "Clean → Tainted");
+        translationBuilder.add("jei.spores--shadows.infection.stage_1_to_2", "Tainted → Moldy");
+        translationBuilder.add("jei.spores--shadows.infection.stage_2_to_3", "Moldy → Rotten");
+        translationBuilder.add("jei.spores--shadows.infection.threshold", "Risk > %d%%");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.condition", "Condition: Environmental Risk (R) > %d%%");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.cure", "Cure: Scrape with an Axe once placed to reverse mold stages.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.desc1", "Unwaxed blocks advance to the next mold stage during random ticks when risk exceeds the threshold.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.desc2", "Risk increases in dark, humid, stagnant, or spore-polluted areas.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.prevention", "Immunity: Wax with Honeycomb to permanently prevent mold.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.title", "● Environmental Mold Progression");
         // Tag Translations (Fabric Tag Convention v2)
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_items", "Moldy Items");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Filtration Helmets");

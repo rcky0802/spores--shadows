@@ -50,6 +50,12 @@ public final class ModComposterRegistry {
                 registerForSet(woodName, taintedChance, moldyChance, rottenChance);
                 registerForSet("stripped_" + woodName, taintedChance, moldyChance, rottenChance);
             }
+
+            if (woodType.isBamboo()) {
+                registerForSet(prefix + "_mosaic", taintedChance, moldyChance, rottenChance);
+                registerForSet(prefix + "_mosaic_stairs", taintedChance, moldyChance, rottenChance);
+                registerForSet(prefix + "_mosaic_slab", taintedChance, moldyChance, rottenChance);
+            }
         }
     }
 

@@ -17,6 +17,7 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
             Map.entry("dark_oak", "de Roble Oscuro"),
             Map.entry("mangrove", "de Manglar"),
             Map.entry("cherry", "de Cerezo"),
+            Map.entry("bamboo", "de Bambú"),
             Map.entry("crimson", "Carmesí"),
             Map.entry("warped", "Deformado")
     );
@@ -35,6 +36,8 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         switch (blockType) {
             case "log": blockName = "Tronco"; break;
             case "stripped_log": blockName = "Tronco sin corteza"; break;
+            case "block": blockName = "Bloque"; break;
+            case "stripped_block": blockName = "Bloque sin corteza"; break;
             case "wood": blockName = "Madera"; isFeminine = true; break;
             case "stripped_wood": blockName = "Madera sin corteza"; isFeminine = true; break;
             case "stem": blockName = "Tallo"; break;
@@ -42,6 +45,9 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
             case "hyphae": blockName = "Hifas"; isFeminine = true; isPlural = true; break;
             case "stripped_hyphae": blockName = "Hifas sin corteza"; isFeminine = true; isPlural = true; break;
             case "planks": blockName = "Tablones"; isPlural = true; break;
+            case "mosaic": blockName = "Mosaico"; break;
+            case "mosaic_stairs": blockName = "Escaleras de mosaico"; isFeminine = true; isPlural = true; break;
+            case "mosaic_slab": blockName = "Losa de mosaico"; isFeminine = true; break;
             case "slab": blockName = "Losa"; isFeminine = true; break;
             case "stairs": blockName = "Escaleras"; isFeminine = true; isPlural = true; break;
             case "fence": blockName = "Valla"; isFeminine = true; break;
@@ -364,6 +370,8 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Encerado");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Raspado con Hacha");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "La madera podrida es quebradiza y frágil. No se puede curar con un hacha. Requiere Toque de Seda para ser recolectada, de lo contrario se desintegrará en la nada al romperse.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.tainted_planks", "Los tablones contaminados no se pueden usar para fabricar objetos de madera complejos (escaleras, losas, puertas, etc.). Solo se pueden recuperar como tablones sanos en una mesa de trabajo (2 tablones contaminados producen 1 tablón sano) o rasparse con un hacha una vez colocados en el mundo.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.moldy_planks", "Los tablones mohosos no se pueden usar para fabricar objetos de madera complejos. Solo se pueden recuperar como tablones sanos en una mesa de trabajo (4 tablones mohosos producen 1 tablón sano) o limpiarse con un hacha una vez colocados en el mundo.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "La Máscara Antiesporas proporciona protección total contra el miasma tóxico (Veneno, Náusea y Hambre). Consume durabilidad al filtrar el aire tóxico. Cambia el filtro reparándola con un Filtro de Esporas en un yunque (la repara por completo de un solo uso). En una mesa de trabajo, solo puedes combinar dos máscaras para una reparación rápida de emergencia. Solo se puede encantar con Irrompibilidad, Reparación y Maldición de Desaparición.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filter", "Cartucho de filtración esencial. Se utiliza para fabricar y reparar la Máscara de Esporas en un yunque, y como cartucho consumible reemplazable en el Purificador de Aire.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Filtración de Esporas es un encantamiento de casco que neutraliza el miasma tóxico y la inhalación de esporas. Consume durabilidad del casco al exponerse al miasma (Nivel I: 2 durabilidad, Nivel II: 1 durabilidad, Nivel III: 50% de ahorro). Compatible con todos los cascos convencionales.");
@@ -535,6 +543,74 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Probabilidad de Ahorro de Durabilidad Nivel III");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance.@Tooltip", "Probabilidad de evitar la pérdida de durabilidad con Nivel III.");
 
+        // Air Purifier, Dehumidifier, and Detector Messages
+        translationBuilder.add("advancements.spores--shadows.air_purifier_craft.description", "Fabrica un Purificador de Aire para purgar el miasma y hacer respirables las habitaciones cerradas.");
+        translationBuilder.add("advancements.spores--shadows.air_purifier_craft.title", "Búnker Hermético");
+        translationBuilder.add("advancements.spores--shadows.pure_air_depths.description", "Descontamina por completo una habitación subterránea infestada de moho (Y <= 0), restableciendo el aire a nivel LIMPIO.");
+        translationBuilder.add("advancements.spores--shadows.pure_air_depths.title", "Aire Puro en las Profundidades");
+        translationBuilder.add("advancements.spores--shadows.spore_detector.description", "Fabrica un Detector de Esporas para monitorear la calidad del aire y el miasma tóxico.");
+        translationBuilder.add("advancements.spores--shadows.spore_detector.title", "Centinela del Aire");
+        translationBuilder.add("block.spores--shadows.air_purifier", "Purificador de Aire");
+        translationBuilder.add("container.spores--shadows.air_purifier", "Purificador de Aire");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.filter_depleted", "Filtro Agotado");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.off", "Apagado");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.running", "Activo");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.filter_depleted", "El filtro de esporas activo está completamente desgastado. Inserte un nuevo filtro.");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.off", "Máquina inactiva (requiere energía/combustible, habitación válida o señal de redstone).");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.running", "El purificador de aire está purificando activamente la habitación de esporas.");
+        translationBuilder.add("gui.spores--shadows.dehumidifier.status.humidifying", "Vaporización");
+        translationBuilder.add("gui.spores--shadows.dehumidifier.status.water_empty", "Depósito vacío");
+        translationBuilder.add("item.spores--shadows.air_purifier", "Purificador de Aire");
+        translationBuilder.add("message.spores--shadows.detector.dehumidifiers_active", "§7- Deshumidificadores: §b%d §7(Secado: §b-%s§7)");
+        translationBuilder.add("message.spores--shadows.detector.dehumidifiers_none", "§7- Deshumidificadores: §8Ninguno");
+        translationBuilder.add("message.spores--shadows.detector.humidifiers_active", "§7- Humidificadores: §b%d §7(Humidificación: §b+%s§7)");
+        translationBuilder.add("message.spores--shadows.detector.purifiers_active", "§7- Purificadores de Aire: §b%d §7(Filtración: §b-%s miasma§7)");
+        translationBuilder.add("message.spores--shadows.detector.purifiers_none", "§7- Purificadores de Aire: §8Ninguno");
+        translationBuilder.add("text.autoconfig.spores--shadows.category.air_purifier", "Purificador de Aire");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier", "Purificador de Aire");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_capacity", "Capacidad de Búfer Energético (E/RF)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_capacity.@Tooltip", "Almacenamiento interno de energía cuando hay mods energéticos compatibles (TR/RF).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_cost_per_tick", "Consumo Energético (E/tick)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_cost_per_tick.@Tooltip", "Energía consumida por tick durante el funcionamiento en lugar de combustible sólido.");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.filter_durability_ticks", "Durabilidad del Filtro (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.filter_durability_ticks.@Tooltip", "Ticks operativos antes de que un filtro de esporas activo se agote (2400 ticks = 2 minutos base).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.fuel_multiplier", "Multiplicador de Duración de Combustible");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.fuel_multiplier.@Tooltip", "Multiplicador aplicado al tiempo de combustión estándar de hornos (ej. 4.0 = el carbón dura 4x más).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.purifier_cleaning_power", "Poder Purificador (Bonificación por Unidad)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.purifier_cleaning_power.@Tooltip", "Reducción lineal restada a la puntuación de miasma de la habitación por cada purificador activo.");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.energy", "Energía: %d / %d E");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.energy_usage", "Consumo: %d E/t (%d E/s)");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.filter_backup", "Reserva: %d filtros disponibles");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.filter_integrity", "Integridad del Filtro Activo: %d%%");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.high", "Alto");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.high.desc", "Activo solo con señal de redstone");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.ignored", "Ignorado");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.ignored.desc", "Siempre activo mientras tenga energía");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.low", "Bajo");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.low.desc", "Activo sin señal; pausado por redstone");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone_mode", "Modo Redstone: %s");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode", "Modo: %s");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.dehumidify", "Deshumidificar");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.dehumidify.desc", "Extrae la humedad ambiental y condensa agua pura");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.fluid_info.dehumidify", "Tuberías/Cubos: Solo extracción (agua condensada)");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.fluid_info.humidify", "Tuberías/Cubos: Solo inserción (agua pura)");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.humidify", "Humidificar");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.humidify.desc", "Consume agua del depósito para vaporizar humedad en la habitación");
+        translationBuilder.add("tooltip.spores--shadows.jade.dehumidifier.status.humidifying", "Vaporización");
+        translationBuilder.add("tooltip.spores--shadows.jade.dehumidifier.status.water_empty", "Depósito vacío");
+        // JEI Mold Infection Category Translations
+        translationBuilder.add("jei.spores--shadows.category.mold_infection", "Infección de Moho");
+        translationBuilder.add("jei.spores--shadows.infection.note", "Random Tick • Sin Encerar");
+        translationBuilder.add("jei.spores--shadows.infection.stage_0_to_1", "Limpio → Contaminado");
+        translationBuilder.add("jei.spores--shadows.infection.stage_1_to_2", "Contaminado → Enmohecido");
+        translationBuilder.add("jei.spores--shadows.infection.stage_2_to_3", "Enmohecido → Podrido");
+        translationBuilder.add("jei.spores--shadows.infection.threshold", "Riesgo > %d%%");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.condition", "Condición: Riesgo Ambiental (R) > %d%%");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.cure", "Cura: Raspa con un Hacha una vez colocado para revertir las etapas de moho.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.desc1", "Los bloques sin encerar avanzan a la siguiente etapa de moho durante los random ticks cuando el riesgo supera el umbral.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.desc2", "El rischio aumenta en áreas oscuras, húmedas, estancadas o con esporas.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.prevention", "Inmunidad: Encera con Panal para prevenir el moho permanentemente.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.title", "● Progresión de Infección de Moho");
         // Tag Translations (Fabric Tag Convention v2)
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_items", "Objetos Mohosos");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Cascos de Filtración");

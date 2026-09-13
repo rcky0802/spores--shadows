@@ -18,9 +18,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
-import java.util.Collections;
-import java.util.List;
-
 @Environment(EnvType.CLIENT)
 public final class DehumidifierRecipeCategory implements IRecipeCategory<DehumidifierRecipe> {
 

@@ -85,7 +85,7 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                 if (isHealthyWaxed && !isNether) woodenDoors.add(block);
             } else if (block instanceof MoldyPlanksBlock) {
                 // Do not add infected planks to planks tag to prevent usage in recipes like sticks, crafting tables, etc.
-                if (isHealthyWaxed) {
+                if (isHealthyWaxed && !name.contains("mosaic")) {
                     getOrCreateTagBuilder(BlockTags.PLANKS).add(block);
                 }
             } else if (block instanceof MoldyLogBlock) {
@@ -94,6 +94,8 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
                         crimsonStems.add(block);
                     } else if (name.contains("warped")) {
                         warpedStems.add(block);
+                    } else if (name.contains("bamboo")) {
+                        getOrCreateTagBuilder(BlockTags.BAMBOO_BLOCKS).add(block);
                     } else {
                         logs.add(block);
                         logsThatBurn.add(block);

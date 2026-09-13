@@ -1,6 +1,8 @@
 {
   "values": [
     "spores--shadows:spore_detector",
-    "spores--shadows:moisture_detector"
+    "spores--shadows:moisture_detector",
+    "spores--shadows:dehumidifier",
+    "spores--shadows:air_purifier"
   ]
 }

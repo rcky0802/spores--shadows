@@ -52,6 +52,16 @@ public final class ModFlammableRegistry {
             registerForBlock("waxed_" + prefix + "_fence_gate", 5, 20);
             registerForBlock("waxed_" + prefix + "_door", 5, 20);
             registerForBlock("waxed_" + prefix + "_trapdoor", 5, 20);
+
+            if (woodType.isBamboo()) {
+                registerForBlock("moldy_" + prefix + "_mosaic", 5, 20);
+                registerForBlock("moldy_" + prefix + "_mosaic_stairs", 5, 20);
+                registerForBlock("moldy_" + prefix + "_mosaic_slab", 5, 20);
+
+                registerForBlock("waxed_" + prefix + "_mosaic", 5, 20);
+                registerForBlock("waxed_" + prefix + "_mosaic_stairs", 5, 20);
+                registerForBlock("waxed_" + prefix + "_mosaic_slab", 5, 20);
+            }
         }
     }
 

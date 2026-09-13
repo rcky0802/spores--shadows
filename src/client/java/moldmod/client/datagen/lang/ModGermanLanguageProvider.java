@@ -8,17 +8,18 @@ import java.util.concurrent.CompletableFuture;
 
 public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
 
-    private static final Map<String, String> WOOD_TRANSLATIONS = Map.of(
-        "oak", "Eichen",
-        "spruce", "Fichten",
-        "birch", "Birken",
-        "jungle", "Tropenbaum",
-        "acacia", "Akazien",
-        "dark_oak", "Schwarzeichen",
-        "mangrove", "Mangroven",
-        "cherry", "Kirschblüten",
-        "crimson", "Karmesin",
-        "warped", "Wirr"
+    private static final Map<String, String> WOOD_TRANSLATIONS = Map.ofEntries(
+        Map.entry("oak", "Eichen"),
+        Map.entry("spruce", "Fichten"),
+        Map.entry("birch", "Birken"),
+        Map.entry("jungle", "Tropenbaum"),
+        Map.entry("acacia", "Akazien"),
+        Map.entry("dark_oak", "Schwarzeichen"),
+        Map.entry("mangrove", "Mangroven"),
+        Map.entry("cherry", "Kirschblüten"),
+        Map.entry("bamboo", "Bambus"),
+        Map.entry("crimson", "Karmesin"),
+        Map.entry("warped", "Wirr")
     );
 
     public ModGermanLanguageProvider(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
@@ -35,6 +36,8 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         switch (blockType) {
             case "log": blockSuffix = "stamm"; gender = "m"; break;
             case "stripped_log": blockSuffix = "stamm"; gender = "m"; wName = "entrindeter " + wName; break;
+            case "block": blockSuffix = "block"; gender = "m"; break;
+            case "stripped_block": blockSuffix = "block"; gender = "m"; wName = "entrindeter " + wName; break;
             case "wood": blockSuffix = "holz"; gender = "n"; break;
             case "stripped_wood": blockSuffix = "holz"; gender = "n"; wName = "entrindetes " + wName; break;
             case "stem": blockSuffix = "stiel"; gender = "m"; break;
@@ -42,6 +45,9 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
             case "hyphae": blockSuffix = "hyphen"; gender = "f"; break;
             case "stripped_hyphae": blockSuffix = "hyphen"; gender = "f"; wName = "entrindete " + wName; break;
             case "planks": blockSuffix = "holzbretter"; gender = "f"; break; // Plural acts like feminine for adjectives
+            case "mosaic": blockSuffix = "mosaik"; gender = "n"; break;
+            case "mosaic_stairs": blockSuffix = "mosaiktreppe"; gender = "f"; break;
+            case "mosaic_slab": blockSuffix = "mosaikstufe"; gender = "f"; break;
             case "slab": blockSuffix = "holzstufe"; gender = "f"; break;
             case "stairs": blockSuffix = "holztreppe"; gender = "f"; break;
             case "fence": blockSuffix = "holzzaun"; gender = "m"; break;
@@ -384,6 +390,8 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.waxing", "Wachsen");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".category.scraping", "Axt-Schaben");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.rotten_wood", "Morsches Holz ist brüchig und zerfällt. Es kann nicht mit einer Axt geheilt werden. Es erfordert Behutsamkeit zum Abbau, sonst zerfällt es beim Zerstören zu Staub.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.tainted_planks", "Befallene Bretter können nicht zur Herstellung komplexer Holzgegenstände (Treppen, Stufen, Türen usw.) verwendet werden. Sie können nur an einer Werkbank zu sauberen Brettern aufbereitet (2 befallene Bretter ergeben 1 sauberes Brett) oder in der Welt platziert und mit einer Axt abgeschabt werden.");
+        translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.moldy_planks", "Schimmlige Bretter können nicht zur Herstellung komplexer Holzgegenstände verwendet werden. Sie können nur an einer Werkbank zu sauberen Brettern aufbereitet (4 schimmlige Bretter ergeben 1 sauberes Brett) oder in der Welt platziert und mit einer Axt geheilt werden.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_mask", "Die Sporenmaske bietet vollständigen Schutz vor giftigem Miasma (Gift, Übelkeit und Hunger). Sie verbraucht Haltbarkeit beim Filtern giftiger Luft. Tausche den Filter aus, indem du sie mit einem Sporenfilter im Amboss reparierst (wird mit einem Filter vollständig repariert). An der Werkbank können nur zwei Masken für eine schnelle Notreparatur kombiniert werden. Kann nur mit Haltbarkeit, Reparatur und Fluch des Verschwindens verzaubert werden.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filter", "Wesentliche Filterpatrone. Dient zur Herstellung und Reparatur der Sporenmaske am Amboss sowie als austauschbare Verbrauchspatrone im Luftreiniger.");
         translationBuilder.add("jei." + moldmod.SporesShadows.MOD_ID + ".info.spore_filtration", "Sporenfiltration ist eine Helm-Verzauberung, die giftiges Miasma und das Einatmen von Sporen neutralisiert. Verbraucht Helm-Haltbarkeit bei Miasma-Exposition (Stufe I: 2 Haltbarkeit, Stufe II: 1 Haltbarkeit, Stufe III: 50% Haltbarkeits-Ersparnis). Kompatibel mit allen konventionellen Helmen.");
@@ -555,6 +563,74 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance", "Filtration Stufe III Haltbarkeit-Ersparnischance");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".option.toxicity.filtration_level_3_save_chance.@Tooltip", "Chance, Haltbarkeitsverlust mit Stufe III zu verhindern.");
 
+        // Air Purifier, Dehumidifier, and Detector Messages
+        translationBuilder.add("advancements.spores--shadows.air_purifier_craft.description", "Stelle einen Luftreiniger her, um Miasma zu beseitigen und geschlossene Räume atembar zu machen.");
+        translationBuilder.add("advancements.spores--shadows.air_purifier_craft.title", "Hermetischer Bunker");
+        translationBuilder.add("advancements.spores--shadows.pure_air_depths.description", "Dekontaminiere einen schimmelbefallenen unterirdischen Raum (Y <= 0) vollständig und stelle saubere Luft (CLEAN) her.");
+        translationBuilder.add("advancements.spores--shadows.pure_air_depths.title", "Reine Luft in der Tiefe");
+        translationBuilder.add("advancements.spores--shadows.spore_detector.description", "Stelle einen Sporendetektor her, um die Luftqualität und giftiges Miasma zu überwachen.");
+        translationBuilder.add("advancements.spores--shadows.spore_detector.title", "Luftwächter");
+        translationBuilder.add("block.spores--shadows.air_purifier", "Luftreiniger");
+        translationBuilder.add("container.spores--shadows.air_purifier", "Luftreiniger");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.filter_depleted", "Filter Erschöpft");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.off", "Aus");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status.running", "Aktiv");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.filter_depleted", "Der Sporenfilter ist vollständig abgenutzt. Setze einen neuen Filter ein.");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.off", "Maschine ist inaktiv (benötigt Energie/Brennstoff, gültigen Raum oder Redstone-Signal).");
+        translationBuilder.add("gui.spores--shadows.air_purifier.status_desc.running", "Der Luftreiniger filtert aktiv Sporen aus dem Raum.");
+        translationBuilder.add("gui.spores--shadows.dehumidifier.status.humidifying", "Verdampfung");
+        translationBuilder.add("gui.spores--shadows.dehumidifier.status.water_empty", "Wassertank leer");
+        translationBuilder.add("item.spores--shadows.air_purifier", "Luftreiniger");
+        translationBuilder.add("message.spores--shadows.detector.dehumidifiers_active", "§7- Luftentfeuchter: §b%d §7(Trocknung: §b-%s§7)");
+        translationBuilder.add("message.spores--shadows.detector.dehumidifiers_none", "§7- Luftentfeuchter: §8Keine");
+        translationBuilder.add("message.spores--shadows.detector.humidifiers_active", "§7- Luftbefeuchter: §b%d §7(Befeuchtung: §b+%s§7)");
+        translationBuilder.add("message.spores--shadows.detector.purifiers_active", "§7- Luftreiniger: §b%d §7(Filterung: §b-%s Miasma§7)");
+        translationBuilder.add("message.spores--shadows.detector.purifiers_none", "§7- Luftreiniger: §8Keine");
+        translationBuilder.add("text.autoconfig.spores--shadows.category.air_purifier", "Luftreiniger");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier", "Luftreiniger");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_capacity", "Energiepuffer-Kapazität (E/RF)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_capacity.@Tooltip", "Interne Energiespeicherung bei vorhandenen externen Energie-Mods (TR/RF).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_cost_per_tick", "Energieverbrauch (E/Tick)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.energy_cost_per_tick.@Tooltip", "Energieverbrauch pro Tick während des Betriebs anstelle von festem Brennstoff.");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.filter_durability_ticks", "Filterhaltbarkeit (Ticks)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.filter_durability_ticks.@Tooltip", "Betriebsticks, bevor ein aktiver Sporenfilter verbraucht ist (2400 Ticks = 2 Minuten Basis).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.fuel_multiplier", "Brennstoff-Dauermultiplikator");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.fuel_multiplier.@Tooltip", "Multiplikator für normale Ofen-Brenndauern (z. B. 4.0 = Kohle hält 4x länger).");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.purifier_cleaning_power", "Reinigungskraft (Bonus pro Einheit)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.airPurifier.purifier_cleaning_power.@Tooltip", "Linearer Abzug vom Raum-Miasma-Wert pro aktivem Luftreiniger.");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.energy", "Energie: %d / %d E");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.energy_usage", "Verbrauch: %d E/t (%d E/s)");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.filter_backup", "Reserve: %d Filter verfügbar");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.filter_integrity", "Aktiver Filterzustand: %d%%");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.high", "Hoch");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.high.desc", "Nur bei Redstone-Signal aktiv");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.ignored", "Ignoriert");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.ignored.desc", "Immer aktiv, solange mit Energie versorgt");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.low", "Niedrig");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone.low.desc", "Aktiv ohne Signal; pausiert durch Redstone");
+        translationBuilder.add("tooltip.spores--shadows.air_purifier.redstone_mode", "Redstone-Modus: %s");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode", "Modus: %s");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.dehumidify", "Entfeuchten");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.dehumidify.desc", "Entzieht dem Raum Feuchtigkeit und sammelt Kondenswasser");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.fluid_info.dehumidify", "Rohre/Eimer: Nur Entnahme (Kondenswasser)");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.fluid_info.humidify", "Rohre/Eimer: Nur Einspeisung (Reines Wasser)");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.humidify", "Befeuchten");
+        translationBuilder.add("tooltip.spores--shadows.dehumidifier.mode.humidify.desc", "Verbraucht Wasser zur Raumbefeuchtung");
+        translationBuilder.add("tooltip.spores--shadows.jade.dehumidifier.status.humidifying", "Verdampfend");
+        translationBuilder.add("tooltip.spores--shadows.jade.dehumidifier.status.water_empty", "Tank leer");
+        // JEI Mold Infection Category Translations
+        translationBuilder.add("jei.spores--shadows.category.mold_infection", "Schimmelinfektion");
+        translationBuilder.add("jei.spores--shadows.infection.note", "Random Tick • Ungewachst");
+        translationBuilder.add("jei.spores--shadows.infection.stage_0_to_1", "Sauber → Befallen");
+        translationBuilder.add("jei.spores--shadows.infection.stage_1_to_2", "Befallen → Schimmelig");
+        translationBuilder.add("jei.spores--shadows.infection.stage_2_to_3", "Schimmelig → Verrottet");
+        translationBuilder.add("jei.spores--shadows.infection.threshold", "Risiko > %d%%");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.condition", "Bedingung: Umweltrisiko (R) > %d%%");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.cure", "Heilung: Mit einer Axt abschaben, um Schimmelstufen rückgängig zu machen.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.desc1", "Ungewachste Blöcke steigen bei zufälligen Ticks in die nächste Stufe auf, wenn das Risiko den Schwellenwert überschreitet.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.desc2", "Das Risiko steigt in dunklen, feuchten, unbelüfteten oder sporenbelasteten Bereichen.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.prevention", "Immunität: Mit Honigwabe wachsen, um Schimmel dauerhaft zu verhindern.");
+        translationBuilder.add("jei.spores--shadows.infection.tooltip.title", "● Schimmel-Fortschreitung");
         // Tag Translations (Fabric Tag Convention v2)
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_items", "Schimmlige Gegenstände");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Filtrationshelme");

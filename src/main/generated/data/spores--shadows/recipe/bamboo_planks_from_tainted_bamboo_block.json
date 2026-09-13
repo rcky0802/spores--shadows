@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    [
+      {
+        "item": "spores--shadows:tainted_bamboo_block"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_bamboo_block"
+      }
+    ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:bamboo_planks"
+  }
+}

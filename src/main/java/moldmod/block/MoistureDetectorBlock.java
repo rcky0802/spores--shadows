@@ -166,11 +166,11 @@ public final class MoistureDetectorBlock extends WallMountedBlock {
         if (result.roomVentilationType() == RoomAtmosphereCalculator.RoomVentilationType.CLEAN_OPEN_AIR || result.airVolume() >= 2048) {
             player.sendMessage(Text.translatable("message.spores--shadows.moisture_detector.open_air"), false);
         } else {
-            String distStr = (result.distanceToVentilation() < 900)
-                    ? Text.translatable("message.spores--shadows.detector.blocks_dist", result.distanceToVentilation()).getString()
-                    : Text.translatable("message.spores--shadows.detector.none").getString();
+            Text distText = (result.distanceToVentilation() < 900)
+                    ? Text.translatable("message.spores--shadows.detector.blocks_dist", result.distanceToVentilation())
+                    : Text.translatable("message.spores--shadows.detector.none");
             player.sendMessage(Text.translatable("message.spores--shadows.moisture_detector.room",
-                    result.airVolume(), distStr), false);
+                    result.airVolume(), distText), false);
         }
 
         // Line 4: Local Aeration & Raw Humidity

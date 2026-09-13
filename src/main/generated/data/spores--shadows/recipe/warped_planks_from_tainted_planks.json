@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    [
+      {
+        "item": "spores--shadows:tainted_warped_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_warped_planks"
+      }
+    ],
+    [
+      {
+        "item": "spores--shadows:tainted_warped_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_tainted_warped_planks"
+      }
+    ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:warped_planks"
+  }
+}

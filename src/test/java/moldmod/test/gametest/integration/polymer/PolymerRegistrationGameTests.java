@@ -16,7 +16,7 @@ public class PolymerRegistrationGameTests {
     public void testWoodTypesAndMoldStagesConstants(TestContext context) {
         List<MoldyWoodType> woodTypes = SporesShadowsConstants.WOOD_TYPES;
         context.assertTrue(!woodTypes.isEmpty(), "Wood types list must not be empty, found: " + woodTypes.size());
-        context.assertTrue(woodTypes.size() == 10, "Wood types list must contain 10 types, found: " + woodTypes.size());
+        context.assertTrue(woodTypes.size() == 11, "Wood types list must contain 11 types, found: " + woodTypes.size());
 
         MoldStage[] stages = MoldStage.values();
         context.assertTrue(stages.length == 4, "Must contain exactly 4 mold stages, found: " + stages.length);

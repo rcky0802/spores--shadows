@@ -44,14 +44,14 @@ public class MoldyFuelAndSmeltingTests {
             Item waxedMoldyLog = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + logName));
             Item waxedRottenLog = Registries.ITEM.get(SporesShadows.id("waxed_rotten_" + logName));
 
-            if (!woodType.isNether()) {
+            if (!woodType.isNether() && !woodType.isBamboo()) {
                 // Overworld woods: Stage 0 (vanilla & waxed) MUST produce charcoal
                 assertCanSmeltToCharcoal(context, recipeManager, registries, vanillaLog, "Vanilla Log " + logName);
                 assertCanSmeltToCharcoal(context, recipeManager, registries, waxedLog, "Waxed Log " + logName);
             } else {
-                // Nether woods: Cannot produce charcoal
-                assertCannotSmeltToCharcoal(context, recipeManager, registries, vanillaLog, "Nether Vanilla Stem " + logName);
-                assertCannotSmeltToCharcoal(context, recipeManager, registries, waxedLog, "Nether Waxed Stem " + logName);
+                // Nether woods & Bamboo: Cannot produce charcoal
+                assertCannotSmeltToCharcoal(context, recipeManager, registries, vanillaLog, (woodType.isNether() ? "Nether Vanilla Stem " : "Bamboo Block ") + logName);
+                assertCannotSmeltToCharcoal(context, recipeManager, registries, waxedLog, (woodType.isNether() ? "Nether Waxed Stem " : "Bamboo Waxed Block ") + logName);
             }
 
             // Infected logs (Stages 1, 2, 3 - unwaxed & waxed) must NOT produce charcoal

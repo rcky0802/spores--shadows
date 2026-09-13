@@ -48,7 +48,8 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
                 new WaxingRecipeCategory(guiHelper),
                 new ScrapingRecipeCategory(guiHelper),
                 new DehumidifierRecipeCategory(guiHelper),
-                new AirPurifierRecipeCategory(guiHelper)
+                new AirPurifierRecipeCategory(guiHelper),
+                new MoldInfectionRecipeCategory(guiHelper)
         );
     }
 
@@ -57,6 +58,8 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         List<WaxingRecipe> waxingRecipes = new ArrayList<>();
         List<ScrapingRecipe> scrapingRecipes = new ArrayList<>();
         List<ItemStack> rottenStacks = new ArrayList<>();
+        List<ItemStack> taintedPlankStacks = new ArrayList<>();
+        List<ItemStack> moldyPlankStacks = new ArrayList<>();
 
         for (Map.Entry<Item, List<Item>> entry : ModBlocks.MOLDY_ITEMS_BY_VANILLA.entrySet()) {
             Item itemVanilla = entry.getKey();
@@ -91,10 +94,71 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
             // 3. Rotten items info
             rottenStacks.add(new ItemStack(itemRotten));
             rottenStacks.add(new ItemStack(itemWaxedRotten));
+
+            // 4. Infected planks info
+            String path = Registries.ITEM.getId(itemVanilla).getPath();
+            if (path.endsWith("_planks")) {
+                taintedPlankStacks.add(new ItemStack(itemTainted));
+                taintedPlankStacks.add(new ItemStack(itemWaxedTainted));
+                moldyPlankStacks.add(new ItemStack(itemMoldy));
+                moldyPlankStacks.add(new ItemStack(itemWaxedMoldy));
+            }
         }
 
         registration.addRecipes(WaxingRecipeCategory.RECIPE_TYPE, waxingRecipes);
         registration.addRecipes(ScrapingRecipeCategory.RECIPE_TYPE, scrapingRecipes);
+
+        // 3. Mold Infection Progression Recipes (Environmental Risk Threshold R > 50%)
+        List<MoldInfectionRecipe> infectionRecipes = new ArrayList<>();
+        float threshold = 0.50f;
+        try {
+            var cfg = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+            if (cfg != null && cfg.general != null) {
+                threshold = cfg.general.infection_threshold;
+            }
+        } catch (Exception ignored) {}
+        int thresholdPct = Math.round(threshold * 100);
+
+        Text thresholdText = Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.threshold", thresholdPct);
+        List<Text> commonTooltip = List.of(
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.tooltip.title"),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.tooltip.condition", thresholdPct),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.tooltip.desc1"),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.tooltip.desc2"),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.tooltip.prevention"),
+                Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.tooltip.cure")
+        );
+
+        Text stage0To1 = Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.stage_0_to_1");
+        Text stage1To2 = Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.stage_1_to_2");
+        Text stage2To3 = Text.translatable("jei." + SporesShadows.MOD_ID + ".infection.stage_2_to_3");
+
+        for (Map.Entry<Item, List<Item>> entry : ModBlocks.MOLDY_ITEMS_BY_VANILLA.entrySet()) {
+            Item itemVanilla = entry.getKey();
+            List<Item> items = entry.getValue();
+            if (items == null || items.size() < 7) continue;
+
+            Item itemTainted = items.get(1);
+            Item itemMoldy = items.get(3);
+            Item itemRotten = items.get(5);
+
+            // Clean -> Tainted (Stage 0 -> 1)
+            infectionRecipes.add(new MoldInfectionRecipe(
+                    new ItemStack(itemVanilla), new ItemStack(itemTainted),
+                    0, 1, stage0To1, thresholdText, commonTooltip
+            ));
+            // Tainted -> Moldy (Stage 1 -> 2)
+            infectionRecipes.add(new MoldInfectionRecipe(
+                    new ItemStack(itemTainted), new ItemStack(itemMoldy),
+                    1, 2, stage1To2, thresholdText, commonTooltip
+            ));
+            // Moldy -> Rotten (Stage 2 -> 3)
+            infectionRecipes.add(new MoldInfectionRecipe(
+                    new ItemStack(itemMoldy), new ItemStack(itemRotten),
+                    2, 3, stage2To3, thresholdText, commonTooltip
+            ));
+        }
+        registration.addRecipes(MoldInfectionRecipeCategory.RECIPE_TYPE, infectionRecipes);
 
         // Dehumidifier Recipes (Water Production & Humidification)
         List<ItemStack> commonFuels = List.of(
@@ -179,6 +243,12 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
 
         if (!rottenStacks.isEmpty()) {
             registration.addIngredientInfo(rottenStacks, VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.rotten_wood"));
+        }
+        if (!taintedPlankStacks.isEmpty()) {
+            registration.addIngredientInfo(taintedPlankStacks, VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.tainted_planks"));
+        }
+        if (!moldyPlankStacks.isEmpty()) {
+            registration.addIngredientInfo(moldyPlankStacks, VanillaTypes.ITEM_STACK, Text.translatable("jei." + SporesShadows.MOD_ID + ".info.moldy_planks"));
         }
 
         // 4. Spore Mask Info, Spore Filter Info, Spore Detector Info, Moisture Detector Info & Spore Filtration Info on Enchanted Books
@@ -312,5 +382,14 @@ public final class SporesShadowsJEIPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.AIR_PURIFIER), AirPurifierRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.DEHUMIDIFIER), mezz.jei.api.constants.RecipeTypes.FUELING);
         registration.addRecipeCatalyst(new ItemStack(moldmod.block.ModBlocks.AIR_PURIFIER), mezz.jei.api.constants.RecipeTypes.FUELING);
+
+        Item moldyPlanksItem = Registries.ITEM.get(SporesShadows.id("moldy_oak_planks"));
+        if (moldyPlanksItem != Items.AIR) {
+            registration.addRecipeCatalyst(new ItemStack(moldyPlanksItem), MoldInfectionRecipeCategory.RECIPE_TYPE);
+        }
+        registration.addRecipeCatalyst(new ItemStack(ModItems.MOISTURE_DETECTOR), MoldInfectionRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModItems.SPORE_DETECTOR), MoldInfectionRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.MOISTURE_DETECTOR), MoldInfectionRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(new ItemStack(ModBlocks.SPORE_DETECTOR), MoldInfectionRecipeCategory.RECIPE_TYPE);
     }
 }

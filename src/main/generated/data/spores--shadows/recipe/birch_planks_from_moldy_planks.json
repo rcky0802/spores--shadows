@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    [
+      {
+        "item": "spores--shadows:moldy_birch_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_birch_planks"
+      }
+    ],
+    [
+      {
+        "item": "spores--shadows:moldy_birch_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_birch_planks"
+      }
+    ],
+    [
+      {
+        "item": "spores--shadows:moldy_birch_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_birch_planks"
+      }
+    ],
+    [
+      {
+        "item": "spores--shadows:moldy_birch_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_moldy_birch_planks"
+      }
+    ]
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:birch_planks"
+  }
+}

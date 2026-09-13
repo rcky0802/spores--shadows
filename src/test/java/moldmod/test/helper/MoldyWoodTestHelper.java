@@ -35,6 +35,13 @@ public class MoldyWoodTestHelper {
             products.add(new WoodProductInfo(woodType, prefix + "_trapdoor", 300));
             products.add(new WoodProductInfo(woodType, prefix + "_button", 100));
             products.add(new WoodProductInfo(woodType, prefix + "_pressure_plate", 300));
+
+            // Bamboo mosaic family
+            if (woodType.isBamboo()) {
+                products.add(new WoodProductInfo(woodType, prefix + "_mosaic", 300));
+                products.add(new WoodProductInfo(woodType, prefix + "_mosaic_stairs", 300));
+                products.add(new WoodProductInfo(woodType, prefix + "_mosaic_slab", 150));
+            }
         }
         return products;
     }

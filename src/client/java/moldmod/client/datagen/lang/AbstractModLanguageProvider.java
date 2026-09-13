@@ -28,14 +28,27 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
 
             // Block mapping for translations
             Map<String, String> blockSuffixMap = new LinkedHashMap<>();
-            blockSuffixMap.put(logName, "log");
-            blockSuffixMap.put("stripped_" + logName, "stripped_log");
-            blockSuffixMap.put(woodName, "wood");
-            blockSuffixMap.put("stripped_" + woodName, "stripped_wood");
+            if (woodType.isBamboo()) {
+                blockSuffixMap.put(logName, "block");
+                blockSuffixMap.put("stripped_" + logName, "stripped_block");
+            } else {
+                blockSuffixMap.put(logName, "log");
+                blockSuffixMap.put("stripped_" + logName, "stripped_log");
+            }
+            if (woodName != null) {
+                blockSuffixMap.put(woodName, "wood");
+                blockSuffixMap.put("stripped_" + woodName, "stripped_wood");
+            }
             blockSuffixMap.put(prefix + "_planks", "planks");
 
             for (String blockKey : SporesShadowsConstants.BLOCK_TYPES) {
                 blockSuffixMap.put(prefix + "_" + blockKey, blockKey);
+            }
+
+            if (woodType.isBamboo()) {
+                blockSuffixMap.put(prefix + "_mosaic", "mosaic");
+                blockSuffixMap.put(prefix + "_mosaic_stairs", "mosaic_stairs");
+                blockSuffixMap.put(prefix + "_mosaic_slab", "mosaic_slab");
             }
 
             for (Map.Entry<String, String> entry : blockSuffixMap.entrySet()) {

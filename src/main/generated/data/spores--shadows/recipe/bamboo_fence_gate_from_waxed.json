@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:bamboo_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_bamboo_planks"
+      }
+    ],
+    "|": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "|#|",
+    "|#|"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:bamboo_fence_gate"
+  }
+}

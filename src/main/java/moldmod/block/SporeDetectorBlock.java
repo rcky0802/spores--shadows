@@ -169,12 +169,11 @@ public final class SporeDetectorBlock extends WallMountedBlock {
         if (result.openAir || result.volume >= 2048) {
             player.sendMessage(Text.translatable("message.spores--shadows.spore_detector.open_air"), false);
         } else {
-            String distStr = (result.distanceToVentilation < 900)
+            Text distText = (result.distanceToVentilation < 900)
                     ? Text.translatable("message.spores--shadows.detector.blocks_dist", result.distanceToVentilation)
-                            .getString()
-                    : Text.translatable("message.spores--shadows.detector.none").getString();
+                    : Text.translatable("message.spores--shadows.detector.none");
             player.sendMessage(Text.translatable("message.spores--shadows.spore_detector.room",
-                    result.volume, distStr), false);
+                    result.volume, distText), false);
         }
 
         // Line 4: Local Aeration & Room Miasma

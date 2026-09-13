@@ -36,7 +36,7 @@ loom {
 		client {
 			client()
 			name "Minecraft Client"
-			source sourceSets.main
+			source sourceSets.client
 			vmArg "-Dfabric-tag-conventions-v1.legacyTagWarning=SILENCED"
 			vmArg "-Dfabric-tag-conventions-v2.missingTagTranslationWarning=SILENCED"
 		}
