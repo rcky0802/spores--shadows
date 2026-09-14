@@ -52,7 +52,13 @@
 			"moldmod.test.gametest.integration.jei.JEISporeGearAndDeviceGameTests",
 			"moldmod.test.gametest.integration.polymer.PolymerRegistrationGameTests",
 			"moldmod.test.gametest.integration.polymer.MoldyJsonGeneratorGameTests",
-			"moldmod.test.gametest.integration.config.ClothConfigRuntimeGameTests"
+			"moldmod.test.gametest.integration.config.ClothConfigRuntimeGameTests",
+			"moldmod.test.gametest.wood.MoldySignGameTests",
+			"moldmod.test.gametest.wood.MoldyBookshelfGameTests",
+			"moldmod.test.gametest.wood.MoldySpecialDevicesGameTests",
+			"moldmod.test.gametest.wood.DoorDropGameTests",
+			"moldmod.test.gametest.wood.FenceConnectionGameTests",
+			"moldmod.test.gametest.integration.jade.JadeNoteBlockProviderGameTests"
 		]
 	},
     "depends": {

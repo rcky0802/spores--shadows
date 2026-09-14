@@ -336,6 +336,50 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
                         .offerTo(exporter, SporesShadows.id(prefix + (prefix.equals("bamboo") ? "_chest_raft_from_waxed" : "_chest_boat_from_waxed")));
             }
+
+            // Bookshelf from mixed planks
+            ShapedRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, Items.BOOKSHELF, 1)
+                    .pattern("###")
+                    .pattern("BBB")
+                    .pattern("###")
+                    .input('#', mixedPlanks)
+                    .input('B', Items.BOOK)
+                    .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_bookshelf_from_waxed"));
+
+            // Chiseled Bookshelf from mixed planks and mixed slabs
+            Item waxedSlab = Registries.ITEM.get(SporesShadows.id("waxed_" + prefix + "_slab"));
+            if (vanillaSlab != Items.AIR && waxedSlab != Items.AIR) {
+                Ingredient mixedSlabs = Ingredient.ofItems(vanillaSlab, waxedSlab);
+                ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Items.CHISELED_BOOKSHELF, 1)
+                        .pattern("###")
+                        .pattern("SSS")
+                        .pattern("###")
+                        .input('#', mixedPlanks)
+                        .input('S', mixedSlabs)
+                        .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
+                        .offerTo(exporter, SporesShadows.id(prefix + "_chiseled_bookshelf_from_waxed"));
+            }
+
+            // Note Block from mixed planks
+            ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Items.NOTE_BLOCK, 1)
+                    .pattern("###")
+                    .pattern("#R#")
+                    .pattern("###")
+                    .input('#', mixedPlanks)
+                    .input('R', Items.REDSTONE)
+                    .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_note_block_from_waxed"));
+
+            // Jukebox from mixed planks
+            ShapedRecipeJsonBuilder.create(RecipeCategory.REDSTONE, Items.JUKEBOX, 1)
+                    .pattern("###")
+                    .pattern("#D#")
+                    .pattern("###")
+                    .input('#', mixedPlanks)
+                    .input('D', Items.DIAMOND)
+                    .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
+                    .offerTo(exporter, SporesShadows.id(prefix + "_jukebox_from_waxed"));
         }
     }
 

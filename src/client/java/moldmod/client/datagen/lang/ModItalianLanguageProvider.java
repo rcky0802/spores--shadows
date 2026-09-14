@@ -84,6 +84,20 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_2", "Strutturalmente indebolito dalla muffa.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_1", "La muffa ha compromesso il meccanismo.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_2", "Il tempo di attivazione è notevolmente aumentato.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_1", "Le rune e i tomi conservano la memoria del potere.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_2", "La muffa attenua il potere d'incantamento.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_1", "Conserva fino a 6 tomi o libri intatti.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_2", "Shift + clic con ascia o favo per interagire con la muffa.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_1", "I pioli sono resi viscidi e fragili dalla muffa.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_2", "Le scale marce possono cedere sotto il peso.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_1", "La cassa armonica è occlusa dalle spore fungine.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_2", "La tonalità emessa risulta alterata e ovattata.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_1", "Il meccanismo di lettura è consumato dalla muffa.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_2", "I dischi musicali sono preservati all'interno.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.rotten", "[Cassa rovinata / Suono sordo]");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.muffled", "Ovattata");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.dampened", "Cupa");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.jukebox.scratched", "Riproduzione: Distorta e graffiata dalla muffa");
 
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".title", "Configurazione Spores & Shadows");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.general", "Generale");
@@ -461,6 +475,7 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
 
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".dehumidifier_info", "Spores & Shadows: Info Deumidificatore");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".air_purifier_info", "Spores & Shadows: Info Depuratore d'Aria");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_noteblock", "Spores & Shadows: Info Blocco Note Ammuffito");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.filter", "Filtro: %d%%");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.running", "In Funzione");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.off", "Spento");
@@ -618,5 +633,42 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Elmi per Filtrazione");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocchi Muffosi");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocchi Muffosi");
+    }
+
+    @Override
+    protected String getCompositeTranslation(String compositeType, String state) {
+        String baseName;
+        boolean isFeminine;
+        switch (compositeType) {
+            case "chiseled_bookshelf" -> { baseName = "Libreria Scolpita"; isFeminine = true; }
+            case "bookshelf" -> { baseName = "Libreria"; isFeminine = true; }
+            case "ladder" -> { baseName = "Scala a Pioli"; isFeminine = true; }
+            case "note_block" -> { baseName = "Blocco Note"; isFeminine = false; }
+            case "jukebox" -> { baseName = "Jukebox"; isFeminine = false; }
+            default -> { baseName = compositeType; isFeminine = false; }
+        }
+        if (isFeminine) {
+            return switch (state) {
+                case "waxed" -> baseName + " Incerata";
+                case "tainted" -> baseName + " Contaminata";
+                case "waxed_tainted" -> baseName + " Contaminata Incerata";
+                case "moldy" -> baseName + " Ammuffita";
+                case "waxed_moldy" -> baseName + " Ammuffita Incerata";
+                case "rotten" -> baseName + " Marcia";
+                case "waxed_rotten" -> baseName + " Marcia Incerata";
+                default -> baseName;
+            };
+        } else {
+            return switch (state) {
+                case "waxed" -> baseName + " Incerato";
+                case "tainted" -> baseName + " Contaminato";
+                case "waxed_tainted" -> baseName + " Contaminato Incerato";
+                case "moldy" -> baseName + " Ammuffito";
+                case "waxed_moldy" -> baseName + " Ammuffito Incerato";
+                case "rotten" -> baseName + " Marcio";
+                case "waxed_rotten" -> baseName + " Marcio Incerato";
+                default -> baseName;
+            };
+        }
     }
 }

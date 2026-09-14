@@ -13,8 +13,8 @@ public class MoldyVariantsCountTest {
 
 
         // 2. Verify Base Formats Count
-        // 10 woods * 17 formats + 1 bamboo * 18 formats = 188 base formats.
-        int expectedBaseFormats = 188;
+        // 10 woods * 17 formats + 1 bamboo * 18 formats + 5 composite formats (bookshelf, chiseled_bookshelf, ladder, note_block, jukebox) = 193 base formats.
+        int expectedBaseFormats = 193;
         int actualBaseFormats = ModBlocks.VANILLA_TO_MOLDY.size();
         if (actualBaseFormats != expectedBaseFormats) {
             context.throwPositionedException(
@@ -41,22 +41,22 @@ public class MoldyVariantsCountTest {
             }
         }
 
-        if (waxedVanillaVariants != 166) {
-            context.throwPositionedException("Expected 166 Waxed Vanilla variants, but got " + waxedVanillaVariants,
+        if (waxedVanillaVariants != 171) {
+            context.throwPositionedException("Expected 171 Waxed Vanilla variants, but got " + waxedVanillaVariants,
                     context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
         }
-        if (moldyVariants != 498) {
-            context.throwPositionedException("Expected 498 Moldy variants, but got " + moldyVariants,
+        if (moldyVariants != 513) {
+            context.throwPositionedException("Expected 513 Moldy variants, but got " + moldyVariants,
                     context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
         }
-        if (waxedMoldyVariants != 498) {
-            context.throwPositionedException("Expected 498 separate Waxed Moldy item registrations, but got " + waxedMoldyVariants,
+        if (waxedMoldyVariants != 513) {
+            context.throwPositionedException("Expected 513 separate Waxed Moldy item registrations, but got " + waxedMoldyVariants,
                     context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
         }
 
         int totalVariants = waxedVanillaVariants + moldyVariants + waxedMoldyVariants;
-        if (totalVariants != 1162) {
-            context.throwPositionedException("Expected 1162 total variants, but got " + totalVariants,
+        if (totalVariants != 1197) {
+            context.throwPositionedException("Expected 1197 total variants, but got " + totalVariants,
                     context.getAbsolutePos(net.minecraft.util.math.BlockPos.ORIGIN));
         }
 

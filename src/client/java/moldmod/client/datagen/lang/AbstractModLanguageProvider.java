@@ -79,6 +79,21 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
             translationBuilder.add("block." + SporesShadows.MOD_ID + ".moldy_" + prefix + "_wall_hanging_sign", getTranslation(wood, "hanging_sign", "moldy"));
             translationBuilder.add("block." + SporesShadows.MOD_ID + ".waxed_" + prefix + "_wall_hanging_sign", getTranslation(wood, "hanging_sign", "waxed"));
         }
+
+        // Composite blocks (bookshelf, chiseled_bookshelf, ladder, note_block, jukebox)
+        for (String composite : new String[]{"bookshelf", "chiseled_bookshelf", "ladder", "note_block", "jukebox"}) {
+            translationBuilder.add("block." + SporesShadows.MOD_ID + ".moldy_" + composite, getCompositeTranslation(composite, "moldy"));
+            translationBuilder.add("block." + SporesShadows.MOD_ID + ".waxed_" + composite, getCompositeTranslation(composite, "waxed"));
+
+            for (MoldStage stage : MoldStage.values()) {
+                if (stage == MoldStage.WAXED) {
+                    translationBuilder.add("item." + SporesShadows.MOD_ID + ".waxed_" + composite, getCompositeTranslation(composite, "waxed"));
+                } else {
+                    translationBuilder.add("item." + SporesShadows.MOD_ID + "." + stage.getName() + "_" + composite, getCompositeTranslation(composite, stage.getName()));
+                    translationBuilder.add("item." + SporesShadows.MOD_ID + ".waxed_" + stage.getName() + "_" + composite, getCompositeTranslation(composite, "waxed_" + stage.getName()));
+                }
+            }
+        }
         
         generateTooltipsAndConfig(translationBuilder);
     }
@@ -91,6 +106,8 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
      * @return The fully translated name.
      */
     protected abstract String getTranslation(String wood, String blockType, String state);
+
+    protected abstract String getCompositeTranslation(String compositeType, String state);
 
     protected abstract void generateTooltipsAndConfig(TranslationBuilder builder);
 }

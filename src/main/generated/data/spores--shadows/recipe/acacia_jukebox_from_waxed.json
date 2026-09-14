@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:acacia_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_acacia_planks"
+      }
+    ],
+    "D": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "###",
+    "#D#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:jukebox"
+  }
+}

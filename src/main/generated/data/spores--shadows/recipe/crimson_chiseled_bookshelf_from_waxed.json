@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:crimson_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_crimson_planks"
+      }
+    ],
+    "S": [
+      {
+        "item": "minecraft:crimson_slab"
+      },
+      {
+        "item": "spores--shadows:waxed_crimson_slab"
+      }
+    ]
+  },
+  "pattern": [
+    "###",
+    "SSS",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:chiseled_bookshelf"
+  }
+}

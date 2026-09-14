@@ -48,6 +48,20 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_2", "Structurally weakened by mold.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_1", "Mold has compromised the mechanism.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_2", "Activation duration is significantly longer.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_1", "Runes and tomes retain remnants of magical power.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_2", "Mold degrades enchantment power.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_1", "Safely stores up to 6 books or tomes.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_2", "Sneak + click with axe or honeycomb to manage mold.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_1", "Rungs are made slick and brittle by mold.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_2", "Rotten ladders may crumble under player weight.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_1", "Resonance chamber is choked with fungal spores.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_2", "Pitched tones are dampened and muffled.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_1", "Turntable mechanism worn down by encroaching mold.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_2", "Preserves inserted music discs across all decay stages.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.rotten", "[Ruined / Dull Thud]");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.muffled", "Muffled");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.dampened", "Dampened");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.jukebox.scratched", "Playback: Distorted and scratched by mold");
 
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".title", "Spores & Shadows Config");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.general", "General");
@@ -415,6 +429,7 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
 
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".dehumidifier_info", "Spores & Shadows: Dehumidifier Info");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".air_purifier_info", "Spores & Shadows: Air Purifier Info");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_noteblock", "Spores & Shadows: Moldy Note Block Info");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.filter", "Filter: %d%%");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.running", "Running");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.off", "Off");
@@ -581,6 +596,28 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
             result.append(Character.toUpperCase(w.charAt(0))).append(w.substring(1)).append(" ");
         }
         return result.toString().trim();
+    }
+
+    @Override
+    protected String getCompositeTranslation(String compositeType, String state) {
+        String baseName = switch (compositeType) {
+            case "chiseled_bookshelf" -> "Chiseled Bookshelf";
+            case "bookshelf" -> "Bookshelf";
+            case "ladder" -> "Ladder";
+            case "note_block" -> "Note Block";
+            case "jukebox" -> "Jukebox";
+            default -> compositeType;
+        };
+        return switch (state) {
+            case "waxed" -> "Waxed " + baseName;
+            case "tainted" -> "Tainted " + baseName;
+            case "waxed_tainted" -> "Waxed Tainted " + baseName;
+            case "moldy" -> "Moldy " + baseName;
+            case "waxed_moldy" -> "Waxed Moldy " + baseName;
+            case "rotten" -> "Rotten " + baseName;
+            case "waxed_rotten" -> "Waxed Rotten " + baseName;
+            default -> baseName;
+        };
     }
 }
 

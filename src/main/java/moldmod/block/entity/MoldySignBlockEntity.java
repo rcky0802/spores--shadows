@@ -30,9 +30,11 @@ public class MoldySignBlockEntity extends SignBlockEntity {
     }
 
     public int getMoldStage() {
-        BlockState state = getCachedState();
-        if (state != null && state.contains(MoldyBlock.STAGE)) {
-            return state.get(MoldyBlock.STAGE);
+        if (hasWorld()) {
+            BlockState state = getCachedState();
+            if (state != null && state.contains(MoldyBlock.STAGE)) {
+                return state.get(MoldyBlock.STAGE);
+            }
         }
         return moldStage;
     }
@@ -43,9 +45,11 @@ public class MoldySignBlockEntity extends SignBlockEntity {
     }
 
     public boolean isMoldWaxed() {
-        BlockState state = getCachedState();
-        if (state != null && state.contains(MoldyBlock.WAXED)) {
-            return state.get(MoldyBlock.WAXED);
+        if (hasWorld()) {
+            BlockState state = getCachedState();
+            if (state != null && state.contains(MoldyBlock.WAXED)) {
+                return state.get(MoldyBlock.WAXED);
+            }
         }
         return moldWaxed;
     }

@@ -95,6 +95,33 @@ public final class MoldyResourceGenerator {
                     }
                 }
             }
+
+            // Generate alpha-masked textures for ladders (tainted, moldy, rotten)
+            for (MoldStage stageEnum : MoldStage.values()) {
+                int i = stageEnum.getId();
+                if (i == 0) continue;
+                String itemName = stageEnum.getName() + "_ladder";
+
+                try {
+                    InputStream itemIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/minecraft/textures/block/ladder.png");
+                    InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/" + SporesShadows.MOD_ID + "/textures/block/mold/mold_stage_" + i + ".png");
+
+                    if (itemIn != null && moldIn != null) {
+                        BufferedImage baseImage = ImageIO.read(itemIn);
+                        BufferedImage moldImage = ImageIO.read(moldIn);
+
+                        BufferedImage resultImage = applyAlphaMask(baseImage, moldImage);
+
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        ImageIO.write(resultImage, "png", baos);
+                        byte[] imageBytes = baos.toByteArray();
+
+                        builder.addData("assets/" + SporesShadows.MOD_ID + "/textures/item/" + itemName + ".png", imageBytes);
+                    }
+                } catch (Exception e) {
+                    SporesShadows.LOGGER.error("Error during dynamic generation of ladder item {}: {}", itemName, e.getMessage(), e);
+                }
+            }
         });
 
         PolymerResourcePackUtils.markAsRequired();

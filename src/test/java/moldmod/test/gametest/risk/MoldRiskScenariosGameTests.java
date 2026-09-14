@@ -54,6 +54,7 @@ public class MoldRiskScenariosGameTests {
 
     @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
     public void testScenario2_SealedDarkBasementClean(TestContext context) {
+        context.getWorld().setWeather(0, 0, false, false);
         // Stanza sigillata 5x5x5 in pietra
         RoomTestBuilder.of(context).stoneRoom(0, 0, 0, 4, 4, 4);
 

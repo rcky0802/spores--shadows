@@ -53,6 +53,14 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
         FabricTagBuilder trapdoors = getOrCreateTagBuilder(BlockTags.TRAPDOORS);
         FabricTagBuilder woodenTrapdoors = getOrCreateTagBuilder(BlockTags.WOODEN_TRAPDOORS);
 
+        FabricTagBuilder powerProviders = getOrCreateTagBuilder(BlockTags.ENCHANTMENT_POWER_PROVIDER);
+        powerProviders.add(ModBlocks.MOLDY_BOOKSHELF);
+        powerProviders.add(ModBlocks.WAXED_BOOKSHELF);
+
+        FabricTagBuilder climbable = getOrCreateTagBuilder(BlockTags.CLIMBABLE);
+        climbable.add(ModBlocks.MOLDY_LADDER);
+        climbable.add(ModBlocks.WAXED_LADDER);
+
         for (Block block : Registries.BLOCK) {
             Identifier id = Registries.BLOCK.getId(block);
             if (!id.getNamespace().equals(SporesShadows.MOD_ID)) continue;

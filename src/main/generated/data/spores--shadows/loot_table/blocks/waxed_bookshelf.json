@@ -1,0 +1,176 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:match_tool",
+          "predicate": {
+            "predicates": {
+              "minecraft:enchantments": [
+                {
+                  "enchantments": "minecraft:silk_touch",
+                  "levels": {
+                    "min": 1
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "spores--shadows:waxed_bookshelf",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "stage": "3"
+                  }
+                }
+              ],
+              "name": "spores--shadows:waxed_rotten_bookshelf"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "spores--shadows:waxed_bookshelf",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "stage": "2"
+                  }
+                }
+              ],
+              "name": "spores--shadows:waxed_moldy_bookshelf"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "spores--shadows:waxed_bookshelf",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "stage": "1"
+                  }
+                }
+              ],
+              "name": "spores--shadows:waxed_tainted_bookshelf"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "spores--shadows:waxed_bookshelf",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "stage": "0"
+                  }
+                }
+              ],
+              "name": "spores--shadows:waxed_bookshelf"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "condition": "minecraft:match_tool",
+            "predicate": {
+              "predicates": {
+                "minecraft:enchantments": [
+                  {
+                    "enchantments": "minecraft:silk_touch",
+                    "levels": {
+                      "min": 1
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "spores--shadows:waxed_bookshelf",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "stage": "0"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "add": false,
+                  "count": 3.0,
+                  "function": "minecraft:set_count"
+                }
+              ],
+              "name": "minecraft:book"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "spores--shadows:waxed_bookshelf",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "stage": "1"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "add": false,
+                  "count": 2.0,
+                  "function": "minecraft:set_count"
+                }
+              ],
+              "name": "minecraft:book"
+            },
+            {
+              "type": "minecraft:item",
+              "conditions": [
+                {
+                  "block": "spores--shadows:waxed_bookshelf",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "stage": "2"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "add": false,
+                  "count": 1.0,
+                  "function": "minecraft:set_count"
+                }
+              ],
+              "name": "minecraft:book"
+            }
+          ]
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

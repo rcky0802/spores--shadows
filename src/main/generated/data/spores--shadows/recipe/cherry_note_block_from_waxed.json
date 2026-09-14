@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:cherry_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_cherry_planks"
+      }
+    ],
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    "###",
+    "#R#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:note_block"
+  }
+}

@@ -45,6 +45,12 @@ public final class MoldyJsonGenerator {
                 genMosaicStairs(builder, wood);
             }
         }
+
+        genBookshelf(builder);
+        genChiseledBookshelf(builder);
+        genLadder(builder);
+        genNoteBlock(builder);
+        genJukebox(builder);
     }
 
     private static void write(ResourcePackBuilder builder, String path, JsonObject json) {
@@ -868,6 +874,299 @@ public final class MoldyJsonGenerator {
             String moldyTex = SporesShadows.MOD_ID + ":item/" + ms.getName() + "_" + baseName;
             genItem2d(builder, ms.getName() + "_" + baseName, moldyTex);
             genItem2d(builder, "waxed_" + ms.getName() + "_" + baseName, moldyTex);
+        }
+    }
+
+    private static void genBookshelf(ResourcePackBuilder builder) {
+        for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
+            String blockId = idPrefix + "bookshelf";
+            JsonObject variants = new JsonObject();
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) {
+                int stage = moldStage.getId();
+                if (stage > 0) {
+                    JsonObject model = new JsonObject();
+                    model.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_cube_column");
+                    JsonObject textures = new JsonObject();
+                    textures.addProperty("end", "minecraft:block/oak_planks");
+                    textures.addProperty("side", "minecraft:block/bookshelf");
+                    textures.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                    model.add("textures", textures);
+                    write(builder, "models/block/" + blockId + "_stage_" + stage, model);
+                }
+                String itemParent = stage == 0 ? "minecraft:block/bookshelf" : blockId + "_stage_" + stage;
+                if (idPrefix.equals("waxed_") || stage > 0) {
+                    genItemModel(builder, "bookshelf", itemParent, stage, false, idPrefix);
+                }
+
+                String m = stage == 0 ? "minecraft:block/bookshelf" : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
+                for (String common : getCommonProps()) {
+                    JsonObject v = new JsonObject();
+                    v.addProperty("model", m);
+                    variants.add("stage=" + stage + "," + common, v);
+                }
+            }
+            JsonObject bs = new JsonObject();
+            bs.add("variants", variants);
+            write(builder, "blockstates/" + blockId, bs);
+        }
+    }
+
+    private static void genChiseledBookshelf(ResourcePackBuilder builder) {
+        String[] slotNames = new String[]{
+            "top_left", "top_mid", "top_right",
+            "bottom_left", "bottom_mid", "bottom_right"
+        };
+        String[] facings = new String[]{"north", "east", "south", "west"};
+        int[] rotY = new int[]{0, 90, 180, 270};
+
+        for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
+            String blockId = idPrefix + "chiseled_bookshelf";
+
+            // 1. Models for each stage
+            for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) {
+                int stage = moldStage.getId();
+                if (stage > 0) {
+                    // Block base model
+                    JsonObject blockModel = new JsonObject();
+                    blockModel.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_chiseled_bookshelf");
+                    JsonObject blockTextures = new JsonObject();
+                    blockTextures.addProperty("top", "minecraft:block/chiseled_bookshelf_top");
+                    blockTextures.addProperty("side", "minecraft:block/chiseled_bookshelf_side");
+                    blockTextures.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                    blockModel.add("textures", blockTextures);
+                    write(builder, "models/block/" + blockId + "_stage_" + stage, blockModel);
+
+                    // Item inventory model
+                    JsonObject invModel = new JsonObject();
+                    invModel.addProperty("parent", moldmod.SporesShadows.MOD_ID + ":block/mold/moldy_chiseled_bookshelf_inventory");
+                    JsonObject invTextures = new JsonObject();
+                    invTextures.addProperty("top", "minecraft:block/chiseled_bookshelf_top");
+                    invTextures.addProperty("side", "minecraft:block/chiseled_bookshelf_side");
+                    invTextures.addProperty("front", "minecraft:block/chiseled_bookshelf_empty");
+                    invTextures.addProperty("overlay", moldmod.SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                    invModel.add("textures", invTextures);
+                    write(builder, "models/block/" + blockId + "_stage_" + stage + "_inventory", invModel);
+                }
+
+                String itemParent = stage == 0 ? "minecraft:item/chiseled_bookshelf" : blockId + "_stage_" + stage + "_inventory";
+                if (idPrefix.equals("waxed_") || stage > 0) {
+                    genItemModel(builder, "chiseled_bookshelf", itemParent, stage, false, idPrefix);
+                }
+            }
+
+            // 2. Multipart Blockstate
+            JsonArray multipart = new JsonArray();
+
+            // 2a. Base bodies for all 4 facings and 4 stages
+            for (int f = 0; f < facings.length; f++) {
+                String facing = facings[f];
+                int y = rotY[f];
+                for (moldmod.SporesShadowsConstants.MoldStage moldStage : moldmod.SporesShadowsConstants.MoldStage.values()) {
+                    int stage = moldStage.getId();
+                    String m = stage == 0 ? "minecraft:block/chiseled_bookshelf" : moldmod.SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
+                    JsonObject part = new JsonObject();
+                    JsonObject when = new JsonObject();
+                    when.addProperty("facing", facing);
+                    when.addProperty("stage", String.valueOf(stage));
+                    part.add("when", when);
+                    JsonObject apply = new JsonObject();
+                    apply.addProperty("model", m);
+                    apply.addProperty("uvlock", true);
+                    if (y != 0) {
+                        apply.addProperty("y", y);
+                    }
+                    part.add("apply", apply);
+                    multipart.add(part);
+                }
+            }
+
+            // 2b. Slots (occupied / empty) for all 4 facings
+            for (int f = 0; f < facings.length; f++) {
+                String facing = facings[f];
+                int y = rotY[f];
+                for (int slot = 0; slot < 6; slot++) {
+                    String slotProp = "slot_" + slot + "_occupied";
+                    String slotName = slotNames[slot];
+
+                    // Occupied
+                    JsonObject occPart = new JsonObject();
+                    JsonObject occWhen = new JsonObject();
+                    JsonArray occAnd = new JsonArray();
+                    JsonObject occF = new JsonObject();
+                    occF.addProperty("facing", facing);
+                    occAnd.add(occF);
+                    JsonObject occS = new JsonObject();
+                    occS.addProperty(slotProp, "true");
+                    occAnd.add(occS);
+                    occWhen.add("AND", occAnd);
+                    occPart.add("when", occWhen);
+                    JsonObject occApply = new JsonObject();
+                    occApply.addProperty("model", "minecraft:block/chiseled_bookshelf_occupied_slot_" + slotName);
+                    if (y != 0) {
+                        occApply.addProperty("y", y);
+                    }
+                    occPart.add("apply", occApply);
+                    multipart.add(occPart);
+
+                    // Empty
+                    JsonObject emptyPart = new JsonObject();
+                    JsonObject emptyWhen = new JsonObject();
+                    JsonArray emptyAnd = new JsonArray();
+                    JsonObject emptyF = new JsonObject();
+                    emptyF.addProperty("facing", facing);
+                    emptyAnd.add(emptyF);
+                    JsonObject emptyS = new JsonObject();
+                    emptyS.addProperty(slotProp, "false");
+                    emptyAnd.add(emptyS);
+                    emptyWhen.add("AND", emptyAnd);
+                    emptyPart.add("when", emptyWhen);
+                    JsonObject emptyApply = new JsonObject();
+                    emptyApply.addProperty("model", "minecraft:block/chiseled_bookshelf_empty_slot_" + slotName);
+                    if (y != 0) {
+                        emptyApply.addProperty("y", y);
+                    }
+                    emptyPart.add("apply", emptyApply);
+                    multipart.add(emptyPart);
+                }
+            }
+
+            JsonObject bs = new JsonObject();
+            bs.add("multipart", multipart);
+            write(builder, "blockstates/" + blockId, bs);
+        }
+    }
+
+    private static void genLadder(ResourcePackBuilder builder) {
+        String[] facings = new String[]{"north", "east", "south", "west"};
+        int[] rotY = new int[]{0, 90, 180, 270};
+
+        for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
+            String blockId = idPrefix + "ladder";
+            JsonObject variants = new JsonObject();
+
+            for (MoldStage moldStage : MoldStage.values()) {
+                int stage = moldStage.getId();
+                if (stage > 0) {
+                    JsonObject model = new JsonObject();
+                    model.addProperty("parent", SporesShadows.MOD_ID + ":block/mold/moldy_ladder");
+                    JsonObject textures = new JsonObject();
+                    textures.addProperty("particle", "minecraft:block/ladder");
+                    textures.addProperty("ladder", "minecraft:block/ladder");
+                    textures.addProperty("overlay", SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                    model.add("textures", textures);
+                    write(builder, "models/block/" + blockId + "_stage_" + stage, model);
+                }
+
+                // Ladder Item Model (2D icon)
+                if (idPrefix.equals("waxed_") || stage > 0) {
+                    String stageName = moldStage.getName();
+                    String itemName = idPrefix.equals("waxed_")
+                            ? (stage == 0 ? "waxed_ladder" : "waxed_" + stageName + "_ladder")
+                            : stageName + "_ladder";
+                    JsonObject itemJson = new JsonObject();
+                    itemJson.addProperty("parent", "minecraft:item/generated");
+                    JsonObject itemTex = new JsonObject();
+                    if (stage == 0) {
+                        itemTex.addProperty("layer0", "minecraft:block/ladder");
+                    } else {
+                        itemTex.addProperty("layer0", SporesShadows.MOD_ID + ":item/" + stageName + "_ladder");
+                    }
+                    itemJson.add("textures", itemTex);
+                    write(builder, "models/item/" + itemName, itemJson);
+                }
+
+                String modelName = stage == 0 ? "minecraft:block/ladder" : SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
+                for (int f = 0; f < facings.length; f++) {
+                    String facing = facings[f];
+                    int y = rotY[f];
+                    for (String common : getCommonProps()) {
+                        JsonObject v = new JsonObject();
+                        v.addProperty("model", modelName);
+                        if (y != 0) {
+                            v.addProperty("y", y);
+                        }
+                        variants.add("facing=" + facing + ",stage=" + stage + "," + common, v);
+                    }
+                }
+            }
+            JsonObject bs = new JsonObject();
+            bs.add("variants", variants);
+            write(builder, "blockstates/" + blockId, bs);
+        }
+    }
+
+    private static void genNoteBlock(ResourcePackBuilder builder) {
+        for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
+            String blockId = idPrefix + "note_block";
+            JsonObject variants = new JsonObject();
+
+            for (MoldStage moldStage : MoldStage.values()) {
+                int stage = moldStage.getId();
+                if (stage > 0) {
+                    JsonObject model = new JsonObject();
+                    model.addProperty("parent", SporesShadows.MOD_ID + ":block/mold/moldy_cube_all");
+                    JsonObject textures = new JsonObject();
+                    textures.addProperty("all", "minecraft:block/note_block");
+                    textures.addProperty("overlay", SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                    model.add("textures", textures);
+                    write(builder, "models/block/" + blockId + "_stage_" + stage, model);
+                }
+
+                String itemParent = stage == 0 ? "minecraft:block/note_block" : blockId + "_stage_" + stage;
+                if (idPrefix.equals("waxed_") || stage > 0) {
+                    genItemModel(builder, "note_block", itemParent, stage, false, idPrefix);
+                }
+
+                String m = stage == 0 ? "minecraft:block/note_block" : SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
+                for (String common : getCommonProps()) {
+                    JsonObject v = new JsonObject();
+                    v.addProperty("model", m);
+                    variants.add("stage=" + stage + "," + common, v);
+                }
+            }
+            JsonObject bs = new JsonObject();
+            bs.add("variants", variants);
+            write(builder, "blockstates/" + blockId, bs);
+        }
+    }
+
+    private static void genJukebox(ResourcePackBuilder builder) {
+        for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
+            String blockId = idPrefix + "jukebox";
+            JsonObject variants = new JsonObject();
+
+            for (MoldStage moldStage : MoldStage.values()) {
+                int stage = moldStage.getId();
+                if (stage > 0) {
+                    JsonObject model = new JsonObject();
+                    model.addProperty("parent", SporesShadows.MOD_ID + ":block/mold/moldy_cube_column");
+                    JsonObject textures = new JsonObject();
+                    textures.addProperty("end", "minecraft:block/jukebox_top");
+                    textures.addProperty("side", "minecraft:block/jukebox_side");
+                    textures.addProperty("overlay", SporesShadows.MOD_ID + ":block/mold/mold_stage_" + stage);
+                    model.add("textures", textures);
+                    write(builder, "models/block/" + blockId + "_stage_" + stage, model);
+                }
+
+                String itemParent = stage == 0 ? "minecraft:block/jukebox" : blockId + "_stage_" + stage;
+                if (idPrefix.equals("waxed_") || stage > 0) {
+                    genItemModel(builder, "jukebox", itemParent, stage, false, idPrefix);
+                }
+
+                String m = stage == 0 ? "minecraft:block/jukebox" : SporesShadows.MOD_ID + ":block/" + blockId + "_stage_" + stage;
+                for (String common : getCommonProps()) {
+                    JsonObject vFalse = new JsonObject();
+                    vFalse.addProperty("model", m);
+                    variants.add("has_record=false,stage=" + stage + "," + common, vFalse);
+
+                    JsonObject vTrue = new JsonObject();
+                    vTrue.addProperty("model", m);
+                    variants.add("has_record=true,stage=" + stage + "," + common, vTrue);
+                }
+            }
+            JsonObject bs = new JsonObject();
+            bs.add("variants", variants);
+            write(builder, "blockstates/" + blockId, bs);
         }
     }
 }

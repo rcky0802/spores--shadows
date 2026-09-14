@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "#side",
+    "top": "#top",
+    "side": "#side",
+    "front": "#front",
+    "overlay": "#overlay"
+  },
+  "elements": [
+    {
+      "name": "chiseled_bookshelf_body",
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#front" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#side" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#side" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#side" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#top" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#top" }
+      }
+    },
+    {
+      "name": "chiseled_bookshelf_mold_overlay",
+      "from": [-0.01, -0.01, -0.01],
+      "to": [16.01, 16.01, 16.01],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#overlay" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#overlay" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#overlay" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#overlay" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#overlay" },
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#overlay" }
+      }
+    }
+  ]
+}

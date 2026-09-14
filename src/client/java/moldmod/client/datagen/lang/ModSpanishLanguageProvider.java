@@ -84,6 +84,20 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_2", "Estructuralmente debilitado por el moho.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_1", "El moho ha comprometido el mecanismo.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_2", "El tiempo de activación es significativamente mayor.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_1", "Las runas y tomos conservan remanentes de poder mágico.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_2", "El moho degrada el poder de encantamiento.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_1", "Almacena de forma segura hasta 6 libros o tomos.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_2", "Shift + clic con hacha o panal para interactuar con el moho.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_1", "Los peldaños se vuelven resbaladizos y quebradizos por el moho.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_2", "Las escaleras podridas pueden ceder bajo el peso.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_1", "La caja de resonancia está obstruida por esporas fúngicas.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_2", "Los tonos emitidos resultan apagados y amortiguados.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_1", "El mecanismo del tocadiscos está desgastado por el moho.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_2", "Conserva los discos musicales en todas las etapas.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.rotten", "[Caja dañada / Golpe sordo]");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.muffled", "Apagada");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.dampened", "Grave");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.jukebox.scratched", "Reproducción: Distorsionada y rayada por el moho");
 
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".title", "Configuración de Spores & Shadows");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.general", "General");
@@ -461,6 +475,7 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
 
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".dehumidifier_info", "Spores & Shadows: Info Deshumidificador");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".air_purifier_info", "Spores & Shadows: Info del Purificador de Aire");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_noteblock", "Spores & Shadows: Info del Bloque de Notas Mohoso");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.filter", "Filtro: %d%%");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.running", "En Funcionamiento");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.off", "Apagado");
@@ -618,5 +633,42 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Cascos de Filtración");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Bloques Mohosos");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Bloques Mohosos");
+    }
+
+    @Override
+    protected String getCompositeTranslation(String compositeType, String state) {
+        String baseName;
+        boolean isFeminine;
+        switch (compositeType) {
+            case "chiseled_bookshelf" -> { baseName = "Librería Cincelada"; isFeminine = true; }
+            case "bookshelf" -> { baseName = "Librería"; isFeminine = true; }
+            case "ladder" -> { baseName = "Escalera de Mano"; isFeminine = true; }
+            case "note_block" -> { baseName = "Bloque de Nota"; isFeminine = false; }
+            case "jukebox" -> { baseName = "Tocadiscos"; isFeminine = false; }
+            default -> { baseName = compositeType; isFeminine = false; }
+        }
+        if (isFeminine) {
+            return switch (state) {
+                case "waxed" -> baseName + " Encerada";
+                case "tainted" -> baseName + " Contaminada";
+                case "waxed_tainted" -> baseName + " Contaminada Encerada";
+                case "moldy" -> baseName + " Mohosa";
+                case "waxed_moldy" -> baseName + " Mohosa Encerada";
+                case "rotten" -> baseName + " Podrida";
+                case "waxed_rotten" -> baseName + " Podrida Encerada";
+                default -> baseName;
+            };
+        } else {
+            return switch (state) {
+                case "waxed" -> baseName + " Encerado";
+                case "tainted" -> baseName + " Contaminado";
+                case "waxed_tainted" -> baseName + " Contaminado Encerado";
+                case "moldy" -> baseName + " Mohoso";
+                case "waxed_moldy" -> baseName + " Mohoso Encerado";
+                case "rotten" -> baseName + " Podrido";
+                case "waxed_rotten" -> baseName + " Podrido Encerado";
+                default -> baseName;
+            };
+        }
     }
 }

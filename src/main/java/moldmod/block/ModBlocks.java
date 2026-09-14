@@ -48,6 +48,17 @@ public final class ModBlocks {
     public static final List<Block> MOLDY_HANGING_SIGNS = new ArrayList<>();
     public static final Map<Block, Block> WALL_TO_STANDING = new HashMap<>();
 
+    public static Block MOLDY_BOOKSHELF;
+    public static Block WAXED_BOOKSHELF;
+    public static Block MOLDY_CHISELED_BOOKSHELF;
+    public static Block WAXED_CHISELED_BOOKSHELF;
+    public static Block MOLDY_LADDER;
+    public static Block WAXED_LADDER;
+    public static Block MOLDY_NOTE_BLOCK;
+    public static Block WAXED_NOTE_BLOCK;
+    public static Block MOLDY_JUKEBOX;
+    public static Block WAXED_JUKEBOX;
+
     public static final Block SPORE_DETECTOR = Registry.register(
             Registries.BLOCK,
             SporesShadows.id("spore_detector"),
@@ -103,10 +114,45 @@ public final class ModBlocks {
             registerWoodSet(wood);
         }
 
+        // Bookshelves
+        MOLDY_BOOKSHELF = registerBlock("moldy_bookshelf",
+                new MoldyBookshelfBlock(AbstractBlock.Settings.copy(Blocks.BOOKSHELF).ticksRandomly()));
+        WAXED_BOOKSHELF = registerBlock("waxed_bookshelf",
+                new MoldyBookshelfBlock(AbstractBlock.Settings.copy(Blocks.BOOKSHELF).ticksRandomly()));
+        registerVariant("bookshelf", Blocks.BOOKSHELF, MOLDY_BOOKSHELF, WAXED_BOOKSHELF);
+
+        // Chiseled Bookshelves
+        MOLDY_CHISELED_BOOKSHELF = registerBlock("moldy_chiseled_bookshelf",
+                new MoldyChiseledBookshelfBlock(AbstractBlock.Settings.copy(Blocks.CHISELED_BOOKSHELF).ticksRandomly()));
+        WAXED_CHISELED_BOOKSHELF = registerBlock("waxed_chiseled_bookshelf",
+                new MoldyChiseledBookshelfBlock(AbstractBlock.Settings.copy(Blocks.CHISELED_BOOKSHELF).ticksRandomly()));
+        registerVariant("chiseled_bookshelf", Blocks.CHISELED_BOOKSHELF, MOLDY_CHISELED_BOOKSHELF, WAXED_CHISELED_BOOKSHELF);
+
+        // Ladders
+        MOLDY_LADDER = registerBlock("moldy_ladder",
+                new MoldyLadderBlock(AbstractBlock.Settings.copy(Blocks.LADDER).ticksRandomly()));
+        WAXED_LADDER = registerBlock("waxed_ladder",
+                new MoldyLadderBlock(AbstractBlock.Settings.copy(Blocks.LADDER).ticksRandomly()));
+        registerVariant("ladder", Blocks.LADDER, MOLDY_LADDER, WAXED_LADDER);
+
+        // Note Blocks
+        MOLDY_NOTE_BLOCK = registerBlock("moldy_note_block",
+                new MoldyNoteBlock(AbstractBlock.Settings.copy(Blocks.NOTE_BLOCK).ticksRandomly()));
+        WAXED_NOTE_BLOCK = registerBlock("waxed_note_block",
+                new MoldyNoteBlock(AbstractBlock.Settings.copy(Blocks.NOTE_BLOCK).ticksRandomly()));
+        registerVariant("note_block", Blocks.NOTE_BLOCK, MOLDY_NOTE_BLOCK, WAXED_NOTE_BLOCK);
+
+        // Jukeboxes
+        MOLDY_JUKEBOX = registerBlock("moldy_jukebox",
+                new MoldyJukeboxBlock(AbstractBlock.Settings.copy(Blocks.JUKEBOX).ticksRandomly()));
+        WAXED_JUKEBOX = registerBlock("waxed_jukebox",
+                new MoldyJukeboxBlock(AbstractBlock.Settings.copy(Blocks.JUKEBOX).ticksRandomly()));
+        registerVariant("jukebox", Blocks.JUKEBOX, MOLDY_JUKEBOX, WAXED_JUKEBOX);
+
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
             for (Map.Entry<Item, List<Item>> entry : MOLDY_ITEMS_BY_VANILLA.entrySet()) {
                 Item vanillaItem = entry.getKey();
-                if (vanillaItem instanceof SignItem || vanillaItem instanceof HangingSignItem) {
+                if (vanillaItem instanceof SignItem || vanillaItem instanceof HangingSignItem || vanillaItem == Blocks.CHISELED_BOOKSHELF.asItem() || vanillaItem == Blocks.JUKEBOX.asItem()) {
                     continue;
                 }
                 List<ItemStack> stacksToAdd = new ArrayList<>();
@@ -122,7 +168,10 @@ public final class ModBlocks {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
             for (Map.Entry<Item, List<Item>> entry : MOLDY_ITEMS_BY_VANILLA.entrySet()) {
                 Item vanillaItem = entry.getKey();
-                if (vanillaItem instanceof SignItem || vanillaItem instanceof HangingSignItem) {
+                if (vanillaItem instanceof SignItem || vanillaItem instanceof HangingSignItem ||
+                        vanillaItem == Blocks.BOOKSHELF.asItem() || vanillaItem == Blocks.CHISELED_BOOKSHELF.asItem() ||
+                        vanillaItem == Blocks.LADDER.asItem() || vanillaItem == Blocks.NOTE_BLOCK.asItem() ||
+                        vanillaItem == Blocks.JUKEBOX.asItem()) {
                     List<ItemStack> stacksToAdd = new ArrayList<>();
                     List<Item> items = entry.getValue();
 
@@ -137,6 +186,16 @@ public final class ModBlocks {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(DEHUMIDIFIER_ITEM);
             entries.add(AIR_PURIFIER_ITEM);
+            for (Map.Entry<Item, List<Item>> entry : MOLDY_ITEMS_BY_VANILLA.entrySet()) {
+                Item vanillaItem = entry.getKey();
+                if (vanillaItem == Blocks.NOTE_BLOCK.asItem() || vanillaItem == Blocks.JUKEBOX.asItem()) {
+                    List<ItemStack> stacksToAdd = new ArrayList<>();
+                    for (Item item : entry.getValue()) {
+                        stacksToAdd.add(new ItemStack(item));
+                    }
+                    entries.addAfter(vanillaItem, stacksToAdd);
+                }
+            }
         });
     }
 
@@ -525,6 +584,21 @@ public final class ModBlocks {
         } else if (name.contains("button") || name.contains("pressure_plate")) {
             tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_redstone_desc_1").formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_redstone_desc_2").formatted(Formatting.GRAY));
+        } else if (name.contains("chiseled_bookshelf")) {
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_1").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_2").formatted(Formatting.GRAY));
+        } else if (name.contains("bookshelf")) {
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_bookshelf_desc_1").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_bookshelf_desc_2").formatted(Formatting.GRAY));
+        } else if (name.contains("note_block")) {
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_note_block_desc_1").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_note_block_desc_2").formatted(Formatting.GRAY));
+        } else if (name.contains("jukebox")) {
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_jukebox_desc_1").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_jukebox_desc_2").formatted(Formatting.GRAY));
+        } else if (name.contains("ladder")) {
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_ladder_desc_1").formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_ladder_desc_2").formatted(Formatting.GRAY));
         } else {
             tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_general_desc_1").formatted(Formatting.GRAY));
             tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".moldy_general_desc_2").formatted(Formatting.GRAY));

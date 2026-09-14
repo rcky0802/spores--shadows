@@ -84,6 +84,20 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_2", "Structurellement affaibli par la moisissure.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_1", "La moisissure a compromis le mécanisme.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_2", "La durée d'activation est considérablement plus longue.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_1", "Les runes et grimoires conservent des résidus de pouvoir.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_2", "La moisissure affaiblit la puissance d'enchantement.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_1", "Conserve jusqu'à 6 livres ou grimoires intacts.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_2", "Accroupi + clic avec hache ou rayon de miel pour agir sur la moisissure.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_1", "Les échelons sont rendus glissants et fragiles par la moisissure.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_2", "Les échelles pourries peuvent céder sous le poids.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_1", "La caisse de résonance est étouffée par les spores fongiques.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_2", "Les tonalités émises sont assourdies et assombries.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_1", "Le mécanisme du tourne-disque est usé par la moisissure.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_2", "Conserve les disques de musique à travers tous les stades.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.rotten", "[Caisse abîmée / Bruit sourd]");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.muffled", "Étouffée");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.dampened", "Sourde");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.jukebox.scratched", "Lecture: Déformée et rayée par la moisissure");
 
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".title", "Configuration Spores & Shadows");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.general", "Général");
@@ -459,6 +473,7 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
 
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".dehumidifier_info", "Spores & Shadows : Info Déshumidificateur");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".air_purifier_info", "Spores & Shadows : Info Purificateur d'Air");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_noteblock", "Spores & Shadows : Info Bloc Musical Moisi");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.filter", "Filtre : %d%%");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.running", "En Fonctionnement");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.off", "Éteint");
@@ -616,5 +631,42 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Casques de Filtration");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocs Moysis");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocs Moysis");
+    }
+
+    @Override
+    protected String getCompositeTranslation(String compositeType, String state) {
+        String baseName;
+        boolean isFeminine;
+        switch (compositeType) {
+            case "chiseled_bookshelf" -> { baseName = "Bibliothèque Sculptée"; isFeminine = true; }
+            case "bookshelf" -> { baseName = "Bibliothèque"; isFeminine = true; }
+            case "ladder" -> { baseName = "Échelle"; isFeminine = true; }
+            case "note_block" -> { baseName = "Bloc Musical"; isFeminine = false; }
+            case "jukebox" -> { baseName = "Jukebox"; isFeminine = false; }
+            default -> { baseName = compositeType; isFeminine = false; }
+        }
+        if (isFeminine) {
+            return switch (state) {
+                case "waxed" -> baseName + " Cirée";
+                case "tainted" -> baseName + " Contaminée";
+                case "waxed_tainted" -> baseName + " Contaminée Cirée";
+                case "moldy" -> baseName + " Moisie";
+                case "waxed_moldy" -> baseName + " Moisie Cirée";
+                case "rotten" -> baseName + " Pourrie";
+                case "waxed_rotten" -> baseName + " Pourrie Cirée";
+                default -> baseName;
+            };
+        } else {
+            return switch (state) {
+                case "waxed" -> baseName + " Ciré";
+                case "tainted" -> baseName + " Contaminé";
+                case "waxed_tainted" -> baseName + " Contaminé Ciré";
+                case "moldy" -> baseName + " Moisi";
+                case "waxed_moldy" -> baseName + " Moisi Ciré";
+                case "rotten" -> baseName + " Pourri";
+                case "waxed_rotten" -> baseName + " Pourri Ciré";
+                default -> baseName;
+            };
+        }
     }
 }

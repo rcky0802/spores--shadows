@@ -13,7 +13,9 @@
 		"ButtonMixin",
 		"BlockMixin",
 		"EnchantmentMixin",
-		"AnvilScreenHandlerMixin"
+		"AnvilScreenHandlerMixin",
+		"EnchantingTableBlockMixin",
+		"EnchantmentScreenHandlerMixin"
 	],
 	"client": [
 		"SignBlockEntityRendererMixin"

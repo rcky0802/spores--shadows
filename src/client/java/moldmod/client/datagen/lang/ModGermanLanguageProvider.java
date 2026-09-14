@@ -106,6 +106,20 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_general_desc_2", "Strukturell durch Schimmel geschwächt.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_1", "Schimmel hat den Mechanismus beeinträchtigt.");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_redstone_desc_2", "Die Aktivierungsdauer ist deutlich länger.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_1", "Runen und Folianten bewahren Reste magischer Macht.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_bookshelf_desc_2", "Schimmel verringert die Verzauberungskraft.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_1", "Bewahrt bis zu 6 Bücher oder Folianten unversehrt auf.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_chiseled_bookshelf_desc_2", "Schleichen + Klick mit Axt oder Honigwabe zur Schimmelbehandlung.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_1", "Die Sprossen sind durch Schimmel rutschig und brüchig.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_ladder_desc_2", "Verrottete Leitern können unter dem Gewicht nachgeben.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_1", "Der Resonanzkörper ist durch Pilzsporen verstopft.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_note_block_desc_2", "Gespielte Töne klingen gedämpft und dumpf.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_1", "Der Plattentellermechanismus ist durch Schimmel abgenutzt.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".moldy_jukebox_desc_2", "Bewahrt eingelegte Musikdiscs über alle Verfallsstufen.");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.rotten", "[Klangkörper zerstört / Dumpfer Schlag]");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.muffled", "Gedämpft");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.noteblock.dampened", "Dumpf");
+        translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.jukebox.scratched", "Wiedergabe: Durch Schimmel verzerrt und zerkratzt");
 
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".title", "Spores & Shadows Konfiguration");
         translationBuilder.add("text.autoconfig." + moldmod.SporesShadows.MOD_ID + ".category.general", "Allgemein");
@@ -481,6 +495,7 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
 
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".dehumidifier_info", "Spores & Shadows: Luftentfeuchter-Info");
         translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".air_purifier_info", "Spores & Shadows: Luftreiniger-Info");
+        translationBuilder.add("config.jade.plugin_" + moldmod.SporesShadows.MOD_ID + ".moldy_noteblock", "Spores & Shadows: Schimmliger Notenblock Info");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.filter", "Filter: %d%%");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.running", "In Betrieb");
         translationBuilder.add("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.air_purifier.status.off", "Aus");
@@ -638,5 +653,53 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Filtrationshelme");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Schimmlige Blöcke");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Schimmlige Blöcke");
+    }
+
+    @Override
+    protected String getCompositeTranslation(String compositeType, String state) {
+        String baseName;
+        String gender;
+        switch (compositeType) {
+            case "chiseled_bookshelf" -> { baseName = "gemeißeltes Bücherregal"; gender = "n"; }
+            case "bookshelf" -> { baseName = "Bücherregal"; gender = "n"; }
+            case "ladder" -> { baseName = "Leiter"; gender = "f"; }
+            case "note_block" -> { baseName = "Notenblock"; gender = "m"; }
+            case "jukebox" -> { baseName = "Plattenspieler"; gender = "m"; }
+            default -> { baseName = compositeType; gender = "n"; }
+        }
+        if (gender.equals("f")) {
+            return switch (state) {
+                case "waxed" -> "Gewachste " + baseName;
+                case "tainted" -> "Befallene " + baseName;
+                case "waxed_tainted" -> "Gewachste befallene " + baseName;
+                case "moldy" -> "Schimmlige " + baseName;
+                case "waxed_moldy" -> "Gewachste schimmlige " + baseName;
+                case "rotten" -> "Verrottete " + baseName;
+                case "waxed_rotten" -> "Gewachste verrottete " + baseName;
+                default -> baseName;
+            };
+        } else if (gender.equals("m")) {
+            return switch (state) {
+                case "waxed" -> "Gewachster " + baseName;
+                case "tainted" -> "Befallener " + baseName;
+                case "waxed_tainted" -> "Gewachster befallener " + baseName;
+                case "moldy" -> "Schimmliger " + baseName;
+                case "waxed_moldy" -> "Gewachster schimmliger " + baseName;
+                case "rotten" -> "Verrotteter " + baseName;
+                case "waxed_rotten" -> "Gewachster verrotteter " + baseName;
+                default -> baseName;
+            };
+        } else {
+            return switch (state) {
+                case "waxed" -> "Gewachstes " + baseName;
+                case "tainted" -> "Befallenes " + baseName;
+                case "waxed_tainted" -> "Gewachstes befallenes " + baseName;
+                case "moldy" -> "Schimmliges " + baseName;
+                case "waxed_moldy" -> "Gewachstes schimmliges " + baseName;
+                case "rotten" -> "Verrottetes " + baseName;
+                case "waxed_rotten" -> "Gewachstes verrottetes " + baseName;
+                default -> baseName;
+            };
+        }
     }
 }

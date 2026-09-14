@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:bamboo_planks"
+      },
+      {
+        "item": "spores--shadows:waxed_bamboo_planks"
+      }
+    ],
+    "B": {
+      "item": "minecraft:book"
+    }
+  },
+  "pattern": [
+    "###",
+    "BBB",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:bookshelf"
+  }
+}

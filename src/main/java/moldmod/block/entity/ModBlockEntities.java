@@ -26,6 +26,8 @@ public final class ModBlockEntities {
 
     public static BlockEntityType<MoldySignBlockEntity> MOLDY_SIGN;
     public static BlockEntityType<MoldyHangingSignBlockEntity> MOLDY_HANGING_SIGN;
+    public static BlockEntityType<MoldyChiseledBookshelfBlockEntity> MOLDY_CHISELED_BOOKSHELF;
+    public static BlockEntityType<MoldyJukeboxBlockEntity> MOLDY_JUKEBOX;
 
     public static void registerModBlockEntities() {
         SporesShadows.LOGGER.info("Registering ModBlockEntities for " + SporesShadows.MOD_ID);
@@ -40,6 +42,24 @@ public final class ModBlockEntities {
                 Registries.BLOCK_ENTITY_TYPE,
                 SporesShadows.id("moldy_hanging_sign"),
                 BlockEntityType.Builder.create(MoldyHangingSignBlockEntity::new, ModBlocks.MOLDY_HANGING_SIGNS.toArray(net.minecraft.block.Block[]::new)).build()
+        );
+
+        MOLDY_CHISELED_BOOKSHELF = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_chiseled_bookshelf"),
+                BlockEntityType.Builder.create(MoldyChiseledBookshelfBlockEntity::new,
+                        ModBlocks.MOLDY_CHISELED_BOOKSHELF,
+                        ModBlocks.WAXED_CHISELED_BOOKSHELF
+                ).build()
+        );
+
+        MOLDY_JUKEBOX = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_jukebox"),
+                BlockEntityType.Builder.create(MoldyJukeboxBlockEntity::new,
+                        ModBlocks.MOLDY_JUKEBOX,
+                        ModBlocks.WAXED_JUKEBOX
+                ).build()
         );
 
         // Registrazione Fabric Transfer API (FluidStorage) su tutti i lati

@@ -12,6 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.condition.AnyOfLootCondition;
@@ -21,6 +22,7 @@ import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.AlternativeEntry;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.function.CopyStateLootFunction;
+import net.minecraft.loot.function.SetCountLootFunction;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.predicate.StatePredicate;
 import net.minecraft.registry.RegistryWrapper;
@@ -43,6 +45,14 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
             List<Item> items = ModBlocks.MOLDY_ITEMS_BY_BLOCK.get(moldyBlock);
 
             if (items == null || items.size() < 7) continue;
+
+            if (vanillaBlock == Blocks.BOOKSHELF) {
+                generateBookshelfLoot(moldyBlock, items);
+                if (waxedBlock != null && waxedBlock != Blocks.AIR) {
+                    generateWaxedBookshelfLoot(waxedBlock, items);
+                }
+                continue;
+            }
 
             generateMoldyLoot(moldyBlock, items.get(1), items.get(3), items.get(5), vanillaBlock);
 
@@ -121,5 +131,79 @@ public class ModLootTableProvider extends FabricBlockLootTableProvider {
         .apply(CopyStateLootFunction.builder(baseBlock).addProperty(MoldyBlock.WAXED));
 
         addDrop(baseBlock, (block) -> LootTable.builder().pool(pool));
+    }
+
+    private void generateBookshelfLoot(Block baseBlock, List<Item> items) {
+        LootPool.Builder silkPool = LootPool.builder()
+            .rolls(ConstantLootNumberProvider.create(1.0F))
+            .conditionally(this.createSilkTouchCondition())
+            .with(AlternativeEntry.builder(
+                ItemEntry.builder(items.get(6))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 3).exactMatch(MoldyBlock.WAXED, true))),
+                ItemEntry.builder(items.get(5))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 3))),
+                ItemEntry.builder(items.get(4))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 2).exactMatch(MoldyBlock.WAXED, true))),
+                ItemEntry.builder(items.get(3))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 2))),
+                ItemEntry.builder(items.get(2))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 1).exactMatch(MoldyBlock.WAXED, true))),
+                ItemEntry.builder(items.get(1))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 1))),
+                ItemEntry.builder(items.get(0))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 0).exactMatch(MoldyBlock.WAXED, true))),
+                ItemEntry.builder(Blocks.BOOKSHELF)
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 0)))
+            ));
+
+        LootPool.Builder bookPool = LootPool.builder()
+            .rolls(ConstantLootNumberProvider.create(1.0F))
+            .conditionally(this.createWithoutSilkTouchCondition())
+            .with(AlternativeEntry.builder(
+                ItemEntry.builder(Items.BOOK)
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 0)))
+                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(3.0F))),
+                ItemEntry.builder(Items.BOOK)
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 1)))
+                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(2.0F))),
+                ItemEntry.builder(Items.BOOK)
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 2)))
+                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1.0F)))
+            ));
+
+        addDrop(baseBlock, (block) -> LootTable.builder().pool(silkPool).pool(bookPool));
+    }
+
+    private void generateWaxedBookshelfLoot(Block baseBlock, List<Item> items) {
+        LootPool.Builder silkPool = LootPool.builder()
+            .rolls(ConstantLootNumberProvider.create(1.0F))
+            .conditionally(this.createSilkTouchCondition())
+            .with(AlternativeEntry.builder(
+                ItemEntry.builder(items.get(6))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 3))),
+                ItemEntry.builder(items.get(4))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 2))),
+                ItemEntry.builder(items.get(2))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 1))),
+                ItemEntry.builder(items.get(0))
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 0)))
+            ));
+
+        LootPool.Builder bookPool = LootPool.builder()
+            .rolls(ConstantLootNumberProvider.create(1.0F))
+            .conditionally(this.createWithoutSilkTouchCondition())
+            .with(AlternativeEntry.builder(
+                ItemEntry.builder(Items.BOOK)
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 0)))
+                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(3.0F))),
+                ItemEntry.builder(Items.BOOK)
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 1)))
+                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(2.0F))),
+                ItemEntry.builder(Items.BOOK)
+                    .conditionally(BlockStatePropertyLootCondition.builder(baseBlock).properties(StatePredicate.Builder.create().exactMatch(MoldyBlock.STAGE, 2)))
+                    .apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(1.0F)))
+            ));
+
+        addDrop(baseBlock, (block) -> LootTable.builder().pool(silkPool).pool(bookPool));
     }
 }

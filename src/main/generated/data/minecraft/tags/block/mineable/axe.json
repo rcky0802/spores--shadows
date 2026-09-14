@@ -379,6 +379,16 @@
     "spores--shadows:moldy_warped_hanging_sign",
     "spores--shadows:waxed_warped_hanging_sign",
     "spores--shadows:moldy_warped_wall_hanging_sign",
-    "spores--shadows:waxed_warped_wall_hanging_sign"
+    "spores--shadows:waxed_warped_wall_hanging_sign",
+    "spores--shadows:moldy_bookshelf",
+    "spores--shadows:waxed_bookshelf",
+    "spores--shadows:moldy_chiseled_bookshelf",
+    "spores--shadows:waxed_chiseled_bookshelf",
+    "spores--shadows:moldy_ladder",
+    "spores--shadows:waxed_ladder",
+    "spores--shadows:moldy_note_block",
+    "spores--shadows:waxed_note_block",
+    "spores--shadows:moldy_jukebox",
+    "spores--shadows:waxed_jukebox"
   ]
 }
