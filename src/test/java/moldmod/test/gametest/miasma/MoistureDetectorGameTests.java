@@ -24,7 +24,7 @@ import java.util.List;
 
 public class MoistureDetectorGameTests {
 
-    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE, batchId = "isolated_config_batch")
     public void testMoistureDetectorDryRoom(TestContext context) {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         double oldMaxDepth = config.environment.max_depth_modifier;

@@ -56,6 +56,8 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
             case "trapdoor": blockName = "Botola"; isFeminine = true; break;
             case "pressure_plate": blockName = "Pedana a pressione"; isFeminine = true; break;
             case "button": blockName = "Pulsante"; break;
+            case "sign": blockName = "Cartello"; break;
+            case "hanging_sign": blockName = "Cartello Sospeso"; break;
         }
 
         String stateStr = "";

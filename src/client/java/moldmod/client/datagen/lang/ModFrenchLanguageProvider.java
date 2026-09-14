@@ -56,6 +56,8 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
             case "stripped_stem": blockName = "Tige écorcée"; isFeminine = true; break;
             case "hyphae": blockName = "Hyphes"; isFeminine = true; isPlural = true; break;
             case "stripped_hyphae": blockName = "Hyphes écorcées"; isFeminine = true; isPlural = true; break;
+            case "sign": blockName = "Pancarte"; isFeminine = true; break;
+            case "hanging_sign": blockName = "Pancarte suspendue"; isFeminine = true; break;
         }
 
         String stateStr = "";

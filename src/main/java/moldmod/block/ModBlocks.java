@@ -13,9 +13,11 @@ import net.minecraft.block.WoodType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.HangingSignItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.SignItem;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.registry.Registries;
@@ -42,6 +44,9 @@ public final class ModBlocks {
     public static final Map<Block, Block> WAXED_TO_MOLDY = new HashMap<>();
     public static final Map<Item, List<Item>> MOLDY_ITEMS_BY_VANILLA = new LinkedHashMap<>();
     public static final Map<Block, List<Item>> MOLDY_ITEMS_BY_BLOCK = new HashMap<>();
+    public static final List<Block> MOLDY_SIGNS = new ArrayList<>();
+    public static final List<Block> MOLDY_HANGING_SIGNS = new ArrayList<>();
+    public static final Map<Block, Block> WALL_TO_STANDING = new HashMap<>();
 
     public static final Block SPORE_DETECTOR = Registry.register(
             Registries.BLOCK,
@@ -248,10 +253,179 @@ public final class ModBlocks {
                     new MoldySlabBlock(AbstractBlock.Settings.copy(vanillaMosaic).ticksRandomly()));
             registerVariant(prefix + "_mosaic_slab", vanillaMosaicSlab, mosaicSlab, waxedMosaicSlab);
         }
+
+        // 9. Signs & Hanging Signs
+        Block vanillaStandingSign = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_sign"));
+        Block vanillaWallSign = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_wall_sign"));
+        Block moldyStandingSign = registerBlock("moldy_" + prefix + "_sign",
+                new MoldySignBlock(woodType, AbstractBlock.Settings.copy(vanillaStandingSign).ticksRandomly()));
+        Block waxedStandingSign = registerBlock("waxed_" + prefix + "_sign",
+                new MoldySignBlock(woodType, AbstractBlock.Settings.copy(vanillaStandingSign).ticksRandomly()));
+        Block moldyWallSign = registerBlock("moldy_" + prefix + "_wall_sign",
+                new MoldyWallSignBlock(woodType, AbstractBlock.Settings.copy(vanillaWallSign).ticksRandomly()));
+        Block waxedWallSign = registerBlock("waxed_" + prefix + "_wall_sign",
+                new MoldyWallSignBlock(woodType, AbstractBlock.Settings.copy(vanillaWallSign).ticksRandomly()));
+
+        registerSignVariant(prefix + "_sign", vanillaStandingSign, vanillaWallSign,
+                moldyStandingSign, waxedStandingSign, moldyWallSign, waxedWallSign);
+
+        Block vanillaHangingSign = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_hanging_sign"));
+        Block vanillaWallHangingSign = Registries.BLOCK.get(Identifier.of(namespace, prefix + "_wall_hanging_sign"));
+        Block moldyHangingSign = registerBlock("moldy_" + prefix + "_hanging_sign",
+                new MoldyHangingSignBlock(woodType, AbstractBlock.Settings.copy(vanillaHangingSign).ticksRandomly()));
+        Block waxedHangingSign = registerBlock("waxed_" + prefix + "_hanging_sign",
+                new MoldyHangingSignBlock(woodType, AbstractBlock.Settings.copy(vanillaHangingSign).ticksRandomly()));
+        Block moldyWallHangingSign = registerBlock("moldy_" + prefix + "_wall_hanging_sign",
+                new MoldyWallHangingSignBlock(woodType, AbstractBlock.Settings.copy(vanillaWallHangingSign).ticksRandomly()));
+        Block waxedWallHangingSign = registerBlock("waxed_" + prefix + "_wall_hanging_sign",
+                new MoldyWallHangingSignBlock(woodType, AbstractBlock.Settings.copy(vanillaWallHangingSign).ticksRandomly()));
+
+        registerHangingSignVariant(prefix + "_hanging_sign", vanillaHangingSign, vanillaWallHangingSign,
+                moldyHangingSign, waxedHangingSign, moldyWallHangingSign, waxedWallHangingSign);
     }
 
     private static Block registerBlock(String name, Block block) {
         return Registry.register(Registries.BLOCK, SporesShadows.id(name), block);
+    }
+
+    private static void registerSignVariant(String baseName, Block vanillaStanding, Block vanillaWall,
+            Block moldyStanding, Block waxedStanding, Block moldyWall, Block waxedWall) {
+        MOLDY_TO_VANILLA.put(moldyStanding, vanillaStanding);
+        MOLDY_TO_VANILLA.put(waxedStanding, vanillaStanding);
+        VANILLA_TO_MOLDY.put(vanillaStanding, moldyStanding);
+        MOLDY_TO_WAXED.put(moldyStanding, waxedStanding);
+        WAXED_TO_MOLDY.put(waxedStanding, moldyStanding);
+
+        MOLDY_TO_VANILLA.put(moldyWall, vanillaWall);
+        MOLDY_TO_VANILLA.put(waxedWall, vanillaWall);
+        VANILLA_TO_MOLDY.put(vanillaWall, moldyWall);
+        MOLDY_TO_WAXED.put(moldyWall, waxedWall);
+        WAXED_TO_MOLDY.put(waxedWall, moldyWall);
+
+        WALL_TO_STANDING.put(moldyWall, moldyStanding);
+        WALL_TO_STANDING.put(waxedWall, waxedStanding);
+
+        MOLDY_SIGNS.add(moldyStanding);
+        MOLDY_SIGNS.add(waxedStanding);
+        MOLDY_SIGNS.add(moldyWall);
+        MOLDY_SIGNS.add(waxedWall);
+
+        Item vanillaItem = vanillaStanding.asItem();
+        List<Item> items = new ArrayList<>();
+
+        // Stage 0 (Waxed)
+        items.add(registerSignItem("waxed_" + baseName, moldyStanding, moldyWall, waxedStanding, waxedWall, 0, true));
+
+        // Stage 1
+        items.add(registerSignItem("tainted_" + baseName, moldyStanding, moldyWall, waxedStanding, waxedWall, 1, false));
+        items.add(registerSignItem("waxed_tainted_" + baseName, moldyStanding, moldyWall, waxedStanding, waxedWall, 1, true));
+
+        // Stage 2
+        items.add(registerSignItem("moldy_" + baseName, moldyStanding, moldyWall, waxedStanding, waxedWall, 2, false));
+        items.add(registerSignItem("waxed_moldy_" + baseName, moldyStanding, moldyWall, waxedStanding, waxedWall, 2, true));
+
+        // Stage 3
+        items.add(registerSignItem("rotten_" + baseName, moldyStanding, moldyWall, waxedStanding, waxedWall, 3, false));
+        items.add(registerSignItem("waxed_rotten_" + baseName, moldyStanding, moldyWall, waxedStanding, waxedWall, 3, true));
+
+        MOLDY_ITEMS_BY_VANILLA.put(vanillaItem, items);
+        MOLDY_ITEMS_BY_BLOCK.put(moldyStanding, items);
+        MOLDY_ITEMS_BY_BLOCK.put(waxedStanding, items);
+        MOLDY_ITEMS_BY_BLOCK.put(moldyWall, items);
+        MOLDY_ITEMS_BY_BLOCK.put(waxedWall, items);
+    }
+
+    private static Item registerSignItem(String name, Block moldyStanding, Block moldyWall,
+            Block waxedStanding, Block waxedWall, int stage, boolean isWaxed) {
+        Item.Settings settings = new Item.Settings().maxCount(16).component(
+                DataComponentTypes.BLOCK_STATE,
+                BlockStateComponent.DEFAULT.with(MoldyBlock.STAGE, stage).with(MoldyBlock.WAXED, isWaxed));
+        Block standingBlock = isWaxed ? waxedStanding : moldyStanding;
+        Block wallBlock = isWaxed ? waxedWall : moldyWall;
+        Item item = new SignItem(settings, standingBlock, wallBlock) {
+            @Override
+            public String getTranslationKey() {
+                return "item." + SporesShadows.MOD_ID + "." + name;
+            }
+
+            @Override
+            public void appendTooltip(ItemStack stack, Item.TooltipContext context,
+                    List<Text> tooltip, TooltipType type) {
+                super.appendTooltip(stack, context, tooltip, type);
+                appendMoldyTooltip(name, stack, tooltip);
+            }
+        };
+        return Registry.register(Registries.ITEM, SporesShadows.id(name), item);
+    }
+
+    private static void registerHangingSignVariant(String baseName, Block vanillaHanging, Block vanillaWallHanging,
+            Block moldyHanging, Block waxedHanging, Block moldyWallHanging, Block waxedWallHanging) {
+        MOLDY_TO_VANILLA.put(moldyHanging, vanillaHanging);
+        MOLDY_TO_VANILLA.put(waxedHanging, vanillaHanging);
+        VANILLA_TO_MOLDY.put(vanillaHanging, moldyHanging);
+        MOLDY_TO_WAXED.put(moldyHanging, waxedHanging);
+        WAXED_TO_MOLDY.put(waxedHanging, moldyHanging);
+
+        MOLDY_TO_VANILLA.put(moldyWallHanging, vanillaWallHanging);
+        MOLDY_TO_VANILLA.put(waxedWallHanging, vanillaWallHanging);
+        VANILLA_TO_MOLDY.put(vanillaWallHanging, moldyWallHanging);
+        MOLDY_TO_WAXED.put(moldyWallHanging, waxedWallHanging);
+        WAXED_TO_MOLDY.put(waxedWallHanging, moldyWallHanging);
+
+        WALL_TO_STANDING.put(moldyWallHanging, moldyHanging);
+        WALL_TO_STANDING.put(waxedWallHanging, waxedHanging);
+
+        MOLDY_HANGING_SIGNS.add(moldyHanging);
+        MOLDY_HANGING_SIGNS.add(waxedHanging);
+        MOLDY_HANGING_SIGNS.add(moldyWallHanging);
+        MOLDY_HANGING_SIGNS.add(waxedWallHanging);
+
+        Item vanillaItem = vanillaHanging.asItem();
+        List<Item> items = new ArrayList<>();
+
+        // Stage 0 (Waxed)
+        items.add(registerHangingSignItem("waxed_" + baseName, moldyHanging, moldyWallHanging, waxedHanging, waxedWallHanging, 0, true));
+
+        // Stage 1
+        items.add(registerHangingSignItem("tainted_" + baseName, moldyHanging, moldyWallHanging, waxedHanging, waxedWallHanging, 1, false));
+        items.add(registerHangingSignItem("waxed_tainted_" + baseName, moldyHanging, moldyWallHanging, waxedHanging, waxedWallHanging, 1, true));
+
+        // Stage 2
+        items.add(registerHangingSignItem("moldy_" + baseName, moldyHanging, moldyWallHanging, waxedHanging, waxedWallHanging, 2, false));
+        items.add(registerHangingSignItem("waxed_moldy_" + baseName, moldyHanging, moldyWallHanging, waxedHanging, waxedWallHanging, 2, true));
+
+        // Stage 3
+        items.add(registerHangingSignItem("rotten_" + baseName, moldyHanging, moldyWallHanging, waxedHanging, waxedWallHanging, 3, false));
+        items.add(registerHangingSignItem("waxed_rotten_" + baseName, moldyHanging, moldyWallHanging, waxedHanging, waxedWallHanging, 3, true));
+
+        MOLDY_ITEMS_BY_VANILLA.put(vanillaItem, items);
+        MOLDY_ITEMS_BY_BLOCK.put(moldyHanging, items);
+        MOLDY_ITEMS_BY_BLOCK.put(waxedHanging, items);
+        MOLDY_ITEMS_BY_BLOCK.put(moldyWallHanging, items);
+        MOLDY_ITEMS_BY_BLOCK.put(waxedWallHanging, items);
+    }
+
+    private static Item registerHangingSignItem(String name, Block moldyHanging, Block moldyWallHanging,
+            Block waxedHanging, Block waxedWallHanging, int stage, boolean isWaxed) {
+        Item.Settings settings = new Item.Settings().maxCount(16).component(
+                DataComponentTypes.BLOCK_STATE,
+                BlockStateComponent.DEFAULT.with(MoldyBlock.STAGE, stage).with(MoldyBlock.WAXED, isWaxed));
+        Block hangingBlock = isWaxed ? waxedHanging : moldyHanging;
+        Block wallHangingBlock = isWaxed ? waxedWallHanging : moldyWallHanging;
+        Item item = new HangingSignItem(hangingBlock, wallHangingBlock, settings) {
+            @Override
+            public String getTranslationKey() {
+                return "item." + SporesShadows.MOD_ID + "." + name;
+            }
+
+            @Override
+            public void appendTooltip(ItemStack stack, Item.TooltipContext context,
+                    List<Text> tooltip, TooltipType type) {
+                super.appendTooltip(stack, context, tooltip, type);
+                appendMoldyTooltip(name, stack, tooltip);
+            }
+        };
+        return Registry.register(Registries.ITEM, SporesShadows.id(name), item);
     }
 
     private static void registerVariant(String baseName, Block vanillaBlock, Block moldyBlock, Block waxedBlock) {

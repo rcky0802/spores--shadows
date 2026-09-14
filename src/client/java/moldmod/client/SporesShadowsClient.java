@@ -63,5 +63,15 @@ public final class SporesShadowsClient implements ClientModInitializer {
 			moldmod.screen.ModScreenHandlers.AIR_PURIFIER,
 			moldmod.client.screen.AirPurifierScreen::new
 		);
+
+		// Register Sign Block Entity Renderers
+		net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(
+			moldmod.block.entity.ModBlockEntities.MOLDY_SIGN,
+			net.minecraft.client.render.block.entity.SignBlockEntityRenderer::new
+		);
+		net.minecraft.client.render.block.entity.BlockEntityRendererFactories.register(
+			moldmod.block.entity.ModBlockEntities.MOLDY_HANGING_SIGN,
+			net.minecraft.client.render.block.entity.HangingSignBlockEntityRenderer::new
+		);
 	}
 }

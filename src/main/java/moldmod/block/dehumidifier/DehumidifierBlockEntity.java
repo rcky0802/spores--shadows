@@ -364,7 +364,7 @@ public class DehumidifierBlockEntity extends BlockEntity implements SidedInvento
             int vanillaFuelTicks = AbstractFurnaceBlockEntity.createFuelTimeMap().getOrDefault(fuelStack.getItem(), 0);
             if (vanillaFuelTicks > 0) {
                 int energyPerItem = Math.round(vanillaFuelTicks * getEnergyCostPerTick() * getFuelMultiplier());
-                if (energy <= maxEnergy - energyPerItem || energy == 0) {
+                if (energy <= Math.max(maxEnergy / 2, maxEnergy - energyPerItem) || energy == 0) {
                     int energyToAdd = Math.min(energyPerItem, maxEnergy - energy);
                     energy += energyToAdd;
                     energyStorage.amount = energy;

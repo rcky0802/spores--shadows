@@ -56,6 +56,8 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
             case "trapdoor": blockName = "Trampilla"; isFeminine = true; break;
             case "pressure_plate": blockName = "Placa de presión"; isFeminine = true; break;
             case "button": blockName = "Botón"; break;
+            case "sign": blockName = "Cartel"; break;
+            case "hanging_sign": blockName = "Cartel colgante"; break;
         }
 
         String stateStr = "";

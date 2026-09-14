@@ -50,9 +50,9 @@ public class DehumidifierGameTests {
         // Simulate tick (in open air, room humidity defaults to >= 0.3)
         be.tick(context.getWorld(), context.getAbsolutePos(pos), context.getBlockState(pos));
 
-        // Coal should be consumed and converted immediately into electricity: 1600 * 10 * 1 = 16000 E (minus 10 E consumed for tick = 15990)
+        // Coal should be consumed and converted immediately into electricity: 1600 * 10 * 4 = 64000 E (capped at max capacity 32000 E, minus 10 E consumed for tick = 31990)
         context.assertTrue(be.getStack(0).isEmpty(), "Coal should have been consumed from slot 0");
-        context.assertTrue(be.getEnergy() == 15990, "Fuel must be immediately converted to electricity (expected 15990, got " + be.getEnergy() + ")");
+        context.assertTrue(be.getEnergy() == 31990, "Fuel must be immediately converted to electricity (expected 31990, got " + be.getEnergy() + ")");
         context.assertTrue(be.getStatus() == DehumidifierStatus.RUNNING, "Status must be RUNNING");
 
         context.complete();
@@ -257,9 +257,9 @@ public class DehumidifierGameTests {
         // Now provide fuel in inventory: it converts immediately into electricity
         be.setStack(0, new ItemStack(Items.COAL, 1));
         be.tick(context.getWorld(), context.getAbsolutePos(pos), context.getBlockState(pos));
-        // 90 + 16000 - 10 = 16080
+        // 90 + min(64000, 32000 - 90) - 10 = 31990
         context.assertTrue(be.getStack(0).isEmpty(), "Coal should be converted into energy");
-        context.assertTrue(be.getEnergy() == 16080, "Energy should be 90 + 16000 - 10 = 16080 (got " + be.getEnergy() + ")");
+        context.assertTrue(be.getEnergy() == 31990, "Energy should be capped at 32000 - 10 = 31990 (got " + be.getEnergy() + ")");
 
         context.complete();
     }

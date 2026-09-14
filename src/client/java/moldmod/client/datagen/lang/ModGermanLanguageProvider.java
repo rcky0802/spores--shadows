@@ -56,6 +56,8 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
             case "trapdoor": blockSuffix = "holzfalltür"; gender = "f"; break;
             case "pressure_plate": blockSuffix = "holzdruckplatte"; gender = "f"; break;
             case "button": blockSuffix = "holzknopf"; gender = "m"; break;
+            case "sign": blockSuffix = (wood.equals("bamboo") || wood.equals("crimson") || wood.equals("warped")) ? "schild" : "holzschild"; gender = "n"; break;
+            case "hanging_sign": blockSuffix = (wood.equals("bamboo") || wood.equals("crimson") || wood.equals("warped")) ? "hängeschild" : "holzhängeschild"; gender = "n"; break;
         }
 
         String stateStr = "";

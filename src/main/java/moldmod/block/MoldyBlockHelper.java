@@ -9,10 +9,13 @@ import net.minecraft.advancement.AdvancementProgress;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -152,12 +155,36 @@ public final class MoldyBlockHelper {
     }
 
     public static void setStage(World world, BlockPos pos, BlockState state, int newStage) {
+        BlockEntity be = world.getBlockEntity(pos);
+        NbtCompound beNbt = null;
+        if (be != null && world.getRegistryManager() != null) {
+            beNbt = be.createNbtWithId(world.getRegistryManager());
+        }
         world.setBlockState(pos, state.with(MoldyBlock.STAGE, newStage));
+        if (beNbt != null) {
+            BlockEntity newBe = world.getBlockEntity(pos);
+            if (newBe != null && newBe != be) {
+                newBe.read(beNbt, world.getRegistryManager());
+                newBe.markDirty();
+            }
+        }
         syncDoorHalf(world, pos, state, MoldyBlock.STAGE, newStage);
     }
 
     public static void setWaxed(World world, BlockPos pos, BlockState state, boolean isWaxed) {
+        BlockEntity be = world.getBlockEntity(pos);
+        NbtCompound beNbt = null;
+        if (be != null && world.getRegistryManager() != null) {
+            beNbt = be.createNbtWithId(world.getRegistryManager());
+        }
         world.setBlockState(pos, state.with(MoldyBlock.WAXED, isWaxed));
+        if (beNbt != null) {
+            BlockEntity newBe = world.getBlockEntity(pos);
+            if (newBe != null && newBe != be) {
+                newBe.read(beNbt, world.getRegistryManager());
+                newBe.markDirty();
+            }
+        }
         syncDoorHalf(world, pos, state, MoldyBlock.WAXED, isWaxed);
     }
 
@@ -231,8 +258,9 @@ public final class MoldyBlockHelper {
         if (items != null && items.size() == 7) {
             if (stage == 0 && !waxed) {
                 Block moldyBlock = ModBlocks.WAXED_TO_MOLDY.getOrDefault(block, block);
-                Block vanillaBlock = ModBlocks.MOLDY_TO_VANILLA.get(moldyBlock);
-                if (vanillaBlock != null) {
+                Block standing = ModBlocks.WALL_TO_STANDING.getOrDefault(moldyBlock, moldyBlock);
+                Block vanillaBlock = ModBlocks.MOLDY_TO_VANILLA.get(standing);
+                if (vanillaBlock != null && vanillaBlock.asItem() != Items.AIR) {
                     return new ItemStack(vanillaBlock.asItem());
                 }
             }

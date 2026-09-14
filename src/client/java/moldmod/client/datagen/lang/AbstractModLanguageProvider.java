@@ -51,6 +51,9 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
                 blockSuffixMap.put(prefix + "_mosaic_slab", "mosaic_slab");
             }
 
+            blockSuffixMap.put(prefix + "_sign", "sign");
+            blockSuffixMap.put(prefix + "_hanging_sign", "hanging_sign");
+
             for (Map.Entry<String, String> entry : blockSuffixMap.entrySet()) {
                 String suffix = entry.getKey();
                 String type = entry.getValue();
@@ -69,6 +72,12 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
                     }
                 }
             }
+
+            // Wall signs and wall hanging signs block translations (they reuse the standing item translation)
+            translationBuilder.add("block." + SporesShadows.MOD_ID + ".moldy_" + prefix + "_wall_sign", getTranslation(wood, "sign", "moldy"));
+            translationBuilder.add("block." + SporesShadows.MOD_ID + ".waxed_" + prefix + "_wall_sign", getTranslation(wood, "sign", "waxed"));
+            translationBuilder.add("block." + SporesShadows.MOD_ID + ".moldy_" + prefix + "_wall_hanging_sign", getTranslation(wood, "hanging_sign", "moldy"));
+            translationBuilder.add("block." + SporesShadows.MOD_ID + ".waxed_" + prefix + "_wall_hanging_sign", getTranslation(wood, "hanging_sign", "waxed"));
         }
         
         generateTooltipsAndConfig(translationBuilder);

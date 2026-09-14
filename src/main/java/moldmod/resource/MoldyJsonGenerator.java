@@ -36,6 +36,8 @@ public final class MoldyJsonGenerator {
             genGate(builder, wood, wood);
             genPressurePlate(builder, wood, wood);
             genButton(builder, wood, wood);
+            genSign(builder, wood, wood);
+            genHangingSign(builder, wood, wood);
 
             if (moldyWoodType.isBamboo()) {
                 genMosaic(builder, wood);
@@ -809,6 +811,63 @@ public final class MoldyJsonGenerator {
             JsonObject bs = new JsonObject();
             bs.add("variants", variants);
             write(builder, "blockstates/" + blockId, bs);
+        }
+    }
+
+    private static void genItem2d(ResourcePackBuilder builder, String itemName, String layer0) {
+        JsonObject json = new JsonObject();
+        json.addProperty("parent", "minecraft:item/generated");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("layer0", layer0);
+        json.add("textures", textures);
+        write(builder, "models/item/" + itemName, json);
+    }
+
+    private static void genSign(ResourcePackBuilder builder, String wood, String prefix) {
+        for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
+            for (String signType : new String[]{"_sign", "_wall_sign"}) {
+                String blockId = idPrefix + prefix + signType;
+                JsonObject variants = new JsonObject();
+                JsonObject model = new JsonObject();
+                model.addProperty("model", "minecraft:block/" + prefix + "_sign");
+                variants.add("", model);
+                JsonObject bs = new JsonObject();
+                bs.add("variants", variants);
+                write(builder, "blockstates/" + blockId, bs);
+            }
+        }
+
+        String baseName = prefix + "_sign";
+        String itemTex = "minecraft:item/" + prefix + "_sign";
+        genItem2d(builder, "waxed_" + baseName, itemTex);
+        for (MoldStage ms : MoldStage.values()) {
+            if (ms == MoldStage.WAXED) continue;
+            genItem2d(builder, ms.getName() + "_" + baseName, itemTex);
+            genItem2d(builder, "waxed_" + ms.getName() + "_" + baseName, itemTex);
+        }
+    }
+
+    private static void genHangingSign(ResourcePackBuilder builder, String wood, String prefix) {
+        for (String idPrefix : new String[]{"moldy_", "waxed_"}) {
+            for (String signType : new String[]{"_hanging_sign", "_wall_hanging_sign"}) {
+                String blockId = idPrefix + prefix + signType;
+                JsonObject variants = new JsonObject();
+                JsonObject model = new JsonObject();
+                model.addProperty("model", "minecraft:block/" + prefix + "_hanging_sign");
+                variants.add("", model);
+                JsonObject bs = new JsonObject();
+                bs.add("variants", variants);
+                write(builder, "blockstates/" + blockId, bs);
+            }
+        }
+
+        String baseName = prefix + "_hanging_sign";
+        String itemTex = "minecraft:item/" + prefix + "_hanging_sign";
+        genItem2d(builder, "waxed_" + baseName, itemTex);
+        for (MoldStage ms : MoldStage.values()) {
+            if (ms == MoldStage.WAXED) continue;
+            genItem2d(builder, ms.getName() + "_" + baseName, itemTex);
+            genItem2d(builder, "waxed_" + ms.getName() + "_" + baseName, itemTex);
         }
     }
 }

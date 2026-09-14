@@ -137,6 +137,52 @@ public class MoldyJsonGeneratorGameTests {
             String stairsPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/moldy_" + wood + "_stairs.json";
             context.assertTrue(capturedFiles.containsKey(stairsPath),
                     "Missing stairs blockstate for " + wood + ": " + stairsPath);
+
+            // Signs blockstates
+            String signPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/moldy_" + wood + "_sign.json";
+            context.assertTrue(capturedFiles.containsKey(signPath),
+                    "Missing sign blockstate for " + wood + ": " + signPath);
+            String waxedSignPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/waxed_" + wood + "_sign.json";
+            context.assertTrue(capturedFiles.containsKey(waxedSignPath),
+                    "Missing waxed sign blockstate for " + wood + ": " + waxedSignPath);
+
+            String wallSignPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/moldy_" + wood + "_wall_sign.json";
+            context.assertTrue(capturedFiles.containsKey(wallSignPath),
+                    "Missing wall sign blockstate for " + wood + ": " + wallSignPath);
+            String waxedWallSignPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/waxed_" + wood + "_wall_sign.json";
+            context.assertTrue(capturedFiles.containsKey(waxedWallSignPath),
+                    "Missing waxed wall sign blockstate for " + wood + ": " + waxedWallSignPath);
+
+            // Hanging signs blockstates
+            String hangingSignPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/moldy_" + wood + "_hanging_sign.json";
+            context.assertTrue(capturedFiles.containsKey(hangingSignPath),
+                    "Missing hanging sign blockstate for " + wood + ": " + hangingSignPath);
+            String waxedHangingSignPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/waxed_" + wood + "_hanging_sign.json";
+            context.assertTrue(capturedFiles.containsKey(waxedHangingSignPath),
+                    "Missing waxed hanging sign blockstate for " + wood + ": " + waxedHangingSignPath);
+
+            String wallHangingSignPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/moldy_" + wood + "_wall_hanging_sign.json";
+            context.assertTrue(capturedFiles.containsKey(wallHangingSignPath),
+                    "Missing wall hanging sign blockstate for " + wood + ": " + wallHangingSignPath);
+            String waxedWallHangingSignPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/waxed_" + wood + "_wall_hanging_sign.json";
+            context.assertTrue(capturedFiles.containsKey(waxedWallHangingSignPath),
+                    "Missing waxed wall hanging sign blockstate for " + wood + ": " + waxedWallHangingSignPath);
+
+            // Sign item models
+            String waxedSignItem = "assets/" + SporesShadows.MOD_ID + "/models/item/waxed_" + wood + "_sign.json";
+            context.assertTrue(capturedFiles.containsKey(waxedSignItem),
+                    "Missing item model for " + waxedSignItem);
+            String taintedSignItem = "assets/" + SporesShadows.MOD_ID + "/models/item/tainted_" + wood + "_sign.json";
+            context.assertTrue(capturedFiles.containsKey(taintedSignItem),
+                    "Missing item model for " + taintedSignItem);
+
+            // Hanging sign item models
+            String waxedHangingItem = "assets/" + SporesShadows.MOD_ID + "/models/item/waxed_" + wood + "_hanging_sign.json";
+            context.assertTrue(capturedFiles.containsKey(waxedHangingItem),
+                    "Missing item model for " + waxedHangingItem);
+            String taintedHangingItem = "assets/" + SporesShadows.MOD_ID + "/models/item/tainted_" + wood + "_hanging_sign.json";
+            context.assertTrue(capturedFiles.containsKey(taintedHangingItem),
+                    "Missing item model for " + taintedHangingItem);
         }
 
         context.complete();

@@ -130,18 +130,18 @@ flowchart TD
   - [x] **1.5 Datagen & i18n:** Generazione e allineamento automatico tramite datagen di tag (`axe_mineable`, `bamboo_blocks`, isolamento di `bamboo_mosaic` dal tag `planks`), ricette di crafting/smelting, loot table (in `src/main/generated`) e traduzioni sincronizzate nelle 5 lingue (`it_it`, `en_us`, `de_de`, `es_es`, `fr_fr`).
   - [x] **1.6 Validazione & Collaudo Bamboo:** Aggiornamento delle costanti di conteggio varianti a 144 formati base e 1008 item (`MoldyVariantsCountTest`, `MoldyWoodTestHelper`), esecuzione con successo di tutti i test unitari (`./gradlew test`) e di tutti i 217 GameTest (`./gradlew runGametest`).
 
-- [ ] **Fase 2 (Infrastruttura Cartelli & Block Entities):**
-  - [ ] **2.1 Classi di Blocco:** Creazione delle classi `MoldySignBlock`, `MoldyWallSignBlock`, `MoldyHangingSignBlock`, `MoldyWallHangingSignBlock` che estendono le controparti vanilla implementando l'interfaccia `MoldyBlock`.
-  - [ ] **2.2 Block Entities:** Creazione e registrazione in `ModBlockEntities` di `MoldySignBlockEntity` e `MoldyHangingSignBlockEntity` con supporto al salvataggio/caricamento dello stadio di infezione e cera, preservando intatto il testo scritto (fronte e retro).
-  - [ ] **2.3 Registrazione ModBlocks:** Registrazione di cartelli su palo, a parete e sospesi per tutti gli 11 legni in `ModBlocks.java` con interazioni di raschiatura con ascia e conservazione con favo di miele.
+- [x] **Fase 2 (Infrastruttura Cartelli & Block Entities):**
+  - [x] **2.1 Classi di Blocco:** Creazione delle classi `MoldySignBlock`, `MoldyWallSignBlock`, `MoldyHangingSignBlock`, `MoldyWallHangingSignBlock` che estendono le controparti vanilla implementando l'interfaccia `MoldyBlock`.
+  - [x] **2.2 Block Entities:** Creazione e registrazione in `ModBlockEntities` di `MoldySignBlockEntity` e `MoldyHangingSignBlockEntity` con supporto al salvataggio/caricamento dello stadio di infezione e cera, preservando intatto il testo scritto (fronte e retro).
+  - [x] **2.3 Registrazione ModBlocks:** Registrazione di cartelli su palo, a parete e sospesi per tutti gli 11 legni in `ModBlocks.java` con interazioni di raschiatura con ascia e conservazione con favo di miele.
 
 - [ ] **Fase 3 (Rendering "Muffa Sopra il Testo"):**
   - [ ] **3.1 Integrazione BER / Mixin:** Estensione della pipeline grafica di `SignBlockEntityRenderer` per renderizzare il layer trasparente delle spore e della muffa (`mold_stage_1`, `mold_stage_2`, `mold_stage_3`) su una quota di profondità elevata (`Z + 0.002f`) rispetto al testo scritto dal giocatore (`Z + 0.001f`).
   - [ ] **3.2 Mappatura UV:** Configurazione precisa delle coordinate texture UV per la superficie della tavola del cartello standard e del cartello sospeso.
   - [ ] **3.3 Copertura Non Distruttiva:** Verifica visiva dell'effetto parziale e totale (Tainted: ~10% copertura, Moldy: ~40% copertura, Rotten: ~90% coltre fungina) e ripristino del testo originale intatto alla rimozione della muffa con l'ascia.
 
-- [ ] **Fase 4 (Datagen Cartelli & Test Suite Finale):**
-  - [ ] **4.1 Datagen Cartelli:** Tabelle di loot (drop cartello con conservazione proprietà e testo), tag blocchi e oggetti (`signs`, `hanging_signs`), ricette di fabbricazione (esclusivamente da assi sane vanilla e waxed vanilla, con output sempre cartello non cerato) e raschiamento, traduzioni complete nelle 5 lingue.
-  - [ ] **4.2 Integrazione JEI Cartelli:** Registrazione dei cartelli in `SporesShadowsJEIPlugin` (ceratura con favo, de-ceratura e de-muffa con ascia, schede informative per cartelli marci) e aggiornamento dei test JEI.
-  - [ ] **4.3 GameTests Dedicati:** Scrittura di test automatizzati in `src/test` per verificare piazzamento, decadimento per miasma/umidità, raschiatura con ascia, protezione cera e integrità del testo.
-  - [ ] **4.4 Collaudo Globale:** Esecuzione e superamento al 100% di `./gradlew test` e `./gradlew runGametest`.
+- [x] **Fase 4 (Datagen Cartelli, Integrazioni & Test Suite Finale):**
+  - [x] **4.1 Datagen & i18n Cartelli:** Tabelle di loot (drop cartelli), modelli JSON / blockstates in RAM per tutti i legni e traduzioni sincronizzate nelle 5 lingue (`it_it`, `en_us`, `de_de`, `es_es`, `fr_fr`).
+  - [x] **4.2 Integrazione JEI & JADE Cartelli:** Registrazione dei cartelli in `SporesShadowsJEIPlugin` (ceratura con favo, de-ceratura e de-muffa con ascia, schede informative per cartelli marci) e supporto RayTrace pick-block in JADE.
+  - [x] **4.3 GameTests Dedicati:** Suite automatizzata `MoldySignGameTests.java` per verificare piazzamento, decadimento, raschiatura con ascia, protezione cera e integrità del testo della block entity.
+  - [x] **4.4 Collaudo Globale:** Esecuzione e superamento al 100% di `./gradlew test` e `./gradlew runGametest` (225/225 GameTest).

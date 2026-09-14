@@ -30,6 +30,8 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         else if (blockType.equals("mosaic")) typeStr = "Mosaic";
         else if (blockType.equals("mosaic_stairs")) typeStr = "Mosaic Stairs";
         else if (blockType.equals("mosaic_slab")) typeStr = "Mosaic Slab";
+        else if (blockType.equals("sign")) typeStr = "Sign";
+        else if (blockType.equals("hanging_sign")) typeStr = "Hanging Sign";
         
         return stateStr + " " + capitalizedWood + " " + typeStr;
     }

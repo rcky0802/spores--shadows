@@ -24,8 +24,23 @@ public final class ModBlockEntities {
             BlockEntityType.Builder.create(moldmod.block.purifier.AirPurifierBlockEntity::new, ModBlocks.AIR_PURIFIER).build()
     );
 
+    public static BlockEntityType<MoldySignBlockEntity> MOLDY_SIGN;
+    public static BlockEntityType<MoldyHangingSignBlockEntity> MOLDY_HANGING_SIGN;
+
     public static void registerModBlockEntities() {
         SporesShadows.LOGGER.info("Registering ModBlockEntities for " + SporesShadows.MOD_ID);
+
+        MOLDY_SIGN = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_sign"),
+                BlockEntityType.Builder.create(MoldySignBlockEntity::new, ModBlocks.MOLDY_SIGNS.toArray(net.minecraft.block.Block[]::new)).build()
+        );
+
+        MOLDY_HANGING_SIGN = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_hanging_sign"),
+                BlockEntityType.Builder.create(MoldyHangingSignBlockEntity::new, ModBlocks.MOLDY_HANGING_SIGNS.toArray(net.minecraft.block.Block[]::new)).build()
+        );
 
         // Registrazione Fabric Transfer API (FluidStorage) su tutti i lati
         FluidStorage.SIDED.registerForBlockEntity((be, direction) -> be.getFluidStorage(), DEHUMIDIFIER);
