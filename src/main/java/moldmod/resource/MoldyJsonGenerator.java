@@ -838,12 +838,12 @@ public final class MoldyJsonGenerator {
         }
 
         String baseName = prefix + "_sign";
-        String itemTex = "minecraft:item/" + prefix + "_sign";
-        genItem2d(builder, "waxed_" + baseName, itemTex);
+        genItem2d(builder, "waxed_" + baseName, "minecraft:item/" + prefix + "_sign");
         for (MoldStage ms : MoldStage.values()) {
             if (ms == MoldStage.WAXED) continue;
-            genItem2d(builder, ms.getName() + "_" + baseName, itemTex);
-            genItem2d(builder, "waxed_" + ms.getName() + "_" + baseName, itemTex);
+            String moldyTex = SporesShadows.MOD_ID + ":item/" + ms.getName() + "_" + baseName;
+            genItem2d(builder, ms.getName() + "_" + baseName, moldyTex);
+            genItem2d(builder, "waxed_" + ms.getName() + "_" + baseName, moldyTex);
         }
     }
 
@@ -862,12 +862,12 @@ public final class MoldyJsonGenerator {
         }
 
         String baseName = prefix + "_hanging_sign";
-        String itemTex = "minecraft:item/" + prefix + "_hanging_sign";
-        genItem2d(builder, "waxed_" + baseName, itemTex);
+        genItem2d(builder, "waxed_" + baseName, "minecraft:item/" + prefix + "_hanging_sign");
         for (MoldStage ms : MoldStage.values()) {
             if (ms == MoldStage.WAXED) continue;
-            genItem2d(builder, ms.getName() + "_" + baseName, itemTex);
-            genItem2d(builder, "waxed_" + ms.getName() + "_" + baseName, itemTex);
+            String moldyTex = SporesShadows.MOD_ID + ":item/" + ms.getName() + "_" + baseName;
+            genItem2d(builder, ms.getName() + "_" + baseName, moldyTex);
+            genItem2d(builder, "waxed_" + ms.getName() + "_" + baseName, moldyTex);
         }
     }
 }

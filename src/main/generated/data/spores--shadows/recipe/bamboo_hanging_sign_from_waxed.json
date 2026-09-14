@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:stripped_bamboo_block"
+      },
+      {
+        "item": "spores--shadows:waxed_stripped_bamboo_block"
+      }
+    ],
+    "|": {
+      "item": "minecraft:chain"
+    }
+  },
+  "pattern": [
+    "| |",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "minecraft:bamboo_hanging_sign"
+  }
+}

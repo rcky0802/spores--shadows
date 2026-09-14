@@ -245,6 +245,10 @@ public class ModRecipeProvider extends FabricRecipeProvider {
         Item vanillaButton = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_button"));
         Item vanillaPressurePlate = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_pressure_plate"));
         Item vanillaSign = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_sign"));
+        Item vanillaHangingSign = Registries.ITEM.get(Identifier.of("minecraft", prefix + "_hanging_sign"));
+        String strippedLogName = prefix.equals("bamboo") ? "stripped_bamboo_block" : (prefix.equals("crimson") || prefix.equals("warped") ? "stripped_" + prefix + "_stem" : "stripped_" + prefix + "_log");
+        Item vanillaStrippedLog = Registries.ITEM.get(Identifier.of("minecraft", strippedLogName));
+        Item waxedStrippedLog = Registries.ITEM.get(SporesShadows.id("waxed_" + strippedLogName));
         Item vanillaBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix.equals("bamboo") ? "bamboo_raft" : prefix + "_boat"));
         Item vanillaChestBoat = Registries.ITEM.get(Identifier.of("minecraft", prefix.equals("bamboo") ? "bamboo_chest_raft" : prefix + "_chest_boat"));
         Item sticks = Items.STICK;
@@ -308,6 +312,17 @@ public class ModRecipeProvider extends FabricRecipeProvider {
                         .pattern(" | ").input('#', mixedPlanks).input('|', sticks)
                         .criterion("has_waxed_vanilla", conditionsFromItem(waxedVanillaPlanks))
                         .offerTo(exporter, SporesShadows.id(prefix + "_sign_from_waxed"));
+            }
+            if (vanillaHangingSign != Items.AIR && vanillaStrippedLog != Items.AIR && waxedStrippedLog != Items.AIR) {
+                Ingredient mixedStripped = Ingredient.ofItems(vanillaStrippedLog, waxedStrippedLog);
+                ShapedRecipeJsonBuilder.create(RecipeCategory.DECORATIONS, vanillaHangingSign, 6)
+                        .pattern("| |")
+                        .pattern("###")
+                        .pattern("###")
+                        .input('|', Items.CHAIN)
+                        .input('#', mixedStripped)
+                        .criterion("has_waxed_stripped_log", conditionsFromItem(waxedStrippedLog))
+                        .offerTo(exporter, SporesShadows.id(prefix + "_hanging_sign_from_waxed"));
             }
             if (vanillaBoat != Items.AIR) {
                 ShapedRecipeJsonBuilder.create(RecipeCategory.TRANSPORTATION, vanillaBoat, 1).pattern("# #")

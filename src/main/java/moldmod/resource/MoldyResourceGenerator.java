@@ -40,83 +40,89 @@ public final class MoldyResourceGenerator {
             
             for (MoldyWoodType moldyWoodType : SporesShadowsConstants.WOOD_TYPES) {
                 String wood = moldyWoodType.name();
-                for (MoldStage stageEnum : MoldStage.values()) {
-                    int i = stageEnum.getId();
-                    for (String prefix : new String[]{"moldy_", "waxed_"}) {
-                        String itemName;
-                        if (prefix.equals("waxed_")) {
-                            itemName = i == 0 ? "waxed_" + wood + "_door" : "waxed_" + stageEnum.getName() + "_" + wood + "_door";
-                        } else {
-                            if (i == 0) continue;
-                            itemName = stageEnum.getName() + "_" + wood + "_door";
-                        }
-                        
-                        String texName = i == 0 ? "minecraft:item/" + wood + "_door" : SporesShadows.MOD_ID + ":item/" + stageEnum.getName() + "_" + wood + "_door";
-                        String layer0 = texName;
-                        
-                        // 1. JSON MODEL GENERATION (In Memory)
-                        String modelJson = """
-                            {
-                              "parent": "minecraft:item/generated",
-                              "textures": {
-                                "layer0": "%s"
-                              }
+                for (String itemType : new String[]{"door", "sign", "hanging_sign"}) {
+                    for (MoldStage stageEnum : MoldStage.values()) {
+                        int i = stageEnum.getId();
+                        for (String prefix : new String[]{"moldy_", "waxed_"}) {
+                            String itemName;
+                            if (prefix.equals("waxed_")) {
+                                itemName = i == 0 ? "waxed_" + wood + "_" + itemType : "waxed_" + stageEnum.getName() + "_" + wood + "_" + itemType;
+                            } else {
+                                if (i == 0) continue;
+                                itemName = stageEnum.getName() + "_" + wood + "_" + itemType;
                             }
-                            """.formatted(layer0);
-                        
-                        builder.addData("assets/" + SporesShadows.MOD_ID + "/models/item/" + itemName + ".json", modelJson.getBytes(StandardCharsets.UTF_8));
-                        
-                        // If it is waxed (stage 0) or we are generating for waxed_ prefix (stage > 0), there's no need to generate a new masked texture!
-                        if (i == 0 || prefix.equals("waxed_")) continue;
 
-                        // 2. TEXTURE GENERATION (In Memory with Alpha Masking)
-                        try {
-                            InputStream doorIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/minecraft/textures/item/" + wood + "_door.png");
-                            InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/" + SporesShadows.MOD_ID + "/textures/block/mold/mold_stage_" + i + ".png");
-                            
-                            if (doorIn != null && moldIn != null) {
-                                BufferedImage doorImage = ImageIO.read(doorIn);
-                                BufferedImage moldImage = ImageIO.read(moldIn);
-                                
-                                BufferedImage resultImage = new BufferedImage(doorImage.getWidth(), doorImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-                                
-                                for (int x = 0; x < doorImage.getWidth(); x++) {
-                                    for (int y = 0; y < doorImage.getHeight(); y++) {
-                                        int doorPixel = doorImage.getRGB(x, y);
-                                        int doorAlpha = (doorPixel >> 24) & 0xff;
-                                        
-                                        if (doorAlpha > 0) { // If the door pixel is NOT completely transparent
-                                            int moldPixel = moldImage.getRGB(x % moldImage.getWidth(), y % moldImage.getHeight());
-                                            int moldAlpha = (moldPixel >> 24) & 0xff;
-                                            
-                                            // ALPHA MASKING
-                                            if (moldAlpha > 20) { // If there is visible mold
-                                                // Simple overwrite (or we could do true alpha blending)
-                                                resultImage.setRGB(x, y, moldPixel);
-                                            } else {
-                                                resultImage.setRGB(x, y, doorPixel);
-                                            }
-                                        } else {
-                                            resultImage.setRGB(x, y, 0x00000000);
-                                        }
-                                    }
+                            String texName = i == 0 ? "minecraft:item/" + wood + "_" + itemType : SporesShadows.MOD_ID + ":item/" + stageEnum.getName() + "_" + wood + "_" + itemType;
+                            String layer0 = texName;
+
+                            // 1. JSON MODEL GENERATION (In Memory)
+                            String modelJson = """
+                                {
+                                  "parent": "minecraft:item/generated",
+                                  "textures": {
+                                    "layer0": "%s"
+                                  }
                                 }
-                                
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                ImageIO.write(resultImage, "png", baos);
-                                byte[] imageBytes = baos.toByteArray();
-                                
-                                // Inject the virtual texture!
-                                builder.addData("assets/" + SporesShadows.MOD_ID + "/textures/item/" + itemName + ".png", imageBytes);
+                                """.formatted(layer0);
+
+                            builder.addData("assets/" + SporesShadows.MOD_ID + "/models/item/" + itemName + ".json", modelJson.getBytes(StandardCharsets.UTF_8));
+
+                            // If it is waxed (stage 0) or we are generating for waxed_ prefix (stage > 0), there's no need to generate a new masked texture!
+                            if (i == 0 || prefix.equals("waxed_")) continue;
+
+                            // 2. TEXTURE GENERATION (In Memory with Alpha Masking)
+                            try {
+                                InputStream itemIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/minecraft/textures/item/" + wood + "_" + itemType + ".png");
+                                InputStream moldIn = MoldyResourceGenerator.class.getResourceAsStream("/assets/" + SporesShadows.MOD_ID + "/textures/block/mold/mold_stage_" + i + ".png");
+
+                                if (itemIn != null && moldIn != null) {
+                                    BufferedImage baseImage = ImageIO.read(itemIn);
+                                    BufferedImage moldImage = ImageIO.read(moldIn);
+
+                                    BufferedImage resultImage = applyAlphaMask(baseImage, moldImage);
+
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    ImageIO.write(resultImage, "png", baos);
+                                    byte[] imageBytes = baos.toByteArray();
+
+                                    // Inject the virtual texture!
+                                    builder.addData("assets/" + SporesShadows.MOD_ID + "/textures/item/" + itemName + ".png", imageBytes);
+                                }
+                            } catch (Exception e) {
+                                SporesShadows.LOGGER.error("Error during dynamic generation of the item {}: {}", itemName, e.getMessage(), e);
                             }
-                        } catch (Exception e) {
-                            SporesShadows.LOGGER.error("Error during dynamic generation of the door {}: {}", itemName, e.getMessage(), e);
                         }
                     }
                 }
             }
         });
-        
+
         PolymerResourcePackUtils.markAsRequired();
+    }
+
+    public static BufferedImage applyAlphaMask(BufferedImage baseImage, BufferedImage moldImage) {
+        BufferedImage resultImage = new BufferedImage(baseImage.getWidth(), baseImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
+        for (int x = 0; x < baseImage.getWidth(); x++) {
+            for (int y = 0; y < baseImage.getHeight(); y++) {
+                int basePixel = baseImage.getRGB(x, y);
+                int baseAlpha = (basePixel >> 24) & 0xff;
+
+                if (baseAlpha > 0) { // If base pixel is NOT completely transparent
+                    int moldPixel = moldImage.getRGB(x % moldImage.getWidth(), y % moldImage.getHeight());
+                    int moldAlpha = (moldPixel >> 24) & 0xff;
+
+                    // ALPHA MASKING
+                    if (moldAlpha > 20) { // If there is visible mold
+                        resultImage.setRGB(x, y, moldPixel);
+                    } else {
+                        resultImage.setRGB(x, y, basePixel);
+                    }
+                } else {
+                    resultImage.setRGB(x, y, 0x00000000);
+                }
+            }
+        }
+        return resultImage;
     }
 }

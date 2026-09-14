@@ -106,6 +106,9 @@ public final class ModBlocks {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.BUILDING_BLOCKS).register(entries -> {
             for (Map.Entry<Item, List<Item>> entry : MOLDY_ITEMS_BY_VANILLA.entrySet()) {
                 Item vanillaItem = entry.getKey();
+                if (vanillaItem instanceof SignItem || vanillaItem instanceof HangingSignItem) {
+                    continue;
+                }
                 List<ItemStack> stacksToAdd = new ArrayList<>();
                 List<Item> items = entry.getValue();
 
@@ -113,6 +116,21 @@ public final class ModBlocks {
                     stacksToAdd.add(new ItemStack(item));
                 }
                 entries.addAfter(vanillaItem, stacksToAdd);
+            }
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+            for (Map.Entry<Item, List<Item>> entry : MOLDY_ITEMS_BY_VANILLA.entrySet()) {
+                Item vanillaItem = entry.getKey();
+                if (vanillaItem instanceof SignItem || vanillaItem instanceof HangingSignItem) {
+                    List<ItemStack> stacksToAdd = new ArrayList<>();
+                    List<Item> items = entry.getValue();
+
+                    for (Item item : items) {
+                        stacksToAdd.add(new ItemStack(item));
+                    }
+                    entries.addAfter(vanillaItem, stacksToAdd);
+                }
             }
         });
 

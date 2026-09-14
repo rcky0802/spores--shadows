@@ -15,6 +15,9 @@
 		"EnchantmentMixin",
 		"AnvilScreenHandlerMixin"
 	],
+	"client": [
+		"SignBlockEntityRendererMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},

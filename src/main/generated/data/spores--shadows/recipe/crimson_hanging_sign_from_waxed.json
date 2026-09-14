@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": [
+      {
+        "item": "minecraft:stripped_crimson_stem"
+      },
+      {
+        "item": "spores--shadows:waxed_stripped_crimson_stem"
+      }
+    ],
+    "|": {
+      "item": "minecraft:chain"
+    }
+  },
+  "pattern": [
+    "| |",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "id": "minecraft:crimson_hanging_sign"
+  }
+}

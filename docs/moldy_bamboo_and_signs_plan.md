@@ -135,10 +135,10 @@ flowchart TD
   - [x] **2.2 Block Entities:** Creazione e registrazione in `ModBlockEntities` di `MoldySignBlockEntity` e `MoldyHangingSignBlockEntity` con supporto al salvataggio/caricamento dello stadio di infezione e cera, preservando intatto il testo scritto (fronte e retro).
   - [x] **2.3 Registrazione ModBlocks:** Registrazione di cartelli su palo, a parete e sospesi per tutti gli 11 legni in `ModBlocks.java` con interazioni di raschiatura con ascia e conservazione con favo di miele.
 
-- [ ] **Fase 3 (Rendering "Muffa Sopra il Testo"):**
-  - [ ] **3.1 Integrazione BER / Mixin:** Estensione della pipeline grafica di `SignBlockEntityRenderer` per renderizzare il layer trasparente delle spore e della muffa (`mold_stage_1`, `mold_stage_2`, `mold_stage_3`) su una quota di profondità elevata (`Z + 0.002f`) rispetto al testo scritto dal giocatore (`Z + 0.001f`).
-  - [ ] **3.2 Mappatura UV:** Configurazione precisa delle coordinate texture UV per la superficie della tavola del cartello standard e del cartello sospeso.
-  - [ ] **3.3 Copertura Non Distruttiva:** Verifica visiva dell'effetto parziale e totale (Tainted: ~10% copertura, Moldy: ~40% copertura, Rotten: ~90% coltre fungina) e ripristino del testo originale intatto alla rimozione della muffa con l'ascia.
+- [x] **Fase 3 (Rendering "Muffa Sopra il Testo"):**
+  - [x] **3.1 Integrazione BER / Mixin:** Estensione della pipeline grafica di `SignBlockEntityRenderer` per renderizzare il layer trasparente delle spore e della muffa (`mold_stage_1`, `mold_stage_2`, `mold_stage_3`) su una quota di profondità elevata (`Z + 0.002f`) rispetto al testo scritto dal giocatore (`Z + 0.001f`).
+  - [x] **3.2 Mappatura UV:** Configurazione precisa delle coordinate texture UV per la superficie della tavola del cartello standard e del cartello sospeso.
+  - [x] **3.3 Copertura Non Distruttiva:** Verifica visiva dell'effetto parziale e totale (Tainted: ~10% copertura, Moldy: ~40% copertura, Rotten: ~90% coltre fungina) e ripristino del testo originale intatto alla rimozione della muffa con l'ascia.
 
 - [x] **Fase 4 (Datagen Cartelli, Integrazioni & Test Suite Finale):**
   - [x] **4.1 Datagen & i18n Cartelli:** Tabelle di loot (drop cartelli), modelli JSON / blockstates in RAM per tutti i legni e traduzioni sincronizzate nelle 5 lingue (`it_it`, `en_us`, `de_de`, `es_es`, `fr_fr`).
