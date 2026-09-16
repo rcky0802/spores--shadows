@@ -1642,6 +1642,7 @@
   "item.spores--shadows.waxed_warped_stairs": "Escaliers biscornu cirés",
   "item.spores--shadows.waxed_warped_stem": "Bûche biscornu cirée",
   "item.spores--shadows.waxed_warped_trapdoor": "Trappe biscornu cirée",
+  "itemGroup.spores--shadows.blocks": "Spores & Shadows",
   "jei.spores--shadows.air_purifier.cleaning": "-48 Miasme (Air Sain)",
   "jei.spores--shadows.air_purifier.duration": "Durée : 2400 ticks (2 min)",
   "jei.spores--shadows.air_purifier.energy_desc": "Énergie : 10 FE/t ou Charbon x4 (6400t)",

@@ -1642,6 +1642,7 @@
   "item.spores--shadows.waxed_warped_stairs": "Gewachste Wirrholztreppe",
   "item.spores--shadows.waxed_warped_stem": "Gewachster Wirrstamm",
   "item.spores--shadows.waxed_warped_trapdoor": "Gewachste Wirrholzfalltür",
+  "itemGroup.spores--shadows.blocks": "Spores & Shadows",
   "jei.spores--shadows.air_purifier.cleaning": "-48 Miasma (Saubere Luft)",
   "jei.spores--shadows.air_purifier.duration": "Dauer: 2400 Ticks (2 Min.)",
   "jei.spores--shadows.air_purifier.energy_desc": "Energie: 10 FE/t oder Kohle x4 (6400t)",

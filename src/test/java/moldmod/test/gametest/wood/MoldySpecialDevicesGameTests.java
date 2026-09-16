@@ -111,6 +111,52 @@ public class MoldySpecialDevicesGameTests {
         context.complete();
     }
 
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMoldyNoteBlockAcousticDistortionAcrossInstruments(TestContext context) {
+        Block moldyNoteBlock = Registries.BLOCK.get(SporesShadows.id("moldy_note_block"));
+        BlockPos pos = new BlockPos(1, 1, 1);
+
+        NoteBlockInstrument[] instruments = new NoteBlockInstrument[]{
+                NoteBlockInstrument.HARP,
+                NoteBlockInstrument.BASEDRUM,
+                NoteBlockInstrument.SNARE,
+                NoteBlockInstrument.FLUTE,
+                NoteBlockInstrument.BELL
+        };
+
+        for (NoteBlockInstrument inst : instruments) {
+            for (int stage = 0; stage <= 3; stage++) {
+                context.setBlockState(pos, moldyNoteBlock.getDefaultState()
+                        .with(MoldyBlock.STAGE, stage)
+                        .with(Properties.NOTE, 6 * stage)
+                        .with(Properties.INSTRUMENT, inst));
+
+                BlockState state = context.getBlockState(pos);
+                boolean result = state.onSyncedBlockEvent(context.getWorld(), context.getAbsolutePos(pos), 0, 0);
+                if (!result) {
+                    context.throwPositionedException("Distortion play failed for " + inst + " at stage " + stage, pos);
+                }
+            }
+        }
+
+        // Test CUSTOM_HEAD without head above: must return false across all stages (matching vanilla NoteBlock)
+        for (int stage = 0; stage <= 3; stage++) {
+            context.setBlockState(pos, moldyNoteBlock.getDefaultState()
+                    .with(MoldyBlock.STAGE, stage)
+                    .with(Properties.NOTE, 12)
+                    .with(Properties.INSTRUMENT, NoteBlockInstrument.CUSTOM_HEAD));
+            context.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
+
+            BlockState state = context.getBlockState(pos);
+            boolean result = state.onSyncedBlockEvent(context.getWorld(), context.getAbsolutePos(pos), 0, 0);
+            if (result) {
+                context.throwPositionedException("CUSTOM_HEAD without head above must return false at stage " + stage, pos);
+            }
+        }
+
+        context.complete();
+    }
+
     // =========================================================================
     // === 3. JUKEBOX INVENTORY PRESERVATION & REDSTONE                      ===
     // =========================================================================
@@ -278,6 +324,60 @@ public class MoldySpecialDevicesGameTests {
         context.complete();
     }
 
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testJukeboxStage3MechanicalJamming(TestContext context) {
+        BlockPos pos = new BlockPos(1, 2, 1);
+        Block moldyJukebox = Registries.BLOCK.get(SporesShadows.id("moldy_jukebox"));
+
+        context.setBlockState(pos, moldyJukebox.getDefaultState()
+                .with(MoldyBlock.STAGE, 3)
+                .with(MoldyBlock.WAXED, false)
+                .with(MoldyJukeboxBlock.HAS_RECORD, true));
+
+        MoldyJukeboxBlockEntity be = (MoldyJukeboxBlockEntity) context.getBlockEntity(pos);
+        if (be == null) {
+            context.throwPositionedException("JukeboxBlockEntity is null!", pos);
+        }
+
+        be.setStack(new ItemStack(Items.MUSIC_DISC_13));
+        if (!be.getManager().isPlaying()) {
+            context.throwPositionedException("Jukebox must be playing music after setStack!", pos);
+        }
+
+        // Fast forward jam counter to 1 tick
+        be.setJamTicksRemaining(1);
+
+        context.waitAndRun(2, () -> {
+            if (be.getManager().isPlaying()) {
+                context.throwPositionedException("Stage 3 moldy jukebox must jam and stop playing!", pos);
+            }
+            if (!be.getStack().isOf(Items.MUSIC_DISC_13)) {
+                context.throwPositionedException("Jammed jukebox must preserve disc in inventory!", pos);
+            }
+            context.complete();
+        });
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testSpecialDevicesCreativeTabEntries(TestContext context) {
+        Item[] vanillaItems = new Item[]{
+                Blocks.LADDER.asItem(),
+                Blocks.BOOKSHELF.asItem(),
+                Blocks.CHISELED_BOOKSHELF.asItem(),
+                Blocks.NOTE_BLOCK.asItem(),
+                Blocks.JUKEBOX.asItem()
+        };
+
+        for (Item vanillaItem : vanillaItems) {
+            List<Item> variants = ModBlocks.MOLDY_ITEMS_BY_VANILLA.get(vanillaItem);
+            if (variants == null || variants.size() != 7) {
+                context.throwPositionedException("Expected 7 moldy variants for " + vanillaItem + " but got: " + (variants == null ? "null" : variants.size()), BlockPos.ORIGIN);
+            }
+        }
+
+        context.complete();
+    }
+
     // =========================================================================
     // === 5. PICK STACK & JADE RAYTRACE ACCURACY                            ===
     // =========================================================================
@@ -353,5 +453,76 @@ public class MoldySpecialDevicesGameTests {
         stage3.onEntityCollision(context.getWorld(), context.getAbsolutePos(pos), player);
 
         context.complete();
+    }
+
+    // =========================================================================
+    // === 7. CREATIVE TAB REGISTRATION                                      ===
+    // =========================================================================
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testCreativeTabRegistration(TestContext context) {
+        net.minecraft.item.ItemGroup group = Registries.ITEM_GROUP.get(ModBlocks.SPORES_SHADOWS_GROUP_KEY);
+        if (group == null) {
+            context.throwPositionedException("Spores & Shadows creative tab is not registered in Registries.ITEM_GROUP!", BlockPos.ORIGIN);
+        }
+
+        if (group.getIcon().isEmpty()) {
+            context.throwPositionedException("Spores & Shadows creative tab icon must not be empty!", BlockPos.ORIGIN);
+        }
+
+        net.minecraft.item.ItemGroup.DisplayContext displayContext = new net.minecraft.item.ItemGroup.DisplayContext(
+                context.getWorld().getEnabledFeatures(),
+                false,
+                context.getWorld().getRegistryManager()
+        );
+
+        // 1. Building Blocks: oak_planks -> moldy_oak_planks
+        assertItemFollowsVanilla(context, net.minecraft.item.ItemGroups.BUILDING_BLOCKS, displayContext,
+                Items.OAK_PLANKS, Registries.ITEM.get(SporesShadows.id("moldy_oak_planks")));
+
+        // 2. Natural Blocks: oak_log -> moldy_oak_log
+        assertItemFollowsVanilla(context, net.minecraft.item.ItemGroups.NATURAL, displayContext,
+                Items.OAK_LOG, Registries.ITEM.get(SporesShadows.id("moldy_oak_log")));
+
+        // 3. Functional Blocks: ladder -> moldy_ladder, bookshelf -> moldy_bookshelf, jukebox -> moldy_jukebox
+        assertItemFollowsVanilla(context, net.minecraft.item.ItemGroups.FUNCTIONAL, displayContext,
+                Items.LADDER, Registries.ITEM.get(SporesShadows.id("moldy_ladder")));
+        assertItemFollowsVanilla(context, net.minecraft.item.ItemGroups.FUNCTIONAL, displayContext,
+                Items.BOOKSHELF, Registries.ITEM.get(SporesShadows.id("moldy_bookshelf")));
+        assertItemFollowsVanilla(context, net.minecraft.item.ItemGroups.FUNCTIONAL, displayContext,
+                Items.JUKEBOX, Registries.ITEM.get(SporesShadows.id("moldy_jukebox")));
+
+        // 4. Redstone: note_block -> moldy_note_block, oak_button -> moldy_oak_button
+        assertItemFollowsVanilla(context, net.minecraft.item.ItemGroups.REDSTONE, displayContext,
+                Items.NOTE_BLOCK, Registries.ITEM.get(SporesShadows.id("moldy_note_block")));
+        assertItemFollowsVanilla(context, net.minecraft.item.ItemGroups.REDSTONE, displayContext,
+                Items.OAK_BUTTON, Registries.ITEM.get(SporesShadows.id("moldy_oak_button")));
+
+        context.complete();
+    }
+
+    private void assertItemFollowsVanilla(TestContext context, net.minecraft.registry.RegistryKey<net.minecraft.item.ItemGroup> groupKey,
+            net.minecraft.item.ItemGroup.DisplayContext displayContext, Item vanillaItem, Item moldyItem) {
+        net.minecraft.item.ItemGroup tab = Registries.ITEM_GROUP.get(groupKey);
+        if (tab == null) {
+            context.throwPositionedException("Creative tab " + groupKey.getValue() + " not found!", BlockPos.ORIGIN);
+        }
+        tab.updateEntries(displayContext);
+        java.util.List<ItemStack> list = new java.util.ArrayList<>(tab.getDisplayStacks());
+        int vanillaIndex = -1;
+        int moldyIndex = -1;
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isOf(vanillaItem) && vanillaIndex == -1) vanillaIndex = i;
+            if (list.get(i).isOf(moldyItem) && moldyIndex == -1) moldyIndex = i;
+        }
+        if (vanillaIndex == -1) {
+            context.throwPositionedException("Vanilla item " + vanillaItem + " not found in " + groupKey.getValue(), BlockPos.ORIGIN);
+        }
+        if (moldyIndex == -1) {
+            context.throwPositionedException("Moldy item " + moldyItem + " not found in " + groupKey.getValue(), BlockPos.ORIGIN);
+        }
+        if (moldyIndex <= vanillaIndex) {
+            context.throwPositionedException("Moldy item " + moldyItem + " (index " + moldyIndex + ") is not after vanilla item " + vanillaItem + " (index " + vanillaIndex + ") in " + groupKey.getValue(), BlockPos.ORIGIN);
+        }
     }
 }

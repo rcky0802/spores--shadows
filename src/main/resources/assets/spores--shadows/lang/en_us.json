@@ -1642,6 +1642,7 @@
   "item.spores--shadows.waxed_warped_stairs": "Waxed Warped Stairs",
   "item.spores--shadows.waxed_warped_stem": "Waxed Warped Log",
   "item.spores--shadows.waxed_warped_trapdoor": "Waxed Warped Trapdoor",
+  "itemGroup.spores--shadows.blocks": "Spores & Shadows",
   "jei.spores--shadows.air_purifier.cleaning": "-48 Miasma (Clean Air)",
   "jei.spores--shadows.air_purifier.duration": "Duration: 2400 ticks (2 min)",
   "jei.spores--shadows.air_purifier.energy_desc": "Power: 10 FE/t or Coal x4 (6400t)",

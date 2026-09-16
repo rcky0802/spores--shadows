@@ -95,6 +95,8 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
             }
         }
         
+        translationBuilder.add("itemGroup." + SporesShadows.MOD_ID + ".blocks", "Spores & Shadows");
+
         generateTooltipsAndConfig(translationBuilder);
     }
 

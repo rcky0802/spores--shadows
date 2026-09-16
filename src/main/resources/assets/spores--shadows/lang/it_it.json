@@ -1642,6 +1642,7 @@
   "item.spores--shadows.waxed_warped_stairs": "Scale Distorto Cerate",
   "item.spores--shadows.waxed_warped_stem": "Tronco Distorto Cerato",
   "item.spores--shadows.waxed_warped_trapdoor": "Botola Distorto Cerata",
+  "itemGroup.spores--shadows.blocks": "Spores & Shadows",
   "jei.spores--shadows.air_purifier.cleaning": "-48 Miasma (Aria Pulita)",
   "jei.spores--shadows.air_purifier.duration": "Durata: 2400 tick (2 min)",
   "jei.spores--shadows.air_purifier.energy_desc": "Alimentazione: 10 FE/t o Carbone x4 (6400t)",

@@ -74,7 +74,11 @@ public class MoldRiskScenariosGameTests {
                 context.throwPositionedException("Scenario 2: Heff attesa >= 0.50, trovata: " + result.Heff(), targetPos);
             }
             if (result.R() < INFECTION_THRESHOLD) {
-                context.throwPositionedException("Scenario 2: Rischio atteso >= 0.40 (INFETTA), trovato R=" + result.R(),
+                context.throwPositionedException("Scenario 2: Rischio atteso >= 0.40 (INFETTA), trovato R=" + result.R()
+                        + " [Heff=" + result.Heff() + ", Hraw=" + result.Hraw() + ", Luv=" + result.Luv()
+                        + ", avgLight=" + result.avgLight() + ", Smat=" + result.Smat() + ", Tmult=" + result.Tmult()
+                        + ", temp=" + result.effectiveTemp() + ", surfaceTemp=" + result.surfaceTemp()
+                        + ", miasma=" + result.miasmaBonus() + ", cat=" + result.catalystBonus() + "]",
                         targetPos);
             }
 
