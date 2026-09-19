@@ -1,7 +1,7 @@
 package moldmod.screen;
 
-import moldmod.block.dehumidifier.DehumidifierMode;
-import moldmod.block.dehumidifier.DehumidifierRedstoneMode;
+import moldmod.block.machine.dehumidifier.DehumidifierMode;
+import moldmod.block.machine.dehumidifier.DehumidifierRedstoneMode;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -75,9 +75,9 @@ public class DehumidifierScreenHandler extends ScreenHandler {
         return DehumidifierRedstoneMode.values()[Math.min(Math.max(val, 0), DehumidifierRedstoneMode.values().length - 1)];
     }
 
-    public moldmod.block.dehumidifier.DehumidifierStatus getMachineStatus() {
+    public moldmod.block.machine.dehumidifier.DehumidifierStatus getMachineStatus() {
         int val = propertyDelegate.get(5);
-        return moldmod.block.dehumidifier.DehumidifierStatus.values()[Math.min(Math.max(val, 0), moldmod.block.dehumidifier.DehumidifierStatus.values().length - 1)];
+        return moldmod.block.machine.dehumidifier.DehumidifierStatus.values()[Math.min(Math.max(val, 0), moldmod.block.machine.dehumidifier.DehumidifierStatus.values().length - 1)];
     }
 
     public int getEnergyCostPerTick() {

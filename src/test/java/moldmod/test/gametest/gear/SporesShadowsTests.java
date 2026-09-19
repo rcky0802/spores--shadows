@@ -1,8 +1,8 @@
 package moldmod.test.gametest.gear;
 
 import moldmod.block.ModBlocks;
-import moldmod.risk.MoldRiskCalculator;
-import moldmod.block.MoldyLogBlock;
+import moldmod.infection.risk.MoldRiskCalculator;
+import moldmod.block.wood.MoldyLogBlock;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

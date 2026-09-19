@@ -1,8 +1,8 @@
 package moldmod.client.cache;
 
-import moldmod.block.MoistureDetectorBlock;
-import moldmod.risk.MoldRiskCalculator;
-import moldmod.risk.MoldRiskCalculator.MoldRiskResult;
+import moldmod.block.sensor.MoistureDetectorBlock;
+import moldmod.infection.risk.MoldRiskCalculator;
+import moldmod.infection.risk.MoldRiskCalculator.MoldRiskResult;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.LivingEntity;

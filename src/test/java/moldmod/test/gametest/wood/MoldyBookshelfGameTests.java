@@ -2,10 +2,10 @@ package moldmod.test.gametest.wood;
 
 import moldmod.SporesShadows;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlock;
-import moldmod.block.MoldyBlockHelper;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.core.MoldyBlockHelper;
 import moldmod.block.entity.ModBlockEntities;
-import moldmod.block.entity.MoldyChiseledBookshelfBlockEntity;
+import moldmod.block.workstation.MoldyChiseledBookshelfBlockEntity;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Block;

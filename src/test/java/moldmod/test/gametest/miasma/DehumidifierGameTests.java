@@ -2,11 +2,11 @@ package moldmod.test.gametest.miasma;
 
 import moldmod.atmosphere.RoomAtmosphereCalculator;
 import moldmod.block.ModBlocks;
-import moldmod.block.dehumidifier.DehumidifierBlock;
-import moldmod.block.dehumidifier.DehumidifierBlockEntity;
-import moldmod.block.dehumidifier.DehumidifierMode;
-import moldmod.block.dehumidifier.DehumidifierRedstoneMode;
-import moldmod.block.dehumidifier.DehumidifierStatus;
+import moldmod.block.machine.dehumidifier.DehumidifierBlock;
+import moldmod.block.machine.dehumidifier.DehumidifierBlockEntity;
+import moldmod.block.machine.dehumidifier.DehumidifierMode;
+import moldmod.block.machine.dehumidifier.DehumidifierRedstoneMode;
+import moldmod.block.machine.dehumidifier.DehumidifierStatus;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;

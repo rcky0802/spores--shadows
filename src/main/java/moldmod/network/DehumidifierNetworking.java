@@ -1,6 +1,6 @@
 package moldmod.network;
 
-import moldmod.block.dehumidifier.DehumidifierBlockEntity;
+import moldmod.block.machine.dehumidifier.DehumidifierBlockEntity;
 import moldmod.screen.DehumidifierScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

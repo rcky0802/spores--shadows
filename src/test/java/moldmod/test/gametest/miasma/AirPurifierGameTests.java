@@ -3,10 +3,10 @@ package moldmod.test.gametest.miasma;
 import moldmod.SporesShadows;
 import moldmod.atmosphere.RoomAtmosphereCalculator;
 import moldmod.block.ModBlocks;
-import moldmod.block.purifier.AirPurifierBlock;
-import moldmod.block.purifier.AirPurifierBlockEntity;
-import moldmod.block.purifier.PurifierRedstoneMode;
-import moldmod.block.purifier.PurifierStatus;
+import moldmod.block.machine.purifier.AirPurifierBlock;
+import moldmod.block.machine.purifier.AirPurifierBlockEntity;
+import moldmod.block.machine.purifier.PurifierRedstoneMode;
+import moldmod.block.machine.purifier.PurifierStatus;
 import moldmod.integration.jade.AirPurifierBlockProvider;
 import moldmod.item.ModItems;
 import moldmod.test.helper.RoomTestBuilder;
@@ -219,7 +219,7 @@ public class AirPurifierGameTests {
         // Place a mold block in the room to create toxic score (STAGE 2 = MOLDY)
         BlockPos moldPos = new BlockPos(1, 1, 1);
         context.setBlockState(moldPos, ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
-                .with(moldmod.block.MoldyBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.MOLDY.getId()));
+                .with(moldmod.block.core.MoldyBlock.STAGE, moldmod.SporesShadowsConstants.MoldStage.MOLDY.getId()));
 
         BlockPos insidePos = context.getAbsolutePos(new BlockPos(2, 1, 2));
 

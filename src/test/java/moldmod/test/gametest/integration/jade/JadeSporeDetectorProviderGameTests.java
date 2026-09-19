@@ -2,7 +2,7 @@ package moldmod.test.gametest.integration.jade;
 
 import moldmod.SporesShadows;
 import moldmod.block.ModBlocks;
-import moldmod.block.SporeDetectorBlock;
+import moldmod.block.sensor.SporeDetectorBlock;
 import moldmod.integration.jade.SporeDetectorBlockProvider;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;

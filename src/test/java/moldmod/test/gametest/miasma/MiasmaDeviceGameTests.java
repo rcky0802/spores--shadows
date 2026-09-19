@@ -2,13 +2,14 @@ package moldmod.test.gametest.miasma;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.SporeDetectorBlock;
+import moldmod.block.sensor.SporeDetectorBlock;
 import moldmod.config.ModConfig;
 import moldmod.atmosphere.RoomAtmosphereCalculator;
 import moldmod.atmosphere.RoomSaturationManager;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.test.GameTest;
@@ -17,6 +18,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import java.util.List;
 
@@ -65,12 +67,78 @@ public class MiasmaDeviceGameTests {
                                 context.getAbsolutePos(detectorPos),
                                 context.getWorld().getRandom());
 
-                // Verify SporeDetectorBlock visual stage scales and emits NO redstone
+                // Verify SporeDetectorBlock visual stage scales and emits redstone & comparator output
                 BlockState updatedState = context.getBlockState(detectorPos);
-                context.assertTrue(updatedState.get(SporeDetectorBlock.TOXICITY_LEVEL) > 0,
+                int toxLevel = updatedState.get(SporeDetectorBlock.TOXICITY_LEVEL);
+                context.assertTrue(toxLevel > 0,
                                 "Spore detector must update visual stage when spores are detected");
-                context.assertFalse(updatedState.emitsRedstonePower(),
-                                "Spore detector must not emit redstone power");
+                context.assertTrue(updatedState.emitsRedstonePower(),
+                                "Spore detector must emit redstone power when toxic");
+                int weakPower = updatedState.getWeakRedstonePower(context.getWorld(), context.getAbsolutePos(detectorPos), Direction.UP);
+                context.assertTrue(weakPower == toxLevel * 5,
+                                "Spore detector weak power must equal toxicity * 5, got " + weakPower);
+                context.assertTrue(updatedState.hasComparatorOutput(),
+                                "Spore detector must support comparator output");
+                context.assertTrue(updatedState.getComparatorOutput(context.getWorld(), context.getAbsolutePos(detectorPos)) == toxLevel * 5,
+                                "Spore detector comparator output must equal toxicity * 5");
+
+                context.complete();
+        }
+
+        @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+        public void testSporeDetectorPowersBlockAndRedstoneWire(TestContext context) {
+                // Solid stone block at (2, 1, 2)
+                BlockPos stonePos = new BlockPos(2, 1, 2);
+                context.setBlockState(stonePos, Blocks.STONE.getDefaultState());
+
+                // Floor for redstone wire at (2, 0, 1)
+                context.setBlockState(new BlockPos(2, 0, 1), Blocks.STONE.getDefaultState());
+
+                // Mount SporeDetector on the SOUTH side of stone block: pos = (2, 1, 3), FACING = SOUTH, FACE = WALL, level 3
+                BlockState detectorState = ModBlocks.SPORE_DETECTOR.getDefaultState()
+                                .with(SporeDetectorBlock.FACE, net.minecraft.block.enums.BlockFace.WALL)
+                                .with(SporeDetectorBlock.FACING, Direction.SOUTH)
+                                .with(SporeDetectorBlock.TOXICITY_LEVEL, 3);
+                BlockPos detectorPos = new BlockPos(2, 1, 3);
+                context.setBlockState(detectorPos, detectorState);
+
+                // Now connect Redstone wire at (2, 1, 1) adjacent to the charged stone block
+                BlockPos wirePos = new BlockPos(2, 1, 1);
+                context.setBlockState(wirePos, Blocks.REDSTONE_WIRE.getDefaultState());
+
+                // 1. Verify stone block receives strong power = 15 from detector
+                int receivedStrong = context.getWorld().getReceivedStrongRedstonePower(context.getAbsolutePos(stonePos));
+                context.assertTrue(receivedStrong == 15, "Stone block must receive strong power 15, got " + receivedStrong);
+
+                // 2. Verify wire connected to charged block immediately received power = 15
+                int wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+                context.assertTrue(wirePower == 15, "Redstone wire connected to charged block must receive 15, got " + wirePower);
+
+                // 3. Dynamic update test: change detector toxicity level from 3 to 1
+                BlockState midState = detectorState.with(SporeDetectorBlock.TOXICITY_LEVEL, 1);
+                context.setBlockState(detectorPos, midState);
+
+                wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+                context.assertTrue(wirePower == 5, "Redstone wire must dynamically update to 5 when detector drops to level 1, got " + wirePower);
+
+                // 4. Dynamic update test: change detector toxicity level from 1 to 0
+                BlockState cleanState = detectorState.with(SporeDetectorBlock.TOXICITY_LEVEL, 0);
+                context.setBlockState(detectorPos, cleanState);
+
+                wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+                context.assertTrue(wirePower == 0, "Redstone wire must dynamically update to 0 when detector is clean, got " + wirePower);
+
+                // 5. Dynamic update test: change back to level 2 (power 10)
+                BlockState warningState = detectorState.with(SporeDetectorBlock.TOXICITY_LEVEL, 2);
+                context.setBlockState(detectorPos, warningState);
+
+                wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+                context.assertTrue(wirePower == 10, "Redstone wire must dynamically update to 10 when detector rises to level 2, got " + wirePower);
+
+                // 6. Dynamic update test: breaking the detector turns off the wire
+                context.setBlockState(detectorPos, Blocks.AIR.getDefaultState());
+                wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+                context.assertTrue(wirePower == 0, "Redstone wire must dynamically turn off when detector is broken, got " + wirePower);
 
                 context.complete();
         }

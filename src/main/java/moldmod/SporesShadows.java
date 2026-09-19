@@ -12,6 +12,7 @@ import moldmod.registry.ModComposterRegistry;
 import moldmod.registry.ModEnchantments;
 import moldmod.registry.ModFlammableRegistry;
 import moldmod.registry.ModFuelRegistry;
+import moldmod.registry.ModPoiRegistry;
 import moldmod.resource.MoldyResourceGenerator;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
@@ -32,7 +33,6 @@ public class SporesShadows implements ModInitializer {
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
 		moldmod.block.entity.ModBlockEntities.registerModBlockEntities();
-		moldmod.poi.ModPointOfInterestHelper.registerAll();
 		moldmod.screen.ModScreenHandlers.registerModScreenHandlers();
 		moldmod.network.DehumidifierNetworking.registerPayloads();
 		moldmod.network.DehumidifierNetworking.registerServerReceivers();
@@ -45,6 +45,7 @@ public class SporesShadows implements ModInitializer {
 		ModComposterRegistry.register();
 		ModFlammableRegistry.register();
 		ModEnchantments.register();
+		ModPoiRegistry.register();
 	}
 
 	public static Identifier id(String path) {

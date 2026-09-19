@@ -1,8 +1,8 @@
 package moldmod.integration.jade;
 
 import moldmod.SporesShadows;
-import moldmod.block.purifier.AirPurifierBlock;
-import moldmod.block.purifier.AirPurifierBlockEntity;
+import moldmod.block.machine.purifier.AirPurifierBlock;
+import moldmod.block.machine.purifier.AirPurifierBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;

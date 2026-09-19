@@ -2,8 +2,8 @@ package moldmod.event;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlock;
-import moldmod.block.MoldyBlockHelper;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.core.MoldyBlockHelper;
 import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;

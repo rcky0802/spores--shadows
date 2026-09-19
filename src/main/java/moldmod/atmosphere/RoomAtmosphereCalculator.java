@@ -1,7 +1,7 @@
 package moldmod.atmosphere;
 
 import me.shedaniel.autoconfig.AutoConfig;
-import moldmod.block.MoldyBlock;
+import moldmod.block.core.MoldyBlock;
 import moldmod.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;

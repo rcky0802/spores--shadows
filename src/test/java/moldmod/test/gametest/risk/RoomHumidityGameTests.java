@@ -1,8 +1,8 @@
 package moldmod.test.gametest.risk;
 
 import me.shedaniel.autoconfig.AutoConfig;
-import moldmod.risk.MoldRiskCalculator;
-import moldmod.risk.MoldRiskCalculator.MoldRiskResult;
+import moldmod.infection.risk.MoldRiskCalculator;
+import moldmod.infection.risk.MoldRiskCalculator.MoldRiskResult;
 import moldmod.config.ModConfig;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;

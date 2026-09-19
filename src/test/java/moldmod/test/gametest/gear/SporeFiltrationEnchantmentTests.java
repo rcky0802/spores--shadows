@@ -2,7 +2,7 @@ package moldmod.test.gametest.gear;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyLogBlock;
+import moldmod.block.wood.MoldyLogBlock;
 import moldmod.config.ModConfig;
 import moldmod.event.ToxicAirEvent;
 import moldmod.item.ModItems;

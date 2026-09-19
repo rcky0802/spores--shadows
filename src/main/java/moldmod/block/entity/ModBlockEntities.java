@@ -2,7 +2,16 @@ package moldmod.block.entity;
 
 import moldmod.SporesShadows;
 import moldmod.block.ModBlocks;
-import moldmod.block.dehumidifier.DehumidifierBlockEntity;
+import moldmod.block.machine.dehumidifier.DehumidifierBlockEntity;
+import moldmod.block.machine.purifier.AirPurifierBlockEntity;
+import moldmod.block.redstone.MoldyJukeboxBlockEntity;
+import moldmod.block.sign.MoldyHangingSignBlockEntity;
+import moldmod.block.sign.MoldySignBlockEntity;
+import moldmod.block.workstation.MoldyBarrelBlockEntity;
+import moldmod.block.workstation.MoldyChestBlockEntity;
+import moldmod.block.workstation.MoldyChiseledBookshelfBlockEntity;
+import moldmod.block.workstation.MoldyLecternBlockEntity;
+import moldmod.block.workstation.MoldyTrappedChestBlockEntity;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
@@ -18,10 +27,10 @@ public final class ModBlockEntities {
             BlockEntityType.Builder.create(DehumidifierBlockEntity::new, ModBlocks.DEHUMIDIFIER).build()
     );
 
-    public static final BlockEntityType<moldmod.block.purifier.AirPurifierBlockEntity> AIR_PURIFIER = Registry.register(
+    public static final BlockEntityType<AirPurifierBlockEntity> AIR_PURIFIER = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             SporesShadows.id("air_purifier"),
-            BlockEntityType.Builder.create(moldmod.block.purifier.AirPurifierBlockEntity::new, ModBlocks.AIR_PURIFIER).build()
+            BlockEntityType.Builder.create(AirPurifierBlockEntity::new, ModBlocks.AIR_PURIFIER).build()
     );
 
     public static BlockEntityType<MoldySignBlockEntity> MOLDY_SIGN;

@@ -1,7 +1,7 @@
 package moldmod.test.gametest.wood;
 
 import moldmod.SporesShadows;
-import moldmod.block.MoldyLogBlock;
+import moldmod.block.wood.MoldyLogBlock;
 import moldmod.config.ModConfig;
 import moldmod.test.helper.MoldyWoodTestHelper;
 import me.shedaniel.autoconfig.AutoConfig;

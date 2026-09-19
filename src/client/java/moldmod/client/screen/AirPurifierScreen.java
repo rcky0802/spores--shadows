@@ -2,8 +2,8 @@ package moldmod.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import moldmod.SporesShadows;
-import moldmod.block.purifier.PurifierRedstoneMode;
-import moldmod.block.purifier.PurifierStatus;
+import moldmod.block.machine.purifier.PurifierRedstoneMode;
+import moldmod.block.machine.purifier.PurifierStatus;
 import moldmod.network.AirPurifierRedstonePayload;
 import moldmod.screen.AirPurifierScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;

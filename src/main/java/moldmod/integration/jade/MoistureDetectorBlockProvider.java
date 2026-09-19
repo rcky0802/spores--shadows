@@ -1,7 +1,7 @@
 package moldmod.integration.jade;
 
 import moldmod.SporesShadows;
-import moldmod.block.MoistureDetectorBlock;
+import moldmod.block.sensor.MoistureDetectorBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;

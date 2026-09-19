@@ -1,8 +1,8 @@
 package moldmod.test.gametest.wood;
 
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyLogBlock;
-import moldmod.structure.MoldyStructureContext;
+import moldmod.block.wood.MoldyLogBlock;
+import moldmod.world.structure.MoldyStructureContext;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.test.GameTest;

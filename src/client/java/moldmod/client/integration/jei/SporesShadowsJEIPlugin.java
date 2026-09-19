@@ -1,5 +1,8 @@
 package moldmod.client.integration.jei;
 
+import moldmod.client.integration.jei.category.*;
+import moldmod.client.integration.jei.recipe.*;
+
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;

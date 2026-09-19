@@ -1,8 +1,8 @@
 package moldmod.integration.jade;
 
 import moldmod.SporesShadows;
-import moldmod.block.dehumidifier.DehumidifierBlock;
-import moldmod.block.dehumidifier.DehumidifierBlockEntity;
+import moldmod.block.machine.dehumidifier.DehumidifierBlock;
+import moldmod.block.machine.dehumidifier.DehumidifierBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;

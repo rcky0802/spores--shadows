@@ -2,7 +2,7 @@ package moldmod.atmosphere;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlock;
+import moldmod.block.core.MoldyBlock;
 import moldmod.config.ModConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;

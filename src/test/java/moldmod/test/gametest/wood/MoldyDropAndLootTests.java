@@ -1,7 +1,7 @@
 package moldmod.test.gametest.wood;
 
 import moldmod.SporesShadows;
-import moldmod.block.MoldyLogBlock;
+import moldmod.block.wood.MoldyLogBlock;
 import moldmod.test.helper.MoldyWoodTestHelper;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Block;

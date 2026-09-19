@@ -2,10 +2,10 @@ package moldmod.test.gametest.miasma;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoistureDetectorBlock;
+import moldmod.block.sensor.MoistureDetectorBlock;
 import moldmod.config.ModConfig;
 import moldmod.item.ModItems;
-import moldmod.risk.MoldRiskCalculator;
+import moldmod.infection.risk.MoldRiskCalculator;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
@@ -91,8 +91,11 @@ public class MoistureDetectorGameTests {
         int weakPower = state.getWeakRedstonePower(context.getWorld(), context.getAbsolutePos(detectorPos), Direction.UP);
 
         context.assertTrue(stage >= 2, "Moisture detector in humid basement must have stage >= 2, got: " + stage);
-        context.assertTrue(weakPower == 0, "Weak redstone power must be 0, got: " + weakPower);
-        context.assertFalse(state.emitsRedstonePower(), "Moisture detector must not emit redstone power");
+        context.assertTrue(weakPower == stage * 5, "Weak redstone power must be stage * 5, got: " + weakPower);
+        context.assertTrue(state.emitsRedstonePower(), "Moisture detector must emit redstone power");
+        context.assertTrue(state.hasComparatorOutput(), "Moisture detector must support comparator output");
+        context.assertTrue(state.getComparatorOutput(context.getWorld(), context.getAbsolutePos(detectorPos)) == stage * 5,
+                "Moisture detector comparator output must be stage * 5");
 
         context.complete();
     }
@@ -124,7 +127,7 @@ public class MoistureDetectorGameTests {
         int humidStage = humidState.get(MoistureDetectorBlock.MOISTURE_STAGE);
 
         context.assertTrue(humidStage >= 2, "Initial humid stage must be >= 2");
-        context.assertFalse(humidState.emitsRedstonePower(), "Moisture detector must not emit redstone power");
+        context.assertTrue(humidState.emitsRedstonePower(), "Moisture detector must emit redstone power when humid");
 
         // 2. Open ventilation: Remove roof over entire central area to open sky
         for (int x = 1; x <= 5; x++) {
@@ -145,7 +148,8 @@ public class MoistureDetectorGameTests {
 
         context.assertTrue(ventilatedStage < humidStage,
                 "Ventilation must reduce visual stage! Was: " + humidStage + ", now: " + ventilatedStage);
-        context.assertFalse(ventilatedState.emitsRedstonePower(), "Moisture detector must not emit redstone power");
+        int ventWeakPower = ventilatedState.getWeakRedstonePower(context.getWorld(), context.getAbsolutePos(detectorPos), Direction.UP);
+        context.assertTrue(ventWeakPower == ventilatedStage * 5, "Ventilated power must equal stage * 5");
 
         context.complete();
     }
@@ -195,6 +199,64 @@ public class MoistureDetectorGameTests {
             Text text = Text.translatable(key);
             context.assertTrue(!text.getString().isEmpty(), "Localization key " + key + " must not be empty");
         }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMoistureDetectorPowersBlockAndRedstoneWire(TestContext context) {
+        // Solid stone block at (2, 1, 2)
+        BlockPos stonePos = new BlockPos(2, 1, 2);
+        context.setBlockState(stonePos, Blocks.STONE.getDefaultState());
+
+        // Floor for redstone wire at (2, 0, 1)
+        context.setBlockState(new BlockPos(2, 0, 1), Blocks.STONE.getDefaultState());
+
+        // Mount MoistureDetector on the SOUTH side of stone block: pos = (2, 1, 3), FACING = SOUTH, FACE = WALL, stage 3
+        BlockState detectorState = ModBlocks.MOISTURE_DETECTOR.getDefaultState()
+                .with(MoistureDetectorBlock.FACE, net.minecraft.block.enums.BlockFace.WALL)
+                .with(MoistureDetectorBlock.FACING, Direction.SOUTH)
+                .with(MoistureDetectorBlock.MOISTURE_STAGE, 3);
+        BlockPos detectorPos = new BlockPos(2, 1, 3);
+        context.setBlockState(detectorPos, detectorState);
+
+        // Connect Redstone wire at (2, 1, 1) adjacent to the charged stone block
+        BlockPos wirePos = new BlockPos(2, 1, 1);
+        context.setBlockState(wirePos, Blocks.REDSTONE_WIRE.getDefaultState());
+
+        // 1. Verify stone block receives strong power = 15 from detector
+        int receivedStrong = context.getWorld().getReceivedStrongRedstonePower(context.getAbsolutePos(stonePos));
+        context.assertTrue(receivedStrong == 15, "Stone block must receive strong power 15, got " + receivedStrong);
+
+        // 2. Verify wire connected to charged block immediately received power = 15
+        int wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+        context.assertTrue(wirePower == 15, "Redstone wire connected to charged block must receive 15, got " + wirePower);
+
+        // 3. Dynamic update test: change detector moisture stage from 3 to 1
+        BlockState midState = detectorState.with(MoistureDetectorBlock.MOISTURE_STAGE, 1);
+        context.setBlockState(detectorPos, midState);
+
+        wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+        context.assertTrue(wirePower == 5, "Redstone wire must dynamically update to 5 when detector drops to stage 1, got " + wirePower);
+
+        // 4. Dynamic update test: change detector moisture stage from 1 to 0
+        BlockState cleanState = detectorState.with(MoistureDetectorBlock.MOISTURE_STAGE, 0);
+        context.setBlockState(detectorPos, cleanState);
+
+        wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+        context.assertTrue(wirePower == 0, "Redstone wire must dynamically update to 0 when detector is dry, got " + wirePower);
+
+        // 5. Dynamic update test: change back to stage 2 (power 10)
+        BlockState warningState = detectorState.with(MoistureDetectorBlock.MOISTURE_STAGE, 2);
+        context.setBlockState(detectorPos, warningState);
+
+        wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+        context.assertTrue(wirePower == 10, "Redstone wire must dynamically update to 10 when detector rises to stage 2, got " + wirePower);
+
+        // 6. Dynamic update test: breaking the detector turns off the wire
+        context.setBlockState(detectorPos, Blocks.AIR.getDefaultState());
+        wirePower = context.getBlockState(wirePos).get(net.minecraft.state.property.Properties.POWER);
+        context.assertTrue(wirePower == 0, "Redstone wire must dynamically turn off when detector is broken, got " + wirePower);
 
         context.complete();
     }

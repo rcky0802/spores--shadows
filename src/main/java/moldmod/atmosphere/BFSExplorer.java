@@ -1,6 +1,6 @@
 package moldmod.atmosphere;
 
-import moldmod.block.MoldyBlock;
+import moldmod.block.core.MoldyBlock;
 import moldmod.config.ModConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -194,10 +194,10 @@ public final class BFSExplorer {
                         roomWaterSources.add(neighborPos.toImmutable());
                     }
                     if (neighborState.isOf(moldmod.block.ModBlocks.DEHUMIDIFIER)) {
-                        if (neighborState.contains(moldmod.block.dehumidifier.DehumidifierBlock.STATUS)
-                                && neighborState.get(moldmod.block.dehumidifier.DehumidifierBlock.STATUS) == moldmod.block.dehumidifier.DehumidifierStatus.RUNNING) {
-                            if (neighborState.contains(moldmod.block.dehumidifier.DehumidifierBlock.MODE)
-                                    && neighborState.get(moldmod.block.dehumidifier.DehumidifierBlock.MODE) == moldmod.block.dehumidifier.DehumidifierMode.HUMIDIFY) {
+                        if (neighborState.contains(moldmod.block.machine.dehumidifier.DehumidifierBlock.STATUS)
+                                && neighborState.get(moldmod.block.machine.dehumidifier.DehumidifierBlock.STATUS) == moldmod.block.machine.dehumidifier.DehumidifierStatus.RUNNING) {
+                            if (neighborState.contains(moldmod.block.machine.dehumidifier.DehumidifierBlock.MODE)
+                                    && neighborState.get(moldmod.block.machine.dehumidifier.DehumidifierBlock.MODE) == moldmod.block.machine.dehumidifier.DehumidifierMode.HUMIDIFY) {
                                 roomHumidifiers.add(neighborPos.toImmutable());
                             } else {
                                 roomDehumidifiers.add(neighborPos.toImmutable());
@@ -205,8 +205,8 @@ public final class BFSExplorer {
                         }
                     }
                     if (neighborState.isOf(moldmod.block.ModBlocks.AIR_PURIFIER)) {
-                        if (neighborState.contains(moldmod.block.purifier.AirPurifierBlock.STATUS)
-                                && neighborState.get(moldmod.block.purifier.AirPurifierBlock.STATUS) == moldmod.block.purifier.PurifierStatus.RUNNING) {
+                        if (neighborState.contains(moldmod.block.machine.purifier.AirPurifierBlock.STATUS)
+                                && neighborState.get(moldmod.block.machine.purifier.AirPurifierBlock.STATUS) == moldmod.block.machine.purifier.PurifierStatus.RUNNING) {
                             roomPurifiers.add(neighborPos.toImmutable());
                         }
                     }

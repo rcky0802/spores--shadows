@@ -2,7 +2,7 @@ package moldmod.registry;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlock;
+import moldmod.block.core.MoldyBlock;
 import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.minecraft.component.DataComponentTypes;

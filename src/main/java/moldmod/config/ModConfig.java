@@ -285,10 +285,6 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int item_use_cooldown_ticks = 10;
         @ConfigEntry.Gui.Tooltip(count = 1)
-        public int geiger_check_interval_ticks = 20;
-        @ConfigEntry.Gui.Tooltip(count = 1)
-        public double geiger_density_threshold = 0.02;
-        @ConfigEntry.Gui.Tooltip(count = 1)
         public int spore_mask_durability = 165;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int spore_mask_armor_points = 1;
@@ -301,6 +297,8 @@ public class ModConfig implements ConfigData {
         public int block_periodic_delay_ticks = 20;
         @ConfigEntry.Gui.Tooltip(count = 1)
         public int item_use_cooldown_ticks = 10;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public int redstone_level_multiplier = 5;
     }
 
     public static class Dehumidifier {
@@ -460,14 +458,13 @@ public class ModConfig implements ConfigData {
         sporeDetector.block_periodic_delay_ticks = Math.max(1, sporeDetector.block_periodic_delay_ticks);
         sporeDetector.redstone_level_multiplier = MathHelper.clamp(sporeDetector.redstone_level_multiplier, 1, 15);
         sporeDetector.item_use_cooldown_ticks = Math.max(1, sporeDetector.item_use_cooldown_ticks);
-        sporeDetector.geiger_check_interval_ticks = Math.max(1, sporeDetector.geiger_check_interval_ticks);
-        sporeDetector.geiger_density_threshold = MathHelper.clamp(sporeDetector.geiger_density_threshold, 0.0, 1.0);
         sporeDetector.spore_mask_durability = MathHelper.clamp(sporeDetector.spore_mask_durability, 1, 10000);
         sporeDetector.spore_mask_armor_points = MathHelper.clamp(sporeDetector.spore_mask_armor_points, 0, 20);
 
         moistureDetector.block_initial_delay_ticks = Math.max(1, moistureDetector.block_initial_delay_ticks);
         moistureDetector.block_periodic_delay_ticks = Math.max(1, moistureDetector.block_periodic_delay_ticks);
         moistureDetector.item_use_cooldown_ticks = Math.max(1, moistureDetector.item_use_cooldown_ticks);
+        moistureDetector.redstone_level_multiplier = MathHelper.clamp(moistureDetector.redstone_level_multiplier, 1, 15);
 
         dehumidifier.capacity_mb = MathHelper.clamp(dehumidifier.capacity_mb, 500, 10000);
         dehumidifier.ticks_per_mb = Math.max(1, dehumidifier.ticks_per_mb);

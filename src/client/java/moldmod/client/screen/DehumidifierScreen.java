@@ -2,9 +2,9 @@ package moldmod.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import moldmod.SporesShadows;
-import moldmod.block.dehumidifier.DehumidifierMode;
-import moldmod.block.dehumidifier.DehumidifierRedstoneMode;
-import moldmod.block.dehumidifier.DehumidifierStatus;
+import moldmod.block.machine.dehumidifier.DehumidifierMode;
+import moldmod.block.machine.dehumidifier.DehumidifierRedstoneMode;
+import moldmod.block.machine.dehumidifier.DehumidifierStatus;
 import moldmod.network.DehumidifierModePayload;
 import moldmod.network.DehumidifierRedstonePayload;
 import moldmod.screen.DehumidifierScreenHandler;

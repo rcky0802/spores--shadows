@@ -2,11 +2,11 @@ package moldmod.test.gametest.wood;
 
 import moldmod.SporesShadows;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlock;
-import moldmod.block.MoldyBlockHelper;
-import moldmod.block.MoldyJukeboxBlock;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.core.MoldyBlockHelper;
+import moldmod.block.redstone.MoldyJukeboxBlock;
 import moldmod.block.entity.ModBlockEntities;
-import moldmod.block.entity.MoldyJukeboxBlockEntity;
+import moldmod.block.redstone.MoldyJukeboxBlockEntity;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Block;

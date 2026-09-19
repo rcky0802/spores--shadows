@@ -1,8 +1,8 @@
 package moldmod.client.render;
 
 import moldmod.SporesShadows;
-import moldmod.block.MoldyBlock;
-import moldmod.block.entity.MoldySignBlockEntity;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.sign.MoldySignBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.AbstractSignBlock;

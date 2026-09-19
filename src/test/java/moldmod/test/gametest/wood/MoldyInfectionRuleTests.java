@@ -2,8 +2,8 @@ package moldmod.test.gametest.wood;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlockHelper;
-import moldmod.block.MoldyLogBlock;
+import moldmod.block.core.MoldyBlockHelper;
+import moldmod.block.wood.MoldyLogBlock;
 import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;

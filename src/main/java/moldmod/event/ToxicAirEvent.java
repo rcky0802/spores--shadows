@@ -1,7 +1,7 @@
 package moldmod.event;
 
 import me.shedaniel.autoconfig.AutoConfig;
-import moldmod.block.MoldyBlockHelper;
+import moldmod.block.core.MoldyBlockHelper;
 import moldmod.config.ModConfig;
 import moldmod.atmosphere.RoomAtmosphereCalculator;
 import moldmod.atmosphere.RoomAtmosphereCalculator.MiasmaResult;

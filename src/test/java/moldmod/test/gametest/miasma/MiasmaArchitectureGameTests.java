@@ -4,7 +4,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.config.ModConfig;
 import moldmod.atmosphere.RoomAtmosphereCalculator;
 import moldmod.atmosphere.RoomAtmosphereCalculator.RoomVentilationType;
-import moldmod.risk.MoldRiskCalculator;
+import moldmod.infection.risk.MoldRiskCalculator;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.Blocks;

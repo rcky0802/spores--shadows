@@ -1,9 +1,9 @@
 package moldmod.test.gametest.risk;
 
 import moldmod.block.ModBlocks;
-import moldmod.risk.MoldRiskCalculator;
-import moldmod.risk.MoldRiskCalculator.MoldRiskResult;
-import moldmod.block.MoldyLogBlock;
+import moldmod.infection.risk.MoldRiskCalculator;
+import moldmod.infection.risk.MoldRiskCalculator.MoldRiskResult;
+import moldmod.block.wood.MoldyLogBlock;
 import moldmod.test.helper.RoomTestBuilder;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.block.BlockState;
@@ -277,6 +277,37 @@ public class MoldRiskScenariosGameTests {
                             + result.R(),
                     ceilingBeamPos);
         }
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testMaterialSusceptibilityClassification(TestContext context) {
+        moldmod.config.ModConfig config = me.shedaniel.autoconfig.AutoConfig.getConfigHolder(moldmod.config.ModConfig.class).getConfig();
+
+        // 1. Planks & derived construction blocks -> planks_multiplier (0.8)
+        double planksSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.OAK_PLANKS, config);
+        double stairsSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.OAK_STAIRS, config);
+        double slabSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.OAK_SLAB, config);
+        double mosaicSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.BAMBOO_MOSAIC, config);
+
+        if (Math.abs(planksSmat - 0.8) > 1e-4) context.throwPositionedException("OAK_PLANKS smat expected 0.8, got " + planksSmat, BlockPos.ORIGIN);
+        if (Math.abs(stairsSmat - 0.8) > 1e-4) context.throwPositionedException("OAK_STAIRS smat expected 0.8, got " + stairsSmat, BlockPos.ORIGIN);
+        if (Math.abs(slabSmat - 0.8) > 1e-4) context.throwPositionedException("OAK_SLAB smat expected 0.8, got " + slabSmat, BlockPos.ORIGIN);
+        if (Math.abs(mosaicSmat - 0.8) > 1e-4) context.throwPositionedException("BAMBOO_MOSAIC smat expected 0.8, got " + mosaicSmat, BlockPos.ORIGIN);
+
+        // 2. Stripped logs -> stripped_wood_multiplier (1.4)
+        double strippedLogSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.STRIPPED_OAK_LOG, config);
+        if (Math.abs(strippedLogSmat - 1.4) > 1e-4) context.throwPositionedException("STRIPPED_OAK_LOG smat expected 1.4, got " + strippedLogSmat, BlockPos.ORIGIN);
+
+        // 3. Bark logs and complex furniture/doors -> default_multiplier (1.0)
+        double logSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.OAK_LOG, config);
+        double doorSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.OAK_DOOR, config);
+        double fenceSmat = MoldRiskCalculator.getMaterialSusceptibility(Blocks.OAK_FENCE, config);
+
+        if (Math.abs(logSmat - 1.0) > 1e-4) context.throwPositionedException("OAK_LOG smat expected 1.0, got " + logSmat, BlockPos.ORIGIN);
+        if (Math.abs(doorSmat - 1.0) > 1e-4) context.throwPositionedException("OAK_DOOR smat expected 1.0, got " + doorSmat, BlockPos.ORIGIN);
+        if (Math.abs(fenceSmat - 1.0) > 1e-4) context.throwPositionedException("OAK_FENCE smat expected 1.0, got " + fenceSmat, BlockPos.ORIGIN);
 
         context.complete();
     }

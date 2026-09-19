@@ -1,6 +1,6 @@
 package moldmod.network;
 
-import moldmod.block.purifier.AirPurifierBlockEntity;
+import moldmod.block.machine.purifier.AirPurifierBlockEntity;
 import moldmod.screen.AirPurifierScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;

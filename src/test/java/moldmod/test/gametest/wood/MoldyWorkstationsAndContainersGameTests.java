@@ -1,8 +1,11 @@
 package moldmod.test.gametest.wood;
 
 import moldmod.SporesShadows;
-import moldmod.block.*;
-import moldmod.block.entity.*;
+import moldmod.block.ModBlocks;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.core.MoldyBlockHelper;
+import moldmod.block.entity.ModBlockEntities;
+import moldmod.block.workstation.*;
 import moldmod.screen.MoldStageHolder;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;

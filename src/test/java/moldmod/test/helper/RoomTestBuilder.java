@@ -1,7 +1,7 @@
 package moldmod.test.helper;
 
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyLogBlock;
+import moldmod.block.wood.MoldyLogBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

@@ -1,8 +1,8 @@
 package moldmod.integration.jade;
 
-import moldmod.block.MoldyBlock;
-import moldmod.block.dehumidifier.DehumidifierBlock;
-import moldmod.block.dehumidifier.DehumidifierBlockEntity;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.machine.dehumidifier.DehumidifierBlock;
+import moldmod.block.machine.dehumidifier.DehumidifierBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -33,12 +33,12 @@ public class JadePlugin implements IWailaPlugin {
         registration.registerProgress(HideThingsExtensionProvider.instance(), DehumidifierBlock.class);
 
         // Nasconde le informazioni generiche di Jade per il depuratore d'aria
-        registration.registerItemStorage(HideThingsExtensionProvider.instance(), moldmod.block.purifier.AirPurifierBlockEntity.class);
-        registration.registerItemStorage(HideThingsExtensionProvider.instance(), moldmod.block.purifier.AirPurifierBlock.class);
-        registration.registerEnergyStorage(HideThingsExtensionProvider.instance(), moldmod.block.purifier.AirPurifierBlockEntity.class);
-        registration.registerEnergyStorage(HideThingsExtensionProvider.instance(), moldmod.block.purifier.AirPurifierBlock.class);
-        registration.registerProgress(HideThingsExtensionProvider.instance(), moldmod.block.purifier.AirPurifierBlockEntity.class);
-        registration.registerProgress(HideThingsExtensionProvider.instance(), moldmod.block.purifier.AirPurifierBlock.class);
+        registration.registerItemStorage(HideThingsExtensionProvider.instance(), moldmod.block.machine.purifier.AirPurifierBlockEntity.class);
+        registration.registerItemStorage(HideThingsExtensionProvider.instance(), moldmod.block.machine.purifier.AirPurifierBlock.class);
+        registration.registerEnergyStorage(HideThingsExtensionProvider.instance(), moldmod.block.machine.purifier.AirPurifierBlockEntity.class);
+        registration.registerEnergyStorage(HideThingsExtensionProvider.instance(), moldmod.block.machine.purifier.AirPurifierBlock.class);
+        registration.registerProgress(HideThingsExtensionProvider.instance(), moldmod.block.machine.purifier.AirPurifierBlockEntity.class);
+        registration.registerProgress(HideThingsExtensionProvider.instance(), moldmod.block.machine.purifier.AirPurifierBlock.class);
     }
 
     @Override
@@ -48,29 +48,29 @@ public class JadePlugin implements IWailaPlugin {
         registration.registerBlockComponent(MoistureDetectorBlockProvider.INSTANCE, Block.class);
         registration.registerBlockComponent(DehumidifierBlockProvider.INSTANCE, Block.class);
         registration.registerBlockComponent(AirPurifierBlockProvider.INSTANCE, Block.class);
-        registration.registerBlockComponent(MoldyNoteBlockProvider.INSTANCE, moldmod.block.MoldyNoteBlock.class);
+        registration.registerBlockComponent(MoldyNoteBlockProvider.INSTANCE, moldmod.block.redstone.MoldyNoteBlock.class);
         registration.registerEntityComponent(SporeProtectionEntityProvider.INSTANCE, LivingEntity.class);
 
         // Rimuove tutte le informazioni generiche universali per mostrare solo lo stato compatto
         registration.addTooltipCollectedCallback((box, accessor) -> {
             if (accessor instanceof BlockAccessor blockAccessor) {
                 BlockState state = blockAccessor.getBlockState();
-                if (blockAccessor.getBlock() instanceof DehumidifierBlock || blockAccessor.getBlock() instanceof moldmod.block.purifier.AirPurifierBlock) {
+                if (blockAccessor.getBlock() instanceof DehumidifierBlock || blockAccessor.getBlock() instanceof moldmod.block.machine.purifier.AirPurifierBlock) {
                     box.getTooltip().remove(JadeIds.UNIVERSAL_FLUID_STORAGE);
                     box.getTooltip().remove(JadeIds.UNIVERSAL_ITEM_STORAGE);
                     box.getTooltip().remove(JadeIds.UNIVERSAL_ENERGY_STORAGE);
                     box.getTooltip().remove(JadeIds.UNIVERSAL_PROGRESS);
                 }
-                if (blockAccessor.getBlock() instanceof moldmod.block.MoldyNoteBlock) {
+                if (blockAccessor.getBlock() instanceof moldmod.block.redstone.MoldyNoteBlock) {
                     int stage = state.contains(MoldyBlock.STAGE) ? state.get(MoldyBlock.STAGE) : 0;
                     if (stage > 0) {
                         box.getTooltip().remove(JadeIds.MC_NOTE_BLOCK);
                     }
                 }
-                if (blockAccessor.getBlock() instanceof moldmod.block.MoldyJukeboxBlock) {
+                if (blockAccessor.getBlock() instanceof moldmod.block.redstone.MoldyJukeboxBlock) {
                     int stage = state.contains(MoldyBlock.STAGE) ? state.get(MoldyBlock.STAGE) : 0;
                     boolean waxed = state.contains(MoldyBlock.WAXED) && state.get(MoldyBlock.WAXED);
-                    if (stage == 3 && !waxed && state.contains(moldmod.block.MoldyJukeboxBlock.HAS_RECORD) && state.get(moldmod.block.MoldyJukeboxBlock.HAS_RECORD)) {
+                    if (stage == 3 && !waxed && state.contains(moldmod.block.redstone.MoldyJukeboxBlock.HAS_RECORD) && state.get(moldmod.block.redstone.MoldyJukeboxBlock.HAS_RECORD)) {
                         box.getTooltip().add(net.minecraft.text.Text.translatable("tooltip." + moldmod.SporesShadows.MOD_ID + ".jade.jukebox.scratched").formatted(net.minecraft.util.Formatting.DARK_RED, net.minecraft.util.Formatting.ITALIC));
                     }
                 }

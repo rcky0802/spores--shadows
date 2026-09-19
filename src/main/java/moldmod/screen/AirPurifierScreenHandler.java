@@ -1,7 +1,7 @@
 package moldmod.screen;
 
-import moldmod.block.purifier.PurifierRedstoneMode;
-import moldmod.block.purifier.PurifierStatus;
+import moldmod.block.machine.purifier.PurifierRedstoneMode;
+import moldmod.block.machine.purifier.PurifierStatus;
 import moldmod.item.ModItems;
 import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;

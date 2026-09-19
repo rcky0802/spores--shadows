@@ -1,6 +1,6 @@
 package moldmod.test.unit.device;
 
-import moldmod.block.MoistureDetectorLogic;
+import moldmod.block.sensor.MoistureDetectorLogic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,0 +1,43 @@
+package moldmod.block.workstation;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.core.MoldyBlockHelper;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ComposterBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.state.StateManager;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.WorldView;
+
+public class MoldyComposterBlock extends ComposterBlock implements MoldyBlock {
+
+    public MoldyComposterBlock(Settings settings) {
+        super(settings);
+        this.setDefaultState(MoldyBlockHelper.initMoldyDefaultState(this.getDefaultState().with(LEVEL, 0)));
+    }
+
+    @Override
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+        super.appendProperties(builder);
+        MoldyBlockHelper.appendMoldyProperties(builder);
+    }
+
+    @Override
+    public boolean hasRandomTicks(BlockState state) {
+        return MoldyBlockHelper.hasRandomTicks(state);
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        super.randomTick(state, world, pos, random);
+        MoldyBlockHelper.randomTick(state, world, pos, random);
+    }
+
+    @Override
+    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
+        return MoldyBlockHelper.getPickStack(world, pos, state);
+    }
+}

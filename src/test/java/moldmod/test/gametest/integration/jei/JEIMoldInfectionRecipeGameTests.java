@@ -1,8 +1,8 @@
 package moldmod.test.gametest.integration.jei;
 
 import moldmod.block.ModBlocks;
-import moldmod.client.integration.jei.MoldInfectionRecipe;
-import moldmod.client.integration.jei.MoldInfectionRecipeCategory;
+import moldmod.client.integration.jei.recipe.MoldInfectionRecipe;
+import moldmod.client.integration.jei.category.MoldInfectionRecipeCategory;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

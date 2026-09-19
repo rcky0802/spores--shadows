@@ -78,10 +78,10 @@ public class ChestAndWorkstationAssetsUnitTest {
             assertTrue(json.has("client"), "Mixins config must define 'client' array");
 
             List<String> clientMixins = new Gson().fromJson(json.get("client"), new com.google.gson.reflect.TypeToken<List<String>>() {}.getType());
-            assertTrue(clientMixins.contains("ChestBlockEntityRendererMixin"), "Must register ChestBlockEntityRendererMixin");
-            assertTrue(clientMixins.contains("HandledScreenMixin"), "Must register HandledScreenMixin");
-            assertTrue(clientMixins.contains("TexturedRenderLayersMixin"), "Must register TexturedRenderLayersMixin");
-            assertTrue(clientMixins.contains("BookScreenMixin"), "Must register BookScreenMixin");
+            assertTrue(clientMixins.stream().anyMatch(m -> m.endsWith("ChestBlockEntityRendererMixin")), "Must register ChestBlockEntityRendererMixin");
+            assertTrue(clientMixins.stream().anyMatch(m -> m.endsWith("HandledScreenMixin")), "Must register HandledScreenMixin");
+            assertTrue(clientMixins.stream().anyMatch(m -> m.endsWith("TexturedRenderLayersMixin")), "Must register TexturedRenderLayersMixin");
+            assertTrue(clientMixins.stream().anyMatch(m -> m.endsWith("BookScreenMixin")), "Must register BookScreenMixin");
         }
     }
 

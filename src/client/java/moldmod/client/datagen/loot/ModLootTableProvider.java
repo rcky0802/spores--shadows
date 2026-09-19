@@ -3,7 +3,7 @@ package moldmod.client.datagen.loot;
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.SporesShadowsConstants.MoldStage;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlock;
+import moldmod.block.core.MoldyBlock;
 import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;

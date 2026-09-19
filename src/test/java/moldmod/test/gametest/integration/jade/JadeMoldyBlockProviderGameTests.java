@@ -3,8 +3,8 @@ package moldmod.test.gametest.integration.jade;
 import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.SporesShadows;
 import moldmod.block.ModBlocks;
-import moldmod.block.MoldyBlock;
-import moldmod.block.MoldyLogBlock;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.wood.MoldyLogBlock;
 import moldmod.config.ModConfig;
 import moldmod.integration.jade.MoldyBlockProvider;
 import net.fabricmc.fabric.api.gametest.v1.FabricGameTest;
@@ -135,7 +135,7 @@ public class JadeMoldyBlockProviderGameTests {
         MoldyBlockProvider.INSTANCE.appendServerData(nbt, accessor);
 
         context.assertTrue(nbt.contains("MoldRisk"), "Server data NBT must contain 'MoldRisk'");
-        double expectedR = moldmod.risk.MoldRiskCalculator.calculate(context.getWorld(), absPos, false, moldyState).R();
+        double expectedR = moldmod.infection.risk.MoldRiskCalculator.calculate(context.getWorld(), absPos, false, moldyState).R();
         context.assertTrue(Math.abs(nbt.getDouble("MoldRisk") - expectedR) < 1e-6,
                 "Server data MoldRisk (" + nbt.getDouble("MoldRisk") + ") must match MoldRiskCalculator.calculate.R (" + expectedR + ")");
 

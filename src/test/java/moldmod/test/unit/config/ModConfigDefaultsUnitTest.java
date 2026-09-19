@@ -247,8 +247,6 @@ public class ModConfigDefaultsUnitTest {
         assertEquals(30, config.sporeDetector.block_periodic_delay_ticks);
         assertEquals(5, config.sporeDetector.redstone_level_multiplier);
         assertEquals(10, config.sporeDetector.item_use_cooldown_ticks);
-        assertEquals(20, config.sporeDetector.geiger_check_interval_ticks);
-        assertEquals(0.02, config.sporeDetector.geiger_density_threshold, 1e-4);
         assertEquals(165, config.sporeDetector.spore_mask_durability);
         assertEquals(1, config.sporeDetector.spore_mask_armor_points);
     }
@@ -259,6 +257,7 @@ public class ModConfigDefaultsUnitTest {
         assertEquals(10, config.moistureDetector.block_initial_delay_ticks);
         assertEquals(20, config.moistureDetector.block_periodic_delay_ticks);
         assertEquals(10, config.moistureDetector.item_use_cooldown_ticks);
+        assertEquals(5, config.moistureDetector.redstone_level_multiplier);
     }
 
     @Test

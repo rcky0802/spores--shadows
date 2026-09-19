@@ -1,8 +1,8 @@
 package moldmod.integration.jade;
 
 import moldmod.SporesShadows;
-import moldmod.block.MoldyBlock;
-import moldmod.block.MoldyNoteBlock;
+import moldmod.block.core.MoldyBlock;
+import moldmod.block.redstone.MoldyNoteBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.state.property.Properties;
