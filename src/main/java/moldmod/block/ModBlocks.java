@@ -63,6 +63,24 @@ public final class ModBlocks {
         public static Block WAXED_NOTE_BLOCK;
         public static Block MOLDY_JUKEBOX;
         public static Block WAXED_JUKEBOX;
+        public static Block MOLDY_CRAFTING_TABLE;
+        public static Block WAXED_CRAFTING_TABLE;
+        public static Block MOLDY_BARREL;
+        public static Block WAXED_BARREL;
+        public static Block MOLDY_CHEST;
+        public static Block WAXED_CHEST;
+        public static Block MOLDY_TRAPPED_CHEST;
+        public static Block WAXED_TRAPPED_CHEST;
+        public static Block MOLDY_COMPOSTER;
+        public static Block WAXED_COMPOSTER;
+        public static Block MOLDY_FLETCHING_TABLE;
+        public static Block WAXED_FLETCHING_TABLE;
+        public static Block MOLDY_CARTOGRAPHY_TABLE;
+        public static Block WAXED_CARTOGRAPHY_TABLE;
+        public static Block MOLDY_LOOM;
+        public static Block WAXED_LOOM;
+        public static Block MOLDY_LECTERN;
+        public static Block WAXED_LECTERN;
 
         public static final Block SPORE_DETECTOR = Registry.register(
                         Registries.BLOCK,
@@ -178,6 +196,69 @@ public final class ModBlocks {
                 WAXED_JUKEBOX = registerBlock("waxed_jukebox",
                                 new MoldyJukeboxBlock(AbstractBlock.Settings.copy(Blocks.JUKEBOX).ticksRandomly()));
                 registerVariant("jukebox", Blocks.JUKEBOX, MOLDY_JUKEBOX, WAXED_JUKEBOX);
+
+                // Crafting Tables
+                MOLDY_CRAFTING_TABLE = registerBlock("moldy_crafting_table",
+                                new MoldyCraftingTableBlock(AbstractBlock.Settings.copy(Blocks.CRAFTING_TABLE).ticksRandomly()));
+                WAXED_CRAFTING_TABLE = registerBlock("waxed_crafting_table",
+                                new MoldyCraftingTableBlock(AbstractBlock.Settings.copy(Blocks.CRAFTING_TABLE).ticksRandomly()));
+                registerVariant("crafting_table", Blocks.CRAFTING_TABLE, MOLDY_CRAFTING_TABLE, WAXED_CRAFTING_TABLE);
+
+                // Barrels
+                MOLDY_BARREL = registerBlock("moldy_barrel",
+                                new MoldyBarrelBlock(AbstractBlock.Settings.copy(Blocks.BARREL).ticksRandomly()));
+                WAXED_BARREL = registerBlock("waxed_barrel",
+                                new MoldyBarrelBlock(AbstractBlock.Settings.copy(Blocks.BARREL).ticksRandomly()));
+                registerVariant("barrel", Blocks.BARREL, MOLDY_BARREL, WAXED_BARREL);
+
+                // Chests
+                MOLDY_CHEST = registerBlock("moldy_chest",
+                                new MoldyChestBlock(AbstractBlock.Settings.copy(Blocks.CHEST).ticksRandomly()));
+                WAXED_CHEST = registerBlock("waxed_chest",
+                                new MoldyChestBlock(AbstractBlock.Settings.copy(Blocks.CHEST).ticksRandomly()));
+                registerVariant("chest", Blocks.CHEST, MOLDY_CHEST, WAXED_CHEST);
+
+                // Trapped Chests
+                MOLDY_TRAPPED_CHEST = registerBlock("moldy_trapped_chest",
+                                new MoldyTrappedChestBlock(AbstractBlock.Settings.copy(Blocks.TRAPPED_CHEST).ticksRandomly()));
+                WAXED_TRAPPED_CHEST = registerBlock("waxed_trapped_chest",
+                                new MoldyTrappedChestBlock(AbstractBlock.Settings.copy(Blocks.TRAPPED_CHEST).ticksRandomly()));
+                registerVariant("trapped_chest", Blocks.TRAPPED_CHEST, MOLDY_TRAPPED_CHEST, WAXED_TRAPPED_CHEST);
+
+                // Composters
+                MOLDY_COMPOSTER = registerBlock("moldy_composter",
+                                new MoldyComposterBlock(AbstractBlock.Settings.copy(Blocks.COMPOSTER).ticksRandomly()));
+                WAXED_COMPOSTER = registerBlock("waxed_composter",
+                                new MoldyComposterBlock(AbstractBlock.Settings.copy(Blocks.COMPOSTER).ticksRandomly()));
+                registerVariant("composter", Blocks.COMPOSTER, MOLDY_COMPOSTER, WAXED_COMPOSTER);
+
+                // Fletching Tables
+                MOLDY_FLETCHING_TABLE = registerBlock("moldy_fletching_table",
+                                new MoldyFletchingTableBlock(AbstractBlock.Settings.copy(Blocks.FLETCHING_TABLE).ticksRandomly()));
+                WAXED_FLETCHING_TABLE = registerBlock("waxed_fletching_table",
+                                new MoldyFletchingTableBlock(AbstractBlock.Settings.copy(Blocks.FLETCHING_TABLE).ticksRandomly()));
+                registerVariant("fletching_table", Blocks.FLETCHING_TABLE, MOLDY_FLETCHING_TABLE, WAXED_FLETCHING_TABLE);
+
+                // Cartography Tables
+                MOLDY_CARTOGRAPHY_TABLE = registerBlock("moldy_cartography_table",
+                                new MoldyCartographyTableBlock(AbstractBlock.Settings.copy(Blocks.CARTOGRAPHY_TABLE).ticksRandomly()));
+                WAXED_CARTOGRAPHY_TABLE = registerBlock("waxed_cartography_table",
+                                new MoldyCartographyTableBlock(AbstractBlock.Settings.copy(Blocks.CARTOGRAPHY_TABLE).ticksRandomly()));
+                registerVariant("cartography_table", Blocks.CARTOGRAPHY_TABLE, MOLDY_CARTOGRAPHY_TABLE, WAXED_CARTOGRAPHY_TABLE);
+
+                // Looms
+                MOLDY_LOOM = registerBlock("moldy_loom",
+                                new MoldyLoomBlock(AbstractBlock.Settings.copy(Blocks.LOOM).ticksRandomly()));
+                WAXED_LOOM = registerBlock("waxed_loom",
+                                new MoldyLoomBlock(AbstractBlock.Settings.copy(Blocks.LOOM).ticksRandomly()));
+                registerVariant("loom", Blocks.LOOM, MOLDY_LOOM, WAXED_LOOM);
+
+                // Lecterns
+                MOLDY_LECTERN = registerBlock("moldy_lectern",
+                                new MoldyLecternBlock(AbstractBlock.Settings.copy(Blocks.LECTERN).ticksRandomly()));
+                WAXED_LECTERN = registerBlock("waxed_lectern",
+                                new MoldyLecternBlock(AbstractBlock.Settings.copy(Blocks.LECTERN).ticksRandomly()));
+                registerVariant("lectern", Blocks.LECTERN, MOLDY_LECTERN, WAXED_LECTERN);
 
                 Registry.register(Registries.ITEM_GROUP, SPORES_SHADOWS_GROUP_KEY, SPORES_SHADOWS_GROUP);
 

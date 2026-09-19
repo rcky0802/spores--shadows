@@ -38,6 +38,11 @@ public class ModItemTagProvider extends FabricTagProvider.ItemTagProvider {
         copy(BlockTags.DOORS, ItemTags.DOORS);
         copy(BlockTags.TRAPDOORS, ItemTags.TRAPDOORS);
 
+        copy(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.CHESTS, net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags.CHESTS);
+        copy(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.WOODEN_CHESTS, net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags.WOODEN_CHESTS);
+        copy(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.BARRELS, net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags.BARRELS);
+        copy(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.WOODEN_BARRELS, net.fabricmc.fabric.api.tag.convention.v2.ConventionalItemTags.WOODEN_BARRELS);
+
         FabricTagBuilder nonFlammable = getOrCreateTagBuilder(ItemTags.NON_FLAMMABLE_WOOD);
         for (Item item : Registries.ITEM) {
             Identifier id = Registries.ITEM.getId(item);

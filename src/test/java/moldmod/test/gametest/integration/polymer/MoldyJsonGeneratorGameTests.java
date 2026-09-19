@@ -284,4 +284,49 @@ public class MoldyJsonGeneratorGameTests {
 
         context.complete();
     }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testChestModelsAndBlockstates(TestContext context) {
+        TestResourcePackBuilder builder = new TestResourcePackBuilder();
+        MoldyJsonGenerator.generateAll(builder);
+
+        Map<String, byte[]> capturedFiles = builder.capturedFiles;
+
+        for (String chestType : new String[]{"chest", "trapped_chest"}) {
+            for (String prefix : new String[]{"moldy_", "waxed_"}) {
+                String blockId = prefix + chestType;
+
+                // 1. Verify model file exists and has oak_planks particle
+                String modelPath = "assets/" + SporesShadows.MOD_ID + "/models/block/" + blockId + ".json";
+                context.assertTrue(capturedFiles.containsKey(modelPath), "Missing chest block model: " + modelPath);
+                JsonObject modelJson = JsonParser.parseString(new String(capturedFiles.get(modelPath), StandardCharsets.UTF_8)).getAsJsonObject();
+                context.assertTrue(modelJson.has("textures"), "Chest model must have textures");
+                context.assertEquals("minecraft:block/oak_planks", modelJson.getAsJsonObject("textures").get("particle").getAsString(),
+                        "Chest particle texture must be oak_planks");
+
+                // 2. Verify blockstate exists and has variants
+                String bsPath = "assets/" + SporesShadows.MOD_ID + "/blockstates/" + blockId + ".json";
+                context.assertTrue(capturedFiles.containsKey(bsPath), "Missing chest blockstate: " + bsPath);
+                JsonObject bsJson = JsonParser.parseString(new String(capturedFiles.get(bsPath), StandardCharsets.UTF_8)).getAsJsonObject();
+                JsonObject variants = bsJson.getAsJsonObject("variants");
+                context.assertFalse(variants.has(""), "Chest blockstate must not have empty variant to avoid overlapping definitions");
+                context.assertEquals(384, variants.size(), "Chest blockstate must have exactly 384 exhaustive variants: found " + variants.size());
+
+                // Check a specific variant
+                String sampleKey = "facing=north,stage=2,structural=false,type=single,waterlogged=false,waxed=false";
+                context.assertTrue(variants.has(sampleKey), "Chest blockstate missing expected variant: " + sampleKey);
+            }
+        }
+
+        // Verify item models
+        for (String itemName : new String[]{
+                "waxed_chest", "tainted_chest", "waxed_tainted_chest", "moldy_chest", "waxed_moldy_chest", "rotten_chest", "waxed_rotten_chest",
+                "waxed_trapped_chest", "tainted_trapped_chest", "waxed_tainted_trapped_chest", "moldy_trapped_chest", "waxed_moldy_trapped_chest", "rotten_trapped_chest", "waxed_rotten_trapped_chest"
+        }) {
+            String itemPath = "assets/" + SporesShadows.MOD_ID + "/models/item/" + itemName + ".json";
+            context.assertTrue(capturedFiles.containsKey(itemPath), "Missing chest item model: " + itemPath);
+        }
+
+        context.complete();
+    }
 }

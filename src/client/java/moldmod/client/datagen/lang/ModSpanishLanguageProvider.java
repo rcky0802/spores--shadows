@@ -633,6 +633,14 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Cascos de Filtración");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Bloques Mohosos");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Bloques Mohosos");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_1", "Probabilidad de Fallo de Cofre Trampa (Nivel 1)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_2", "Probabilidad de Fallo de Cofre Trampa (Nivel 2)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_3", "Probabilidad de Fallo de Cofre Trampa (Nivel 3)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.gui_mold_overlay_intensity", "Intensidad de Superposición de Moho en GUI");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.status", "Mecanismo: %s");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.jammed", "Atascado (Sin Señal)");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.ready", "Operativo");
+        translationBuilder.add("tooltip.spores--shadows.jade.composter.level", "Nivel de Llenado: %d / 8");
     }
 
     @Override
@@ -645,6 +653,15 @@ public class ModSpanishLanguageProvider extends AbstractModLanguageProvider {
             case "ladder" -> { baseName = "Escalera de Mano"; isFeminine = true; }
             case "note_block" -> { baseName = "Bloque de Nota"; isFeminine = false; }
             case "jukebox" -> { baseName = "Tocadiscos"; isFeminine = false; }
+            case "crafting_table" -> { baseName = "Mesa de Trabajo"; isFeminine = true; }
+            case "barrel" -> { baseName = "Barril"; isFeminine = false; }
+            case "chest" -> { baseName = "Cofre"; isFeminine = false; }
+            case "trapped_chest" -> { baseName = "Cofre Trampa"; isFeminine = false; }
+            case "composter" -> { baseName = "Compostador"; isFeminine = false; }
+            case "fletching_table" -> { baseName = "Mesa de Flechería"; isFeminine = true; }
+            case "cartography_table" -> { baseName = "Mesa de Cartografía"; isFeminine = true; }
+            case "loom" -> { baseName = "Telar"; isFeminine = false; }
+            case "lectern" -> { baseName = "Atril"; isFeminine = false; }
             default -> { baseName = compositeType; isFeminine = false; }
         }
         if (isFeminine) {

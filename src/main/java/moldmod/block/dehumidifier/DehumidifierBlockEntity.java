@@ -234,7 +234,7 @@ public class DehumidifierBlockEntity extends BlockEntity implements SidedInvento
 
     public float getFuelMultiplier() {
         ModConfig config = getConfig();
-        return (config != null && config.dehumidifier != null) ? config.dehumidifier.fuel_multiplier : 1.0f;
+        return (config != null && config.dehumidifier != null) ? config.dehumidifier.fuel_multiplier : 4.0f;
     }
 
     public int getTicksPerMb() {

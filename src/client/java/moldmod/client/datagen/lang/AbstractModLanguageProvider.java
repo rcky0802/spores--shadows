@@ -80,8 +80,8 @@ public abstract class AbstractModLanguageProvider extends FabricLanguageProvider
             translationBuilder.add("block." + SporesShadows.MOD_ID + ".waxed_" + prefix + "_wall_hanging_sign", getTranslation(wood, "hanging_sign", "waxed"));
         }
 
-        // Composite blocks (bookshelf, chiseled_bookshelf, ladder, note_block, jukebox)
-        for (String composite : new String[]{"bookshelf", "chiseled_bookshelf", "ladder", "note_block", "jukebox"}) {
+        // Composite blocks (bookshelf, chiseled_bookshelf, ladder, note_block, jukebox, crafting_table, barrel, chest, trapped_chest, composter, fletching_table, cartography_table, loom, lectern)
+        for (String composite : new String[]{"bookshelf", "chiseled_bookshelf", "ladder", "note_block", "jukebox", "crafting_table", "barrel", "chest", "trapped_chest", "composter", "fletching_table", "cartography_table", "loom", "lectern"}) {
             translationBuilder.add("block." + SporesShadows.MOD_ID + ".moldy_" + composite, getCompositeTranslation(composite, "moldy"));
             translationBuilder.add("block." + SporesShadows.MOD_ID + ".waxed_" + composite, getCompositeTranslation(composite, "waxed"));
 

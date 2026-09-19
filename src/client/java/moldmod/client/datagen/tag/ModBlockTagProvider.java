@@ -61,13 +61,39 @@ public class ModBlockTagProvider extends FabricTagProvider.BlockTagProvider {
         climbable.add(ModBlocks.MOLDY_LADDER);
         climbable.add(ModBlocks.WAXED_LADDER);
 
+        FabricTagBuilder guardedByPiglins = getOrCreateTagBuilder(BlockTags.GUARDED_BY_PIGLINS);
+        guardedByPiglins.add(ModBlocks.MOLDY_CHEST);
+        guardedByPiglins.add(ModBlocks.WAXED_CHEST);
+        guardedByPiglins.add(ModBlocks.MOLDY_TRAPPED_CHEST);
+        guardedByPiglins.add(ModBlocks.WAXED_TRAPPED_CHEST);
+        guardedByPiglins.add(ModBlocks.MOLDY_BARREL);
+        guardedByPiglins.add(ModBlocks.WAXED_BARREL);
+
+        FabricTagBuilder chests = getOrCreateTagBuilder(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.CHESTS);
+        FabricTagBuilder woodenChests = getOrCreateTagBuilder(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.WOODEN_CHESTS);
+        chests.add(ModBlocks.MOLDY_CHEST);
+        chests.add(ModBlocks.WAXED_CHEST);
+        chests.add(ModBlocks.MOLDY_TRAPPED_CHEST);
+        chests.add(ModBlocks.WAXED_TRAPPED_CHEST);
+        woodenChests.add(ModBlocks.MOLDY_CHEST);
+        woodenChests.add(ModBlocks.WAXED_CHEST);
+        woodenChests.add(ModBlocks.MOLDY_TRAPPED_CHEST);
+        woodenChests.add(ModBlocks.WAXED_TRAPPED_CHEST);
+
+        FabricTagBuilder barrels = getOrCreateTagBuilder(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.BARRELS);
+        FabricTagBuilder woodenBarrels = getOrCreateTagBuilder(net.fabricmc.fabric.api.tag.convention.v2.ConventionalBlockTags.WOODEN_BARRELS);
+        barrels.add(ModBlocks.MOLDY_BARREL);
+        barrels.add(ModBlocks.WAXED_BARREL);
+        woodenBarrels.add(ModBlocks.MOLDY_BARREL);
+        woodenBarrels.add(ModBlocks.WAXED_BARREL);
+
         for (Block block : Registries.BLOCK) {
             Identifier id = Registries.BLOCK.getId(block);
             if (!id.getNamespace().equals(SporesShadows.MOD_ID)) continue;
             
             String name = id.getPath();
             
-            if (!name.contains(MoldStage.ROTTEN.getName() + "_")) {
+            if (!name.contains(MoldStage.ROTTEN.getName() + "_") && !name.contains("detector") && !name.contains("dehumidifier") && !name.contains("purifier")) {
                 axeBuilder.add(block);
             }
             

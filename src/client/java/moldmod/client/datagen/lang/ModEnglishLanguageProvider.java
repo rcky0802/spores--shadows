@@ -587,6 +587,14 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Filtration Helmets");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Moldy Blocks");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Moldy Blocks");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_1", "Trapped Chest Jamming Chance (Stage 1)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_2", "Trapped Chest Jamming Chance (Stage 2)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_3", "Trapped Chest Jamming Chance (Stage 3)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.gui_mold_overlay_intensity", "GUI Mold Overlay Intensity");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.status", "Mechanism: %s");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.jammed", "Jammed (No Signal)");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.ready", "Operational");
+        translationBuilder.add("tooltip.spores--shadows.jade.composter.level", "Fill Level: %d / 8");
     }
     
     private String capitalize(String str) {
@@ -606,6 +614,15 @@ public class ModEnglishLanguageProvider extends AbstractModLanguageProvider {
             case "ladder" -> "Ladder";
             case "note_block" -> "Note Block";
             case "jukebox" -> "Jukebox";
+            case "crafting_table" -> "Crafting Table";
+            case "barrel" -> "Barrel";
+            case "chest" -> "Chest";
+            case "trapped_chest" -> "Trapped Chest";
+            case "composter" -> "Composter";
+            case "fletching_table" -> "Fletching Table";
+            case "cartography_table" -> "Cartography Table";
+            case "loom" -> "Loom";
+            case "lectern" -> "Lectern";
             default -> compositeType;
         };
         return switch (state) {

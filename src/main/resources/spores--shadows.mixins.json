@@ -15,10 +15,17 @@
 		"EnchantmentMixin",
 		"AnvilScreenHandlerMixin",
 		"EnchantingTableBlockMixin",
-		"EnchantmentScreenHandlerMixin"
+		"EnchantmentScreenHandlerMixin",
+		"PointOfInterestTypesAccessor",
+		"PointOfInterestTypeMixin",
+		"ScreenHandlerMixin"
 	],
 	"client": [
-		"SignBlockEntityRendererMixin"
+		"SignBlockEntityRendererMixin",
+		"HandledScreenMixin",
+		"TexturedRenderLayersMixin",
+		"BookScreenMixin",
+		"ChestBlockEntityRendererMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -631,6 +631,14 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Casques de Filtration");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocs Moysis");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocs Moysis");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_1", "Chance de Blocage du Coffre Piégé (Stade 1)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_2", "Chance de Blocage du Coffre Piégé (Stade 2)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_3", "Chance de Blocage du Coffre Piégé (Stade 3)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.gui_mold_overlay_intensity", "Intensité de la Moisissure sur l'Interface");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.status", "Mécanisme: %s");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.jammed", "Bloqué (Aucun Signal)");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.ready", "Opérationnel");
+        translationBuilder.add("tooltip.spores--shadows.jade.composter.level", "Niveau de Remplissage: %d / 8");
     }
 
     @Override
@@ -643,6 +651,15 @@ public class ModFrenchLanguageProvider extends AbstractModLanguageProvider {
             case "ladder" -> { baseName = "Échelle"; isFeminine = true; }
             case "note_block" -> { baseName = "Bloc Musical"; isFeminine = false; }
             case "jukebox" -> { baseName = "Jukebox"; isFeminine = false; }
+            case "crafting_table" -> { baseName = "Établi"; isFeminine = false; }
+            case "barrel" -> { baseName = "Tonneau"; isFeminine = false; }
+            case "chest" -> { baseName = "Coffre"; isFeminine = false; }
+            case "trapped_chest" -> { baseName = "Coffre Piégé"; isFeminine = false; }
+            case "composter" -> { baseName = "Composteur"; isFeminine = false; }
+            case "fletching_table" -> { baseName = "Table d'Archerie"; isFeminine = true; }
+            case "cartography_table" -> { baseName = "Table de Cartographie"; isFeminine = true; }
+            case "loom" -> { baseName = "Métier à Tisser"; isFeminine = false; }
+            case "lectern" -> { baseName = "Pupitre"; isFeminine = false; }
             default -> { baseName = compositeType; isFeminine = false; }
         }
         if (isFeminine) {

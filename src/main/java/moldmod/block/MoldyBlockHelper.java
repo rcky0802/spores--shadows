@@ -25,6 +25,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -169,6 +170,7 @@ public final class MoldyBlockHelper {
             }
         }
         syncDoorHalf(world, pos, state, MoldyBlock.STAGE, newStage);
+        syncChestHalf(world, pos, state, MoldyBlock.STAGE, newStage);
     }
 
     public static void setWaxed(World world, BlockPos pos, BlockState state, boolean isWaxed) {
@@ -186,6 +188,7 @@ public final class MoldyBlockHelper {
             }
         }
         syncDoorHalf(world, pos, state, MoldyBlock.WAXED, isWaxed);
+        syncChestHalf(world, pos, state, MoldyBlock.WAXED, isWaxed);
     }
 
     private static <T extends Comparable<T>> void syncDoorHalf(World world, BlockPos pos, BlockState state,
@@ -204,6 +207,65 @@ public final class MoldyBlockHelper {
                 }
 
                 world.setBlockState(otherPos, newState);
+            }
+        }
+    }
+
+    private static <T extends Comparable<T>> void syncChestHalf(World world, BlockPos pos, BlockState state,
+            Property<T> property, T value) {
+        if (state.getBlock() instanceof net.minecraft.block.ChestBlock && state.contains(net.minecraft.block.ChestBlock.CHEST_TYPE)) {
+            net.minecraft.block.enums.ChestType chestType = state.get(net.minecraft.block.ChestBlock.CHEST_TYPE);
+            if (chestType != net.minecraft.block.enums.ChestType.SINGLE) {
+                Direction facing = net.minecraft.block.ChestBlock.getFacing(state);
+                BlockPos otherPos = pos.offset(facing);
+                BlockState otherState = world.getBlockState(otherPos);
+
+                boolean isMatching = false;
+                if (state.getBlock() instanceof MoldyChestBlock currentChest && otherState.getBlock() instanceof MoldyChestBlock) {
+                    isMatching = currentChest.isMatchingChestBlock(otherState.getBlock());
+                } else if (otherState.isOf(state.getBlock())) {
+                    isMatching = true;
+                }
+
+                if (isMatching && otherState.contains(net.minecraft.block.ChestBlock.CHEST_TYPE)
+                        && otherState.get(net.minecraft.block.ChestBlock.CHEST_TYPE) == chestType.getOpposite()
+                        && otherState.contains(property) && !otherState.get(property).equals(value)) {
+
+                    BlockEntity otherBe = world.getBlockEntity(otherPos);
+                    NbtCompound otherBeNbt = null;
+                    if (otherBe != null && world.getRegistryManager() != null) {
+                        otherBeNbt = otherBe.createNbtWithId(world.getRegistryManager());
+                    }
+
+                    Block targetBlock = otherState.getBlock();
+                    if (property == MoldyBlock.WAXED) {
+                        boolean targetWaxed = (Boolean) value;
+                        if (targetWaxed && ModBlocks.MOLDY_TO_WAXED.containsKey(targetBlock)) {
+                            targetBlock = ModBlocks.MOLDY_TO_WAXED.get(targetBlock);
+                        } else if (!targetWaxed && ModBlocks.WAXED_TO_MOLDY.containsKey(targetBlock)) {
+                            targetBlock = ModBlocks.WAXED_TO_MOLDY.get(targetBlock);
+                        }
+                    }
+
+                    BlockState newState = targetBlock != otherState.getBlock()
+                            ? copyMatchingProperties(otherState, targetBlock.getDefaultState())
+                            : otherState;
+                    newState = newState.with(property, value);
+                    if (state.contains(MoldyBlock.STRUCTURAL) && !state.get(MoldyBlock.STRUCTURAL)
+                            && otherState.contains(MoldyBlock.STRUCTURAL) && otherState.get(MoldyBlock.STRUCTURAL)) {
+                        newState = newState.with(MoldyBlock.STRUCTURAL, false);
+                    }
+
+                    world.setBlockState(otherPos, newState);
+
+                    if (otherBeNbt != null) {
+                        BlockEntity newOtherBe = world.getBlockEntity(otherPos);
+                        if (newOtherBe != null) {
+                            newOtherBe.read(otherBeNbt, world.getRegistryManager());
+                            newOtherBe.markDirty();
+                        }
+                    }
+                }
             }
         }
     }

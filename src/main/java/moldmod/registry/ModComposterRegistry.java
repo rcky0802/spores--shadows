@@ -1,14 +1,17 @@
 package moldmod.registry;
 
-import moldmod.SporesShadows;
-import moldmod.SporesShadowsConstants;
-import moldmod.SporesShadowsConstants.MoldyWoodType;
 import me.shedaniel.autoconfig.AutoConfig;
+import moldmod.block.ModBlocks;
+import moldmod.block.MoldyBlock;
 import moldmod.config.ModConfig;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BlockStateComponent;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public final class ModComposterRegistry {
 
@@ -29,66 +32,29 @@ public final class ModComposterRegistry {
         } catch (Exception ignored) {
         }
 
-        for (MoldyWoodType woodType : SporesShadowsConstants.WOOD_TYPES) {
-            String logName = woodType.getLogName();
-            String woodName = woodType.getWoodName();
-            String prefix = woodType.name();
-
-            registerForSet(logName, taintedChance, moldyChance, rottenChance);
-            registerForSet("stripped_" + logName, taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_planks", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_stairs", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_slab", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_fence", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_fence_gate", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_door", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_trapdoor", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_button", taintedChance, moldyChance, rottenChance);
-            registerForSet(prefix + "_pressure_plate", taintedChance, moldyChance, rottenChance);
-
-            if (woodName != null) {
-                registerForSet(woodName, taintedChance, moldyChance, rottenChance);
-                registerForSet("stripped_" + woodName, taintedChance, moldyChance, rottenChance);
-            }
-
-            if (woodType.isBamboo()) {
-                registerForSet(prefix + "_mosaic", taintedChance, moldyChance, rottenChance);
-                registerForSet(prefix + "_mosaic_stairs", taintedChance, moldyChance, rottenChance);
-                registerForSet(prefix + "_mosaic_slab", taintedChance, moldyChance, rottenChance);
-            }
-        }
-    }
-
-    private static void registerForSet(String baseName, float taintedChance, float moldyChance, float rottenChance) {
-        Item tainted = Registries.ITEM.get(SporesShadows.id("tainted_" + baseName));
-        Item moldy = Registries.ITEM.get(SporesShadows.id("moldy_" + baseName));
-        Item rotten = Registries.ITEM.get(SporesShadows.id("rotten_" + baseName));
-
-        Item waxedTainted = Registries.ITEM.get(SporesShadows.id("waxed_tainted_" + baseName));
-        Item waxedMoldy = Registries.ITEM.get(SporesShadows.id("waxed_moldy_" + baseName));
-        Item waxedRotten = Registries.ITEM.get(SporesShadows.id("waxed_rotten_" + baseName));
-
         CompostingChanceRegistry composter = CompostingChanceRegistry.INSTANCE;
+        Set<Item> processed = new HashSet<>();
 
-        if (tainted != Items.AIR) {
-            composter.add(tainted, taintedChance);
-        }
-        if (waxedTainted != Items.AIR) {
-            composter.add(waxedTainted, taintedChance);
-        }
+        // Register all moldy items (stages 1, 2, 3 and their waxed counterparts)
+        // Clean items (stage 0, unwaxed or waxed) can never be composted!
+        for (List<Item> items : ModBlocks.MOLDY_ITEMS_BY_BLOCK.values()) {
+            for (Item item : items) {
+                if (!processed.add(item)) continue;
 
-        if (moldy != Items.AIR) {
-            composter.add(moldy, moldyChance);
-        }
-        if (waxedMoldy != Items.AIR) {
-            composter.add(waxedMoldy, moldyChance);
-        }
-
-        if (rotten != Items.AIR) {
-            composter.add(rotten, rottenChance);
-        }
-        if (waxedRotten != Items.AIR) {
-            composter.add(waxedRotten, rottenChance);
+                BlockStateComponent comp = item.getComponents().get(DataComponentTypes.BLOCK_STATE);
+                if (comp != null) {
+                    Integer stage = comp.getValue(MoldyBlock.STAGE);
+                    if (stage != null) {
+                        if (stage == 1) {
+                            composter.add(item, taintedChance);
+                        } else if (stage == 2) {
+                            composter.add(item, moldyChance);
+                        } else if (stage == 3) {
+                            composter.add(item, rottenChance);
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -653,6 +653,14 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Filtrationshelme");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Schimmlige Blöcke");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Schimmlige Blöcke");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_1", "Wahrscheinlichkeit für Klemmen der Redstone-Truhe (Stufe 1)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_2", "Wahrscheinlichkeit für Klemmen der Redstone-Truhe (Stufe 2)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_3", "Wahrscheinlichkeit für Klemmen der Redstone-Truhe (Stufe 3)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.gui_mold_overlay_intensity", "GUI-Schimmelüberlagerung Intensität");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.status", "Mechanismus: %s");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.jammed", "Verklemmt (Kein Signal)");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.ready", "Einsatzbereit");
+        translationBuilder.add("tooltip.spores--shadows.jade.composter.level", "Füllstand: %d / 8");
     }
 
     @Override
@@ -665,6 +673,15 @@ public class ModGermanLanguageProvider extends AbstractModLanguageProvider {
             case "ladder" -> { baseName = "Leiter"; gender = "f"; }
             case "note_block" -> { baseName = "Notenblock"; gender = "m"; }
             case "jukebox" -> { baseName = "Plattenspieler"; gender = "m"; }
+            case "crafting_table" -> { baseName = "Werkbank"; gender = "f"; }
+            case "barrel" -> { baseName = "Fass"; gender = "n"; }
+            case "chest" -> { baseName = "Truhe"; gender = "f"; }
+            case "trapped_chest" -> { baseName = "Redstone-Truhe"; gender = "f"; }
+            case "composter" -> { baseName = "Komposter"; gender = "m"; }
+            case "fletching_table" -> { baseName = "Bognertisch"; gender = "m"; }
+            case "cartography_table" -> { baseName = "Kartentisch"; gender = "m"; }
+            case "loom" -> { baseName = "Webstuhl"; gender = "m"; }
+            case "lectern" -> { baseName = "Lesepult"; gender = "n"; }
             default -> { baseName = compositeType; gender = "n"; }
         }
         if (gender.equals("f")) {

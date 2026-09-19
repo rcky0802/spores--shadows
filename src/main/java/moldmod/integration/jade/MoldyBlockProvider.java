@@ -4,6 +4,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import moldmod.SporesShadows;
 import moldmod.atmosphere.FlowDistributor;
 import moldmod.block.MoldyBlock;
+import moldmod.block.MoldyComposterBlock;
 import moldmod.config.ModConfig;
 import moldmod.risk.MoldRiskCalculator;
 import net.minecraft.block.BlockState;
@@ -61,6 +62,14 @@ public enum MoldyBlockProvider implements IBlockComponentProvider, IServerDataPr
         if (state == null || state.isAir()) {
             return;
         }
+
+        if (state.getBlock() instanceof MoldyComposterBlock) {
+            if (state.contains(MoldyComposterBlock.LEVEL)) {
+                int level = state.get(MoldyComposterBlock.LEVEL);
+                tooltip.add(Text.translatable("tooltip.spores--shadows.jade.composter.level", level).formatted(Formatting.GREEN));
+            }
+        }
+
         boolean isMoldy = state.contains(MoldyBlock.STAGE);
         boolean isSusceptible = FlowDistributor.isSusceptibleOrMoldy(state);
 

@@ -88,6 +88,8 @@ public class ModConfig implements ConfigData {
     public static class Client {
         @ConfigEntry.Gui.Tooltip(count = 2)
         public float mold_z_offset = 0.002f;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float gui_mold_overlay_intensity = 1.0f;
     }
 
     public static class General {
@@ -247,6 +249,12 @@ public class ModConfig implements ConfigData {
     public static class Redstone {
         @ConfigEntry.Gui.Tooltip(count = 1)
         public float duration_multiplier = 1.0f;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float trapped_chest_fail_stage_1 = 0.15f;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float trapped_chest_fail_stage_2 = 0.50f;
+        @ConfigEntry.Gui.Tooltip(count = 1)
+        public float trapped_chest_fail_stage_3 = 0.85f;
     }
 
     public static class Composter {
@@ -426,6 +434,9 @@ public class ModConfig implements ConfigData {
         hardness.stage_3_multiplier = MathHelper.clamp(hardness.stage_3_multiplier, 0.0f, 2.0f);
 
         redstone.duration_multiplier = MathHelper.clamp(redstone.duration_multiplier, 0.0f, 10.0f);
+        redstone.trapped_chest_fail_stage_1 = MathHelper.clamp(redstone.trapped_chest_fail_stage_1, 0.0f, 1.0f);
+        redstone.trapped_chest_fail_stage_2 = MathHelper.clamp(redstone.trapped_chest_fail_stage_2, 0.0f, 1.0f);
+        redstone.trapped_chest_fail_stage_3 = MathHelper.clamp(redstone.trapped_chest_fail_stage_3, 0.0f, 1.0f);
 
         composter.tainted_chance = MathHelper.clamp(composter.tainted_chance, 0.0f, 1.0f);
         composter.moldy_chance = MathHelper.clamp(composter.moldy_chance, 0.0f, 1.0f);
@@ -509,5 +520,6 @@ public class ModConfig implements ConfigData {
         toxicity.filtration_level_2_durability_cost = MathHelper.clamp(toxicity.filtration_level_2_durability_cost, 1, 20);
         toxicity.filtration_level_3_save_chance = MathHelper.clamp(toxicity.filtration_level_3_save_chance, 0.0f, 1.0f);
         client.mold_z_offset = MathHelper.clamp(client.mold_z_offset, 0.0f, 0.1f);
+        client.gui_mold_overlay_intensity = MathHelper.clamp(client.gui_mold_overlay_intensity, 0.0f, 1.0f);
     }
 }

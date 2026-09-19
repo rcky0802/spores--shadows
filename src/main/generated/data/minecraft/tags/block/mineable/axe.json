@@ -1,9 +1,5 @@
 {
   "values": [
-    "spores--shadows:spore_detector",
-    "spores--shadows:moisture_detector",
-    "spores--shadows:dehumidifier",
-    "spores--shadows:air_purifier",
     "spores--shadows:moldy_stripped_oak_log",
     "spores--shadows:waxed_stripped_oak_log",
     "spores--shadows:moldy_oak_log",
@@ -389,6 +385,24 @@
     "spores--shadows:moldy_note_block",
     "spores--shadows:waxed_note_block",
     "spores--shadows:moldy_jukebox",
-    "spores--shadows:waxed_jukebox"
+    "spores--shadows:waxed_jukebox",
+    "spores--shadows:moldy_crafting_table",
+    "spores--shadows:waxed_crafting_table",
+    "spores--shadows:moldy_barrel",
+    "spores--shadows:waxed_barrel",
+    "spores--shadows:moldy_chest",
+    "spores--shadows:waxed_chest",
+    "spores--shadows:moldy_trapped_chest",
+    "spores--shadows:waxed_trapped_chest",
+    "spores--shadows:moldy_composter",
+    "spores--shadows:waxed_composter",
+    "spores--shadows:moldy_fletching_table",
+    "spores--shadows:waxed_fletching_table",
+    "spores--shadows:moldy_cartography_table",
+    "spores--shadows:waxed_cartography_table",
+    "spores--shadows:moldy_loom",
+    "spores--shadows:waxed_loom",
+    "spores--shadows:moldy_lectern",
+    "spores--shadows:waxed_lectern"
   ]
 }

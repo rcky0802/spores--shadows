@@ -1,0 +1,76 @@
+{
+  "sources": [
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_stage_1"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_stage_2"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_stage_3"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_left_stage_1"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_left_stage_2"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_left_stage_3"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_right_stage_1"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_right_stage_2"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/normal_right_stage_3"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_stage_1"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_stage_2"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_stage_3"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_left_stage_1"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_left_stage_2"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_left_stage_3"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_right_stage_1"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_right_stage_2"
+    },
+    {
+      "type": "single",
+      "resource": "spores--shadows:entity/chest/trapped_right_stage_3"
+    }
+  ]
+}

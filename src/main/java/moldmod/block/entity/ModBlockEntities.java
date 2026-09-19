@@ -28,6 +28,10 @@ public final class ModBlockEntities {
     public static BlockEntityType<MoldyHangingSignBlockEntity> MOLDY_HANGING_SIGN;
     public static BlockEntityType<MoldyChiseledBookshelfBlockEntity> MOLDY_CHISELED_BOOKSHELF;
     public static BlockEntityType<MoldyJukeboxBlockEntity> MOLDY_JUKEBOX;
+    public static BlockEntityType<MoldyBarrelBlockEntity> MOLDY_BARREL;
+    public static BlockEntityType<MoldyChestBlockEntity> MOLDY_CHEST;
+    public static BlockEntityType<MoldyTrappedChestBlockEntity> MOLDY_TRAPPED_CHEST;
+    public static BlockEntityType<MoldyLecternBlockEntity> MOLDY_LECTERN;
 
     public static void registerModBlockEntities() {
         SporesShadows.LOGGER.info("Registering ModBlockEntities for " + SporesShadows.MOD_ID);
@@ -59,6 +63,42 @@ public final class ModBlockEntities {
                 BlockEntityType.Builder.create(MoldyJukeboxBlockEntity::new,
                         ModBlocks.MOLDY_JUKEBOX,
                         ModBlocks.WAXED_JUKEBOX
+                ).build()
+        );
+
+        MOLDY_BARREL = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_barrel"),
+                BlockEntityType.Builder.create(MoldyBarrelBlockEntity::new,
+                        ModBlocks.MOLDY_BARREL,
+                        ModBlocks.WAXED_BARREL
+                ).build()
+        );
+
+        MOLDY_CHEST = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_chest"),
+                BlockEntityType.Builder.create(MoldyChestBlockEntity::new,
+                        ModBlocks.MOLDY_CHEST,
+                        ModBlocks.WAXED_CHEST
+                ).build()
+        );
+
+        MOLDY_TRAPPED_CHEST = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_trapped_chest"),
+                BlockEntityType.Builder.create(MoldyTrappedChestBlockEntity::new,
+                        ModBlocks.MOLDY_TRAPPED_CHEST,
+                        ModBlocks.WAXED_TRAPPED_CHEST
+                ).build()
+        );
+
+        MOLDY_LECTERN = Registry.register(
+                Registries.BLOCK_ENTITY_TYPE,
+                SporesShadows.id("moldy_lectern"),
+                BlockEntityType.Builder.create(MoldyLecternBlockEntity::new,
+                        ModBlocks.MOLDY_LECTERN,
+                        ModBlocks.WAXED_LECTERN
                 ).build()
         );
 

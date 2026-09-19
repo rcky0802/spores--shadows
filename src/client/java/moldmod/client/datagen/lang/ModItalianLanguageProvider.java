@@ -633,6 +633,14 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".enchantable.filtration_helmets", "Elmi per Filtrazione");
         translationBuilder.add("tag.item." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocchi Muffosi");
         translationBuilder.add("tag.block." + moldmod.SporesShadows.MOD_ID + ".moldy_blocks", "Blocchi Muffosi");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_1", "Probabilità Cilecca Baule Trappola (Stadio 1)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_2", "Probabilità Cilecca Baule Trappola (Stadio 2)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.redstone.trapped_chest_fail_stage_3", "Probabilità Cilecca Baule Trappola (Stadio 3)");
+        translationBuilder.add("text.autoconfig.spores--shadows.option.client.gui_mold_overlay_intensity", "Intensità Overlay Muffa GUI");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.status", "Meccanismo: %s");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.jammed", "Inceppato (Nessun Segnale)");
+        translationBuilder.add("tooltip.spores--shadows.jade.trapped_chest.ready", "Funzionante");
+        translationBuilder.add("tooltip.spores--shadows.jade.composter.level", "Livello di Riempimento: %d / 8");
     }
 
     @Override
@@ -645,6 +653,15 @@ public class ModItalianLanguageProvider extends AbstractModLanguageProvider {
             case "ladder" -> { baseName = "Scala a Pioli"; isFeminine = true; }
             case "note_block" -> { baseName = "Blocco Note"; isFeminine = false; }
             case "jukebox" -> { baseName = "Jukebox"; isFeminine = false; }
+            case "crafting_table" -> { baseName = "Banco da Lavoro"; isFeminine = false; }
+            case "barrel" -> { baseName = "Barile"; isFeminine = false; }
+            case "chest" -> { baseName = "Baule"; isFeminine = false; }
+            case "trapped_chest" -> { baseName = "Baule Trappola"; isFeminine = false; }
+            case "composter" -> { baseName = "Compostiera"; isFeminine = true; }
+            case "fletching_table" -> { baseName = "Tavolo per Impennare"; isFeminine = false; }
+            case "cartography_table" -> { baseName = "Banco da Cartografia"; isFeminine = false; }
+            case "loom" -> { baseName = "Telaio"; isFeminine = false; }
+            case "lectern" -> { baseName = "Leggio"; isFeminine = false; }
             default -> { baseName = compositeType; isFeminine = false; }
         }
         if (isFeminine) {
