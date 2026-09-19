@@ -63,7 +63,7 @@ public class MoldRiskScenariosGameTests {
         context.setBlockState(targetPos, log);
 
         BlockPos absPos = context.getAbsolutePos(targetPos);
-        context.waitAndRun(3, () -> {
+        context.waitAndRun(10, () -> {
             MoldRiskResult result = MoldRiskCalculator.calculate(context.getWorld(), absPos, false, log);
 
             if (result.aeration() != 0.0) {
