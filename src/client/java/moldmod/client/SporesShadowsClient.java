@@ -13,5 +13,9 @@ public final class SporesShadowsClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		ClientScreenRegistry.registerScreens();
 		ClientRendererRegistry.registerAll();
+
+		if (Boolean.getBoolean("moldmod.bot") || "true".equalsIgnoreCase(System.getenv("MOLDMOD_BOT"))) {
+			moldmod.client.bot.ScreenshotBot.initialize();
+		}
 	}
 }

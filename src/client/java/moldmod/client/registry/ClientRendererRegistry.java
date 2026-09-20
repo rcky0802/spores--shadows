@@ -46,7 +46,6 @@ public final class ClientRendererRegistry {
         registerItemRenderers();
     }
 
-    @SuppressWarnings("deprecation")
     public static void registerBlockRenderLayers() {
         for (Block block : Registries.BLOCK) {
             if (Registries.BLOCK.getId(block).getNamespace().equals(SporesShadows.MOD_ID)) {

@@ -1,6 +1,5 @@
 package moldmod.client.integration.jei.category;
 
-import moldmod.client.integration.jei.recipe.*;
 
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
