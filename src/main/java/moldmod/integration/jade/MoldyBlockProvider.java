@@ -88,9 +88,11 @@ public enum MoldyBlockProvider implements IBlockComponentProvider, IServerDataPr
                     risk = MoldRiskCalculator.calculateR(accessor.getLevel(), accessor.getPosition(), waxed, state);
                 }
 
-                Formatting color = risk > modConfig.general.infection_threshold ? Formatting.RED : Formatting.GRAY;
                 int riskPercent = (int) (risk * 100);
-                tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".jade.infection", riskPercent).formatted(color));
+                if (riskPercent > 0) {
+                    Formatting color = risk > modConfig.general.infection_threshold ? Formatting.RED : Formatting.GRAY;
+                    tooltip.add(Text.translatable("tooltip." + SporesShadows.MOD_ID + ".jade.infection", riskPercent).formatted(color));
+                }
             }
         }
     }

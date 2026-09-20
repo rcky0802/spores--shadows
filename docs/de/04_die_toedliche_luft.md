@@ -16,13 +16,24 @@ Das Spiel überwacht kontinuierlich die Luftqualität um den Kopf des Spielers m
 
 | Element | Verhalten | Durchflusswert ($V$) |
 | :--- | :--- | :---: |
-| **Feste Blöcke, Glas** | Hermetische Barriere | `0.0` |
+| **Feste Blöcke, Glasblöcke** | Hermetische luftdichte Barriere | `0.0` |
 | **Geschlossene Türen, Falltüren** | Hermetische Barriere | `0.0` |
 | **Überflutete Blöcke (waterlogged)** | **Hydraulischer Siphon** — absolut luftdichte Barriere | `0.0` |
+| **Glasscheiben ($\ge 2$ Seiten verbunden)** | Durchgehendes oder Eckfenster: hermetisch dicht | `0.0` |
+| **Glasscheiben ($1$ Seite verbunden)** | Teilweise offenes Fenster: mittlere Belüftung | **`+12.0`** / Block |
+| **Glasscheiben (0 Verbindungen)** | Isolierte Einzelscheibe: offener Punkt | **`+24.0`** / Block |
+| **Glasscheiben (vertikal)** | UP / DOWN Achse: Luft strömt frei darüber/darunter | **`+24.0`** / Block |
+| **Mauern ($\ge 2$ Seiten verbunden)** | Durchgehende oder Eckmauer: hermetische Barriere | `0.0` |
+| **Mauern ($1$ Seite verbunden)** | Vorspringende Teilmauer: mittlere Belüftung | **`+12.0`** / Block |
+| **Mauern (0 Verbindungen)** | Einzelner Mauerpfeiler: kleiner Spalt | **`+6.0`** / Block |
+| **Mauern (vertikal)** | UP / DOWN Achse: Luft strömt frei darüber/darunter | **`+18.0`** / Block |
+| **Zäune / Fences (vertikal)** | UP / DOWN Achse: Luft strömt frei darüber/darunter | **`+18.0`** / Block |
+| **Zäune / Fences ($\ge 2$ Seiten verbunden)** | Spalten zwischen Querlatten (rechts & links) | **`+12.0`** / Block |
+| **Zäune / Fences ($1$ Seite oder 0 verbunden)** | Offener Durchlass (nur eine Seite oder Einzelpfosten) | **`+18.0`** / Block |
 | **Direkter offener Himmel** | Natürlicher atmosphärischer Kamin | **`+24.0`** / Block |
 | **Offene Türen/Falltüren, Kupfergitter, Blätter** | Primäre Belüftungsöffnungen | **`+18.0`** / Block |
 | **Stufen (Slabs)** | Halboffene Schlitze | **`+12.0`** / Block |
-| **Treppen, Zäune (Fences)** | Kleinere Ritzen und Spalten | **`+6.0`** / Block |
+| **Treppen (Stairs)** | Kleinere Ritzen und Spalten | **`+6.0`** / Block |
 
 Die Sättigung eines Raumes geschieht nicht schlagartig: Sie steigt mit zeitlicher Trägheit (`saturation_speed = 0.15`), sobald Durchgänge versiegelt werden, und baut sich deutlich schneller ab (`dissipation_speed = 0.35`), wenn auch nur ein einzelnes Fenster oder eine Luke geöffnet wird.
 

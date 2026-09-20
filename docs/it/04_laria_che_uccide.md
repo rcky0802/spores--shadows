@@ -16,13 +16,24 @@ Il gioco valuta costantemente l'aria attorno alla testa del giocatore usando un 
 
 | Elemento | Comportamento | Punteggio Portata ($V$) |
 | :--- | :--- | :---: |
-| **Blocchi pieni, vetro** | Barriera ermetica | `0.0` |
+| **Blocchi pieni, blocchi di vetro** | Barriera ermetica a tenuta stagna | `0.0` |
 | **Porte chiuse, botole chiuse** | Barriera ermetica | `0.0` |
 | **Blocchi allagati (waterlogged)** | **Sifone idraulico** — barriera a tenuta stagna perfetta | `0.0` |
+| **Pannelli di vetro (collegati $\ge 2$ lati)** | Vetrata continua o ad angolo: barriera ermetica | `0.0` |
+| **Pannelli di vetro (collegati $1$ lato)** | Vetrata parziale/aperta: ventilazione intermedia | **`+12.0`** / blocco |
+| **Pannelli di vetro (0 collegamenti)** | Pannello singolo isolato: punto aperto | **`+24.0`** / blocco |
+| **Pannelli di vetro (in verticale)** | Asse UP / DOWN: l'aria scorre sopra/sotto liberamente | **`+24.0`** / blocco |
+| **Muretti (collegati $\ge 2$ lati)** | Muretto continuo o ad angolo: barriera ermetica | `0.0` |
+| **Muretti (collegati $1$ lato)** | Muretto parziale/sporgente: ventilazione intermedia | **`+12.0`** / blocco |
+| **Muretti (0 collegamenti)** | Muretto singolo a pilastro: fessura ridotta | **`+6.0`** / blocco |
+| **Muretti (in verticale)** | Asse UP / DOWN: l'aria scavalca liberamente | **`+18.0`** / blocco |
+| **Staccionate / Fences (in verticale)** | Asse UP / DOWN: l'aria scorre liberamente | **`+18.0`** / blocco |
+| **Staccionate / Fences (collegate $\ge 2$ lati)** | Varchi tra le traverse (destra e sinistra): passaggio parziale | **`+12.0`** / blocco |
+| **Staccionate / Fences (collegate $1$ lato o 0)** | Varco aperto (solo da un lato o pilastro isolato) | **`+18.0`** / blocco |
 | **Cielo aperto diretto** | Camino atmosferico naturale | **`+24.0`** / blocco |
 | **Porte/Botole aperte, Grate di rame, Foglie** | Varchi di ventilazione primari | **`+18.0`** / blocco |
 | **Lastre (Slabs)** | Varchi parziali semipieni | **`+12.0`** / blocco |
-| **Scale, Staccionate (Fences)** | Fessure e aperture minori | **`+6.0`** / blocco |
+| **Scale (Stairs)** | Fessure e aperture minori | **`+6.0`** / blocco |
 
 La saturazione della stanza non è istantanea: cresce con inerzia temporale (`saturation_speed = 0.15`) quando i varchi vengono sigillati, e si dissipa molto più rapidamente (`dissipation_speed = 0.35`) aprendo anche una sola finestra o varco.
 

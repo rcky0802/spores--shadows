@@ -26,11 +26,6 @@ public final class ScreenshotBot {
         new ComparisonCleanScenario(),
         new ComparisonMoldyScenario(),
         new StagesEvolutionScenario(),
-        new AtticScenario(),
-        new AlchemistScenario(),
-        new GreenhouseScenario(),
-        new CryptArchiveScenario(),
-        new WatermillScenario(),
         new GuiDehumidifierScenario(),
         new GuiCraftingTableScenario()
     );

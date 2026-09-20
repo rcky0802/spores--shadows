@@ -12,6 +12,7 @@ import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.GrateBlock;
 import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.PaneBlock;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.block.TrapdoorBlock;
@@ -412,15 +413,44 @@ public final class FlowDistributor {
             return isOpen ? config.toxicity.fence_gate_open_ventilation_value : config.toxicity.ventilation_gap_bonus;
         }
 
-        if (block instanceof FenceBlock || state.isOf(Blocks.IRON_BARS)) {
+        // Staccionate (FenceBlock):
+        // - In verticale: 18.0
+        // - Collegate a destra e sinistra (>= 2): 12.0 in orizzontale
+        // - Solo destra o sinistra (1) o nessun collegamento (0): 18.0
+        if (block instanceof FenceBlock) {
+            return (config.toxicity.open_sky_ventilation_per_block * 3.0) / 4.0;
+        }
+
+        if (state.isOf(Blocks.IRON_BARS)) {
             return config.toxicity.ventilation_gap_bonus;
         }
 
-        if (block instanceof WallBlock) {
-            if (GeometryMaskHelper.isWallConnected(state)) {
+        // Pannelli di vetro / vetrate (PaneBlock eccetto Iron Bars):
+        // - Collegati da entrambi i lati (>= 2): ermetici -> 0.0
+        // - Collegati solo da una parte (1): fa 12 di aria
+        // - 0 collegamenti: punto aperto a 24
+        if (block instanceof PaneBlock) {
+            int connections = GeometryMaskHelper.getPaneConnectionCount(state);
+            if (connections >= 2) {
                 return 0.0;
+            } else if (connections == 1) {
+                return config.toxicity.open_sky_ventilation_per_block / 2.0;
+            } else {
+                return config.toxicity.open_sky_ventilation_per_block;
             }
-            return config.toxicity.ventilation_gap_bonus;
+        }
+
+        // Muretti (WallBlock):
+        // - Collegati a destra e sinistra (>= 2): ermetici -> 0.0
+        // - Collegati solo da un lato (1): fa 12 di aria (18 in verticale)
+        // - Altrimenti (0): fa 6 di aria (18 in verticale)
+        if (block instanceof WallBlock) {
+            int connections = GeometryMaskHelper.getWallConnectionCount(state);
+            if (connections >= 2) {
+                return 0.0;
+            } else {
+                return (config.toxicity.open_sky_ventilation_per_block * 3.0) / 4.0;
+            }
         }
 
         if (block instanceof SlabBlock) {
@@ -435,7 +465,11 @@ public final class FlowDistributor {
             return config.toxicity.stairs_ventilation_value;
         }
 
-        if (state.isOpaqueFullCube(world, pos)) {
+        if (state.isOpaqueFullCube(world, pos) || state.isSideSolidFullSquare(world, pos, Direction.UP)) {
+            return 0.0;
+        }
+
+        if (GeometryMaskHelper.getAerationType(world, pos, state, Direction.UP) == RoomAtmosphereCalculator.BlockAerationType.HERMETIC) {
             return 0.0;
         }
 

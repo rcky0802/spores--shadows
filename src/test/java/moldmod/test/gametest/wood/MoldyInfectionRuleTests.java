@@ -92,4 +92,22 @@ public class MoldyInfectionRuleTests {
         
         context.complete();
     }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testUnfreezeStructuralOnInteraction(TestContext context) {
+        BlockPos pos = new BlockPos(1, 1, 1);
+        BlockState structuralLog = ModBlocks.VANILLA_TO_MOLDY.get(Blocks.OAK_LOG).getDefaultState()
+                .with(MoldyLogBlock.WAXED, false)
+                .with(MoldyLogBlock.STRUCTURAL, true);
+
+        context.setBlockState(pos, structuralLog);
+        context.assertTrue(context.getBlockState(pos).get(MoldyLogBlock.STRUCTURAL), "Must be structural initially");
+
+        // Simulate player unfreeze interaction
+        MoldyBlockHelper.unfreezeStructural(context.getWorld(), context.getAbsolutePos(pos), context.getBlockState(pos));
+        context.assertFalse(context.getBlockState(pos).get(MoldyLogBlock.STRUCTURAL), "Must be unfrozen after interaction");
+        context.assertTrue(MoldyBlockHelper.canBeInfected(context.getBlockState(pos)), "Unfrozen block must be infectable");
+
+        context.complete();
+    }
 }

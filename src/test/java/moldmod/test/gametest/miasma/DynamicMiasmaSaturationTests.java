@@ -112,21 +112,20 @@ public class DynamicMiasmaSaturationTests {
                 .addMoldyOakLog(1, 2, 0, 3)
                 .addMoldyOakLog(2, 2, 0, 3)
                 .addMoldyOakLog(3, 2, 0, 3)
-                // Place a single oak fence gap (Ventilation modifier = 6.0)
+                // Place a single oak fence gap (Ventilation modifier = 18.0 for 0 connections)
                 .set(2, 1, 4, Blocks.OAK_FENCE.getDefaultState().with(FenceBlock.NORTH, false).with(FenceBlock.SOUTH, false));
 
         BlockPos centerAir = new BlockPos(2, 1, 2);
         MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(context.getWorld(),
                 context.getAbsolutePos(centerAir));
 
-        // Equilibrium: Target = 24.0 - 6.0 = 18.0
+        // Equilibrium: Target = 24.0 - 18.0 = 6.0
+        double expectedVent = 18.0;
         context.assertTrue(result.toxicScore == 24.0, "Expected gross toxic score 24.0, got: " + result.toxicScore);
-        context.assertTrue(result.ventilationScore == config.toxicity.ventilation_gap_bonus,
-                "Expected ventilation score " + config.toxicity.ventilation_gap_bonus + ", got: "
-                        + result.ventilationScore);
-        context.assertTrue(result.netMiasma == (24.0 - config.toxicity.ventilation_gap_bonus),
-                "Expected net miasma equilibrium " + (24.0 - config.toxicity.ventilation_gap_bonus) + ", got: "
-                        + result.netMiasma);
+        context.assertTrue(result.ventilationScore == expectedVent,
+                "Expected ventilation score " + expectedVent + ", got: " + result.ventilationScore);
+        context.assertTrue(result.netMiasma == (24.0 - expectedVent),
+                "Expected net miasma equilibrium " + (24.0 - expectedVent) + ", got: " + result.netMiasma);
         context.assertTrue(result.ventilationType == RoomVentilationType.VENTILATED,
                 "Expected VENTILATED environment");
 

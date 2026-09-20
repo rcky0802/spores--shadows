@@ -44,9 +44,44 @@ public final class GeometryMaskHelper {
             return 0b1111;
         }
 
-        // Staccionate, Barre di ferro, Cancelli
-        if (block instanceof FenceBlock || state.isOf(Blocks.IRON_BARS) || block instanceof FenceGateBlock) {
+        // Barre di ferro, Cancelli
+        if (state.isOf(Blocks.IRON_BARS) || block instanceof FenceGateBlock) {
             return 0b1111;
+        }
+
+        // Staccionate (FenceBlock):
+        // - In verticale (UP / DOWN): fa 18 di aria (0b0111, 3 quadranti = 75% di 24 = 18)
+        // - Collegate a destra e sinistra (>= 2): fa 12 di aria (0b0011, 2 quadranti = 50% di 24 = 12)
+        // - Collegate solo a destra o solo a sinistra (1) o nessun collegamento (0): fa 18 di aria (0b0111, 3 quadranti = 75% di 24 = 18)
+        if (block instanceof FenceBlock) {
+            if (face.getAxis().isVertical()) {
+                return 0b0111;
+            }
+            int connections = getFenceConnectionCount(state);
+            if (connections >= 2) {
+                return 0b0011;
+            } else {
+                return 0b0111;
+            }
+        }
+
+        // Vetrate e pannelli di vetro:
+        // - In verticale (UP / DOWN): lascia passare l'aria come per muretti e fence (0b1111)
+        // - Collegati da entrambi i lati (>= 2): ermetici (0b0000)
+        // - Collegati solo da una parte (1): fa 12 di aria (0b0011, 2 quadranti = 50% di 24 = 12)
+        // - 0 collegamenti: punto aperto a 24 (0b1111, 100% aperto)
+        if (block instanceof PaneBlock) {
+            if (face.getAxis().isVertical()) {
+                return 0b1111;
+            }
+            int connections = getPaneConnectionCount(state);
+            if (connections >= 2) {
+                return 0b0000;
+            } else if (connections == 1) {
+                return 0b0011;
+            } else {
+                return 0b1111;
+            }
         }
 
         // Porte e Botole
@@ -55,11 +90,22 @@ public final class GeometryMaskHelper {
         }
 
         // Muretti (WallBlock)
+        // - In verticale (UP / DOWN): fa 18 di aria (0b0111, 3 quadranti = 75% di 24 = 18)
+        // - Collegati a destra e sinistra (>= 2): ermetici (0b0000)
+        // - Collegati solo da un lato (1): fa 12 di aria (0b0011, 2 quadranti = 50% di 24 = 12)
+        // - Altrimenti (0): fa 6 di aria (0b0001, 1 quadrante = 25% di 24 = 6)
         if (block instanceof WallBlock) {
-            if (face.getAxis().isVertical() || !isWallConnected(state)) {
-                return 0b1111;
+            if (face.getAxis().isVertical()) {
+                return 0b0111;
             }
-            return 0b0000;
+            int connections = getWallConnectionCount(state);
+            if (connections >= 2) {
+                return 0b0000;
+            } else if (connections == 1) {
+                return 0b0011;
+            } else {
+                return 0b0001;
+            }
         }
 
         // Lastre (Slabs)
@@ -186,14 +232,43 @@ public final class GeometryMaskHelper {
     }
 
     public static boolean isWallConnected(BlockState state) {
-        if (!(state.getBlock() instanceof WallBlock)) {
-            return false;
+        return getWallConnectionCount(state) >= 2;
+    }
+
+    public static int getWallConnectionCount(BlockState state) {
+        if (state == null || !(state.getBlock() instanceof WallBlock)) {
+            return 0;
         }
-        boolean ns = (state.contains(WallBlock.NORTH_SHAPE) && state.get(WallBlock.NORTH_SHAPE) != WallShape.NONE) &&
-                     (state.contains(WallBlock.SOUTH_SHAPE) && state.get(WallBlock.SOUTH_SHAPE) != WallShape.NONE);
-        boolean ew = (state.contains(WallBlock.EAST_SHAPE) && state.get(WallBlock.EAST_SHAPE) != WallShape.NONE) &&
-                     (state.contains(WallBlock.WEST_SHAPE) && state.get(WallBlock.WEST_SHAPE) != WallShape.NONE);
-        return ns || ew;
+        int count = 0;
+        if (state.contains(WallBlock.NORTH_SHAPE) && state.get(WallBlock.NORTH_SHAPE) != WallShape.NONE) count++;
+        if (state.contains(WallBlock.SOUTH_SHAPE) && state.get(WallBlock.SOUTH_SHAPE) != WallShape.NONE) count++;
+        if (state.contains(WallBlock.EAST_SHAPE) && state.get(WallBlock.EAST_SHAPE) != WallShape.NONE) count++;
+        if (state.contains(WallBlock.WEST_SHAPE) && state.get(WallBlock.WEST_SHAPE) != WallShape.NONE) count++;
+        return count;
+    }
+
+    public static int getPaneConnectionCount(BlockState state) {
+        if (state == null || !(state.getBlock() instanceof PaneBlock)) {
+            return 0;
+        }
+        int count = 0;
+        if (state.contains(PaneBlock.NORTH) && state.get(PaneBlock.NORTH)) count++;
+        if (state.contains(PaneBlock.SOUTH) && state.get(PaneBlock.SOUTH)) count++;
+        if (state.contains(PaneBlock.EAST) && state.get(PaneBlock.EAST)) count++;
+        if (state.contains(PaneBlock.WEST) && state.get(PaneBlock.WEST)) count++;
+        return count;
+    }
+
+    public static int getFenceConnectionCount(BlockState state) {
+        if (state == null || !(state.getBlock() instanceof FenceBlock)) {
+            return 0;
+        }
+        int count = 0;
+        if (state.contains(FenceBlock.NORTH) && state.get(FenceBlock.NORTH)) count++;
+        if (state.contains(FenceBlock.SOUTH) && state.get(FenceBlock.SOUTH)) count++;
+        if (state.contains(FenceBlock.EAST) && state.get(FenceBlock.EAST)) count++;
+        if (state.contains(FenceBlock.WEST) && state.get(FenceBlock.WEST)) count++;
+        return count;
     }
 
     public static BlockAerationType getAerationType(BlockView world, BlockPos pos, BlockState state, Direction entryFace) {
@@ -219,10 +294,14 @@ public final class GeometryMaskHelper {
 
         // 3. Wall blocks:
         if (block instanceof WallBlock) {
-            if (entryFace.getAxis().isVertical() || !isWallConnected(state)) {
+            if (entryFace.getAxis().isVertical()) {
                 return BlockAerationType.VENTILATED;
             }
-            return BlockAerationType.HERMETIC;
+            int connections = getWallConnectionCount(state);
+            if (connections >= 2) {
+                return BlockAerationType.HERMETIC;
+            }
+            return BlockAerationType.VENTILATED;
         }
 
         // 4. Doors, Trapdoors:
@@ -232,12 +311,22 @@ public final class GeometryMaskHelper {
             return isBlockingFlow ? BlockAerationType.HERMETIC : BlockAerationType.OPEN_AIR;
         }
 
-        // 5. Grates / Panes (Iron Bars)
+        // 5. Grates / Panes (Iron Bars & Glass Panes)
         if (block instanceof PaneBlock) {
             if (state.isOf(Blocks.IRON_BARS)) {
                 return BlockAerationType.VENTILATED;
             }
-            return BlockAerationType.HERMETIC;
+            if (entryFace.getAxis().isVertical()) {
+                return BlockAerationType.VENTILATED;
+            }
+            int connections = getPaneConnectionCount(state);
+            if (connections >= 2) {
+                return BlockAerationType.HERMETIC;
+            } else if (connections == 1) {
+                return BlockAerationType.VENTILATED;
+            } else {
+                return BlockAerationType.OPEN_AIR;
+            }
         }
 
         if (isFaceSolid(world, pos, state, entryFace)) {

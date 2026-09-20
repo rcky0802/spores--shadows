@@ -272,9 +272,21 @@ public final class MoldyBlockHelper {
         }
     }
 
+    public static void unfreezeStructural(World world, BlockPos pos, BlockState state) {
+        if (state.contains(MoldyBlock.STRUCTURAL) && state.get(MoldyBlock.STRUCTURAL)) {
+            BlockState unfrozen = state.with(MoldyBlock.STRUCTURAL, false);
+            world.setBlockState(pos, unfrozen, Block.NOTIFY_ALL);
+            syncDoorHalf(world, pos, unfrozen, MoldyBlock.STRUCTURAL, false);
+            syncChestHalf(world, pos, unfrozen, MoldyBlock.STRUCTURAL, false);
+        }
+    }
+
     public static void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
         if (!config.general.enable_mold_growth)
+            return;
+
+        if (!canBeInfected(state))
             return;
 
         int currentStage = state.get(MoldyBlock.STAGE);

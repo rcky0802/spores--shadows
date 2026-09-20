@@ -5,6 +5,7 @@ import moldmod.block.ModBlocks;
 import moldmod.block.core.MoldyBlock;
 import moldmod.block.core.MoldyBlockHelper;
 import moldmod.config.ModConfig;
+import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Block;
@@ -18,6 +19,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 
 public final class MoldyInteractionEvents {
@@ -33,14 +36,35 @@ public final class MoldyInteractionEvents {
             return true;
         });
 
+        // Quando il giocatore attacca/colpisce un blocco strutturale, lo scongela (STRUCTURAL -> false)
+        AttackBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand, BlockPos pos, Direction direction) -> {
+            if (!world.isClient) {
+                BlockState state = world.getBlockState(pos);
+                if (state.contains(MoldyBlock.STRUCTURAL) && state.get(MoldyBlock.STRUCTURAL)) {
+                    MoldyBlockHelper.unfreezeStructural(world, pos, state);
+                }
+            }
+            return ActionResult.PASS;
+        });
+
         UseBlockCallback.EVENT.register((PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) -> {
+            BlockPos hitPos = hitResult.getBlockPos();
+            BlockState state = world.getBlockState(hitPos);
+
+            // Se il giocatore interagisce (tasto destro) con un blocco strutturale generato nel mondo, lo scongela
+            if (state.contains(MoldyBlock.STRUCTURAL) && state.get(MoldyBlock.STRUCTURAL)) {
+                if (!world.isClient) {
+                    MoldyBlockHelper.unfreezeStructural(world, hitPos, state);
+                    state = world.getBlockState(hitPos);
+                }
+            }
+
             // Must be sneaking for mold/wax interactions
             if (!player.isSneaking()) {
                 return ActionResult.PASS;
             }
 
             ItemStack stack = player.getStackInHand(hand);
-            BlockState state = world.getBlockState(hitResult.getBlockPos());
 
             // Check if it's a moldy block (it has STAGE and WAXED)
             if (!state.contains(MoldyBlock.STAGE) || !state.contains(MoldyBlock.WAXED)) {

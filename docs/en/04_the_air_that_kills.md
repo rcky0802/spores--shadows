@@ -16,13 +16,24 @@ The game continuously evaluates the air around the player's head using a three-d
 
 | Element | Behavior | Flow Score ($V$) |
 | :--- | :--- | :---: |
-| **Solid blocks, glass** | Hermetic airtight seal | `0.0` |
+| **Solid blocks, glass blocks** | Hermetic airtight seal | `0.0` |
 | **Closed doors, closed trapdoors** | Hermetic airtight seal | `0.0` |
 | **Waterlogged blocks** | **Hydraulic siphon** — perfect watertight barrier | `0.0` |
+| **Glass panes (connected $\ge 2$ sides)** | Continuous or corner window: airtight hermetic seal | `0.0` |
+| **Glass panes (connected $1$ side)** | Partial/open window: intermediate ventilation | **`+12.0`** / block |
+| **Glass panes (0 connections)** | Isolated single pane post: fully open point | **`+24.0`** / block |
+| **Glass panes (vertical)** | UP / DOWN axis: air flows freely over/under | **`+24.0`** / block |
+| **Walls (connected $\ge 2$ sides)** | Continuous or corner wall: airtight seal | `0.0` |
+| **Walls (connected $1$ side)** | Partial/jutting wall: intermediate ventilation | **`+12.0`** / block |
+| **Walls (0 connections)** | Standalone wall post: minor gap | **`+6.0`** / block |
+| **Walls (vertical)** | UP / DOWN axis: air passes freely over/under | **`+18.0`** / block |
+| **Fences (vertical)** | UP / DOWN axis: air flows freely | **`+18.0`** / block |
+| **Fences (connected $\ge 2$ sides)** | Rail gaps (right and left): partial passage | **`+12.0`** / block |
+| **Fences (connected $1$ side or 0)** | Open gap (single side or isolated post) | **`+18.0`** / block |
 | **Direct open sky** | Natural atmospheric chimney | **`+24.0`** / block |
 | **Open doors/trapdoors, copper grates, leaves** | Primary ventilation gaps | **`+18.0`** / block |
 | **Slabs** | Semi-open partial gaps | **`+12.0`** / block |
-| **Stairs, Fences** | Minor cracks and slits | **`+6.0`** / block |
+| **Stairs** | Minor cracks and slits | **`+6.0`** / block |
 
 Room saturation is not instantaneous: it builds up with temporal inertia (`saturation_speed = 0.15`) when ventilation openings are sealed, and dissipates significantly faster (`dissipation_speed = 0.35`) upon opening even a single window or aperture.
 

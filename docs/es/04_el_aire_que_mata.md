@@ -16,13 +16,24 @@ El juego evalúa constantemente el aire alrededor de la cabeza del jugador utili
 
 | Elemento | Comportamiento | Puntuación de Caudal ($V$) |
 | :--- | :--- | :---: |
-| **Bloques macizos, cristal** | Barrera hermética | `0.0` |
+| **Bloques macizos, bloques de cristal** | Barrera hermética estanca | `0.0` |
 | **Puertas cerradas, trampillas cerradas** | Barrera hermética | `0.0` |
 | **Bloques anegados (waterlogged)** | **Sifón hidráulico** — barrera estanca perfecta | `0.0` |
+| **Paneles de cristal ($\ge 2$ lados conectados)** | Ventana continua o en esquina: barrera hermética | `0.0` |
+| **Paneles de cristal ($1$ lado conectado)** | Ventana parcial/abierta: ventilación intermedia | **`+12.0`** / bloque |
+| **Paneles de cristal (0 conexiones)** | Panel aislado tipo poste: punto abierto | **`+24.0`** / bloque |
+| **Paneles de cristal (en vertical)** | Eje UP / DOWN: el aire fluye libremente por encima/debajo | **`+24.0`** / bloque |
+| **Muros ($\ge 2$ lados conectados)** | Muro continuo o en esquina: barrera hermética | `0.0` |
+| **Muros ($1$ lado conectado)** | Muro saliente/parcial: ventilación intermedia | **`+12.0`** / bloque |
+| **Muros (0 conexiones)** | Poste de muro aislado: pequeña abertura | **`+6.0`** / bloque |
+| **Muros (en vertical)** | Eje UP / DOWN: el aire pasa libremente por encima/debajo | **`+18.0`** / bloque |
+| **Vallas / Fences (en vertical)** | Eje UP / DOWN: el aire fluye libremente | **`+18.0`** / bloque |
+| **Vallas / Fences ($\ge 2$ lados conectados)** | Huecos entre travesaños (derecha e izquierda) | **`+12.0`** / bloque |
+| **Vallas / Fences ($1$ lado conectado o 0)** | Abertura amplia (un solo lado o poste aislado) | **`+18.0`** / bloque |
 | **Cielo abierto directo** | Chimenea atmosférica natural | **`+24.0`** / bloque |
 | **Puertas/Trampillas abiertas, Rejas de cobre, Hojas** | Vías de ventilación primarias | **`+18.0`** / bloque |
 | **Losas (Slabs)** | Vías parciales semillenas | **`+12.0`** / bloque |
-| **Escaleras, Vallas (Fences)** | Fisuras y aberturas menores | **`+6.0`** / bloque |
+| **Escaleras (Stairs)** | Fisuras y aberturas menores | **`+6.0`** / bloque |
 
 La saturación de la habitación no es instantánea: crece con inercia temporal (`saturation_speed = 0.15`) cuando se sellan las aberturas, y se disipa mucho más rápidamente (`dissipation_speed = 0.35`) con solo abrir una ventana o abertura.
 

@@ -160,7 +160,7 @@ publishing {
 		// retrieving dependencies.
 	}
 }
-tasks.withType(JavaCompile) { options.compilerArgs << '-Xlint:all' << '-Xlint:-processing' }
+tasks.withType(JavaCompile) { options.compilerArgs << '-Xlint:all' << '-Xlint:-processing' << '-Xlint:-this-escape' << '-Xlint:-classfile' }
 
 test {
 	useJUnitPlatform()

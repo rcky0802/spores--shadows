@@ -16,13 +16,24 @@ Le jeu évalue en permanence l'air entourant la tête du joueur à l'aide d'un a
 
 | Élément | Comportement | Score de Débit ($V$) |
 | :--- | :--- | :---: |
-| **Blocs pleins, verre** | Barrière hermétique | `0.0` |
+| **Blocs pleins, blocs de verre** | Barrière hermétique étanche | `0.0` |
 | **Portes fermées, trappes fermées** | Barrière hermétique | `0.0` |
 | **Blocs submergés (waterlogged)** | **Siphon hydraulique** — barrière étanche absolue | `0.0` |
+| **Vitrages/Panneaux de verre ($\ge 2$ côtés reliés)** | Fenêtre continue ou en coin : étanchéité hermétique | `0.0` |
+| **Vitrages/Panneaux de verre ($1$ côté relié)** | Fenêtre partielle/ouverte : ventilation intermédiaire | **`+12.0`** / bloc |
+| **Vitrages/Panneaux de verre (0 connexion)** | Panneau isolé en poteau : point ouvert | **`+24.0`** / bloc |
+| **Vitrages/Panneaux de verre (en vertical)** | Axe UP / DOWN : l'air circule librement au-dessus/en-dessous | **`+24.0`** / bloc |
+| **Murets ($\ge 2$ côtés reliés)** | Muret continu ou en coin : barrière hermétique | `0.0` |
+| **Murets ($1$ côté relié)** | Muret partiel/saillant : ventilation intermédiaire | **`+12.0`** / bloc |
+| **Murets (0 connexion)** | Poteau de muret isolé : ouverture réduite | **`+6.0`** / bloc |
+| **Murets (en vertical)** | Axe UP / DOWN : l'air franchit librement par le dessus/dessous | **`+18.0`** / bloc |
+| **Barrières / Fences (en vertical)** | Axe UP / DOWN : l'air circule librement | **`+18.0`** / bloc |
+| **Barrières / Fences ($\ge 2$ côtés reliés)** | Espaces entre traverses (droite et gauche) | **`+12.0`** / bloc |
+| **Barrières / Fences ($1$ côté relié ou 0)** | Ouverture large (un seul côté ou poteau isolé) | **`+18.0`** / bloc |
 | **Ciel ouvert direct** | Cheminée atmosphérique naturelle | **`+24.0`** / bloc |
 | **Portes/Trappes ouvertes, Grilles de cuivre, Feuilles** | Conduits de ventilation principaux | **`+18.0`** / bloc |
 | **Dalles (Slabs)** | Conduits partiels semi-pleins | **`+12.0`** / bloc |
-| **Escaliers, Barrières (Fences)** | Fissures et ouvertures mineures | **`+6.0`** / bloc |
+| **Escaliers (Stairs)** | Fissures et ouvertures mineures | **`+6.0`** / bloc |
 
 La saturation de la pièce n'est pas instantanée : elle progresse avec une certaine inertie temporelle (`saturation_speed = 0.15`) lorsque les ouvertures sont scellées, et se dissipe bien plus vite (`dissipation_speed = 0.35`) dès qu'une simple fenêtre ou issue est dégagée.
 

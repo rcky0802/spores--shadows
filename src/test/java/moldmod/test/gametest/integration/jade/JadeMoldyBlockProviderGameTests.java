@@ -181,6 +181,14 @@ public class JadeMoldyBlockProviderGameTests {
         MoldyBlockProvider.INSTANCE.appendTooltip(createMockTooltip(rottenList), rottenAccessor, null);
         context.assertTrue(rottenList.isEmpty(), "Rotten block must produce no infection tooltip");
 
+        // Case 5: Zero risk (0%) produces no tooltip line
+        net.minecraft.nbt.NbtCompound zeroRiskNbt = new net.minecraft.nbt.NbtCompound();
+        zeroRiskNbt.putDouble("MoldRisk", 0.0);
+        BlockAccessor zeroAccessor = createMockAccessor(context.getWorld(), pos, moldyState, zeroRiskNbt);
+        java.util.List<net.minecraft.text.Text> zeroList = new java.util.ArrayList<>();
+        MoldyBlockProvider.INSTANCE.appendTooltip(createMockTooltip(zeroList), zeroAccessor, null);
+        context.assertTrue(zeroList.isEmpty(), "Zero risk (0%) must produce no infection tooltip line");
+
         context.complete();
     }
 }

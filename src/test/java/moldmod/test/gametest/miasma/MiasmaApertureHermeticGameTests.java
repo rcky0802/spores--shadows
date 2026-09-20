@@ -8,6 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChainBlock;
 import net.minecraft.block.DoorBlock;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.WallBlock;
 import net.minecraft.block.enums.BlockHalf;
@@ -774,6 +775,71 @@ public class MiasmaApertureHermeticGameTests {
 
         context.assertTrue(result.ventilationType == RoomAtmosphereCalculator.RoomVentilationType.UNCONFINED_CAVERN,
                 "Shaft deeper than radius 16 must be UNCONFINED_CAVERN, got: " + result.ventilationType);
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testGlassPaneHermeticRoomAperture(TestContext context) {
+        // Room 3x3x3: sealed room with stone, but one wall block replaced with a glass pane
+        RoomTestBuilder.of(context)
+                .stoneRoom(0, 0, 0, 4, 4, 4)
+                .set(2, 2, 0, Blocks.GLASS_PANE) // Window with glass pane facing outside
+                .clearOpenAirColumn(2, 0, 5, 8);  // Ensure outside has sky
+
+        BlockPos insidePos = new BlockPos(2, 2, 2);
+        RoomAtmosphereCalculator.MiasmaResult result = RoomAtmosphereCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(insidePos));
+
+        // The glass pane window must NOT be treated as an open ventilation aperture to outside!
+        context.assertTrue(result.ventilationScore == 0.0,
+                "Sealed room with glass pane window must have ventilationScore == 0.0, got: " + result.ventilationScore);
+        context.assertTrue(!result.openAir, "Room enclosed with glass pane must not be open air");
+
+        context.complete();
+    }
+
+    @GameTest(templateName = FabricGameTest.EMPTY_STRUCTURE)
+    public void testFenceVentilationAperture(TestContext context) {
+        BlockPos center = new BlockPos(2, 2, 2);
+        RoomTestBuilder.of(context)
+                .stoneRoom(1, 1, 1, 3, 3, 3)
+                .setAir(0, 2, 2)
+                .setAir(0, 3, 2)
+                .addMoldyOakLog(3, 2, 2, 2);
+
+        // 1. Fence connected on 2 sides (NORTH & SOUTH) -> VENTILATED
+        RoomTestBuilder.of(context).set(1, 2, 2, Blocks.OAK_FENCE.getDefaultState()
+                .with(FenceBlock.NORTH, true)
+                .with(FenceBlock.SOUTH, true));
+        RoomAtmosphereCalculator.MiasmaResult resultConnected = RoomAtmosphereCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(center));
+        context.assertTrue(resultConnected.ventilationType == RoomAtmosphereCalculator.RoomVentilationType.VENTILATED,
+                "Fence connected on 2 sides must be VENTILATED");
+        context.assertTrue(resultConnected.ventilationScore > 0.0,
+                "Fence connected on 2 sides must provide ventilationScore > 0");
+
+        // 2. Fence with single connection -> VENTILATED
+        RoomTestBuilder.of(context).set(1, 2, 2, Blocks.OAK_FENCE.getDefaultState()
+                .with(FenceBlock.NORTH, true)
+                .with(FenceBlock.SOUTH, false));
+        RoomAtmosphereCalculator.MiasmaResult resultSingle = RoomAtmosphereCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(center));
+        context.assertTrue(resultSingle.ventilationType == RoomAtmosphereCalculator.RoomVentilationType.VENTILATED,
+                "Fence with single connection must be VENTILATED");
+        context.assertTrue(resultSingle.ventilationScore > 0.0,
+                "Fence with single connection must provide ventilationScore > 0");
+
+        // 3. Fence in ceiling (vertical) -> VENTILATED
+        RoomTestBuilder.of(context)
+                .set(1, 2, 2, Blocks.STONE)
+                .set(2, 3, 2, Blocks.OAK_FENCE);
+        RoomAtmosphereCalculator.MiasmaResult resultCeiling = RoomAtmosphereCalculator.calculateMiasma(
+                context.getWorld(), context.getAbsolutePos(center));
+        context.assertTrue(resultCeiling.ventilationType == RoomAtmosphereCalculator.RoomVentilationType.VENTILATED,
+                "Ceiling fence must be VENTILATED");
+        context.assertTrue(resultCeiling.ventilationScore > 0.0,
+                "Ceiling fence must provide ventilationScore > 0");
 
         context.complete();
     }

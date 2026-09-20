@@ -91,4 +91,94 @@ public class GeometryBitmaskUnitTest {
         assertEquals(3, shared);
         assertEquals(0.75, shared / 4.0, 1e-6, "3 quadrants give 75% base capacity");
     }
+
+    @Test
+    @DisplayName("Glass pane bitmasks: 2+ connections hermetic (0b0000), 1 connection (0b0011, 12 air), 0 connections open (0b1111, 24 air)")
+    public void testGlassPaneConnectionBitmasks() {
+        int fullAir = 0b1111;
+
+        // Case 1: 0 connections -> open point (0b1111, 24.0 air)
+        int pane0Conn = 0b1111;
+        int shared0 = Integer.bitCount(pane0Conn & fullAir);
+        assertEquals(4, shared0);
+        assertEquals(1.0, shared0 / 4.0, 1e-6, "0 connections gives 100% capacity (24 air)");
+
+        // Case 2: 1 connection -> 12 air (0b0011, 50% capacity)
+        int pane1Conn = 0b0011;
+        int shared1 = Integer.bitCount(pane1Conn & fullAir);
+        assertEquals(2, shared1);
+        assertEquals(0.5, shared1 / 4.0, 1e-6, "1 connection gives 50% capacity (12 air)");
+
+        // Case 3: 2+ connections -> hermetic (0b0000, 0 air)
+        int pane2Conn = 0b0000;
+        int shared2 = Integer.bitCount(pane2Conn & fullAir);
+        assertEquals(0, shared2, "2+ connections must share 0 bits with air (hermetic)");
+        assertEquals(0.0, shared2 / 4.0, 1e-6, "2+ connections have 0% capacity (0 air)");
+
+        // Case 4: Vertical direction -> 100% capacity (0b1111, like walls and fences)
+        int paneVertical = 0b1111;
+        int sharedVert = Integer.bitCount(paneVertical & fullAir);
+        assertEquals(4, sharedVert);
+        assertEquals(1.0, sharedVert / 4.0, 1e-6, "Vertical axis gives 100% capacity (air passes over/under)");
+    }
+
+    @Test
+    @DisplayName("Wall block bitmasks: 2+ connections hermetic (0b0000), 1 connection (0b0011, 12 air), 0 connections (0b0001, 6 air), vertical (0b0111, 18 air)")
+    public void testWallBlockConnectionBitmasks() {
+        int fullAir = 0b1111;
+
+        // Case 1: 0 connections -> 6 air (0b0001, 1 quadrant = 25% of 24 = 6)
+        int wall0Conn = 0b0001;
+        int shared0 = Integer.bitCount(wall0Conn & fullAir);
+        assertEquals(1, shared0);
+        assertEquals(0.25, shared0 / 4.0, 1e-6, "0 connections gives 25% capacity (6 air)");
+
+        // Case 2: 1 connection -> 12 air (0b0011, 2 quadrants = 50% of 24 = 12)
+        int wall1Conn = 0b0011;
+        int shared1 = Integer.bitCount(wall1Conn & fullAir);
+        assertEquals(2, shared1);
+        assertEquals(0.5, shared1 / 4.0, 1e-6, "1 connection gives 50% capacity (12 air)");
+
+        // Case 3: 2+ connections -> hermetic (0b0000, 0 air)
+        int wall2Conn = 0b0000;
+        int shared2 = Integer.bitCount(wall2Conn & fullAir);
+        assertEquals(0, shared2, "2+ connections must share 0 bits with air (hermetic)");
+        assertEquals(0.0, shared2 / 4.0, 1e-6, "2+ connections have 0% capacity (0 air)");
+
+        // Case 4: Vertical axis -> 18 air (0b0111, 75% of 24 = 18)
+        int wallVertical = 0b0111;
+        int sharedVert = Integer.bitCount(wallVertical & fullAir);
+        assertEquals(3, sharedVert);
+        assertEquals(0.75, sharedVert / 4.0, 1e-6, "Vertical axis gives 75% capacity (18 air)");
+    }
+
+    @Test
+    @DisplayName("Fence block bitmasks: 2+ connections (0b0011, 12 air), 1 connection (0b0111, 18 air), 0 connections (0b0111, 18 air), vertical (0b0111, 18 air)")
+    public void testFenceBlockConnectionBitmasks() {
+        int fullAir = 0b1111;
+
+        // Case 1: 0 connections -> 18 air (0b0111, 75% capacity)
+        int fence0Conn = 0b0111;
+        int shared0 = Integer.bitCount(fence0Conn & fullAir);
+        assertEquals(3, shared0);
+        assertEquals(0.75, shared0 / 4.0, 1e-6, "0 connections gives 75% capacity (18 air)");
+
+        // Case 2: 1 connection -> 18 air (0b0111, 75% capacity)
+        int fence1Conn = 0b0111;
+        int shared1 = Integer.bitCount(fence1Conn & fullAir);
+        assertEquals(3, shared1);
+        assertEquals(0.75, shared1 / 4.0, 1e-6, "1 connection gives 75% capacity (18 air)");
+
+        // Case 3: 2+ connections -> 12 air (0b0011, 50% capacity)
+        int fence2Conn = 0b0011;
+        int shared2 = Integer.bitCount(fence2Conn & fullAir);
+        assertEquals(2, shared2);
+        assertEquals(0.5, shared2 / 4.0, 1e-6, "2+ connections gives 50% capacity (12 air)");
+
+        // Case 4: Vertical axis -> 18 air (0b0111, 75% of 24 = 18)
+        int fenceVertical = 0b0111;
+        int sharedVert = Integer.bitCount(fenceVertical & fullAir);
+        assertEquals(3, sharedVert);
+        assertEquals(0.75, sharedVert / 4.0, 1e-6, "Vertical axis gives 75% capacity (18 air)");
+    }
 }
